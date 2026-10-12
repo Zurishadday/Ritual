@@ -30,6 +30,10 @@ Then, in your project, type `/ritual`. The first time, it detects what you are b
 
 It needs Node 20.17 or newer (`node --version`). If something doesn't work, type `/ritual doctor`: it checks Node, your setup and whether the hooks are really running, and says what to fix.
 
+**Updating.** Ritual gets better with every commit. Run `claude plugin update ritual@ritual` and start a new session, or turn on auto-update for the `ritual` marketplace in `/plugin` → Marketplaces.
+
+**`claude` not found?** That happens when you only have the Claude desktop app, which brings its own copy. Install the command line ([how](https://code.claude.com/docs/en/setup)): it shares plugins with the app. Then restart the app.
+
 ## See it in action
 
 Real output from Ritual's own tests, in a web project.

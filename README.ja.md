@@ -32,6 +32,10 @@ claude plugin install ritual@ritual
 
 Node 20.17 以降が必要です（`node --version`）。うまく動かないときは `/ritual doctor` と入力してください。Node、設定、フックが実際に動いているかを確認し、直すべき点を教えてくれます。
 
+**アップデート。** Ritual はコミットのたびに良くなっています。`claude plugin update ritual@ritual` を実行して新しいセッションを開始するか、`/plugin` → Marketplaces で `ritual` マーケットプレイスの自動アップデートをオンにしてください。
+
+**`claude` が見つからない？** Claude デスクトップアプリだけを入れている場合に起こります。アプリには独自のコピーが含まれています。コマンドラインをインストールしてください（[方法](https://code.claude.com/docs/en/setup)）。プラグインはアプリと共有されます。その後、アプリを再起動してください。
+
 ## 動作の例
 
 Ritual 自身のテストから得た実際の出力です（Web プロジェクトの場合）。
