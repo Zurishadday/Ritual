@@ -63,7 +63,7 @@ claude plugin install ritual@ritual
 
 每条教训都有五个部分，且总是齐全：**核心**、一个真实且匿名的**例子**、把适用与不适用的情况区分开的**检测问题**、**警示信号**（你在再次犯同样错误之前对自己说的那句话），以及**怎么做**。每条教训还有一个永不改变的编号：多余的教训会被标记为已并入另一条，而绝不删除。完整格式见 [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md)。
 
-每条教训都注明了来源：
+每条教训都注明了来源，以及它发生时所用的模型和月份（`field · ~opus · 2026-08`；`~` 表示来自记忆，而非记录）：
 
 - `field`：某个项目中的一次真实错误，附带那个例子。
 - `lab`：它在[模拟](simulations/README.md)中被打破，并注明了模型和时间。当有人在自己的项目中确认它时，它就变为 `field`。
@@ -85,11 +85,13 @@ Ritual 也用它自己的教训来检验。WEB-1 在 Ritual 自己的日志中�
 
 ## 参与贡献
 
-最简单的方式：**确认一条教训**。如果某条 `lab` 或 `proposal` 教训确实在你身上发生过，请开一个 issue，附上你匿名的例子，它就会变成 `field`；如果你愿意，也可以署上你的名字。
+最简单的方式：**确认一条教训**。如果某条教训也确实在你身上发生过，请[提交一份确认](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml)，附上你匿名的例子和你当时使用的模型。每次确认都会把该模型加入这条教训的 `seen:` 列表，让教训库知道某个错误适用于哪些模型，以及哪些较新的模型已经不再犯它。`lab` 或 `proposal` 教训若有真实的例子，就会变成 `field`；如果你愿意，也可以署上你的名字。
+
+Ritual 运行在 Claude 上，因此只在另一个模型下发生过的教训，会先由 Claude 检查，然后才会有人收到它的问题（[方法](simulations/README.md#checking-a-contributed-lesson)）。
 
 你还可以：
 
-- **分享一条你的教训**：五个部分、一个匿名例子，以及它所属的组。`/ritual` 会替你写出文本。
+- **[分享一条你的教训](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)**：五个部分、一个匿名例子、它所属的组，以及它发生时所用的模型。`/ritual` 会替你写出文本。
 - **提议一个模拟任务**，针对缺少的某类项目。
 - **审校译文**：教训由模型翻译，每条都会注明（`by: ai`）。如果你是母语者，请修正它，并用你的 GitHub 用户名署名。流程见 [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md)。
 - **添加一条守卫规则**，或一个它本应放行的案例。

@@ -63,7 +63,7 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 
 Toda lição tem cinco partes, sempre as cinco: **a ideia**, um **exemplo** real e anônimo, a **pergunta detectora** que separa o caso que se aplica do que não se aplica, o **sinal de alerta** (a frase que você diz a si mesmo logo antes de cometer o erro de novo) e **o que fazer**. E um número que nunca muda: uma lição redundante é marcada como fundida em outra, nunca apagada. O formato completo está em [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
-Cada uma indica de onde veio:
+Cada uma indica de onde veio, com qual modelo e em que mês aconteceu (`field · ~opus · 2026-08`; o `~` quer dizer que vem da memória, não de um registro):
 
 - `field`: um erro real em um projeto, com esse exemplo.
 - `lab`: quebrou numa [simulação](simulations/README.md), e indica qual modelo e quando. Vira `field` quando alguém confirma no próprio projeto.
@@ -85,11 +85,13 @@ O Ritual também é verificado com as próprias lições. A WEB-1 encontrou o me
 
 ## Contribuindo
 
-O jeito mais fácil: **confirme uma lição**. Se uma lição `lab` ou `proposal` aconteceu de verdade com você, abra uma issue com o seu exemplo anônimo e ela vira `field`, com o seu nome, se você quiser.
+O jeito mais fácil: **confirme uma lição**. Se uma lição também aconteceu de verdade com você, [abra uma confirmação](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml) com o seu exemplo anônimo e o modelo que você estava usando. Cada confirmação acrescenta esse modelo à lista `seen:` da lição, assim a biblioteca passa a saber a quais modelos um erro se aplica e quais modelos novos já não o cometem. Uma lição `lab` ou `proposal` com um exemplo real vira `field`, com o seu nome, se você quiser.
+
+O Ritual roda com Claude, então uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta ([como](simulations/README.md#checking-a-contributed-lesson)).
 
 Você também pode:
 
-- **Compartilhe uma lição** sua: cinco partes, um exemplo anônimo e o grupo a que pertence. O `/ritual` escreve o texto para você.
+- **[Compartilhe uma lição](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** sua: cinco partes, um exemplo anônimo, o grupo a que pertence e o modelo com que aconteceu. O `/ritual` escreve o texto para você.
 - **Proponha uma tarefa de simulação** para um tipo de projeto que ainda não tem.
 - **Revise uma tradução**: as lições são traduzidas por um modelo, e cada uma indica isso (`by: ai`). Se você é falante nativo, corrija e assine com o seu usuário do GitHub. O fluxo está em [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Adicione uma regra à Guarda**, ou um caso que ela deveria ter deixado passar.
