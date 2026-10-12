@@ -1,5 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Ritual">
-  <path d="M 101.35 44.95 A 44 44 0 1 1 75.05 18.65" fill="none" stroke="#E8743B" stroke-width="9" stroke-linecap="round"/>
-  <path d="M 87.6 23.2 L 72.9 9.6 L 69.8 28.6 Z" fill="#E8743B" stroke="#E8743B" stroke-width="3" stroke-linejoin="round"/>
-  <polyline points="40,61 54,75 80,46" fill="none" stroke="#2EA043" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Ritual">
+  <title>Ritual</title>
+  <!-- A mistake (red) becomes a lesson (orange), a rule (amber) and a check (green); the arrow closes the loop. -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a313c"/>
+      <stop offset="1" stop-color="#13171e"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#tile)" stroke="#ffffff" stroke-opacity=".10" stroke-width="2"/>
+  <g fill="none" stroke-width="18" stroke-linecap="round">
+    <path d="M140.50 57.09 A72 72 0 0 1 198.91 115.50" stroke="#F85149"/>
+    <path d="M198.91 140.50 A72 72 0 0 1 140.50 198.91" stroke="#F0883E"/>
+    <path d="M115.50 198.91 A72 72 0 0 1 57.09 140.50" stroke="#D29922"/>
+    <path d="M57.09 115.50 A72 72 0 0 1 105.75 59.53" stroke="#3FB950"/>
+  </g>
+  <path d="M124.77 53.35 L99.52 46.84 L108.18 73.46 Z" fill="#3FB950" stroke="#3FB950" stroke-width="4" stroke-linejoin="round"/>
+  <polyline points="99,130 120,151 159,110" fill="none" stroke="#F0F6FC" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
