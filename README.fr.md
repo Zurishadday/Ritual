@@ -140,7 +140,7 @@ Chacune indique son origine, ainsi que le modèle et le mois où elle s'est prod
 - `proposal` : seulement pour ce qui ne casse pas de façon visible (la sécurité), avec une source publique.
 
 > [!NOTE]
-> Ritual tourne sur Claude, et une erreur qu'un modèle commet peut ne pas être commise par un autre. C'est pourquoi chaque leçon note son modèle : une leçon qui ne s'est produite qu'avec un autre modèle est vérifiée avec Claude avant que quiconque reçoive sa question, et quand un Claude plus récent ne commet plus l'erreur, les données le montrent.
+> Ritual tourne sur Claude, et une erreur qu'un modèle commet peut ne pas être commise par un autre. C'est pourquoi chaque leçon note son modèle : une leçon qui ne s'est produite qu'avec un autre modèle est vérifiée avec Claude avant que quiconque reçoive sa question, et quand un Claude plus récent ne commet plus l'erreur, les données le montrent. Voir [quels modèles ont commis quelles erreurs](lessons/BY-MODEL.md).
 
 ## Les leçons des paquets viennent de simulations
 

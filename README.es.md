@@ -140,7 +140,7 @@ Cada lección dice de dónde salió y con qué modelo y en qué mes pasó (`fiel
 - `proposal`: solo para lo que no «truena» (seguridad), con fuente pública.
 
 > [!NOTE]
-> Ritual corre con Claude, y un error que comete un modelo puede no cometerlo otro. Por eso cada lección registra su modelo: una lección que solo pasó con otro modelo se comprueba con Claude antes de que a alguien le salga su pregunta, y cuando un Claude más nuevo ya no comete el error, los datos lo muestran.
+> Ritual corre con Claude, y un error que comete un modelo puede no cometerlo otro. Por eso cada lección registra su modelo: una lección que solo pasó con otro modelo se comprueba con Claude antes de que a alguien le salga su pregunta, y cuando un Claude más nuevo ya no comete el error, los datos lo muestran. Consulta [qué modelos cometieron qué errores](lessons/BY-MODEL.md).
 
 ## Las lecciones de los paquetes salen de simulaciones
 

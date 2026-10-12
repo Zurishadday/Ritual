@@ -138,7 +138,7 @@ Each lesson says where it came from, and with which model and in which month it 
 - `proposal`: only for what doesn't visibly break (security), with a public source.
 
 > [!NOTE]
-> Ritual runs on Claude, and a mistake one model makes another may not. That's why every lesson records its model: a lesson that only happened with another model is checked with Claude before anyone gets its question, and when a newer Claude no longer makes a mistake, the data shows it.
+> Ritual runs on Claude, and a mistake one model makes another may not. That's why every lesson records its model: a lesson that only happened with another model is checked with Claude before anyone gets its question, and when a newer Claude no longer makes a mistake, the data shows it. See [which models made which mistakes](lessons/BY-MODEL.md).
 
 ## Package lessons come from simulations
 

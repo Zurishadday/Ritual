@@ -2,7 +2,7 @@
 
 A lesson comes from a real mistake, not from theory. It has five parts, always all five, and a number that never changes. It lives in `lessons/en/<group>.md`, in the group of **what you were doing** when it happened (writing, numbers, tests, scripts, interface, console or git). If it also applies to another group, say so with `groups:`. If it belongs to one kind of project, say so with `packages:`.
 
-The checker (`node scripts/lessons.mjs --check`) checks all of this, and each language's index is generated (`--index`): it is never edited by hand.
+The checker (`node scripts/lessons.mjs --check`) checks all of this, and each language's index and the page of [mistakes by model](BY-MODEL.md) are generated (`--index`): they are never edited by hand.
 
 ## Template
 

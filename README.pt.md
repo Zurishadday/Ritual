@@ -140,7 +140,7 @@ Cada uma indica de onde veio, com qual modelo e em que mês aconteceu (`field ·
 - `proposal`: só para o que não quebra à vista (segurança), com uma fonte pública.
 
 > [!NOTE]
-> O Ritual roda com Claude, e um erro que um modelo comete pode não ser cometido por outro. Por isso cada lição registra o seu modelo: uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta, e quando um Claude mais novo deixa de cometer o erro, os dados mostram isso.
+> O Ritual roda com Claude, e um erro que um modelo comete pode não ser cometido por outro. Por isso cada lição registra o seu modelo: uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta, e quando um Claude mais novo deixa de cometer o erro, os dados mostram isso. Veja [quais modelos cometeram quais erros](lessons/BY-MODEL.md).
 
 ## As lições de pacote vêm de simulações
 
