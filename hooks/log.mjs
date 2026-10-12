@@ -6,7 +6,7 @@
 // Goes to .ritual/local/log.jsonl (outside git), one line per entry, with the last thing touched in the session.
 // Usage: node hooks/log.mjs --selftest
 import path from "node:path";
-import { appendLine, ritualDir, readInput, session } from "./common.mjs";
+import { appendLine, isMain, readInput, ritualDir, session } from "./common.mjs";
 
 // Precision over coverage: a phrase that is not logged is lost; one logged in excess dirties the ritual.
 const CORRECTION = [
@@ -34,7 +34,7 @@ export function selftest() {
   return bad.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   if (process.argv.includes("--selftest")) {
     const bad = selftest();
     console.log(bad ? `${bad} case(s) failed` : `✓ ${CASES.length} calibrated phrases`);

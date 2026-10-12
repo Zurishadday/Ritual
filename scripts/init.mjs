@@ -7,6 +7,7 @@ import { appendFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSyn
 import os from "node:os";
 import path from "node:path";
 import { TAXONOMY } from "./lessons.mjs";
+import { isMain } from "../hooks/common.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 // Which dependencies turn each package on: lessons/taxonomy.json, the one list of groups and packages.
@@ -86,7 +87,7 @@ export function selftest() {
   return bad.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--selftest")) {
     const bad = selftest();

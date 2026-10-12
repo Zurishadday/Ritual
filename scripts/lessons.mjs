@@ -19,6 +19,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { isMain } from "../hooks/common.mjs";
 
 export const ROOT = path.resolve(import.meta.dirname, "..");
 export const ORIGINAL = "en";
@@ -391,7 +392,7 @@ export function selftest() {
   return failures.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--selftest")) {
     const failures = selftest();

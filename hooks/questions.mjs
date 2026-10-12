@@ -10,7 +10,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { ORIGINAL, readLessons, readGroupFile } from "../scripts/lessons.mjs";
-import { ritualDir, readInput, readJson, session } from "./common.mjs";
+import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
@@ -102,7 +102,7 @@ export function selftest() {
   return failures.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   if (process.argv.includes("--selftest")) {
     const failures = selftest();
     console.log(failures ? `${failures} case(s) wrong` : "✓ groups by action and context per group calibrated");

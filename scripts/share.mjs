@@ -16,6 +16,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import os from "node:os";
 import path from "node:path";
 import { GROUPS, PACKAGES, PARTS, TAXONOMY, originProblems, parseLessons, readLessons } from "./lessons.mjs";
+import { isMain } from "../hooks/common.mjs";
 
 const REPO = "https://github.com/Zurishadday/Ritual";
 const MAX_URL = 7500; // browsers and GitHub start failing around 8 KB
@@ -165,7 +166,7 @@ export function selftest() {
   return failures.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   const [cmd, ...args] = process.argv.slice(2);
   if (cmd === "--selftest") {
     const failures = selftest();

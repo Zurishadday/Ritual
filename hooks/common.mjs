@@ -1,7 +1,14 @@
 // What the hooks share: read the input, find the project's .ritual/ folder, and write without breaking anything.
 // A hook never breaks the tool: if writing a note fails, it stays quiet and lets things pass.
-import { appendFileSync, closeSync, existsSync, fstatSync, mkdirSync, openSync, readFileSync, readSync, writeFileSync } from "node:fs";
+import { appendFileSync, closeSync, existsSync, fstatSync, mkdirSync, openSync, readFileSync, readSync, realpathSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+/** Whether this module is the script node was started with. Not `import.meta.main`: Node 20 lacks it, and there every
+ * hook and selftest did nothing and exited 0. */
+export function isMain(url) {
+  try { return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(url)); } catch { return false; }
+}
 
 export async function readInput() {
   let raw = "";

@@ -9,6 +9,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
+import { isMain } from "../hooks/common.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const LIST = path.join(ROOT, "private", "do-not-publish", "forbidden.txt");
@@ -50,7 +51,7 @@ export function selftest(words) {
   return failures.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   const words = readList();
   if (process.argv.includes("--selftest")) {
     const failures = selftest(words);

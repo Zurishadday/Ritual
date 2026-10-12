@@ -8,7 +8,7 @@
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { appendLine } from "../hooks/common.mjs";
+import { appendLine, isMain } from "../hooks/common.mjs";
 
 /** The readable records, and in `unreadable` how many lines could not be read: they are reported, not skipped silently (WEB-1). */
 const readJsonl = (file) => {
@@ -90,7 +90,7 @@ export function selftest() {
   return bad.length;
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--selftest")) {
     const bad = selftest();

@@ -7,7 +7,7 @@
 //        node hooks/guard.mjs --log [project]       summarizes the blocks, for the ritual
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { appendLine, ritualDir, readInput, readJson } from "./common.mjs";
+import { appendLine, isMain, readInput, readJson, ritualDir } from "./common.mjs";
 
 const CODE = /\.(ts|tsx|js|mjs|cjs|py|mdx|css|json)\b/;
 
@@ -118,7 +118,7 @@ export function selftest(config = DEFAULT) {
   return { failures: failures.length, rules: rules.length };
 }
 
-if (import.meta.main) {
+if (isMain(import.meta.url)) {
   const project = process.argv.slice(2).find((a) => !a.startsWith("--"));
   const dir = project ? path.join(path.resolve(project), ".ritual") : ritualDir(null);
   const config = readConfig(dir && existsSync(dir) ? dir : null);
