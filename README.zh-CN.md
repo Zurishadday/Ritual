@@ -1,12 +1,26 @@
-# Ritual
+<div align="center">
 
-[English](README.md) · [Español](README.es.md) · [Português](README.pt.md) · [Français](README.fr.md) · **中文** · [日本語](README.ja.md) · [한국어](README.ko.md)
+<img src="assets/logo.svg" width="96" height="96" alt="">
+
+# Ritual
 
 **Claude 犯错只会一次。Ritual 确保那是最后一次。**
 
-Ritual 是适用于任何项目的 Claude Code 插件。它只有一个想法：**每个错误都变成一条教训，每条教训都变成一条规则，而每条规则，只要可能，就变成一项测试或一道守卫。** 其他工具只是把学到的东西记下来；这个插件则更进一步，去检验它。因为只存在于文字里的规则，在漫长的会话中会被遗忘，而会自我检验的规则不会。
+Ritual 是一个 Claude Code 插件，它把每个错误变成一条教训，把每条教训变成一条规则，并在可能的时候，把每条规则变成一项测试或一道守卫。
 
-它附带 49 条**实战教训**，每一条都源于一次真实的错误；按项目类型划分的**课程包**，其课程来自观察模型构建某个东西并把它弄坏的过程；还有一个命令 `/ritual`，它把你会话中的错误变成你自己的教训，再把你的教训变成会自我执行的规则。
+[![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
+
+[English](README.md) · [Español](README.es.md) · [Português](README.pt.md) · [Français](README.fr.md) · **中文** · [日本語](README.ja.md) · [한국어](README.ko.md)
+
+</div>
+
+其他工具只是把学到的内容记下来；Ritual 则更进一步，会去检验它。因为只存在于文字中的规则，在漫长的会话里会被遗忘，而会自我检验的规则则不会。
+
+它附带 **49 条实战教训**，每条都源于一次真实的错误；还有 **按项目类型划分的课程包**，其中的教训来自观察模型构建某个东西并把它弄坏的过程；以及 **一条命令** `/ritual`，它把你会话中的错误变成你自己的教训，再把你的教训变成会自我执行的规则。
+
+<a name="install"></a>
 
 ## 安装
 
@@ -15,28 +29,72 @@ claude plugin marketplace add Zurishadday/Ritual
 claude plugin install ritual@ritual
 ```
 
-然后，在你的项目中输入 `/ritual`。第一次使用时，它会根据你的依赖自动识别你在做什么，只问你一件事（要开启哪些课程包，以及使用哪种语言），然后创建 `.ritual/` 文件夹。从那以后，三个钩子无需你做任何操作即可工作：
+然后，在你的项目中输入 `/ritual`。第一次使用时，它会根据你的依赖判断你在构建什么，只问你一件事（要开启哪些课程包，以及使用哪种语言），然后创建 `.ritual/` 文件夹。整个设置就只有这些。
+
+## 实际运行的样子
+
+以下是 Ritual 自己的测试在一个网页项目中的真实输出。
+
+**守卫会拦下你的项目已经见过失败的命令，**并告诉你应该改做什么：
+
+```console
+$ git push --force origin main
+Ritual guard (force-push-to-main): A forced push to main rewrites shared history. Push to a branch and open a pull request.
+```
+
+**Claude 第一次编辑组件时，**它会收到该组的检测问题，每个会话一次（已删节）：
+
+```text
+Ritual · Interface and design. Before you continue, run through these detector questions for what you
+are about to do. If one applies, act on it and say so in one line; if none applies, just continue.
+- 32 · Right after using the control, without moving from where it is, does the user see what changed?
+- 45 · If the user does the most likely wrong thing (a typo, an empty answer, two clicks), what do they
+       see, and can they keep going?
+- WEB-2 · If a thousand fake messages arrive tomorrow, how does the owner find the one real one, and how
+          do they delete the rest?
+- WEB-4 · After submitting, whether it succeeded or failed, where does focus end up and where does the
+          next Tab go?
+```
+
+**`/ritual` 从实际发生的事情出发，**而不是靠记忆（节选）：
+
+```text
+Log: 1 failed command(s), 1 correction(s)
+  10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
+  10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
+
+Guard: 2 block(s) · force-push-to-main ×1, python-c ×1 (details: hooks/guard.mjs --log)
+
+Groups touched in 1 session(s): interface-and-design (1)
+```
+
+## 工作原理
+
+三个钩子无需你做任何操作即可工作：
 
 | 钩子 | 作用 | 代价 |
 |---|---|---|
-| **守卫** | 阻止你的项目已经见过失败的命令，并告诉你该改用什么。规则保存在 `.ritual/guard.json` 中，每条规则都附有一个它会阻止的案例和一个它会放行的案例。 | 没有，直到它拦截为止。 |
-| **日志** | 实时记录每一次失败的命令，以及你的每一次纠正（“那是错的”、“重做一次”），并附上 Claude 当时正在处理的内容。 | 没有。 |
-| **提问** | 会话中第一次 Claude 准备编辑测试、组件、脚本、文档或查询，或者运行命令、提交更改时，它会把该组的检测问题展示给 Claude。每个组、每个会话只显示一次。 | 每组中每条教训占一行，三到十三行不等，取决于所在的组和课程包。 |
+| 🛡️ **守卫** | 阻止你的项目已经见过失败的命令，并告诉你该改用什么。规则保存在 `.ritual/guard.json` 中，每条规则都附有一个它会阻止的案例和一个它会放行的案例。 | 没有，直到它拦截为止。 |
+| 📝 **日志** | 即时记录每一条失败的命令，以及你的每一次纠正（“那是错的”、“再做一次”），并附上 Claude 当时正在处理的内容。 | 没有。 |
+| ❓ **提问** | 会话中，Claude 第一次准备编辑测试、组件、脚本、文档或查询，或者准备运行命令或提交时，它会把该组的检测问题展示给 Claude。每个组、每个会话只显示一次。 | 组中每条教训占一行，三到十三行不等，取决于所在的组和课程包。 |
 
 这些都不会改变 Claude 的行为：它只是在恰当的时刻，把你的项目已经学到的东西摆到 Claude 面前。
 
-## 仪式
+会话结束时，或在一次造成伤害的错误之后，输入 `/ritual`。它读取日志，找出每个错误本应被哪条教训拦住、又为何没有拦住，并沿着阶梯向上攀升：只要能做到，教训就变成守卫规则或测试。
 
-会话结束时，或在一次造成伤害的错误之后，输入 `/ritual`。它读取日志，并按顺序执行以下步骤：
+<details>
+<summary><b>The eight steps of <code>/ritual</code></b></summary>
 
-0. 检视上一次仪式留下的**候选项**：本可以成为测试却没有成为测试的内容。
+0. 检视上一次仪式留下的**候选项**：可以成为测试却没有成为测试的内容。
 1. **列出错误**，从日志开始，并确认每一个错误的原因。
 2. 查找**哪条教训涵盖了它，以及它为何没有触发**，首先在该错误所属的组中查找。如果有一条涵盖了它，就修改其检测问题或警示信号，或者补充例子。
-3. 查找**误报**：让 Claude 无故停下来的问题，以及错误的守卫拦截。被错误拦截的情况，会变成规则必须放行的一个案例。
+3. 查找**误报**：让 Claude 无故停下来的问题，以及错误的守卫拦截。错误的拦截会变成规则必须放行的一个案例。
 4. 只有在没有任何教训涵盖它时，才写一条**新教训**，包含其五个部分。
-5. **逐级向上**，凡能做到的地方都如此：命令模式变成守卫规则；代码的某个属性，或以教训命名、并在对着真实错误时先看到它失败才予以信任的测试；无法自动化、却已经出过两次问题的，写成 `CLAUDE.md` 中的一行。其余一切都保留为带日期的候选项。
+5. **逐级向上**，凡能做到的地方都如此：命令模式变成守卫规则；代码的某个属性，或以教训命名、在对着真实错误时先看到它失败才被信任的测试；无法自动化、却已经出过两次问题的，变成 `CLAUDE.md` 中的一行。其余一切都保留为带日期的候选项。
 6. 把所有内容一起保存在同一次提交中，并运行检查器。
-7. 保持示例匿名；如果某条教训对任何项目都成立，就提供文本，供你在这里分享。它从不自行发布任何内容。
+7. 保持例子匿名；如果某条教训适用于任何项目，就为你提供可在这里分享的文字。它从不自行发布任何内容。
+
+</details>
 
 另外，`/ritual close` 在你宣布某事完成之前，会把你所涉及的各组的问题对照这次改动逐一检查，并告诉你还缺什么。
 
@@ -54,7 +112,7 @@ claude plugin install ritual@ritual
 | 终端与工具 | 命令、服务器、捕获，以及挡路的工具。 |
 | Git 与流程 | 提交、状态、待办事项、并行工作。 |
 
-在这些组之上，还有按项目类型划分的**课程包**：只有当你正在做那种项目时才适用的教训。它们位于所属组的文件中，并带有前缀（如 `WEB-1`），而其问题只在课程包开启时才会出现。它们在安装时开启，也可以在 `.ritual/config.json` 中修改。
+在这些组之上，还有按项目类型划分的**课程包**：只有当你正在做那种项目时才适用的教训。它们位于所属组的文件中，并带有前缀（如 `WEB-1`），而它们的问题只在课程包开启时才会出现。它们在安装时开启，也可以在 `.ritual/config.json` 中修改。
 
 | 课程包 | 教训 |
 |---|---|
@@ -63,40 +121,41 @@ claude plugin install ritual@ritual
 
 每条教训都有五个部分，且总是齐全：**核心**、一个真实且匿名的**例子**、把适用与不适用的情况区分开的**检测问题**、**警示信号**（你在再次犯同样错误之前对自己说的那句话），以及**怎么做**。每条教训还有一个永不改变的编号：多余的教训会被标记为已并入另一条，而绝不删除。完整格式见 [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md)。
 
+> **从未见过错误的检查器什么也验证不了。** 一个永远通过的测试可能是坏的。要知道它是否有效，唯一的办法是让它对着真实的错误失败一次。*检测问题：* 我有没有用错误在真实会出现的各种形式去测试我的检查？有没有用正确的情况去测试？*警示信号：* “它已经通过了，所以设置是对的。”
+>
+> — 第 13 条
+
+Ritual 也把这条教训用在它自己身上：本仓库中的每条守卫规则、每个检查器和每个钩子都附有它的案例，并且在加入之前都曾被看到失败过。
+
 每条教训都注明了来源，以及它发生时所用的模型和月份（`field · ~opus · 2026-08`；`~` 表示来自记忆，而非记录）：
 
 - `field`：某个项目中的一次真实错误，附带那个例子。
 - `lab`：它在[模拟](simulations/README.zh-CN.md)中被打破，并注明了模型和时间。当有人在自己的项目中确认它时，它就变为 `field`。
 - `proposal`：仅用于不会明显被打破的内容（安全），附公开来源。
 
-下面是第 13 条，作为例子：
-
-> **从未见过错误的检查器什么也验证不了。** 一个永远通过的测试可能是坏的。要知道它是否有效，唯一的办法是让它对着真实的错误失败一次。*检测问题：* 我有没有用错误在真实会出现的各种形式去测试我的检查？有没有用正确的情况去测试？*警示信号：* “它已经通过了，所以设置是对的。”
-
-Ritual 也把这条教训用在它自己身上：本仓库中的每条守卫规则、每个检查器和每个钩子都附有它的案例，并且在加入之前都曾被看到失败过。
+> [!NOTE]
+> Ritual 运行在 Claude 上，而一个模型犯的错误，另一个模型不一定会犯。因此每条教训都记录其模型：只在另一个模型下发生过的教训，在任何人收到它的问题之前，会先由 Claude 检查；当较新的 Claude 不再犯某个错误时，数据会显示出来。
 
 ## 课程包的教训来自模拟
 
-课程包的教训并非凭空编造。一个模型在没有 Ritual 的情况下构建一个真实的任务；另一个模型在另一个会话中运行所构建的东西，并记录哪里出了问题，附上证据。出了问题的内容成为教训；没出问题的则不成为教训。每个任务都运行两次：两次都出问题的是教训；只出问题一次的，仍是候选项。当新模型发布时，任务会再次运行，而不再出问题的教训会被降级，并附上数据。方法与任务见 [`simulations/`](simulations/README.zh-CN.md)。
+每类项目的教训并非凭空编造。一个模型在没有 Ritual 的情况下构建一个真实的任务；另一个模型在另一个会话中运行所构建的东西，并记录哪里出了问题，附上证据。每个任务都运行两次：两次都出问题的是教训；只出问题一次的，仍是候选项。当新模型发布时，任务会再次运行，而不再出问题的教训会被降级，并附上数据。方法与任务见 [`simulations/`](simulations/README.zh-CN.md)。
 
 第一个模拟是一家自行车修理店的网站，带有联系表单和管理页面。Sonnet 构建了它两次。两个版本都正确地转义了 HTML，把请求限制在公开目录之内，并且在同时收到 300 条消息时依然稳定。即便如此，两个版本都会悄悄丢失在写入被中断之后到达的那条消息；两个版本都接受了来自机器人的数百条消息，却没有办法把它们清理掉；其中一个版本还声称它的测试通过了，而实际上它每十次就失败一次。所有发现连同证据，都记录在 [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md) 中，与留下的代码放在一起。
 
-Ritual 也用它自己的教训来检验。WEB-1 在 Ritual 自己的日志中发现了同样的 bug，并且通过一个先被看到失败的测试修复了它。
+Ritual 也用它自己的教训来检验。WEB-1 在 Ritual 自己的日志中发现了同样的 bug，并通过一个先被看到失败的测试修复了它。
 
 ## 参与贡献
 
 最简单的方式：**确认一条教训**。如果某条教训也确实在你身上发生过，请[提交一份确认](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml)，附上你匿名的例子和你当时使用的模型。每次确认都会把该模型加入这条教训的 `seen:` 列表，让教训库知道某个错误适用于哪些模型，以及哪些较新的模型已经不再犯它。`lab` 或 `proposal` 教训若有真实的例子，就会变成 `field`；如果你愿意，也可以署上你的名字。
 
-Ritual 运行在 Claude 上，因此只在另一个模型下发生过的教训，会先由 Claude 检查，然后才会有人收到它的问题（[方法](simulations/README.zh-CN.md#检查贡献的教训)）。
-
 你还可以：
 
-- **[分享一条你的教训](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)**：五个部分、一个匿名例子、它所属的组，以及它发生时所用的模型。`/ritual` 会替你写出文本。
+- **[分享一条你的教训](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)**：五个部分、一个匿名例子、它所属的组，以及它发生时所用的模型。`/ritual` 会替你写出文本。只在另一个模型下发生过的教训，会先[由 Claude 检查](simulations/README.zh-CN.md#检查贡献的教训)。
 - **提议一个模拟任务**，针对缺少的某类项目。
 - **审校译文**：教训由模型翻译，每条都会注明（`by: ai`）。如果你是母语者，请修正它，并用你的 GitHub 用户名署名。流程见 [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md)。
 - **添加一条守卫规则**，或一个它本应放行的案例。
 
-在提交 pull request 之前，运行 `npm test`。它会校准每个检查器和钩子，并检查每条教训是否具备五个部分，以及索引是否是最新的（`node scripts/lessons.mjs --index` 可以重新生成它们）。
+提交 pull request 之前，运行 `npm test`。它会校准每个检查器和钩子，并检查每条教训是否都有五个部分、索引是否为最新（`node scripts/lessons.mjs --index` 可以重新生成索引）。
 
 ## 语言
 

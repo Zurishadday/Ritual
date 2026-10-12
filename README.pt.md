@@ -1,12 +1,26 @@
-# Ritual
+<div align="center">
 
-[English](README.md) · [Español](README.es.md) · **Português** · [Français](README.fr.md) · [中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+<img src="assets/logo.svg" width="96" height="96" alt="">
+
+# Ritual
 
 **O Claude erra uma vez. O Ritual garante que seja a última.**
 
-Ritual é um plugin do Claude Code para qualquer projeto. Tem uma ideia só: **cada erro vira lição, cada lição vira regra, e cada regra, quando possível, vira um teste ou uma guarda.** Outras ferramentas anotam o que foi aprendido; esta vai até o fim e confere, porque uma regra que existe só em texto é esquecida numa sessão longa, e uma que se confere sozinha não.
+Um plugin do Claude Code que transforma cada erro em lição, cada lição em regra e cada regra, quando possível, em um teste ou uma guarda.
 
-Ele traz 49 lições de campo, cada uma nascida de um erro real; pacotes por tipo de projeto, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e um comando, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
+[![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
+
+[English](README.md) · [Español](README.es.md) · **Português** · [Français](README.fr.md) · [中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+
+</div>
+
+Outras ferramentas anotam o que foi aprendido; esta vai até o fim e confere, porque uma regra que existe só em texto é esquecida numa sessão longa, e uma que se confere sozinha não.
+
+Ele traz **49 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
+
+<a name="install"></a>
 
 ## Instalação
 
@@ -15,19 +29,61 @@ claude plugin marketplace add Zurishadday/Ritual
 claude plugin install ritual@ritual
 ```
 
-Depois, no seu projeto, digite `/ritual`. Na primeira vez, ele detecta o que você está construindo pelas suas dependências, faz uma única pergunta (quais pacotes de lições ativar e em qual idioma) e cria a pasta `.ritual/`. A partir daí, três hooks funcionam sem que você precise fazer nada:
+Depois, no seu projeto, digite `/ritual`. Na primeira vez, ele detecta o que você está construindo pelas suas dependências, faz uma única pergunta (quais pacotes de lições ativar e em qual idioma) e cria a pasta `.ritual/`. Só isso de configuração.
+
+## Veja em ação
+
+Saída real dos testes do próprio Ritual, em um projeto web.
+
+**A Guarda bloqueia um comando que o seu projeto já viu falhar,** e diz o que fazer no lugar:
+
+```console
+$ git push --force origin main
+Ritual guard (force-push-to-main): A forced push to main rewrites shared history. Push to a branch and open a pull request.
+```
+
+**Na primeira vez em que o Claude edita um componente,** ele recebe as perguntas detectoras desse grupo, uma vez por sessão (resumidas):
+
+```text
+Ritual · Interface and design. Before you continue, run through these detector questions for what you
+are about to do. If one applies, act on it and say so in one line; if none applies, just continue.
+- 32 · Right after using the control, without moving from where it is, does the user see what changed?
+- 45 · If the user does the most likely wrong thing (a typo, an empty answer, two clicks), what do they
+       see, and can they keep going?
+- WEB-2 · If a thousand fake messages arrive tomorrow, how does the owner find the one real one, and how
+          do they delete the rest?
+- WEB-4 · After submitting, whether it succeeded or failed, where does focus end up and where does the
+          next Tab go?
+```
+
+**`/ritual` parte do que de fato aconteceu,** e não da memória (trecho):
+
+```text
+Log: 1 failed command(s), 1 correction(s)
+  10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
+  10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
+
+Guard: 2 block(s) · force-push-to-main ×1, python-c ×1 (details: hooks/guard.mjs --log)
+
+Groups touched in 1 session(s): interface-and-design (1)
+```
+
+## Como funciona
+
+Três hooks funcionam sem que você faça nada:
 
 | Hook | O que faz | O que custa |
 |---|---|---|
-| **Guarda** | Bloqueia os comandos que o seu projeto já viu falhar e diz o que usar no lugar. Suas regras ficam em `.ritual/guard.json`, cada uma com um caso que ela bloqueia e outro que deixa passar. | Nada, até bloquear. |
-| **Registro** | Grava, enquanto acontece, cada comando que falha e cada correção sua (“isso está errado”, “faça de novo”), com aquilo que o Claude estava mexendo. | Nada. |
-| **Perguntas** | Na primeira vez em uma sessão em que o Claude está prestes a editar um teste, um componente, um script, um documento ou uma consulta, ou a rodar um comando ou fazer um commit, mostra ao Claude as perguntas detectoras daquele grupo. Uma vez por grupo e por sessão. | Uma linha por lição do grupo, de três a treze, conforme o grupo e os pacotes. |
+| 🛡️ **Guarda** | Bloqueia os comandos que o seu projeto já viu falhar e diz o que usar no lugar. Suas regras ficam em `.ritual/guard.json`, cada uma com um caso que ela bloqueia e outro que deixa passar. | Nada, até bloquear. |
+| 📝 **Registro** | Grava, enquanto acontece, cada comando que falha e cada correção sua (“isso está errado”, “faça de novo”), com aquilo que o Claude estava mexendo. | Nada. |
+| ❓ **Perguntas** | Na primeira vez em uma sessão em que o Claude está prestes a editar um teste, um componente, um script, um documento ou uma consulta, ou a rodar um comando ou fazer um commit, mostra ao Claude as perguntas detectoras daquele grupo. Uma vez por grupo e por sessão. | Uma linha por lição do grupo, de três a treze, conforme o grupo e os pacotes. |
 
 Nada disso muda o que o Claude faz: apenas coloca diante dele, no momento certo, o que o seu projeto já aprendeu.
 
-## O ritual
+Ao fechar uma sessão, ou depois de um erro que doeu, digite `/ritual`. Ele lê o registro, encontra qual lição deveria ter pegado cada erro e por que não pegou, e sobe a escada: uma lição vira regra da Guarda ou teste sempre que puder.
 
-Ao fechar uma sessão, ou depois de um erro que doeu, digite `/ritual`. Ele lê o registro e faz, nesta ordem:
+<details>
+<summary><b>Os oito passos do <code>/ritual</code></b></summary>
 
 0. Revisa os **candidatos** que o ritual anterior deixou em aberto: o que poderia ter virado teste e não virou.
 1. **Lista os erros**, começando pelo registro, e confirma a causa de cada um.
@@ -37,6 +93,8 @@ Ao fechar uma sessão, ou depois de um erro que doeu, digite `/ritual`. Ele lê 
 5. **Sobe a escada** sempre que possível: um padrão de comando vira uma regra da Guarda; uma propriedade do código, ou um teste com o nome da lição, visto falhando contra o erro real antes de ser confiado; o que não pode ser automatizado e já quebrou duas vezes, uma linha no `CLAUDE.md`. O resto fica como candidato datado.
 6. Salva tudo junto, no mesmo commit, e roda o verificador.
 7. Mantém os exemplos anônimos e, se uma lição vale para qualquer projeto, oferece o texto para você compartilhar aqui. Nunca publica nada por conta própria.
+
+</details>
 
 E `/ritual close`, antes de dar algo por terminado, percorre as perguntas dos grupos que você tocou contra a mudança e diz o que falta.
 
@@ -63,17 +121,20 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 
 Toda lição tem cinco partes, sempre as cinco: **a ideia**, um **exemplo** real e anônimo, a **pergunta detectora** que separa o caso que se aplica do que não se aplica, o **sinal de alerta** (a frase que você diz a si mesmo logo antes de cometer o erro de novo) e **o que fazer**. E um número que nunca muda: uma lição redundante é marcada como fundida em outra, nunca apagada. O formato completo está em [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
+> **Um verificador que nunca viu o erro não verifica nada.** Um teste que sempre passa pode estar quebrado. A única forma de saber é vê-lo falhar contra o erro real. *Pergunta detectora:* testei meu verificador contra o erro nas formas em que ele realmente apareceria? E contra o caso correto? *Sinal de alerta:* “Já passa, então está bem configurado.”
+>
+> — lição 13
+
+O Ritual aplica essa lição a si mesmo: toda regra da Guarda, todo verificador e todo hook deste repositório traz seus casos, e foi visto falhando antes de entrar.
+
 Cada uma indica de onde veio, com qual modelo e em que mês aconteceu (`field · ~opus · 2026-08`; o `~` quer dizer que vem da memória, não de um registro):
 
 - `field`: um erro real em um projeto, com esse exemplo.
 - `lab`: quebrou numa [simulação](simulations/README.pt.md), e indica qual modelo e quando. Vira `field` quando alguém confirma no próprio projeto.
 - `proposal`: só para o que não quebra à vista (segurança), com uma fonte pública.
 
-Um exemplo, a lição 13:
-
-> **Um verificador que nunca viu o erro não verifica nada.** Um teste que sempre passa pode estar quebrado. A única forma de saber é vê-lo falhar contra o erro real. *Pergunta detectora:* testei meu verificador contra o erro nas formas em que ele realmente apareceria? E contra o caso correto? *Sinal de alerta:* “Já passa, então está bem configurado.”
-
-O Ritual aplica essa lição a si mesmo: toda regra da Guarda, todo verificador e todo hook deste repositório traz seus casos, e foi visto falhando antes de entrar.
+> [!NOTE]
+> O Ritual roda com Claude, e um erro que um modelo comete pode não ser cometido por outro. Por isso cada lição registra o seu modelo: uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta, e quando um Claude mais novo deixa de cometer o erro, os dados mostram isso.
 
 ## As lições de pacote vêm de simulações
 
@@ -87,16 +148,14 @@ O Ritual também é verificado com as próprias lições. A WEB-1 encontrou o me
 
 O jeito mais fácil: **confirme uma lição**. Se uma lição também aconteceu de verdade com você, [abra uma confirmação](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml) com o seu exemplo anônimo e o modelo que você estava usando. Cada confirmação acrescenta esse modelo à lista `seen:` da lição, assim a biblioteca passa a saber a quais modelos um erro se aplica e quais modelos novos já não o cometem. Uma lição `lab` ou `proposal` com um exemplo real vira `field`, com o seu nome, se você quiser.
 
-O Ritual roda com Claude, então uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta ([como](simulations/README.pt.md#como-verificar-uma-lição-contribuída)).
-
 Você também pode:
 
-- **[Compartilhe uma lição](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** sua: cinco partes, um exemplo anônimo, o grupo a que pertence e o modelo com que aconteceu. O `/ritual` escreve o texto para você.
+- **[Compartilhe uma lição](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** sua: cinco partes, um exemplo anônimo, o grupo a que pertence e o modelo com que aconteceu. O `/ritual` escreve o texto para você. Uma lição que só aconteceu com outro modelo é [verificada com Claude antes](simulations/README.pt.md#como-verificar-uma-lição-contribuída).
 - **Proponha uma tarefa de simulação** para um tipo de projeto que ainda não tem.
 - **Revise uma tradução**: as lições são traduzidas por um modelo, e cada uma indica isso (`by: ai`). Se você é falante nativo, corrija e assine com o seu usuário do GitHub. O fluxo está em [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Adicione uma regra à Guarda**, ou um caso que ela deveria ter deixado passar.
 
-Antes de abrir um pull request: `npm test`. Ele roda a calibração de cada verificador e hook, e confere se cada lição tem suas cinco partes e se os índices estão atualizados (`node scripts/lessons.mjs --index` os regenera).
+Antes de abrir um pull request, rode `npm test`. Ele roda a calibração de cada verificador e hook, e confere se cada lição tem suas cinco partes e se os índices estão atualizados (`node scripts/lessons.mjs --index` os regenera).
 
 ## Idiomas
 
