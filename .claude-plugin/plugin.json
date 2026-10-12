@@ -1,0 +1,10 @@
+{
+  "name": "ritual",
+  "version": "0.1.0",
+  "description": "Every mistake becomes a lesson, every lesson a rule, and every rule, when it can, a check. A library of field lessons plus /ritual, which turns the errors of a session into rules, hooks and tests.",
+  "author": { "name": "Zurishadday" },
+  "homepage": "https://github.com/Zurishadday/Ritual",
+  "repository": "https://github.com/Zurishadday/Ritual",
+  "license": "MIT",
+  "keywords": ["lessons", "retrospective", "hooks", "quality", "self-improving"]
+}

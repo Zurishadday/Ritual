@@ -1,0 +1,9 @@
+{
+  "name": "ritual",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/revisar-publicacion.mjs --probar",
+    "revisar": "node scripts/revisar-publicacion.mjs"
+  }
+}

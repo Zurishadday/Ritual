@@ -1,0 +1,11 @@
+{
+  "name": "ritual",
+  "owner": { "name": "Zurishadday" },
+  "plugins": [
+    {
+      "name": "ritual",
+      "source": "./",
+      "description": "Every mistake becomes a lesson, every lesson a rule, and every rule, when it can, a check."
+    }
+  ]
+}

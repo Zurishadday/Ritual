@@ -1,0 +1,5 @@
+# Material de referencia y lista de palabras que nunca se publican: solo local.
+fuentes/
+
+node_modules/
+*.log
