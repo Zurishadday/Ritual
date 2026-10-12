@@ -1,0 +1,12 @@
+{
+  "integradas": ["python-c", "python-sin-archivo", "node-e-diagonales", "heredoc-diagonales", "sed-i-codigo"],
+  "reglas": [
+    {
+      "nombre": "push-forzado-a-main",
+      "patron": "git\\s+push\\b[^\\n]*(--force|-f\\b)[^\\n]*\\b(main|master)\\b",
+      "mensaje": "A forced push to main rewrites shared history. Push to a branch and open a pull request.",
+      "bloquea": ["git push --force origin main", "git push -f origin master"],
+      "deja": ["git push origin main", "git push --force-with-lease origin mi-rama", "git push -f origin mi-rama"]
+    }
+  ]
+}
