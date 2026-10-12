@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/revisar-publicacion.mjs --probar && node scripts/lecciones.mjs --probar && node scripts/lecciones.mjs --verificar && node hooks/guardia.mjs --probar && node hooks/bitacora.mjs --probar && node hooks/preguntas.mjs --probar",
+    "test": "node scripts/revisar-publicacion.mjs --probar && node scripts/lecciones.mjs --probar && node scripts/lecciones.mjs --verificar && node hooks/guardia.mjs --probar && node hooks/bitacora.mjs --probar && node hooks/preguntas.mjs --probar && node scripts/iniciar.mjs --probar && node scripts/resumen.mjs --probar",
     "probar:vivo": "node scripts/probar-hooks-en-vivo.mjs",
     "revisar": "node scripts/revisar-publicacion.mjs"
   }

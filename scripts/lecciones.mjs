@@ -67,6 +67,10 @@ export function leer(idioma = ORIGINAL, raiz = RAIZ) {
   return { grupos, lecciones };
 }
 
+function leerConfigIdioma(proyecto) {
+  try { return JSON.parse(readFileSync(path.join(proyecto, ".ritual", "config.json"), "utf8")).idioma ?? ORIGINAL; } catch { return ORIGINAL; }
+}
+
 const idiomasDe = (dir) => (existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : []);
 
 const ordenGrupo = (g) => (GRUPOS.includes(g) ? String(GRUPOS.indexOf(g)).padStart(2, "0") : "9" + g);
@@ -135,6 +139,32 @@ export function verificar(raiz = RAIZ) {
   return hallazgos;
 }
 
+/** Las lecciones propias de un proyecto (.ritual/lecciones/<grupo>.md): mismo formato, ids con prefijo, sin índice. */
+export function verificarProyecto(proyecto, idioma = ORIGINAL) {
+  const hallazgos = [];
+  const dir = path.join(proyecto, ".ritual", "lecciones");
+  if (!existsSync(dir)) return [{ archivo: ".ritual/lecciones", linea: 0, mensaje: "no existe: corre /ritual para arrancar" }];
+  const partes = PARTES[idioma] ?? PARTES[ORIGINAL];
+  const vistos = new Set();
+  for (const archivo of readdirSync(dir).filter((a) => a.endsWith(".md")).sort()) {
+    const grupo = archivo.slice(0, -3);
+    const rel = `.ritual/lecciones/${archivo}`;
+    if (!GRUPOS.includes(grupo)) { hallazgos.push({ archivo: rel, linea: 1, mensaje: `el archivo debe llamarse como un grupo: ${GRUPOS.join(", ")}` }); continue; }
+    for (const l of leerArchivo(path.join(dir, archivo), grupo).lecciones) {
+      const mal = (m) => hallazgos.push({ archivo: rel, linea: l.linea, mensaje: `${l.id}: ${m}` });
+      if (!/^[A-Z]+-\d+$/.test(l.id)) mal("una lección propia lleva prefijo y número (P-1)");
+      if (vistos.has(l.id)) mal("id repetido");
+      vistos.add(l.id);
+      if (l.fusionada) continue;
+      for (const p of partes) if (!l.partes[p]) mal(`falta la parte «${p}»`);
+      const origen = (l.datos.origen ?? "").split("·")[0].trim();
+      if (!ORIGENES.includes(origen)) mal(`origen «${l.datos.origen ?? ""}» no es uno de: ${ORIGENES.join(", ")}`);
+      for (const g of (l.datos.grupos ?? "").split(",").map((s) => s.trim()).filter(Boolean)) if (!GRUPOS.includes(g)) mal(`grupo «${g}» no existe`);
+    }
+  }
+  return hallazgos;
+}
+
 // Calibración: un caso que debe pasar y, a partir de él, casos que deben fallar con un mensaje concreto.
 const LECCION = (id, titulo, extra = "`origen: campo`") => `### ${id}. ${titulo}\n\n${extra}\n\n**La idea.** Algo.\n\n**Ejemplo.** Pasó esto.\n\n**Pregunta detectora.** ¿Y si no?\n\n**Señal de alarma.** «Seguro».\n\n**Qué hacer.** Medir.\n`;
 const BASE = {
@@ -178,6 +208,19 @@ export function probar() {
     const h = correr(romper(BASE));
     if (!h.some((x) => x.mensaje.includes(esperado))) malos.push(`«${nombre}» debía fallar con «${esperado}» y dio: ${h.map((x) => x.mensaje).join(" | ") || "nada"}`);
   }
+  // Lecciones propias de un proyecto: el caso bueno pasa; un archivo con nombre de grupo inventado y un id sin prefijo fallan.
+  const proyecto = mkdtempSync(path.join(os.tmpdir(), "lecciones-proyecto-"));
+  try {
+    mkdirSync(path.join(proyecto, ".ritual", "lecciones"), { recursive: true });
+    writeFileSync(path.join(proyecto, ".ritual", "lecciones", "consola-y-herramientas.md"), `# Consola\n\n${LECCION("P-1", "Propia", "`origen: campo` · `afina: 27`")}`);
+    const bien = verificarProyecto(proyecto);
+    if (bien.length) malos.push(`las lecciones propias buenas dieron: ${bien.map((x) => x.mensaje).join(" | ")}`);
+    writeFileSync(path.join(proyecto, ".ritual", "lecciones", "cocina.md"), `# Cocina\n\n${LECCION("2", "Sin prefijo")}`);
+    const mal = verificarProyecto(proyecto).map((x) => x.mensaje).join(" | ");
+    if (!mal.includes("debe llamarse como un grupo")) malos.push(`un archivo con grupo inventado debía fallar y dio: ${mal || "nada"}`);
+    writeFileSync(path.join(proyecto, ".ritual", "lecciones", "git-y-proceso.md"), `# Git\n\n${LECCION("2", "Sin prefijo")}`);
+    if (!verificarProyecto(proyecto).some((x) => x.mensaje.includes("prefijo"))) malos.push("un id sin prefijo en una lección propia debía fallar");
+  } finally { rmSync(proyecto, { recursive: true, force: true }); }
   for (const m of malos) console.error(`✕ ${m}`);
   return malos.length;
 }
@@ -194,6 +237,15 @@ if (import.meta.main) {
       console.log(`✓ lecciones/${idioma}/README.md`);
     }
     process.exit(0);
+  }
+  const i = process.argv.indexOf("--proyecto");
+  if (i >= 0) {
+    const proyecto = path.resolve(process.argv[i + 1] && !process.argv[i + 1].startsWith("--") ? process.argv[i + 1] : process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
+    const idioma = leerConfigIdioma(proyecto);
+    const h = verificarProyecto(proyecto, idioma);
+    for (const x of h) console.log(`${x.archivo}:${x.linea}  ${x.mensaje}`);
+    console.log(h.length ? `✕ ${h.length} problema(s) en las lecciones del proyecto` : "✓ lecciones del proyecto bien formadas");
+    process.exit(h.length ? 1 : 0);
   }
   const h = verificar();
   for (const x of h) console.log(`${x.archivo}:${x.linea}  ${x.mensaje}`);
