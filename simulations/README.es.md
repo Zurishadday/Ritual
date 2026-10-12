@@ -18,3 +18,13 @@ Cada corrida se guarda en `<tarea>/runs/<año-mes>-<modelo>-<n>/` (`2026-10-sonn
 Cuando sale un modelo nuevo, se vuelve a correr la tarea. Una lección que ya no se rompe no se borra: se baja (`demoted` en la configuración del proyecto que la use) y la corrida lo deja escrito. Así la biblioteca se achica sola cuando los modelos mejoran, con datos.
 
 Para proponer una tarea nueva, abre un issue con el texto de la tarea y qué tipo de proyecto representa.
+
+## Cómo se revisa una lección que alguien aporta
+
+Ritual corre dentro de Claude Code, así que una lección solo se gana una pregunta en la sesión de alguien si el error pasa con Claude. Cada lección aportada y cada confirmación dicen con qué modelo y en qué mes pasó.
+
+1. **Pasó con Claude, en un proyecto real, con su ejemplo:** entra como `field` con ese modelo, después de la revisión de siempre (cinco partes, anónima, que no la cubra otra).
+2. **Pasó con otro modelo, o el ejemplo deja dudas:** quien mantiene el repositorio convierte la situación en una tarea chica, escrita como la pediría un cliente, y la corre con los modelos actuales de Claude, con el método de arriba.
+   - Se rompe con Claude: entra como `lab` con ese modelo de Claude, y el modelo de quien la aportó va a `seen:`.
+   - Solo se rompió con el otro modelo: queda como candidata en el issue, con su modelo anotado. Nadie recibe su pregunta hasta que alguien la vea pasar con Claude.
+3. **Una confirmación** de una lección que ya existe agrega `<modelo> <AAAA-MM>` a su `seen:`. Una lección vista con varios modelos es un error general; una que solo se vio con un modelo viejo es la primera que una corrida nueva revisa antes de bajarla.

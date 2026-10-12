@@ -4,7 +4,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 13. A checker that never saw the error verifies nothing
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A test that always passes may be broken. The only way to know is to watch it fail against the real error.
 
@@ -22,7 +22,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 14. The probe doesn't travel the channel it investigates
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If your check goes through the same pipeline that could have caused the damage, the damage affects the check too, and it answers the same whether things are right or wrong.
 
@@ -36,7 +36,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 15. A test that switches itself off doesn't report that it switched off
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** The branches that say "if I can't find the data, I skip the test" activate exactly when the world changes, and they stop watching without anyone noticing.
 
@@ -52,7 +52,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 16. Your checker's filter usually excludes exactly what matters
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Every automatic review filters for what's "relevant", and that filter can leave it blind exactly where the problem is.
 
@@ -70,7 +70,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 17. Code that compiles is not code that runs
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A syntax checker approves code that crashes when it runs. A blank screen with everything "green" is the worst possible failure.
 
@@ -84,7 +84,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 18. Checking the source is not checking what gets delivered
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If you check X and the user gets Y, derived from X, there's code between the two that nobody is looking at.
 
@@ -100,7 +100,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 26. What's in production can go bad too
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Quality filters usually review what's new. What's already in is left alone, and its assumptions age without anyone asking again.
 
@@ -114,7 +114,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 28. Whoever runs it and whoever verifies it are different people
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If the same person runs it and confirms it, an execution error confirms itself.
 
@@ -128,7 +128,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 34. Trust the symptom in a QA finding and measure the cause
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A QA report is usually right about the symptom and proposes a cause that is only a hypothesis.
 

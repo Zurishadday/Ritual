@@ -1,0 +1,42 @@
+name: Confirm a lesson
+description: A lesson in the library happened to you too. Each confirmation records the model, so the library learns which models a mistake applies to.
+title: "Confirm lesson "
+labels: ["confirmation"]
+body:
+  - type: input
+    id: lesson
+    attributes:
+      label: Lesson number
+      placeholder: "13, WEB-2"
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The exact model it happened with (Claude Code shows it in `/model`). Write `~model` if you only remember it.
+      placeholder: claude-sonnet-5-5
+    validations:
+      required: true
+  - type: input
+    id: month
+    attributes:
+      label: Month it happened
+      placeholder: 2026-10
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Your example
+      description: What happened and how you noticed. Anonymous. If it's a `lab` or `proposal` lesson, a real example turns it into `field`.
+    validations:
+      required: true
+  - type: dropdown
+    id: fired
+    attributes:
+      label: Did Ritual's question show up before the mistake?
+      options:
+        - I wasn't using Ritual
+        - "Yes, and the mistake happened anyway"
+        - "No, the question didn't show up"

@@ -4,7 +4,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 10. Twin modules change together
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If your product has two versions of the same screen, for two kinds of user, two regions, or two products, an improvement to one is a pending improvement to the other.
 
@@ -18,7 +18,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 19. A review of one dimension is not a review
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** "They're already the same" requires having compared every property you can see, not just one.
 
@@ -34,7 +34,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 31. Nothing technical on screen unless it changes a decision
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Every element of a business screen should help decide something. What helps audit goes in the code; what helps decide goes on the screen, in business language.
 
@@ -48,7 +48,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 32. Something that works but can't be seen gets reported as broken
 
-`origin: field` · `packages: web, apps`
+`origin: field · ~opus · 2026-08` · `packages: web, apps`
 
 **The idea.** If a button changes something outside the view, for the user, working and not working look the same.
 
@@ -64,7 +64,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 33. The glyph is not the text
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** In small print, "÷" and "+", "l" and "1", "O" and "0" get confused. If two people read the same thing wrong, they're not distracted: it's the size of the type.
 
@@ -80,7 +80,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 41. Check in the format the reader actually sees
 
-`origin: field` · `groups: tests-and-checks` · `packages: web`
+`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks` · `packages: web`
 
 **The idea.** Finding a word in the text doesn't prove it shows up. The text can be somewhere else in the document while the format that was supposed to display it comes out empty.
 
@@ -98,7 +98,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 45. Someone walks the error path too
 
-`origin: field` · `packages: web, apps`
+`origin: field · ~sonnet · 2026-09` · `packages: web, apps`
 
 **The idea.** If you only test what happens when everything goes right, whoever makes a mistake finds the gap. And when learning, making mistakes is the most common thing.
 
@@ -112,7 +112,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 46. What runs on every request can't grow with the content
 
-`origin: field` · `packages: web`
+`origin: field · ~sonnet · 2026-09` · `packages: web`
 
 **The idea.** Something done on every page, like reading all the content or recalculating an index, costs little with ten pages and a lot with a hundred. It grows gradually and nobody notices, until something starts failing "every now and then."
 
@@ -126,7 +126,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 49. A general rule must not silently beat the specific ones
 
-`origin: field` · `packages: web`
+`origin: field · ~sonnet · 2026-09` · `packages: web`
 
 **The idea.** A rule that applies to everything (a global style, a default value) can override what each piece decided for itself, without anything warning you.
 
@@ -140,7 +140,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### WEB-2. A public form gets bots from day one
 
-`origin: lab · sonnet · 2026-10` · `groups: scripts-and-files` · `packages: web`
+`origin: lab · claude-sonnet-5-5 · 2026-10` · `groups: scripts-and-files` · `packages: web`
 
 **The idea.** A form open to the internet isn't filled out only by people. If nothing stops automated submissions and whoever reads the messages can't clean them up, the first wave of junk buries the real customers.
 
@@ -154,7 +154,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### WEB-3. A fallback nobody tested is not a fallback
 
-`origin: lab · sonnet · 2026-10` · `packages: web`
+`origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`
 
 **The idea.** A form with `method` and `action` promises a fallback that works even if JavaScript fails. If the server only answers what the JavaScript expects, the promise is false and the person ends up staring at code.
 
@@ -168,7 +168,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### WEB-4. If you disable the button, focus goes with it
 
-`origin: lab · sonnet · 2026-10` · `packages: web`
+`origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`
 
 **The idea.** Disabling the button while submitting prevents a double submission, but the button loses focus and the browser moves focus to the document. Someone using the keyboard, after the notice, starts over from the top.
 

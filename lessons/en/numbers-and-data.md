@@ -4,7 +4,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 1. "I couldn't read it" is not "there's nothing"
 
-`origin: field` · `groups: tests-and-checks`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks`
 
 **The idea.** Every data point has three states: I have it, there really was nothing, and I don't know. The last two get drawn the same way on a chart, as a zero, and they mean the opposite.
 
@@ -18,7 +18,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 2. Two things with the same name are not the same thing
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** "Active customer," "date," "the boss," "the threshold": the same word often hides two definitions. When two reports don't match, it's almost always this.
 
@@ -34,7 +34,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 3. The current period is always incomplete
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A month that hasn't finished always looks worse than a closed one. It's not a trend: it's the calendar.
 
@@ -48,7 +48,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 4. A field the source overwrites is not history
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Many systems store only today's value. If you build a "historical" variable on top of that field, you're measuring the present and dressing it up as the past.
 
@@ -62,7 +62,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 5. A perfect result is a warning, not a win
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If a single variable separates the people who left from the people who stayed with almost no errors, it most likely has the outcome itself hidden inside it.
 
@@ -76,7 +76,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 12. Running the query doesn't prove the number is right
 
-`origin: field` · `groups: tests-and-checks`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks`
 
 **The idea.** "It didn't error" is not "it's correct." Compare against something independent of your own calculation.
 
@@ -94,7 +94,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 36. Measure before you write
 
-`origin: field` · `groups: writing-and-docs`
+`origin: field · ~opus · 2026-08` · `groups: writing-and-docs`
 
 **The idea.** Every figure in a document comes from a measurement with a date and a source, not from memory or from an earlier version of the document.
 

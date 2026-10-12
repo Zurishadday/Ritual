@@ -4,7 +4,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 6. The business definition lives in one place
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If the rule for "what counts as active" is repeated in every query, the copies will drift apart. It's not a question of if, but when.
 
@@ -20,7 +20,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 7. Read what was published, not the intent
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A process declares what it plans to do, but publishes what it actually did, and the two don't always match. Whoever consumes the output should read the result.
 
@@ -34,7 +34,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 20. Idempotent is not the same as updatable
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** "Insert if it doesn't exist" prevents duplicates, but it freezes things: what's already there is never written again.
 
@@ -48,7 +48,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 21. Your marker must be your own
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If you locate your change by searching for text the user reads, like a title or a label, another improvement will stick something on top of it, and your change will stop finding it.
 
@@ -66,7 +66,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 22. The second run is the one that finds the bug
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A change that repeats without breaking anything has to be checked by running it twice, not once.
 
@@ -80,7 +80,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 23. Position-based addresses expire
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If you insert something before "cell 9," cell 9 is now a different cell.
 
@@ -94,7 +94,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 24. Write with a safety net
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Opening a file for writing empties it instantly. If something fails midway through writing, you're left with an empty file.
 
@@ -108,7 +108,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 25. A setting is not a status, and an alert is not a guarantee
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** "The scheduled task is enabled" doesn't mean "it ran this month." And waiting for something to alert you when it fails means trusting that the alert never fails.
 
@@ -122,7 +122,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 48. If a file comes from a generator, the fix goes in the generator
 
-`origin: field`
+`origin: field · ~sonnet · 2026-09`
 
 **The idea.** When a file is assembled by a script or from other pieces, the file is an output, not the original. Anything fixed directly in it gets lost the next time it's generated, with no warning.
 
@@ -136,7 +136,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### WEB-1. In a file that only grows, a broken line takes the next one with it
 
-`origin: lab · sonnet · 2026-10` · `packages: web`
+`origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`
 
 **The idea.** Saving each record as a line at the end of a file is simple and copes well with lots of records. But if a write gets cut off, the line is left without its line break, and the next record gets glued onto it. Skipping "damaged lines" when reading drops both, silently. It is the other side of lesson 24: there the file gets emptied; here, whatever comes after is lost.
 

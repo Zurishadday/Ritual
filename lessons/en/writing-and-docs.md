@@ -4,7 +4,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 11. Removing a chart doesn't remove the claim it made
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If you remove something because the data wasn't reliable, that same claim probably still lives in other texts, written in other words.
 
@@ -20,7 +20,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 37. Document what's there, not what you wish were there
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A documentation review improves the document; it doesn't redesign the system. If the system has a limit, the document states it. It doesn't hide it or promise to fix it.
 
@@ -34,7 +34,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 38. What you don't know gets marked, not invented
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** An official document states everything with the same authority. An invented detail, like an owner, a schedule, or a response time, reads the same as a real one.
 
@@ -50,7 +50,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 39. Version it in plain sight
 
-`origin: field` · `groups: git-and-process`
+`origin: field · ~opus · 2026-08` · `groups: git-and-process`
 
 **The idea.** Every change carries a new version number on the cover and a line in the history, with the date, what changed, and who changed it. When two copies are circulating, the version is the only thing that says which one is the good one.
 
@@ -64,7 +64,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 42. Work on the current version
 
-`origin: field` · `groups: git-and-process`
+`origin: field · ~sonnet · 2026-09` · `groups: git-and-process`
 
 **The idea.** A review done on an old copy brings back errors that had already been fixed.
 
@@ -78,7 +78,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 43. Reread from start to finish after many corrections
 
-`origin: field`
+`origin: field · ~sonnet · 2026-09`
 
 **The idea.** After several rounds of spot fixes, a document can contradict itself. Each correction was true in its own section, but nobody reread the others.
 

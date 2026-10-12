@@ -63,7 +63,7 @@ On top of the groups sit the **packages** per kind of project: lessons that only
 
 Every lesson has five parts, always all five: **the idea**, a real and anonymous **example**, the **detector question** that separates the case that applies from the one that doesn't, the **warning sign** (the phrase you say to yourself right before making the mistake again) and **what to do**. And a number that never changes: a redundant lesson is marked as merged into another, never deleted. The full format is in [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
-Each one says where it came from:
+Each one says where it came from, and with which model and in which month it happened (`field · ~opus · 2026-08`; the `~` means from memory, not from a record):
 
 - `field`: a real mistake in a project, with that example.
 - `lab`: it broke in a [simulation](simulations/README.md), and it says which model and when. It becomes `field` when someone confirms it in their own project.
@@ -85,11 +85,13 @@ Ritual is checked with its own lessons too. WEB-1 found the same bug in Ritual's
 
 ## Contributing
 
-The easiest way: **confirm a lesson**. If a `lab` or `proposal` lesson really happened to you, open an issue with your anonymous example and it becomes `field`, with your name if you want.
+The easiest way: **confirm a lesson**. If a lesson happened to you too, [open a confirmation](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml) with your anonymous example and the model you were using. Each confirmation adds that model to the lesson's `seen:` list, so the library learns which models a mistake applies to, and which newer ones no longer make it. A `lab` or `proposal` lesson with a real example becomes `field`, with your name if you want.
+
+Ritual runs on Claude, so a lesson that only happened with another model is checked with Claude before anyone gets its question ([how](simulations/README.md#checking-a-contributed-lesson)).
 
 You can also:
 
-- **Share a lesson** of yours: five parts, an anonymous example, and the group it belongs to. `/ritual` writes the text for you.
+- **[Share a lesson](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** of yours: five parts, an anonymous example, the group it belongs to and the model it happened with. `/ritual` writes the text for you.
 - **Propose a simulation task** for a kind of project that's missing.
 - **Review a translation**: the lessons are translated by a model, and each one says so (`by: ai`). If you are a native speaker, fix it and sign it with your GitHub user. The workflow is in [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Add a guard rule**, or a case it should have let through.

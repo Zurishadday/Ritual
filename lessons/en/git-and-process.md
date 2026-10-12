@@ -4,7 +4,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 8. List the consumers, don't remember them
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** When you change a piece of data that others read by its name, the list of who reads it has to be written down. Memory always leaves one out.
 
@@ -22,7 +22,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 9. One state lives in several records: move them together
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Closing a pending item usually involves three places: the pending-items list, the test that watches it, and the document that describes it. If you move one, the others contradict it.
 
@@ -36,7 +36,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 30. Explain before acting, and wait for the yes
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Moving fast in the wrong direction is not progress.
 
@@ -50,7 +50,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 35. A to-do list written in passing goes stale
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** What you noted as "for later" while doing something else may no longer exist, or may have been a deliberate decision.
 
@@ -64,7 +64,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 40. The log says what was left and why, not a chronicle of missteps
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** A change history is for understanding the product, not for narrating the already-resolved mistakes of whoever made the change.
 
@@ -78,7 +78,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 47. What's worked on in parallel collides in what's shared
 
-`origin: field`
+`origin: field · ~sonnet · 2026-09`
 
 **The idea.** When several people work at once, each sees their own piece clearly. What they share (the tests, the data, the documents for the whole project) combines their changes: names that clash, copies that fall behind, tests that read someone else's half-finished work. Integrating is work, not a paste.
 

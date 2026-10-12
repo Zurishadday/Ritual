@@ -18,3 +18,13 @@ Each run is saved in `<task>/runs/<year-month>-<model>-<n>/` (`2026-10-sonnet-1`
 When a new model comes out, the task is run again. A lesson that no longer breaks is not deleted. It is demoted (`demoted` in the configuration of the project that uses it), and the run records it. This way the library shrinks on its own when the models improve, based on data.
 
 To propose a new task, open an issue with the text of the task and the kind of project it represents.
+
+## Checking a contributed lesson
+
+Ritual runs inside Claude Code, so a lesson only earns a question in someone's session if the mistake happens with Claude. Every contributed lesson and every confirmation says which model and month it happened with.
+
+1. **It happened with Claude, in a real project, with its example:** it goes in as `field` with that model, after the usual review (five parts, anonymous, not already covered).
+2. **It happened with another model, or the example is doubtful:** the maintainer turns the situation into a small task, written like a client request, and runs it with the current Claude models, as in the method above.
+   - It breaks with Claude: it goes in as `lab` with that Claude model, and the contributor's model goes into `seen:`.
+   - It only broke with the other model: it stays a candidate in the issue, with its model noted. Nobody gets its question until someone sees it happen with Claude.
+3. **A confirmation** of an existing lesson adds `<model> <YYYY-MM>` to its `seen:`. A lesson seen with several models is a general mistake; one only seen with an older model is the first one a new run checks before demoting it.

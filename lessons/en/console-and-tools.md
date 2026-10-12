@@ -4,7 +4,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 27. Doubt the instrument before you doubt the system
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** If a number didn't change when it should have, or changed just as you were looking at it, suspect these in order: the cache, another process writing to the same table, the tool you're looking through, and only at the very end the system itself.
 
@@ -22,7 +22,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 29. Check the command before handing it to someone else
 
-`origin: field`
+`origin: field · ~opus · 2026-08`
 
 **The idea.** Whoever runs someone else's command does it blind. Every broken command spends the trust they'd give the next one.
 
@@ -36,7 +36,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 44. What you cut from the output can be the verdict
 
-`origin: field` · `groups: tests-and-checks`
+`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks`
 
 **The idea.** Looking only at the last lines of a result, or piping it through another command, can throw away exactly the part that said "failed." A trimmed output from a failing test looks just like one from a test that passed.
 

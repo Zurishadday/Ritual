@@ -9,7 +9,7 @@ The checker (`node scripts/lessons.mjs --check`) checks all of this, and each la
 ```markdown
 ### 13. A checker that never saw the error verifies nothing
 
-`origin: field` · `groups: scripts-and-files` · `packages: web`
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: scripts-and-files` · `packages: web`
 
 **The idea.** The rule, in one or two sentences that make sense without the context.
 
@@ -30,9 +30,10 @@ Extra parts such as **Another example.**, **Variant.** or **Not to be confused w
 
 | Data | Values | Meaning |
 |---|---|---|
-| `origin: field` | | It came from a real mistake in a project, and the example is that mistake. |
-| `origin: lab · sonnet · 2026-10` | model and month | It broke in a Ritual simulation: that model built the task that month. When someone confirms it in their own project, it becomes `field`. |
-| `origin: proposal` + `source: <link>` | | Only for what does not visibly break (security, mostly), from a public source. |
+| `origin: field · claude-opus-5-5 · 2026-10` | model and month | It came from a real mistake in a project, and the example is that mistake. The model is the one Claude Code was running when it happened; `/ritual` writes it for you. If the entry comes from memory rather than a record, put `~` before the model (`~opus · 2026-08`); if nobody knows, `unknown`. Never make it up. |
+| `origin: lab · claude-sonnet-5-5 · 2026-10` | exact model and month | It broke in a Ritual simulation: that model built the task that month. The run recorded it, so it is always exact. When someone confirms it in their own project, it becomes `field`. |
+| `origin: proposal` + `source: <link>` | | Only for what does not visibly break (security, mostly), from a public source. No model: it did not come from one. |
+| `seen:` | `<model> <YYYY-MM>`, comma-separated | The models it was later confirmed with: `seen: claude-sonnet-5-5 2026-11, gpt-5 2026-12`. A lesson seen with several models is a general mistake; one only seen with an old model is the first to be demoted when a newer one no longer breaks. |
 | `groups:` | other groups, comma-separated | Secondary groups where it also applies. |
 | `packages:` | `web`, `apps`, `crm`, `ai`, `security` | Kinds of project it belongs to. Without it, it applies to all. |
 

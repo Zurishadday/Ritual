@@ -1,0 +1,68 @@
+name: Share a lesson
+description: A mistake an AI made in your project that a lesson could prevent next time.
+title: "Lesson: "
+labels: ["lesson"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! A lesson comes from a real mistake. `/ritual` can write this text for you. Keep the example anonymous: no clients, products or people.
+        Ritual runs on Claude, so the model matters: a mistake that only happens with another model gets checked with Claude before it goes in ([how](https://github.com/Zurishadday/Ritual/blob/main/simulations/README.md#checking-a-contributed-lesson)).
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The exact model the mistake happened with (Claude Code shows it in `/model`). Write `~model` if you only remember it.
+      placeholder: claude-opus-5-5
+    validations:
+      required: true
+  - type: input
+    id: month
+    attributes:
+      label: Month it happened
+      placeholder: 2026-10
+    validations:
+      required: true
+  - type: dropdown
+    id: group
+    attributes:
+      label: What were you doing when it happened?
+      options:
+        - Writing and docs
+        - Numbers and data
+        - Tests and checks
+        - Scripts and files
+        - Interface and design
+        - Console and tools
+        - Git and process
+    validations:
+      required: true
+  - type: input
+    id: package
+    attributes:
+      label: Kind of project, if it only applies to one
+      description: web, apps, crm, ai, security. Leave empty if it applies to any project.
+  - type: textarea
+    id: lesson
+    attributes:
+      label: The lesson
+      description: The five parts, in any language.
+      value: |
+        ### Title
+
+        **The idea.**
+
+        **Example.**
+
+        **Detector question.**
+
+        **Warning sign.**
+
+        **What to do.**
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce it
+      description: The task or prompt where it happened, short enough to run again in a clean session.

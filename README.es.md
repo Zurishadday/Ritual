@@ -63,7 +63,7 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 
 Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca como fusionada en otra, no se borra. El formato completo está en [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
-Cada una dice de dónde salió:
+Cada una dice de dónde salió, y con qué modelo y en qué mes pasó (`field · ~opus · 2026-08`; la `~` quiere decir que es de memoria, no de un registro):
 
 - `field`: de un error real en un proyecto, con ese ejemplo.
 - `lab`: se rompió en una [simulación](simulations/README.md), y dice qué modelo y cuándo. Pasa a `field` cuando alguien la confirma en un proyecto suyo.
@@ -85,11 +85,13 @@ Ritual también se revisa con sus lecciones. La WEB-1 encontró el mismo error e
 
 ## Contribuir
 
-La forma más fácil: **confirma una lección**. Si una de `lab` o `proposal` te pasó de verdad, abre un issue con tu ejemplo anónimo y pasa a `field`, con tu nombre si quieres.
+La forma más fácil: **confirma una lección**. Si una lección te pasó a ti también, [abre una confirmación](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml) con tu ejemplo anónimo y el modelo que usabas. Cada confirmación agrega ese modelo a la lista `seen:` de la lección: así la biblioteca aprende a qué modelos les pasa cada error, y cuáles más nuevos ya no lo cometen. Una de `lab` o `proposal` con un ejemplo real pasa a `field`, con tu nombre si quieres.
+
+Ritual corre con Claude, así que una lección que solo pasó con otro modelo se comprueba con Claude antes de que a nadie le salga su pregunta ([cómo](simulations/README.es.md#cómo-se-revisa-una-lección-que-alguien-aporta)).
 
 También puedes:
 
-- **Compartir una lección** tuya: cinco partes, ejemplo anónimo, y el grupo donde va. `/ritual` te genera el texto listo.
+- **[Compartir una lección](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** tuya: cinco partes, ejemplo anónimo, el grupo donde va y el modelo con que pasó. `/ritual` te genera el texto listo.
 - **Proponer una tarea de simulación** para un tipo de proyecto que falte.
 - **Corregir una traducción**: las hace Claude y se agradece la revisión de hablantes nativos.
 - **Agregar una regla al guardia** o un caso que debía dejar pasar.

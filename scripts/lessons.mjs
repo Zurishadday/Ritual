@@ -96,6 +96,23 @@ export function fingerprint(lesson) {
   return createHash("sha256").update(text).digest("hex").slice(0, 8);
 }
 
+const MONTH = /^\d{4}-\d{2}$/;
+/** Every lesson says which model it was born with and when: `origin: field · claude-opus-5-5 · 2026-10`. A model
+ * recalled but not recorded is written `~opus`; what nobody knows is `unknown`, never invented. A lab lesson always has
+ * the exact model and month (the run recorded them). A proposal comes from a public source, not from a model.
+ * `seen: <model> <YYYY-MM>, …` lists the models it was later confirmed with. */
+export function originProblems(data) {
+  const [origin, model, date] = (data.origin ?? "").split("·").map((s) => s.trim());
+  if (!ORIGINS.includes(origin)) return [`unknown origin «${data.origin ?? ""}», must be one of: ${ORIGINS.join(", ")}`];
+  const problems = [];
+  if (origin === "proposal") { if (!data.source) problems.push("a proposal needs `source: ...`"); }
+  else if (origin === "lab") { if (!model || model === "unknown" || model.startsWith("~") || !MONTH.test(date ?? "")) problems.push("a lab lesson records the exact model and month it broke with: `origin: lab · claude-sonnet-5-5 · 2026-10`"); }
+  else if (!model || !(MONTH.test(date ?? "") || date === "unknown")) problems.push(`the origin needs model and date: \`origin: ${origin} · claude-opus-5-5 · 2026-10\` (\`~opus\` if recalled, \`unknown\` if nobody knows)`);
+  for (const s of (data.seen ?? "").split(",").map((x) => x.trim()).filter(Boolean))
+    if (!/^\S+ \d{4}-\d{2}$/.test(s)) problems.push(`«${s}» in \`seen:\` must be «<model> <YYYY-MM>»`);
+  return problems;
+}
+
 function readConfigLanguage(project) {
   try { return JSON.parse(readFileSync(path.join(project, ".ritual", "config.json"), "utf8")).language ?? ORIGINAL; } catch { return ORIGINAL; }
 }
@@ -158,10 +175,7 @@ export function check(root = ROOT) {
       }
       for (const p of parts) if (!l.parts[p]) bad(l, `missing part «${p}»`);
       if (language === ORIGINAL) {
-        const [origin, model, date] = (l.data.origin ?? "").split("·").map((s) => s.trim());
-        if (!ORIGINS.includes(origin)) bad(l, `unknown origin «${l.data.origin ?? ""}», must be one of: ${ORIGINS.join(", ")}`);
-        if (origin === "lab" && !(model && /^\d{4}-\d{2}$/.test(date ?? ""))) bad(l, "a lab lesson needs model and date: `origin: lab · sonnet · 2026-10`");
-        if (origin === "proposal" && !l.data.source) bad(l, "a proposal needs `source: ...`");
+        for (const m of originProblems(l.data)) bad(l, m);
         for (const g of (l.data.groups ?? "").split(",").map((s) => s.trim()).filter(Boolean)) if (!(g in groups)) bad(l, `group «${g}» does not exist`);
         for (const m of `${l.title}\n${l.text}`.matchAll(REFERENCE)) if (!byId.has(m[1])) bad(l, `cites a lesson that does not exist (${m[1]})`);
       } else {
@@ -222,8 +236,7 @@ export function checkProject(project, language = ORIGINAL) {
       seen.add(l.id);
       if (l.merged) continue;
       for (const p of parts) if (!l.parts[p]) bad(`missing part «${p}»`);
-      const origin = (l.data.origin ?? "").split("·")[0].trim();
-      if (!ORIGINS.includes(origin)) bad(`unknown origin «${l.data.origin ?? ""}», must be one of: ${ORIGINS.join(", ")}`);
+      for (const m of originProblems(l.data)) bad(m);
       for (const g of (l.data.groups ?? "").split(",").map((s) => s.trim()).filter(Boolean)) if (!GROUPS.includes(g)) bad(`group «${g}» does not exist`);
     }
   }
@@ -231,14 +244,14 @@ export function checkProject(project, language = ORIGINAL) {
 }
 
 // Calibration: a case that must pass and, from it, cases that must fail (or warn) with a specific message.
-const LESSON = (id, title, data = "`origin: field`", language = "en") => {
+const LESSON = (id, title, data = "`origin: field · claude-opus-5-5 · 2026-10`", language = "en") => {
   const [a, b, c, d, e] = PARTS[language];
   const end = ["zh-CN", "ja"].includes(language) ? "。" : ".";
   return `### ${id}. ${title}\n\n${data}\n\n**${a}${end}** Something.\n\n**${b}${end}** This happened.\n\n**${c}${end}** And if not?\n\n**${d}${end}** "Sure".\n\n**${e}${end}** Measure.\n`;
 };
 const EN = {
-  "numbers-and-data.md": `# Numbers and data\n\n${LESSON(1, "One")}\n${LESSON(2, "Two (see lesson 1)", "`origin: field` · `groups: git-and-process` · `packages: web`")}`,
-  "git-and-process.md": `# Git and process\n\n### 3. Three\n\nMerged into 1.\n\n${LESSON("WEB-1", "One of web", "`origin: proposal` · `source: https://example.org`")}\n${LESSON(4, "Four", "`origin: lab · sonnet · 2026-10`")}`,
+  "numbers-and-data.md": `# Numbers and data\n\n${LESSON(1, "One", "`origin: field · ~opus · unknown`")}\n${LESSON(2, "Two (see lesson 1)", "`origin: field · claude-opus-5-5 · 2026-10` · `groups: git-and-process` · `packages: web` · `seen: gpt-5 2026-11, claude-sonnet-5-5 2026-12`")}`,
+  "git-and-process.md": `# Git and process\n\n### 3. Three\n\nMerged into 1.\n\n${LESSON("WEB-1", "One of web", "`origin: proposal` · `source: https://example.org`")}\n${LESSON(4, "Four", "`origin: lab · claude-sonnet-5-5 · 2026-10`")}`,
 };
 // Translations are built stamped with the fingerprints of EN, so the good case has no findings at all.
 function translations(en) {
@@ -263,9 +276,13 @@ const CASES = [
   ["duplicate id", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"] + "\n" + LESSON(1, "Another one") }), "duplicate id", "error"],
   ["gap in numbers", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace("### 4. ", "### 6. ") }), "gap in numbers: lesson 4", "error"],
   ["cites a lesson that does not exist", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("(see lesson 1)", "(see lesson 9)") }), "cites a lesson that does not exist (9)", "error"],
-  ["invented origin", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("`origin: field`\n", "`origin: rumor`\n") }), "unknown origin «rumor»", "error"],
-  ["lab without date", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace(" · sonnet · 2026-10", "") }), "model and date", "error"],
+  ["invented origin", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("`origin: field · ~opus · unknown`", "`origin: rumor · ~opus · unknown`") }), "unknown origin «rumor", "error"],
+  ["lab without date", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace(" · claude-sonnet-5-5 · 2026-10", "") }), "exact model", "error"],
   ["proposal without source", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace(" · `source: https://example.org`", "") }), "needs `source", "error"],
+  ["field without model", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("`origin: field · ~opus · unknown`", "`origin: field`") }), "needs model and date", "error"],
+  ["field with a date that is not a month", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("· ~opus · unknown", "· ~opus · last year") }), "needs model and date", "error"],
+  ["lab with a recalled model", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace(" · claude-sonnet-5-5 · 2026-10", " · ~sonnet · 2026-10") }), "exact model", "error"],
+  ["malformed seen", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("seen: gpt-5 2026-11", "seen: gpt-5") }), "in `seen:`", "error"],
   ["group that does not exist", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("groups: git-and-process", "groups: cooking") }), "group «cooking» does not exist", "error"],
   ["merged into a lesson that does not exist", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace("Merged into 1.", "Merged into 8.") }), "merged into 8", "error"],
   ["index out of date", (f) => ({ ...f, "README.md": "# Index of lessons\n" }), "index out of date", "error"],
@@ -319,11 +336,13 @@ export function selftest() {
   const project = mkdtempSync(path.join(os.tmpdir(), "lessons-project-"));
   try {
     mkdirSync(path.join(project, ".ritual", "lessons"), { recursive: true });
-    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own", "`origin: field` · `refines: 27`")}`);
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own", "`origin: field · claude-fable-5-1 · 2026-10` · `refines: 27`")}`);
     const good = checkProject(project);
     if (good.length) failures.push(`the good project lessons gave: ${good.map((x) => x.message).join(" | ")}`);
-    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Consola\n\n${LESSON("P-1", "Propia", "`origin: field`", "es")}`);
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Consola\n\n${LESSON("P-1", "Propia", "`origin: field · ~opus · unknown`", "es")}`);
     if (checkProject(project, "es").length) failures.push("a project lesson in the project's language (es) should pass");
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Consola\n\n${LESSON("P-1", "Propia", "`origin: field`", "es")}`);
+    if (!checkProject(project, "es").some((x) => x.message.includes("needs model and date"))) failures.push("a project lesson without model and date should fail");
     writeFileSync(path.join(project, ".ritual", "lessons", "cooking.md"), `# Cooking\n\n${LESSON("2", "No prefix")}`);
     const bad = checkProject(project, "es").map((x) => x.message).join(" | ");
     if (!bad.includes("must be named after a group")) failures.push(`a file with an invented group name should fail and gave: ${bad || "nothing"}`);

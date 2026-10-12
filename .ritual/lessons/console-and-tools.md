@@ -2,7 +2,7 @@
 
 ### P-1. A pipeline's exit status is the last command's
 
-`origin: field` · `refines: 44`
+`origin: field · claude-fable-5-1 · 2026-10` · `refines: 44`
 
 **The idea.** Piping a test into `| tail` or `| grep` to read less does not only trim the output: it changes the verdict. The exit status the next `&&` sees is `tail`'s, which is always zero. The test failed and the commit went through.
 
