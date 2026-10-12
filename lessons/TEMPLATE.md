@@ -37,6 +37,18 @@ Extra parts such as **Another example.**, **Variant.** or **Not to be confused w
 | `groups:` | other groups, comma-separated | Secondary groups where it also applies. |
 | `packages:` | `web`, `apps`, `crm`, `ai`, `security` | Kinds of project it belongs to. Without it, it applies to all. |
 
+## Where a lesson goes
+
+Groups and packages are defined in one place, [`taxonomy.json`](taxonomy.json), each with what it `covers`. A lesson goes to the first step that holds:
+
+1. **It refines an existing lesson.** It does not get a number of its own: it sharpens that one (a better detector question, a missing case, a confirmation with another model).
+2. **It holds in different kinds of project.** It goes to the core, in the group of what was being done. The test: write what the same mistake looks like in two other kinds of project. If you can't, it is a lesson for that project, not for the library.
+3. **It only holds for one kind of project, and a package covers it.** It goes to that package (`packages: web`).
+4. **No package covers that kind of project.** Propose a new package with its first lesson: a slug named after the kind of project (`mobile`, `data`, `games`), never after a framework an existing package covers (`nextjs` is `web`), what it covers, and one to three dependencies that detect it. New packages are welcome: they are how the library reaches new kinds of software.
+5. **The activity fits none of the groups.** Propose a new group. Groups are the backbone, so a group is created when three lessons need it; until then the proposal waits in its issue.
+
+`/ritual share` walks these steps for you and checks the result. Accepting a new package or group means adding it to `taxonomy.json` (with its `covers`, and `detect` for a package) in the same pull request as its first lesson; the checker rejects a lesson whose package or group is not there.
+
 ## Numbers
 
 - The core goes from 1 on, with no gaps. Packages use a prefix: `WEB-1`, `AI-3`.

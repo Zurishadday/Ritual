@@ -70,7 +70,12 @@ const REFERENCE = /\b(?:see lesson|lesson|ver(?: también)? la|lecci[oó]n) (\d+
 
 /** Reads a group file and returns its lessons. */
 export function readGroupFile(file, group) {
-  const text = readFileSync(file, "utf8").replace(/\r\n/g, "\n");
+  return parseLessons(readFileSync(file, "utf8"), group);
+}
+
+/** Parses the lessons in a text with the lesson format. */
+export function parseLessons(raw, group) {
+  const text = raw.replace(/\r\n/g, "\n");
   const title = text.match(/^# (.+)$/m)?.[1] ?? null;
   const lessons = [];
   const blocks = text.split(/^(?=### )/m);

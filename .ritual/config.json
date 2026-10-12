@@ -2,6 +2,7 @@
   "language": "en",
   "packages": [],
   "demoted": [],
+  "private": [],
   "groups": {
     "tests-and-checks": [
       "**/*.test.*",

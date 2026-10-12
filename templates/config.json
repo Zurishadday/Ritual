@@ -2,6 +2,7 @@
   "language": "en",
   "packages": [],
   "demoted": [],
+  "private": [],
   "groups": {
     "tests-and-checks": ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/test/**", "**/__tests__/**", "**/e2e/**", "**/cypress/**"],
     "writing-and-docs": ["**/*.md", "**/*.mdx", "**/*.rst", "**/*.txt", "**/docs/**", "**/content/**"],

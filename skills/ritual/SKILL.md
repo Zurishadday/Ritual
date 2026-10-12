@@ -15,6 +15,7 @@ Paths below use `${CLAUDE_PLUGIN_ROOT}`, the folder where Ritual is installed. A
 
 - The project has no `.ritual/` folder → **Setup**, then stop.
 - The user wrote `/ritual close` (or `/ritual cierre`, or asks for a check before finishing) → **Close review**.
+- The user wrote `/ritual share` (optionally with a lesson id), or wants to contribute a lesson or a confirmation → **Share**.
 - Otherwise → **Ritual**.
 
 ## Setup (first run in a project)
@@ -40,7 +41,7 @@ Then follow the steps in order. Each step produces one or two lines for the user
    - A property of the code or the output → a test named after the lesson, seen failing against the real error before the fix.
    - Neither → a one-line rule in the Ritual section of `CLAUDE.md`, only if the log shows it broke more than once. Otherwise it stays a lesson and goes to `.ritual/candidates.md` as `open`, with the date.
 6. **Write everything together**, in the same commit: lessons, candidates, config and guard rules, the `CLAUDE.md` line. Then run `node "${CLAUDE_PLUGIN_ROOT}/scripts/lessons.mjs" --check --project .`; it must pass.
-7. **Anonymous and shareable.** Examples name no clients, products or people. If a lesson would hold in any project, offer the user its exact text to contribute to Ritual (issue "Share a lesson" at https://github.com/Zurishadday/Ritual), with the model and month it happened with. If a plugin lesson fired today because the mistake happened again, offer to confirm it there too (issue "Confirm a lesson"), with the model: that is how a lesson learns which models it applies to. Never publish anything yourself.
+7. **Anonymous and shareable.** Examples name no clients, products or people. If a lesson written today could help someone building something else, or a plugin lesson fired because the mistake happened again, offer `/ritual share` in one line. Never publish anything yourself.
 
 Close with `node "${CLAUDE_PLUGIN_ROOT}/scripts/summary.mjs" --mark` (it stamps the date of this ritual) and a report in this shape:
 
@@ -52,6 +53,26 @@ Checks: guard rules N · tests N · CLAUDE.md lines N
 Candidates: open N · closed N · discarded N
 Cost this session: groups sent <list>
 ```
+
+## Share (`/ritual share [lesson]`)
+
+The goal: a lesson that helps someone building something else. A lesson written inside a project speaks in that project's terms ("the invoice importer"); shared like that, it helps nobody. Work through these steps, and tell the user in one line what each one decided.
+
+1. **Which lesson.** The one the user named, or list the project's lessons in `.ritual/lessons/` and ask which. If what happened is already a plugin lesson that fired here, go to step 3.
+2. **Compare first.** Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/share.mjs" context <group>` and read every library lesson it lists, plus the groups and packages with what each one `covers`. Compare by meaning, in any language.
+3. **Already covered?** If a library lesson covers it, do not write a new one:
+   - The mistake happened again: write the anonymous example to a file and run `node "${CLAUDE_PLUGIN_ROOT}/scripts/share.mjs" confirm <id> <your model id> <YYYY-MM> <file>`. A confirmation is the most useful contribution: it records which models make the mistake.
+   - Yours sharpens it (a better detector question, a missing case): share it with `Where it goes. refines <N>`.
+4. **Make it generic.** Rewrite the idea, the detector question, the warning sign and what to do in terms of the mechanism that failed, not the domain where it failed: not "the invoice importer dropped the last page" but "a loop that stops at the first empty page assumes there are no gaps". Keep the example concrete, with nothing that identifies the project. Write it in English: shared lessons become the original.
+5. **Transfer test.** Write, one line each, what the same mistake looks like in two other kinds of project. If you cannot, the lesson belongs to this project: say so, keep it local, and stop. Not every lesson is for everyone.
+6. **Where it goes.** Stop at the first step that holds:
+   1. It refines an existing lesson → `refines <N>`.
+   2. The transfer test worked across different kinds of project → `core`, with its group.
+   3. It only holds for one kind of project and an existing package `covers` it → `package <slug>`, and `packages: <slug>` in the data line.
+   4. No package covers that kind of project → `new package <slug>: <what it covers>. Detect: <1-3 dependencies>`. Name it after the kind of project (`mobile`, `data`, `games`), never after a framework a package already covers (`nextjs` is `web`). Proposing a package is cheap: that is how the library grows to new kinds of software.
+   5. The activity fits none of the groups' `covers` → `new group <slug>: <what it covers>`. Rare: a group is created when three lessons need it, so check the closest group twice before proposing one.
+7. **Write and check.** Save the lesson to `.ritual/local/share/<id>.md`: heading `### <title>`, the data line (`origin: field · <your model id> · <YYYY-MM>` and `groups:`, `packages:` as decided), the five parts, then `**Where it goes.**`, `**Transfers to.**` (two lines) and `**How to reproduce.**` (a short task or prompt, no logs, paths or data from the project). Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/share.mjs" check <file>` and fix what it reports: it rejects names from the project (package name, folder, git remote, `private` in `.ritual/config.json`), a missing part or model, and a package or group that does not exist and is not proposed.
+8. **Hand it over.** Show the user the final text and the link the check prints. They open it, read it, and submit it themselves. Never submit it, never open issues or pull requests for them.
 
 ## Close review (`/ritual close`)
 

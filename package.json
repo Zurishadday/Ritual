@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/lessons.mjs --selftest && node scripts/lessons.mjs --check && node hooks/guard.mjs --selftest && node hooks/log.mjs --selftest && node hooks/questions.mjs --selftest && node scripts/init.mjs --selftest && node scripts/summary.mjs --selftest",
+    "test": "node scripts/lessons.mjs --selftest && node scripts/lessons.mjs --check && node hooks/guard.mjs --selftest && node hooks/log.mjs --selftest && node hooks/questions.mjs --selftest && node scripts/init.mjs --selftest && node scripts/summary.mjs --selftest && node scripts/share.mjs --selftest",
     "test:live": "node scripts/live-hook-test.mjs",
     "check-publish": "node scripts/check-publish.mjs --selftest && node scripts/check-publish.mjs"
   }

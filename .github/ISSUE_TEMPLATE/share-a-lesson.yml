@@ -1,13 +1,13 @@
 name: Share a lesson
-description: A mistake an AI made in your project that a lesson could prevent next time.
+description: A mistake an AI made in your project that a lesson could prevent next time, in any project like yours.
 title: "Lesson: "
 labels: ["lesson"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks! A lesson comes from a real mistake. `/ritual` can write this text for you. Keep the example anonymous: no clients, products or people.
-        Ritual runs on Claude, so the model matters: a mistake that only happens with another model gets checked with Claude before it goes in ([how](https://github.com/Zurishadday/Ritual/blob/main/simulations/README.md#checking-a-contributed-lesson)).
+        Thanks! The easiest way is `/ritual share` in Claude Code: it makes the lesson generic, checks that it names nothing of your project, and opens this form already filled in.
+        A shared lesson must help someone building something else: no clients, products, people or names from your project. Ritual runs on Claude, so a mistake that only happened with another model gets checked with Claude before it goes in ([how](https://github.com/Zurishadday/Ritual/blob/main/simulations/README.md#checking-a-contributed-lesson)).
   - type: input
     id: model
     attributes:
@@ -23,30 +23,26 @@ body:
       placeholder: 2026-10
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: group
     attributes:
-      label: What were you doing when it happened?
-      options:
-        - Writing and docs
-        - Numbers and data
-        - Tests and checks
-        - Scripts and files
-        - Interface and design
-        - Console and tools
-        - Git and process
+      label: Group (what you were doing)
+      description: "writing-and-docs, numbers-and-data, tests-and-checks, scripts-and-files, interface-and-design, console-and-tools or git-and-process. See lessons/taxonomy.json."
     validations:
       required: true
   - type: input
-    id: package
+    id: where
     attributes:
-      label: Kind of project, if it only applies to one
-      description: web, apps, crm, ai, security. Leave empty if it applies to any project.
+      label: Where it goes
+      description: "`core` (any project), `package web` (an existing package), `new package <slug>: <what it covers>`, `new group <slug>: <what it covers>`, or `refines <lesson number>`."
+      placeholder: core
+    validations:
+      required: true
   - type: textarea
     id: lesson
     attributes:
       label: The lesson
-      description: The five parts, in any language.
+      description: The five parts, in English if you can (it becomes the original; translations are made from it).
       value: |
         ### Title
 
@@ -62,7 +58,14 @@ body:
     validations:
       required: true
   - type: textarea
+    id: transfer
+    attributes:
+      label: Two other kinds of project it applies to
+      description: One line each, saying what the mistake would look like there. If it only makes sense in your project, it is a local lesson, not a shared one.
+    validations:
+      required: true
+  - type: textarea
     id: reproduce
     attributes:
       label: How to reproduce it
-      description: The task or prompt where it happened, short enough to run again in a clean session.
+      description: The task or prompt where it happened, short enough to run again in a clean session. No logs, paths or data from your project.
