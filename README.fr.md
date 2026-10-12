@@ -116,6 +116,7 @@ Au-dessus des groupes se trouvent les **paquets** par type de projet : des leço
 |---|---|
 | `web` | 4 : ce qui se perd après une écriture interrompue, les robots sur un formulaire public, le repli sans JavaScript, et le focus sur l'envoi. |
 | `apps`, `crm`, `ai` | En préparation, avec la même méthode. |
+| Le vôtre | Un type de projet qui manque (mobile, données, jeux…) commence par sa première leçon : voir [où va une leçon](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Chaque leçon a cinq parties, toujours les cinq : **l'idée**, un **exemple** réel et anonyme, la **question détectrice** qui sépare le cas qui s'applique de celui qui ne s'applique pas, le **signal d'alarme** (la phrase que vous vous dites juste avant de refaire l'erreur) et **que faire**. Et un numéro qui ne change jamais : une leçon redondante est marquée comme fusionnée dans une autre, jamais supprimée. Le format complet se trouve dans [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
@@ -148,8 +149,8 @@ La façon la plus simple : **confirmer une leçon**. Si une leçon vous est auss
 
 Vous pouvez aussi :
 
-- **[Partager une leçon](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** de la vôtre : cinq parties, un exemple anonyme, le groupe auquel elle appartient et le modèle avec lequel elle s'est produite. `/ritual` rédige le texte pour vous. Une leçon qui ne s'est produite qu'avec un autre modèle est [vérifiée avec Claude d'abord](simulations/README.fr.md#vérifier-une-leçon-contribuée).
-- **Proposer une tâche de simulation** pour un type de projet qui manque.
+- **Partager une leçon** de la vôtre : écrivez `/ritual share`. La commande la compare à la bibliothèque (une erreur déjà couverte devient une confirmation, pas un doublon), la réécrit pour qu'elle serve à quelqu'un qui construit autre chose, vérifie qu'elle ne nomme rien de votre projet, décide où elle va et ouvre le [formulaire](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) déjà rempli. Vous la relisez et l'envoyez. Une leçon qui ne s'est produite qu'avec un autre modèle est [vérifiée avec Claude d'abord](simulations/README.fr.md#vérifier-une-leçon-contribuée).
+- **Ouvrir un nouveau paquet** pour un type de projet qui manque : `/ritual share` en propose un lorsqu'une leçon ne rentre dans aucun de ceux qui existent. Ou **proposer une tâche de simulation** pour lui.
 - **Relire une traduction** : les leçons sont traduites par un modèle, et chacune l'indique (`by: ai`). Si vous êtes locuteur natif, corrigez-la et signez-la avec votre nom d'utilisateur GitHub. La procédure se trouve dans [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Ajouter une règle de garde**, ou un cas qu'elle aurait dû laisser passer.
 

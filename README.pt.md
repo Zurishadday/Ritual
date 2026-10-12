@@ -116,6 +116,7 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 |---|---|
 | `web` | 4: o que se perde depois de uma gravação interrompida, robôs num formulário público, o recurso de contingência sem JavaScript, e o foco no botão de envio. |
 | `apps`, `crm`, `ai` | A caminho, com o mesmo método. |
+| O seu | Um tipo de projeto que ainda não tem (móvel, dados, jogos…) começa com a sua primeira lição: veja [onde vai uma lição](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Toda lição tem cinco partes, sempre as cinco: **a ideia**, um **exemplo** real e anônimo, a **pergunta detectora** que separa o caso que se aplica do que não se aplica, o **sinal de alerta** (a frase que você diz a si mesmo logo antes de cometer o erro de novo) e **o que fazer**. E um número que nunca muda: uma lição redundante é marcada como fundida em outra, nunca apagada. O formato completo está em [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
@@ -148,8 +149,8 @@ O jeito mais fácil: **confirme uma lição**. Se uma lição também aconteceu 
 
 Você também pode:
 
-- **[Compartilhe uma lição](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** sua: cinco partes, um exemplo anônimo, o grupo a que pertence e o modelo com que aconteceu. O `/ritual` escreve o texto para você. Uma lição que só aconteceu com outro modelo é [verificada com Claude antes](simulations/README.pt.md#como-verificar-uma-lição-contribuída).
-- **Proponha uma tarefa de simulação** para um tipo de projeto que ainda não tem.
+- **Compartilhe uma lição** sua: escreva `/ritual share`. O comando compara a lição com a biblioteca (um erro que já está coberto vira uma confirmação, não uma duplicata), a reescreve para servir a quem constrói outra coisa, verifica que ela não cita nada do seu projeto, decide onde ela vai e abre o [formulário](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) já preenchido. Você lê e envia. Uma lição que só aconteceu com outro modelo é [verificada com Claude antes](simulations/README.pt.md#como-verificar-uma-lição-contribuída).
+- **Abra um pacote novo** para um tipo de projeto que ainda não tem: `/ritual share` propõe um quando uma lição não cabe em nenhum dos que existem. Ou **proponha uma tarefa de simulação** para ele.
 - **Revise uma tradução**: as lições são traduzidas por um modelo, e cada uma indica isso (`by: ai`). Se você é falante nativo, corrija e assine com o seu usuário do GitHub. O fluxo está em [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Adicione uma regra à Guarda**, ou um caso que ela deveria ter deixado passar.
 

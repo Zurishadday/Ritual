@@ -116,6 +116,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 |---|---|
 | `web` | 4 条：被中断的写入之后丢失了什么、公开表单上的机器人、没有 JavaScript 时的后备方案，以及提交时的焦点。 |
 | `apps`、`crm`、`ai` | 正在制作中，采用同样的方法。 |
+| 你的 | 缺少的某类项目（移动端、数据、游戏……）从它的第一条教训开始：参见[一条教训放在哪里](lessons/TEMPLATE.md#where-a-lesson-goes)。 |
 
 每条教训都有五个部分，且总是齐全：**核心**、一个真实且匿名的**例子**、把适用与不适用的情况区分开的**检测问题**、**警示信号**（你在再次犯同样错误之前对自己说的那句话），以及**怎么做**。每条教训还有一个永不改变的编号：多余的教训会被标记为已并入另一条，而绝不删除。完整格式见 [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md)。
 
@@ -148,8 +149,8 @@ Ritual 也用它自己的教训来检验。WEB-1 在 Ritual 自己的日志中�
 
 你还可以：
 
-- **[分享一条你的教训](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)**：五个部分、一个匿名例子、它所属的组，以及它发生时所用的模型。`/ritual` 会替你写出文本。只在另一个模型下发生过的教训，会先[由 Claude 检查](simulations/README.zh-CN.md#检查贡献的教训)。
-- **提议一个模拟任务**，针对缺少的某类项目。
+- **分享一条你的教训**：输入 `/ritual share`。它会将其与现有教训比较（已被覆盖的错误会变成确认，而不是重复条目），改写成对正在构建其他东西的人也有帮助的样子，检查它没有提及你项目中的任何内容，决定它应放在哪里，并打开已填好的[表单](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)。由你阅读并提交。只在另一个模型下发生过的教训，会先[由 Claude 检查](simulations/README.zh-CN.md#检查贡献的教训)。
+- **为缺少的某类项目开一个新课程包**：当一条教训不属于任何现有课程包时，`/ritual share` 会提议新建一个。或者为它**提议一个模拟任务**。
 - **审校译文**：教训由模型翻译，每条都会注明（`by: ai`）。如果你是母语者，请修正它，并用你的 GitHub 用户名署名。流程见 [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md)。
 - **添加一条守卫规则**，或一个它本应放行的案例。
 
