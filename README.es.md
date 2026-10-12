@@ -116,6 +116,7 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 |---|---|
 | `web` | 4: lo que se pierde tras una escritura cortada, los robots en un formulario público, el respaldo sin JavaScript y el foco al enviar. |
 | `apps`, `crm`, `ai` | En camino, con el mismo método. |
+| El tuyo | Un tipo de proyecto que falte (móvil, datos, juegos…) empieza con su primera lección: mira [dónde va una lección](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca como fusionada en otra, no se borra. El formato completo está en [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
@@ -148,8 +149,8 @@ La forma más fácil: **confirma una lección**. Si una lección también te pas
 
 También puedes:
 
-- **[Compartir una lección](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** tuya: cinco partes, ejemplo anónimo, el grupo donde va y el modelo con que pasó. `/ritual` te genera el texto listo. Una lección que solo pasó con otro modelo se [comprueba con Claude primero](simulations/README.es.md#cómo-se-revisa-una-lección-que-alguien-aporta).
-- **Proponer una tarea de simulación** para un tipo de proyecto que falte.
+- **Compartir una lección** tuya: escribe `/ritual share`. La compara con la biblioteca (un error que ya está cubierto se vuelve una confirmación, no un duplicado), la reescribe para que le sirva a alguien que construye otra cosa, revisa que no nombre nada de tu proyecto, decide dónde va y abre el [formulario](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) ya lleno. Tú lo lees y lo envías. Una lección que solo pasó con otro modelo [se comprueba con Claude primero](simulations/README.es.md#cómo-se-revisa-una-lección-que-alguien-aporta).
+- **Abrir un paquete nuevo** para un tipo de proyecto que falte: `/ritual share` lo propone cuando una lección no cabe en ninguno de los que existen. O **proponer una tarea de simulación** para él.
 - **Revisar una traducción**: las lecciones las traduce un modelo, y cada una lo dice (`by: ai`). Si eres hablante nativo, corrígela y fírmala con tu usuario de GitHub. El flujo está en [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Agregar una regla al guardia**, o un caso que debía dejar pasar.
 

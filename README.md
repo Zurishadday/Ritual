@@ -114,6 +114,7 @@ On top of the groups sit the **packages** per kind of project: lessons that only
 |---|---|
 | `web` | 4: what gets lost after a cut-off write, bots on a public form, the fallback without JavaScript, and focus on submit. |
 | `apps`, `crm`, `ai` | On the way, with the same method. |
+| Yours | A kind of project that's missing (mobile, data, games…) starts with its first lesson: see [where a lesson goes](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Every lesson has five parts, always all five: **the idea**, a real and anonymous **example**, the **detector question** that separates the case that applies from the one that doesn't, the **warning sign** (the phrase you say to yourself right before making the mistake again) and **what to do**. And a number that never changes: a redundant lesson is marked as merged into another, never deleted. The full format is in [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
@@ -146,8 +147,8 @@ The easiest way: **confirm a lesson**. If a lesson happened to you too, [open a 
 
 You can also:
 
-- **[Share a lesson](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml)** of yours: five parts, an anonymous example, the group it belongs to and the model it happened with. `/ritual` writes the text for you. A lesson that only happened with another model is [checked with Claude first](simulations/README.md#checking-a-contributed-lesson).
-- **Propose a simulation task** for a kind of project that's missing.
+- **Share a lesson** of yours: type `/ritual share`. It compares it with the library (a mistake already covered becomes a confirmation, not a duplicate), rewrites it so it helps someone building something else, checks that it names nothing of your project, decides where it goes, and opens the [form](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) already filled in. You read it and submit it. A lesson that only happened with another model is [checked with Claude first](simulations/README.md#checking-a-contributed-lesson).
+- **Open a new package** for a kind of project that's missing: `/ritual share` proposes one when a lesson fits none of the existing ones. Or **propose a simulation task** for it.
 - **Review a translation**: the lessons are translated by a model, and each one says so (`by: ai`). If you are a native speaker, fix it and sign it with your GitHub user. The workflow is in [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Add a guard rule**, or a case it should have let through.
 
