@@ -51,8 +51,8 @@ export function iniciar(proyecto, { paquetes = [], idioma = "es" } = {}) {
   const config = path.join(dir, "config.json");
   const base = existsSync(config) ? JSON.parse(readFileSync(config, "utf8")) : JSON.parse(readFileSync(path.join(PLUGIN, "plantillas", "config.json"), "utf8"));
   const nuevo = { ...base, idioma, paquetes: [...new Set([...(base.paquetes ?? []), ...paquetes])] };
-  const texto = JSON.stringify(nuevo, null, 2) + "\n";
-  if (texto !== (existsSync(config) ? readFileSync(config, "utf8") : "")) { writeFileSync(config, texto); hechos.push(".ritual/config.json"); }
+  const textoConfig = JSON.stringify(nuevo, null, 2) + "\n";
+  if (textoConfig !== (existsSync(config) ? readFileSync(config, "utf8") : "")) { writeFileSync(config, textoConfig); hechos.push(".ritual/config.json"); }
   if (!existsSync(path.join(dir, "guardia.json"))) { cpSync(path.join(PLUGIN, "plantillas", "guardia.json"), path.join(dir, "guardia.json")); hechos.push(".ritual/guardia.json"); }
   if (!existsSync(path.join(dir, "candidatos.md"))) { cpSync(path.join(PLUGIN, "plantillas", "candidatos.md"), path.join(dir, "candidatos.md")); hechos.push(".ritual/candidatos.md"); }
   if (!existsSync(path.join(dir, "lecciones", ".gitkeep"))) { writeFileSync(path.join(dir, "lecciones", ".gitkeep"), ""); hechos.push(".ritual/lecciones/"); }
