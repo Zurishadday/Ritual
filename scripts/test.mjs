@@ -18,6 +18,7 @@ const STEPS = [
   "scripts/share.mjs --selftest",
   "scripts/doctor.mjs --selftest",
   "scripts/maintain.mjs --selftest",
+  "assets/social/card.mjs --selftest",
 ];
 
 let failed = 0;

@@ -18,6 +18,7 @@ The judgment is yours; the mechanics are in `node scripts/maintain.mjs`. Never e
 - A number: run `node scripts/maintain.mjs issue <N>`. It prints the form's fields and says whether the issue is a `lesson` or a `confirmation`. If `gh` says it is a pull request, use **Pull request**.
 - "translations", or `npm test` warns that one is out of date → **Translations**.
 - "release", "publish", "users don't get the change" → **Release**.
+- "card", "lesson of the week", "post a lesson" → **Cards**.
 
 ## Confirmation (`confirmation` issue)
 
@@ -55,6 +56,14 @@ The judgment is yours; the mechanics are in `node scripts/maintain.mjs`. Never e
 3. Put each translation in `lessons/<language>/<group>.md`, replacing the outdated one or inserting it in id order.
 4. Check each one against the English: the same inline code spans, the same numbers, and every part present. Haiku has dropped list items and renamed packages before.
 5. `node scripts/lessons.mjs --stamp <language>` for each language (`by: ai`), then `--index`, then `npm test`: no warnings left.
+
+## Cards
+
+A lesson as an image to share, 1080×1080 (LinkedIn, X, Instagram and WhatsApp all show it whole): title, detector question, warning sign, the models it was seen with, and the link.
+
+1. Pick the lesson. Good picks are a lesson just confirmed with a new model, or one that fired in a real session this week.
+2. Run `node assets/social/card.mjs <id> [language]`, or `all`. It needs Windows with Edge. It writes `.ritual/local/cards/<language>/<id>.png`, plus a `.txt` with the post text and the link. It fails if the text does not fit at a readable size.
+3. Look at the PNG before handing it over. Posting is the maintainer's: never post it yourself.
 
 ## Release
 
