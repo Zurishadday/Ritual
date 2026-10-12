@@ -9,7 +9,7 @@ Las lecciones de los paquetes (`web`, `apps`, `crm`, `ia`) no se inventan: salen
 3. **Escribe las lecciones** el mismo modelo de juicio, con las cinco partes, y el revisor humano del repositorio las integra: comprueba que ninguna del núcleo ya las cubra y corre el verificador.
 4. **Cada tarea se corre dos veces.** Lo que se rompe las dos veces es lección; lo que se rompe una vez queda como candidato.
 
-Cada corrida se guarda en `<tarea>/corridas/<año-mes>-<modelo>/`: el código tal como quedó (es el proyecto de ejemplo con errores reales, y el caso de calibración de sus lecciones) y `HALLAZGOS.md`.
+Cada corrida se guarda en `<tarea>/corridas/<año-mes>-<modelo>-<n>/` (`2026-10-sonnet-1`, `2026-10-sonnet-2`): el código tal como quedó (es el proyecto de ejemplo con errores reales, y el caso de calibración de sus lecciones) y `HALLAZGOS.md`.
 
 ## Cómo repetir una simulación
 

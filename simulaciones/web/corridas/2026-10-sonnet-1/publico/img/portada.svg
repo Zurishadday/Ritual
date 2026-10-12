@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6b26b"/>
+      <stop offset="0.6" stop-color="#f9d9a8"/>
+      <stop offset="1" stop-color="#fdf0d9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <circle cx="1180" cy="300" r="120" fill="#fff4d6" opacity="0.9"/>
+  <path d="M0 640 Q300 480 620 600 T1250 560 T1600 620 V900 H0Z" fill="#7aa874"/>
+  <path d="M0 740 Q400 620 800 720 T1600 700 V900 H0Z" fill="#4f7d5b"/>
+  <rect y="800" width="1600" height="100" fill="#35523f"/>
+  <g transform="translate(1000 640)" fill="none" stroke="#1d2b24" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-190" cy="0" r="130"/>
+    <circle cx="190" cy="0" r="130"/>
+    <circle cx="-190" cy="0" r="12" fill="#1d2b24"/>
+    <circle cx="190" cy="0" r="12" fill="#1d2b24"/>
+    <path d="M-190 0 L-40 -170 L120 -170 L190 0 M-40 -170 L40 0 L-190 0 M40 0 L120 -170"/>
+    <path d="M-60 -200 H-10 M120 -170 L100 -230 H150"/>
+    <circle cx="40" cy="0" r="30"/>
+    <path d="M40 0 L70 40 M40 0 L10 -40"/>
+  </g>
+</svg>

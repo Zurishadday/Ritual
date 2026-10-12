@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="600" fill="#f3e6d3"/>
+  <rect y="480" width="800" height="120" fill="#e2cfb2"/>
+  <g transform="translate(400 300)">
+    <circle r="230" fill="#1d2b24"/>
+    <circle r="200" fill="#f3e6d3"/>
+    <circle r="195" fill="none" stroke="#6b7d72" stroke-width="10"/>
+    <g stroke="#6b7d72" stroke-width="3">
+      <path id="r" d="M0 0 L0 -190"/>
+      <use href="#r" transform="rotate(15)"/><use href="#r" transform="rotate(30)"/><use href="#r" transform="rotate(45)"/>
+      <use href="#r" transform="rotate(60)"/><use href="#r" transform="rotate(75)"/><use href="#r" transform="rotate(90)"/>
+      <use href="#r" transform="rotate(105)"/><use href="#r" transform="rotate(120)"/><use href="#r" transform="rotate(135)"/>
+      <use href="#r" transform="rotate(150)"/><use href="#r" transform="rotate(165)"/><use href="#r" transform="rotate(180)"/>
+      <use href="#r" transform="rotate(195)"/><use href="#r" transform="rotate(210)"/><use href="#r" transform="rotate(225)"/>
+      <use href="#r" transform="rotate(240)"/><use href="#r" transform="rotate(255)"/><use href="#r" transform="rotate(270)"/>
+      <use href="#r" transform="rotate(285)"/><use href="#r" transform="rotate(300)"/><use href="#r" transform="rotate(315)"/>
+      <use href="#r" transform="rotate(330)"/><use href="#r" transform="rotate(345)"/>
+    </g>
+    <circle r="28" fill="#d9822b" stroke="#1d2b24" stroke-width="6"/>
+  </g>
+</svg>

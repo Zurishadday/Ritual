@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="600" fill="#e8efe4"/>
+  <rect y="470" width="800" height="130" fill="#c9d6c2"/>
+  <g transform="translate(400 330)" fill="none" stroke="#1d2b24" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-150" cy="0" r="100"/>
+    <circle cx="150" cy="0" r="100"/>
+    <path d="M-150 0 L-30 -130 L90 -130 L150 0 M-30 -130 L30 0 L-150 0 M30 0 L90 -130"/>
+    <circle cx="30" cy="0" r="24"/>
+  </g>
+  <g transform="translate(610 150) rotate(35)" fill="#d9822b" stroke="#1d2b24" stroke-width="6" stroke-linejoin="round">
+    <path d="M-20 -80 a40 40 0 1 1 40 0 V-40 h-10 v-20 h-20 v20 h-10z" fill="none"/>
+    <rect x="-14" y="-40" width="28" height="170" rx="12"/>
+  </g>
+  <g transform="translate(150 150)" fill="#d9822b" stroke="#1d2b24" stroke-width="6" stroke-linejoin="round">
+    <circle r="50"/><circle r="18" fill="#e8efe4"/>
+    <path d="M0 -50 V-68 M0 50 V68 M-50 0 H-68 M50 0 H68 M35 -35 L48 -48 M-35 35 L-48 48 M35 35 L48 48 M-35 -35 L-48 -48" fill="none" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>
