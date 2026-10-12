@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Ritual">
+  <path d="M 101.35 44.95 A 44 44 0 1 1 75.05 18.65" fill="none" stroke="#E8743B" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 87.6 23.2 L 72.9 9.6 L 69.8 28.6 Z" fill="#E8743B" stroke="#E8743B" stroke-width="3" stroke-linejoin="round"/>
+  <polyline points="40,61 54,75 80,46" fill="none" stroke="#2EA043" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
