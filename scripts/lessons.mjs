@@ -147,7 +147,7 @@ const languagesIn = (dir) => (existsSync(dir) ? readdirSync(dir, { withFileTypes
 
 const groupOrder = (g) => (GROUPS.includes(g) ? String(GROUPS.indexOf(g)).padStart(2, "0") : "9" + g);
 // Core lessons by number, then package lessons by prefix and number (WEB-2 before WEB-10).
-const compareIds = (a, b) => {
+export const compareIds = (a, b) => {
   const key = (id) => (/^\d+$/.test(id) ? ["", Number(id)] : [id.replace(/-\d+$/, ""), Number(id.match(/\d+$/)?.[0] ?? 0)]);
   const [pa, na] = key(a.id), [pb, nb] = key(b.id);
   return pa === pb ? na - nb : pa < pb ? -1 : 1;
