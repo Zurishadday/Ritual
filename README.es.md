@@ -19,7 +19,7 @@ Después, en tu proyecto, escribe `/ritual`. La primera vez detecta qué constru
 |---|---|---|
 | **Guardia** | Bloquea los comandos que tu proyecto ya vio fallar y dice qué usar en su lugar. Sus reglas viven en `.ritual/guard.json`, cada una con un caso que bloquea y otro que deja pasar. | Nada, hasta que bloquea. |
 | **Bitácora** | Anota en el momento cada comando que falla y cada corrección tuya («eso está mal», «hazlo de nuevo»), con lo que Claude estaba tocando. | Nada. |
-| **Preguntas** | La primera vez en la sesión que Claude va a editar una prueba, un componente, un script, un documento, una consulta, o a correr un comando o hacer un commit, le muestra las preguntas detectoras de ese grupo. Una vez por grupo y por sesión. | Una línea por lección del grupo, de tres a doce según el grupo y los paquetes. |
+| **Preguntas** | La primera vez en la sesión que Claude va a editar una prueba, un componente, un script, un documento, una consulta, o a correr un comando o hacer un commit, le muestra las preguntas detectoras de ese grupo. Una vez por grupo y por sesión. Van en inglés: son para Claude, que te sigue respondiendo en tu idioma. | Una línea por lección del grupo, de tres a doce según el grupo y los paquetes. |
 
 Nada de esto cambia lo que Claude hace: solo le pone enfrente, en el momento justo, lo que tu proyecto ya aprendió.
 
@@ -36,11 +36,11 @@ Al cerrar una sesión, o después de un error que dolió, escribe `/ritual`. Lee
 6. Guarda todo junto, en el mismo commit, y corre el verificador.
 7. Deja los ejemplos anónimos y, si una lección sirve para cualquier proyecto, te ofrece el texto para compartirla aquí. Nunca publica nada por su cuenta.
 
-Y `/ritual close`, antes de dar algo por terminado, recorre las preguntas de los grupos que tocaste contra el cambio y te dice qué falta.
+Y `/ritual close` (o `/ritual cierre`), antes de dar algo por terminado, recorre las preguntas de los grupos que tocaste contra el cambio y te dice qué falta.
 
 ## La biblioteca
 
-Las lecciones viven en [`lessons/es/`](lessons/es/README.md), en siete grupos según **lo que estabas haciendo** cuando pasó:
+Las lecciones viven en [`lessons/en/`](lessons/en/README.md), el original en inglés, y en español en [`lessons/es/`](lessons/es/README.md), en siete grupos según **lo que estabas haciendo** cuando pasó:
 
 | Grupo | De qué trata |
 |---|---|
@@ -57,9 +57,9 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 | Paquete | Lecciones |
 |---|---|
 | `web` | 4: lo que se pierde tras una escritura cortada, los robots en un formulario público, el respaldo sin JavaScript y el foco al enviar. |
-| `apps`, `crm`, `ia` | En camino, con el mismo método. |
+| `apps`, `crm`, `ai` | En camino, con el mismo método. |
 
-Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca «fusionada en la N», no se borra. El formato completo está en [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
+Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca como fusionada en otra, no se borra. El formato completo está en [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
 Cada una dice de dónde salió:
 
