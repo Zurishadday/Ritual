@@ -35,7 +35,6 @@
 
 ## Scripts and files
 
-- **WEB-1.** [In a file that only grows, a broken line takes the next one with it](scripts-and-files.md#web-1-in-a-file-that-only-grows-a-broken-line-takes-the-next-one-with-it)
 - **6.** [The business definition lives in one place](scripts-and-files.md#6-the-business-definition-lives-in-one-place)
 - **7.** [Read what was published, not the intent](scripts-and-files.md#7-read-what-was-published-not-the-intent)
 - **20.** [Idempotent is not the same as updatable](scripts-and-files.md#20-idempotent-is-not-the-same-as-updatable)
@@ -45,12 +44,10 @@
 - **24.** [Write with a safety net](scripts-and-files.md#24-write-with-a-safety-net)
 - **25.** [A setting is not a status, and an alert is not a guarantee](scripts-and-files.md#25-a-setting-is-not-a-status-and-an-alert-is-not-a-guarantee)
 - **48.** [If a file comes from a generator, the fix goes in the generator](scripts-and-files.md#48-if-a-file-comes-from-a-generator-the-fix-goes-in-the-generator)
+- **WEB-1.** [In a file that only grows, a broken line takes the next one with it](scripts-and-files.md#web-1-in-a-file-that-only-grows-a-broken-line-takes-the-next-one-with-it)
 
 ## Interface and design
 
-- **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)
-- **WEB-3.** [A fallback nobody tested is not a fallback](interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback)
-- **WEB-4.** [If you disable the button, focus goes with it](interface-and-design.md#web-4-if-you-disable-the-button-focus-goes-with-it)
 - **10.** [Twin modules change together](interface-and-design.md#10-twin-modules-change-together)
 - **19.** [A review of one dimension is not a review](interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review)
 - **31.** [Nothing technical on screen unless it changes a decision](interface-and-design.md#31-nothing-technical-on-screen-unless-it-changes-a-decision)
@@ -60,6 +57,9 @@
 - **45.** [Someone walks the error path too](interface-and-design.md#45-someone-walks-the-error-path-too)
 - **46.** [What runs on every request can't grow with the content](interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content)
 - **49.** [A general rule must not silently beat the specific ones](interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones)
+- **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)
+- **WEB-3.** [A fallback nobody tested is not a fallback](interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback)
+- **WEB-4.** [If you disable the button, focus goes with it](interface-and-design.md#web-4-if-you-disable-the-button-focus-goes-with-it)
 
 ## Console and tools
 

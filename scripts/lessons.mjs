@@ -103,7 +103,12 @@ function readConfigLanguage(project) {
 const languagesIn = (dir) => (existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : []);
 
 const groupOrder = (g) => (GROUPS.includes(g) ? String(GROUPS.indexOf(g)).padStart(2, "0") : "9" + g);
-const idOrder = (id) => (/^\d+$/.test(id) ? Number(id) : id);
+// Core lessons by number, then package lessons by prefix and number (WEB-2 before WEB-10).
+const compareIds = (a, b) => {
+  const key = (id) => (/^\d+$/.test(id) ? ["", Number(id)] : [id.replace(/-\d+$/, ""), Number(id.match(/\d+$/)?.[0] ?? 0)]);
+  const [pa, na] = key(a.id), [pb, nb] = key(b.id);
+  return pa === pb ? na - nb : pa < pb ? -1 : 1;
+};
 
 // The anchor GitHub gives a heading: lowercase, punctuation out, spaces to hyphens. Accents and CJK stay.
 export const anchor = (heading) => heading.trim().toLowerCase().replace(/[^\p{L}\p{M}\p{N}\p{Pc} -]/gu, "").replace(/ /g, "-");
@@ -115,7 +120,7 @@ export function generateIndex(language, root = ROOT) {
   if (note) lines.push(note, "");
   for (const g of Object.keys(groups).sort((a, b) => groupOrder(a).localeCompare(groupOrder(b)))) {
     lines.push(`## ${groups[g] ?? g}`, "");
-    for (const l of lessons.filter((l) => l.group === g).sort((a, b) => (idOrder(a.id) > idOrder(b.id) ? 1 : -1)))
+    for (const l of lessons.filter((l) => l.group === g).sort(compareIds))
       lines.push(`- **${l.id}.** [${l.title}](${g}.md#${anchor(`${l.id}. ${l.title}`)})${l.merged ? ` (→ ${l.merged})` : ""}`);
     lines.push("");
   }
@@ -307,6 +312,9 @@ export function selftest() {
   const index = run(BASE, (tmp) => generateIndex("es", tmp) + generateIndex("ja", tmp));
   for (const link of ["(numbers-and-data.md#1-uno-con-acentuación)", "(numbers-and-data.md#2-dos-ver-la-1)", "(git-and-process.md#web-1-uno-de-web)", "(numbers-and-data.md#1-一)"])
     if (!index.includes(link)) failures.push(`the index does not link ${link}`);
+  // Core lessons first, by number; package lessons after, by prefix and number (the file has 3, WEB-1, 4).
+  const order = run(BASE, (tmp) => generateIndex(ORIGINAL, tmp)).match(/^- \*\*(\S+)\.\*\*/gm)?.map((m) => m.slice(4, -3)).join(",");
+  if (order !== "1,2,3,4,WEB-1") failures.push(`the index order should be 1,2,3,4,WEB-1 and is ${order}`);
   // Project lessons: the good case passes; a file with an invented group name and an id without prefix fail.
   const project = mkdtempSync(path.join(os.tmpdir(), "lessons-project-"));
   try {

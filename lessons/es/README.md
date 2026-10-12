@@ -37,7 +37,6 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 
 ## Scripts y archivos
 
-- **WEB-1.** [En un archivo que solo crece, una línea rota se lleva también la siguiente](scripts-and-files.md#web-1-en-un-archivo-que-solo-crece-una-línea-rota-se-lleva-también-la-siguiente)
 - **6.** [La definición de negocio vive en un solo lugar](scripts-and-files.md#6-la-definición-de-negocio-vive-en-un-solo-lugar)
 - **7.** [Lee lo publicado, no la intención](scripts-and-files.md#7-lee-lo-publicado-no-la-intención)
 - **20.** [Idempotente no es lo mismo que actualizable](scripts-and-files.md#20-idempotente-no-es-lo-mismo-que-actualizable)
@@ -47,12 +46,10 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **24.** [Escribe con red](scripts-and-files.md#24-escribe-con-red)
 - **25.** [Un ajuste no es un estado, y un aviso no es una garantía](scripts-and-files.md#25-un-ajuste-no-es-un-estado-y-un-aviso-no-es-una-garantía)
 - **48.** [Si un archivo sale de un generador, el arreglo va en el generador](scripts-and-files.md#48-si-un-archivo-sale-de-un-generador-el-arreglo-va-en-el-generador)
+- **WEB-1.** [En un archivo que solo crece, una línea rota se lleva también la siguiente](scripts-and-files.md#web-1-en-un-archivo-que-solo-crece-una-línea-rota-se-lleva-también-la-siguiente)
 
 ## Interfaz y diseño
 
-- **WEB-2.** [Un formulario público recibe robots desde el primer día](interface-and-design.md#web-2-un-formulario-público-recibe-robots-desde-el-primer-día)
-- **WEB-3.** [Un respaldo que nadie probó no es respaldo](interface-and-design.md#web-3-un-respaldo-que-nadie-probó-no-es-respaldo)
-- **WEB-4.** [Si deshabilitas el botón, el foco se va con él](interface-and-design.md#web-4-si-deshabilitas-el-botón-el-foco-se-va-con-él)
 - **10.** [Los módulos gemelos se cambian juntos](interface-and-design.md#10-los-módulos-gemelos-se-cambian-juntos)
 - **19.** [Una revisión de una sola dimensión no es una revisión](interface-and-design.md#19-una-revisión-de-una-sola-dimensión-no-es-una-revisión)
 - **31.** [Nada técnico en pantalla si no cambia una decisión](interface-and-design.md#31-nada-técnico-en-pantalla-si-no-cambia-una-decisión)
@@ -62,6 +59,9 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **45.** [El camino del error también lo recorre alguien](interface-and-design.md#45-el-camino-del-error-también-lo-recorre-alguien)
 - **46.** [Lo que corre en cada petición no puede crecer con el contenido](interface-and-design.md#46-lo-que-corre-en-cada-petición-no-puede-crecer-con-el-contenido)
 - **49.** [Una regla general no debe ganarle en silencio a las particulares](interface-and-design.md#49-una-regla-general-no-debe-ganarle-en-silencio-a-las-particulares)
+- **WEB-2.** [Un formulario público recibe robots desde el primer día](interface-and-design.md#web-2-un-formulario-público-recibe-robots-desde-el-primer-día)
+- **WEB-3.** [Un respaldo que nadie probó no es respaldo](interface-and-design.md#web-3-un-respaldo-que-nadie-probó-no-es-respaldo)
+- **WEB-4.** [Si deshabilitas el botón, el foco se va con él](interface-and-design.md#web-4-si-deshabilitas-el-botón-el-foco-se-va-con-él)
 
 ## Consola y herramientas
 
