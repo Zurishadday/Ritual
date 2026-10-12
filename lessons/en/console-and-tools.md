@@ -4,7 +4,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 27. Doubt the instrument before you doubt the system
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** If a number didn't change when it should have, or changed just as you were looking at it, suspect these in order: the cache, another process writing to the same table, the tool you're looking through, and only at the very end the system itself.
 
