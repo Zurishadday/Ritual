@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/social-preview.png" width="100%" alt="Ritual. Claude makes a mistake once. Ritual makes sure it's the last time. Mistake, lesson, rule, check.">
+<img src="assets/banner.png" width="100%" alt="Ritual. Claude makes a mistake once. Ritual makes sure it's the last time. Mistake, lesson, rule, check.">
 
 **Claude 犯错只会一次。Ritual 确保那是最后一次。**
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/social-preview.png" width="100%" alt="Ritual. Claude makes a mistake once. Ritual makes sure it's the last time. Mistake, lesson, rule, check.">
+<img src="assets/banner.png" width="100%" alt="Ritual. Claude makes a mistake once. Ritual makes sure it's the last time. Mistake, lesson, rule, check.">
 
 A Claude Code plugin that turns every mistake into a lesson, every lesson into a rule, and every rule, when it can, into a test or a guard.
 
