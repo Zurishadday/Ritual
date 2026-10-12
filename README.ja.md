@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.svg" width="96" height="96" alt="">
-
-# Ritual
+<img src="assets/social-preview.png" width="100%" alt="Ritual. Claude makes a mistake once. Ritual makes sure it's the last time. Mistake, lesson, rule, check.">
 
 **Claude が間違えるのは一度だけ。Ritual は、それが最後になるようにします。**
 
