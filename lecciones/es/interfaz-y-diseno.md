@@ -137,3 +137,45 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 **Señal de alarma.** «Lo puse global para no repetirlo».
 
 **Qué hacer.** Que la regla general toque solo lo suyo (el contorno del foco, no la forma). Si debe ganar a propósito, escríbelo junto a ella. Y pruébala en la pieza más distinta, no solo en la común.
+
+### WEB-2. Un formulario público recibe robots desde el primer día
+
+`origen: laboratorio · sonnet · 2026-10` · `grupos: scripts-y-archivos` · `paquetes: web`
+
+**La idea.** Un formulario abierto a internet no lo llenan solo personas. Si no frena lo automático y quien lee los mensajes no puede limpiarlos, la primera ola de basura entierra a los clientes de verdad.
+
+**Ejemplo.** En las dos corridas de la simulación Web, el formulario de contacto aceptó 650 mensajes de un script en un par de segundos, todos con «gracias». La administración no tenía páginas ni botón de borrar: pasó a medir entre uno y seis millones de píxeles de alto, y en el celular el texto del mensaje quedaba fuera de la pantalla. Las dos veces el constructor lo dejó anotado como pendiente.
+
+**Pregunta detectora.** Si mañana llegan mil mensajes falsos, ¿cómo encuentra el dueño el único real, y cómo borra los demás?
+
+**Señal de alarma.** «Es un sitio chico, nadie lo va a atacar» · «el límite se pone después».
+
+**Qué hacer.** Desde el inicio, un freno barato: un campo oculto que las personas no llenan y un límite de envíos por dirección por minuto. Y una administración con páginas, lo más nuevo primero, y una forma de borrar o marcar como basura. Pruébalo mandando cientos de mensajes con un script y abriendo la administración en el celular.
+
+### WEB-3. Un respaldo que nadie probó no es respaldo
+
+`origen: laboratorio · sonnet · 2026-10` · `paquetes: web`
+
+**La idea.** Un formulario con `method` y `action` promete que funciona aunque falle el JavaScript. Si el servidor solo responde lo que espera el JavaScript, la promesa es falsa y la persona termina frente a código.
+
+**Ejemplo.** En las dos corridas de la simulación Web, el formulario enviaba con JavaScript y declaraba `method="post"`. Sin JavaScript, en una versión el servidor rechazaba el envío con una línea de JSON y el mensaje se perdía; en la otra lo guardaba y mostraba solo `{"ok":true}` en una página en blanco. Esta segunda versión decía en su resumen que sin JavaScript no enviaba.
+
+**Pregunta detectora.** Si este archivo de JavaScript no carga, ¿qué ve la persona cuando envía?
+
+**Señal de alarma.** «Igual todos tienen JavaScript» · «el `action` lo dejo por si acaso».
+
+**Qué hacer.** Decide una de dos y pruébala: o el servidor acepta el envío normal y responde con una página (o redirige a una de gracias), o el formulario no declara un respaldo que no tiene. Envíalo una vez con el JavaScript apagado.
+
+### WEB-4. Si deshabilitas el botón, el foco se va con él
+
+`origen: laboratorio · sonnet · 2026-10` · `paquetes: web`
+
+**La idea.** Deshabilitar el botón mientras se envía evita el doble envío, pero el botón pierde el foco y el navegador lo manda al documento. Quien usa teclado, después del aviso, empieza otra vez desde arriba.
+
+**Ejemplo.** En las dos corridas de la simulación Web, el envío deshabilitaba el botón. Con un correo que el servidor rechazó, el aviso apareció debajo del botón, el foco quedó en el documento y el siguiente Tab llevó al primer enlace de la página, lejos del campo que había que corregir.
+
+**Pregunta detectora.** Después de enviar, con éxito o con error, ¿dónde queda el foco y adónde lleva el siguiente Tab?
+
+**Señal de alarma.** «Lo deshabilito para que no le den dos veces».
+
+**Qué hacer.** Al terminar el envío, pon el foco donde sigue la persona: en el campo con error (marcado con `aria-invalid` y su mensaje junto a él) o en el aviso de éxito. O evita el doble envío sin deshabilitar, con `aria-disabled` y una bandera. Recorre el error solo con teclado.

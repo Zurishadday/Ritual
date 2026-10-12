@@ -133,3 +133,17 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 **Señal de alarma.** «Lo arreglé directo en el archivo» · «nada más lo regeneré».
 
 **Qué hacer.** Antes de corregir un archivo, averigua de dónde sale. Corrige la fuente (la plantilla, el script, la entrega) y vuelve a generar; si tienes que corregir la salida, corrige también la fuente en el mismo paso. Quien revisa algo generado avisa qué cambió para que pase a la fuente. Y antes de rehacer un archivo desde sus fuentes, compáralo con lo que va a salir: lo que difiera es un arreglo que se perdería.
+
+### WEB-1. En un archivo que solo crece, una línea rota se lleva también la siguiente
+
+`origen: laboratorio · sonnet · 2026-10` · `paquetes: web`
+
+**La idea.** Guardar cada registro como una línea al final de un archivo es sencillo y aguanta muchos a la vez. Pero si una escritura se corta, la línea queda sin su salto y el registro siguiente se pega a ella. Saltarse «las líneas dañadas» al leer se lleva los dos, en silencio. Es la otra cara de la 24: ahí se vacía el archivo; aquí se pierde lo que llega después.
+
+**Ejemplo.** En las dos corridas de la simulación Web, el formulario guardaba cada mensaje como una línea JSON, y la administración omitía las que no podía leer. Con una línea cortada al final del archivo, el mensaje siguiente respondió «¡Gracias!», quedó guardado y nunca apareció en la administración. Una de las dos versiones decía en un comentario «línea dañada: se omite».
+
+**Pregunta detectora.** Si la última escritura quedó a medias, ¿qué le pasa a la siguiente? ¿Lo que mi lector omite le avisa a alguien?
+
+**Señal de alarma.** «Las líneas dañadas se omiten» · «es solo agregar al final».
+
+**Qué hacer.** Antes de agregar, si el archivo no termina en salto de línea, empieza el registro con uno; o guarda cada registro en su propio archivo. Al leer, cuenta las líneas que no se pudieron leer y muéstralo donde lo vea el dueño. Pruébalo dejando una línea cortada a mano y enviando un registro después.

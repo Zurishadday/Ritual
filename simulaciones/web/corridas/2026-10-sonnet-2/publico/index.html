@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller Rueda Libre — Reparación de bicicletas</title>
+<meta name="description" content="Taller Rueda Libre: afinación, cambio de llantas y frenos para tu bicicleta.">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header class="portada">
+  <img src="img/portada.svg" alt="Bicicleta en el taller (imagen de ejemplo)">
+  <div class="portada-texto">
+    <h1>Taller Rueda Libre</h1>
+    <p>Tu bici vuelve a rodar, como el primer día.</p>
+    <a class="boton" href="#contacto">Escríbenos</a>
+  </div>
+</header>
+
+<main>
+  <section id="servicios">
+    <h2>Nuestros servicios</h2>
+    <div class="tarjetas">
+      <article class="tarjeta">
+        <img src="img/afinacion.svg" alt="Afinación de bicicleta (imagen de ejemplo)" loading="lazy">
+        <h3>Afinación</h3>
+        <p>Cambios, cadena, ejes y ajuste general.</p>
+        <p class="precio">$250 MXN</p>
+      </article>
+      <article class="tarjeta">
+        <img src="img/llantas.svg" alt="Cambio de llantas (imagen de ejemplo)" loading="lazy">
+        <h3>Cambio de llantas</h3>
+        <p>Montaje y balanceo, por llanta (sin contar la llanta).</p>
+        <p class="precio">$120 MXN</p>
+      </article>
+      <article class="tarjeta">
+        <img src="img/frenos.svg" alt="Revisión de frenos (imagen de ejemplo)" loading="lazy">
+        <h3>Frenos</h3>
+        <p>Ajuste o cambio de balatas y cables.</p>
+        <p class="precio">$180 MXN</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="visitanos">
+    <h2>Horarios y dirección</h2>
+    <div class="visita">
+      <div>
+        <h3>Horarios</h3>
+        <ul>
+          <li>Lunes a viernes: 9:00 a 19:00</li>
+          <li>Sábado: 9:00 a 15:00</li>
+          <li>Domingo: cerrado</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Dirección</h3>
+        <address>Calle Ejemplo 123, Col. Centro<br>Ciudad de Ejemplo</address>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <h2>Contáctanos</h2>
+    <form id="form" method="post" action="/contacto">
+      <label>Nombre <input name="nombre" required maxlength="100" autocomplete="name"></label>
+      <label>Correo <input name="correo" type="email" required maxlength="200" autocomplete="email"></label>
+      <label>Mensaje <textarea name="mensaje" required maxlength="2000" rows="5"></textarea></label>
+      <button class="boton" type="submit">Enviar mensaje</button>
+      <p id="estado" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+
+<footer>© Taller Rueda Libre</footer>
+<script src="app.js"></script>
+</body>
+</html>

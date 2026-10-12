@@ -35,6 +35,7 @@
 
 ## Scripts y archivos
 
+- **WEB-1.** [En un archivo que solo crece, una línea rota se lleva también la siguiente](scripts-y-archivos.md#web-1-en-un-archivo-que-solo-crece-una-linea-rota-se-lleva-tambien-la-siguiente)
 - **6.** [La definición de negocio vive en un solo lugar](scripts-y-archivos.md#6-la-definicion-de-negocio-vive-en-un-solo-lugar)
 - **7.** [Lee lo publicado, no la intención](scripts-y-archivos.md#7-lee-lo-publicado-no-la-intencion)
 - **20.** [Idempotente no es lo mismo que actualizable](scripts-y-archivos.md#20-idempotente-no-es-lo-mismo-que-actualizable)
@@ -47,6 +48,9 @@
 
 ## Interfaz y diseño
 
+- **WEB-2.** [Un formulario público recibe robots desde el primer día](interfaz-y-diseno.md#web-2-un-formulario-publico-recibe-robots-desde-el-primer-dia)
+- **WEB-3.** [Un respaldo que nadie probó no es respaldo](interfaz-y-diseno.md#web-3-un-respaldo-que-nadie-probo-no-es-respaldo)
+- **WEB-4.** [Si deshabilitas el botón, el foco se va con él](interfaz-y-diseno.md#web-4-si-deshabilitas-el-boton-el-foco-se-va-con-el)
 - **10.** [Los módulos gemelos se cambian juntos](interfaz-y-diseno.md#10-los-modulos-gemelos-se-cambian-juntos)
 - **19.** [Una revisión de una sola dimensión no es una revisión](interfaz-y-diseno.md#19-una-revision-de-una-sola-dimension-no-es-una-revision)
 - **31.** [Nada técnico en pantalla si no cambia una decisión](interfaz-y-diseno.md#31-nada-tecnico-en-pantalla-si-no-cambia-una-decision)
