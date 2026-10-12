@@ -1,47 +1,61 @@
-# Cómo se escribe una lección
+# How to write a lesson
 
-Una lección sale de un error real, no de la teoría. Tiene cinco partes, siempre las cinco, y un número que no cambia nunca. Vive en `lessons/es/<grupo>.md`, en el grupo de **lo que estabas haciendo** cuando pasó (escribir, cifras, pruebas, scripts, interfaz, consola o git). Si también sirve en otro grupo, se dice con `groups:`. Si es propia de un tipo de proyecto, se dice con `packages:`.
+A lesson comes from a real mistake, not from theory. It has five parts, always all five, and a number that never changes. It lives in `lessons/en/<group>.md`, in the group of **what you were doing** when it happened (writing, numbers, tests, scripts, interface, console or git). If it also applies to another group, say so with `groups:`. If it belongs to one kind of project, say so with `packages:`.
 
-El verificador (`node scripts/lessons.mjs --check`) revisa todo esto, y el índice de cada idioma se genera solo (`--index`): no se edita a mano.
+The checker (`node scripts/lessons.mjs --check`) checks all of this, and each language's index is generated (`--index`): it is never edited by hand.
 
-## Plantilla
+## Template
+
+```markdown
+### 13. A checker that never saw the error verifies nothing
+
+`origin: field` · `groups: scripts-and-files` · `packages: web`
+
+**The idea.** The rule, in one or two sentences that make sense without the context.
+
+**Example.** The real case, anonymous: what was done, what happened, how it was noticed.
+
+**Detector question.** The concrete question that separates the case that applies from the one that does not.
+Without it, the lesson is a warning, and warnings get ignored.
+
+**Warning sign.** The phrase you say to yourself right before making the mistake again: "It already passes,
+so it's set up right".
+
+**What to do.** What you do differently from now on, as concrete as possible.
+```
+
+Extra parts such as **Another example.**, **Variant.** or **Not to be confused with.** are allowed; the five above are required.
+
+## The lesson's data line
+
+| Data | Values | Meaning |
+|---|---|---|
+| `origin: field` | | It came from a real mistake in a project, and the example is that mistake. |
+| `origin: lab · sonnet · 2026-10` | model and month | It broke in a Ritual simulation: that model built the task that month. When someone confirms it in their own project, it becomes `field`. |
+| `origin: proposal` + `source: <link>` | | Only for what does not visibly break (security, mostly), from a public source. |
+| `groups:` | other groups, comma-separated | Secondary groups where it also applies. |
+| `packages:` | `web`, `apps`, `crm`, `ai`, `security` | Kinds of project it belongs to. Without it, it applies to all. |
+
+## Numbers
+
+- The core goes from 1 on, with no gaps. Packages use a prefix: `WEB-1`, `AI-3`.
+- Nothing is renumbered or deleted. A lesson already covered by another keeps its number and only says: `Merged into N.`
+- To cite another lesson write "see lesson 44" or "lesson 44"; the checker makes sure it exists.
+
+## Languages
+
+English is the original. Translations live in `lessons/<language>/` (`es`, `pt`, `fr`, `zh-CN`, `ja`, `ko`) with the same numbers and the five parts named in that language (see `PARTS` in `scripts/lessons.mjs`). Chinese and Japanese close the part name with 「。」: `**要点。**`.
+
+A translation's data line does not repeat the original's. It says which version of the original it was made from and who made it:
 
 ```markdown
 ### 13. Un verificador que nunca vio el error no verifica nada
 
-`origin: field` · `groups: scripts-and-files` · `packages: web`
-
-**La idea.** La regla, en una o dos frases que se entiendan sin el contexto.
-
-**Ejemplo.** El caso real, anónimo: qué se hizo, qué pasó, cómo se notó.
-
-**Pregunta detectora.** La pregunta concreta que separa el caso que aplica del que no. Sin esta
-pregunta, la lección es una advertencia, y las advertencias se ignoran.
-
-**Señal de alarma.** La frase que uno se dice justo antes de cometerlo otra vez: «ya pasa,
-entonces está bien puesta».
-
-**Qué hacer.** Lo que se hace distinto a partir de ahora, lo más concreto posible.
+`from: 3fa2c1d9` · `by: ai`
 ```
 
-Partes extra como **Otro ejemplo.**, **Variante.** o **No la confundas con.** están permitidas; las cinco de arriba son obligatorias.
+- `from` is the fingerprint of the English lesson (its title and parts). Nobody writes it by hand: translate the lesson without a data line and run `node scripts/lessons.mjs --stamp <language>`.
+- `by: ai` means a model translated it and no native speaker has reviewed it yet. If you review one, put your GitHub user there: `by: @your-user`. `by: author` marks the Spanish lessons, written by Ritual's authors before English became the original.
+- When the English lesson changes, its fingerprint changes and the checker warns that the translation is out of date. Translate it again, delete its data line and stamp it.
 
-## Los datos de la lección
-
-| Dato | Valores | Qué significa |
-|---|---|---|
-| `origin: field` | | Salió de un error real en un proyecto, y el ejemplo es ese error. |
-| `origin: lab · sonnet · 2026-10` | modelo y mes | Se rompió en una simulación de Ritual: ese modelo construyó la tarea ese mes. Cuando alguien la confirma en un proyecto suyo, pasa a `field`. |
-| `origin: proposal` + `source: <enlace>` | | Solo para lo que no «truena» (seguridad, sobre todo) y viene de una fuente pública. |
-| `groups:` | otros grupos, separados por coma | Grupos secundarios donde también aplica. |
-| `packages:` | `web`, `apps`, `crm`, `ai`, `security` | Tipos de proyecto a los que pertenece. Sin este dato, aplica a todos. |
-
-## Números
-
-- El núcleo va del 1 en adelante, sin huecos. Los paquetes usan prefijo: `WEB-1`, `IA-3`.
-- Nunca se renumera ni se borra. Una lección que ya está cubierta por otra se queda con su número y dice solo: `Fusionada en la N.`
-- Para citar otra lección se escribe «ver la 44» o «lección 44»; el verificador comprueba que exista.
-
-## Idiomas
-
-El original es el español. Las traducciones (`lessons/en/`, `lessons/pt/`...) llevan el mismo número y las cinco partes con los nombres de ese idioma; la línea de datos (`origin`, `groups`, `packages`) solo va en el original.
+A missing, unstamped or outdated translation is a **warning**, never an error: a new lesson can go in English alone, and translations catch up after.

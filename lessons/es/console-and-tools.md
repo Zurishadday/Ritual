@@ -4,7 +4,7 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 ### 27. Antes de dudar del sistema, duda del instrumento
 
-`origin: field`
+`from: 4b9a0956` · `by: author`
 
 **La idea.** Si un número no cambió cuando debía, o cambió justo cuando lo mirabas, sospecha en este orden: caché, otro proceso que escribe en la misma tabla, la herramienta por la que miras, y hasta el final el sistema.
 
@@ -22,7 +22,7 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 ### 29. Verifica el comando antes de pasárselo a otro
 
-`origin: field`
+`from: 0c95aa16` · `by: author`
 
 **La idea.** Quien ejecuta un comando ajeno lo hace a ciegas. Cada comando roto le gasta la confianza que le tendrá al siguiente.
 
@@ -36,7 +36,7 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 ### 44. Lo que recortas de la salida puede ser el veredicto
 
-`origin: field` · `groups: tests-and-checks`
+`from: ca6fa003` · `by: author`
 
 **La idea.** Mirar solo las últimas líneas de un resultado, o pasarlo por otro comando, puede tirar justo la parte que decía «falló». Una salida recortada de una prueba que falló se ve igual que la de una que pasó.
 

@@ -9,11 +9,11 @@
 // Usage: node hooks/questions.mjs --selftest
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { readLessons, readGroupFile } from "../scripts/lessons.mjs";
+import { ORIGINAL, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { ritualDir, readInput, readJson, session } from "./common.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
-export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "es", packages: [], demoted: [], groups: {} });
+export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
 const GIT = /(^|[\s;&|(])git\s+(commit|push|merge|rebase|tag|cherry-pick|revert)\b/;
 
 /** @returns {{group: string | null, target: string}} */
@@ -34,10 +34,11 @@ export function groupOf(input, config = DEFAULT_CONFIG) {
   return { group: null, target: relative };
 }
 
-/** The lessons that apply to a group: from the plugin (core and active packages) and the project's own. */
+/** The lessons that apply to a group: from the plugin (core and active packages) and the project's own.
+ * The plugin's lessons always go out in the original (English): they are for Claude, who replies in the user's
+ * language anyway. Translations are for people reading them. */
 export function lessonsFor(group, config, ritual) {
-  const language = config.language ?? "es";
-  const { groups, lessons } = readLessons(existsSync(path.join(PLUGIN, "lessons", language)) ? language : "es", PLUGIN);
+  const { groups, lessons } = readLessons(ORIGINAL, PLUGIN);
   const own = [];
   const projectDir = ritual && path.join(ritual, "lessons");
   if (projectDir && existsSync(projectDir))
@@ -51,15 +52,16 @@ export function lessonsFor(group, config, ritual) {
     const fromPackage = (l.data.packages ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     return !fromPackage.length || fromPackage.some((p) => packages.has(p));
   };
-  return { title: groups[group] ?? group, lessons: [...lessons.filter(applies), ...own.filter(applies)], language };
+  return { title: groups[group] ?? group, lessons: [...lessons.filter(applies), ...own.filter(applies)] };
 }
 
 export function context(group, config, ritual) {
-  const { title, lessons, language } = lessonsFor(group, config, ritual);
+  const { title, lessons } = lessonsFor(group, config, ritual);
   if (!lessons.length) return null;
-  const question = (l) => (l.parts["Pregunta detectora"] ?? l.parts["Detector question"] ?? Object.values(l.parts)[2] ?? "").replace(/\s+/g, " ");
+  // The project's own lessons may be in any language: the detector question is always the third part.
+  const question = (l) => (l.parts["Detector question"] ?? Object.values(l.parts)[2] ?? "").replace(/\s+/g, " ");
   return [
-    `Ritual · ${title}. Before you continue, run through these detector questions for what you are about to do. If one applies, act on it and say so in one line; if none applies, just continue. Details: lessons/${language}/${group}.md in the Ritual plugin, or .ritual/lessons/ in this project. Reply to the user in their language.`,
+    `Ritual · ${title}. Before you continue, run through these detector questions for what you are about to do. If one applies, act on it and say so in one line; if none applies, just continue. Details: lessons/${ORIGINAL}/${group}.md in the Ritual plugin, or .ritual/lessons/ in this project. Reply to the user in their language.`,
     ...lessons.map((l) => `- ${l.id} · ${question(l)}`),
   ].join("\n");
 }

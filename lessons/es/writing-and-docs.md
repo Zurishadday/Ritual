@@ -4,7 +4,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 11. Retirar una gráfica no retira lo que afirmaba
 
-`origin: field`
+`from: 36ab089d` · `by: author`
 
 **La idea.** Si quitas algo porque el dato no era confiable, esa misma afirmación probablemente vive en otros textos, escrita con otras palabras.
 
@@ -20,7 +20,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 37. Documenta lo que hay, no lo que quisieras que hubiera
 
-`origin: field`
+`from: 928f7db8` · `by: author`
 
 **La idea.** Una revisión de documentación mejora el documento, no rediseña el sistema. Si el sistema tiene un límite, el documento lo declara; no lo esconde ni promete arreglarlo.
 
@@ -34,7 +34,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 38. Lo que no sabes se marca, no se inventa
 
-`origin: field`
+`from: 052e301a` · `by: author`
 
 **La idea.** Un documento oficial afirma todo con la misma autoridad. Un dato inventado, como un responsable, un horario o un tiempo de respuesta, se lee igual que uno real.
 
@@ -50,7 +50,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 39. Versiona a la vista
 
-`origin: field` · `groups: git-and-process`
+`from: 778c3988` · `by: author`
 
 **La idea.** Cada cambio lleva número de versión nuevo en la portada y una línea en el historial, con fecha, qué cambió y quién lo hizo. Cuando circulan dos copias, la versión es lo único que dice cuál es la buena.
 
@@ -64,7 +64,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 42. Trabaja sobre la versión vigente
 
-`origin: field` · `groups: git-and-process`
+`from: 2618ac78` · `by: author`
 
 **La idea.** Una revisión hecha sobre una copia vieja trae de regreso errores que ya se habían corregido.
 
@@ -78,7 +78,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 43. Relee de punta a punta después de muchas correcciones
 
-`origin: field`
+`from: 781d2fa2` · `by: author`
 
 **La idea.** Tras varias rondas de arreglos puntuales, un documento puede contradecirse a sí mismo: cada corrección fue cierta en su apartado, pero nadie volvió a leer los demás.
 

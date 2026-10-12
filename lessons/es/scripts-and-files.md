@@ -4,7 +4,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 6. La definición de negocio vive en un solo lugar
 
-`origin: field`
+`from: 5286faa8` · `by: author`
 
 **La idea.** Si la regla de «qué cuenta como activo» se repite en cada consulta, las copias van a divergir. No es si acaso, sino cuándo.
 
@@ -20,7 +20,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 7. Lee lo publicado, no la intención
 
-`origin: field`
+`from: d542c959` · `by: author`
 
 **La idea.** Un proceso declara lo que piensa hacer, pero publica lo que de verdad hizo, y no siempre coinciden. Quien consume debe leer el resultado.
 
@@ -34,7 +34,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 20. Idempotente no es lo mismo que actualizable
 
-`origin: field`
+`from: 8ddac922` · `by: author`
 
 **La idea.** «Insertar si no existe» evita duplicados, pero congela: lo que ya está no se vuelve a escribir nunca.
 
@@ -48,7 +48,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 21. Tu marcador debe ser tuyo
 
-`origin: field`
+`from: e8ae4ba7` · `by: author`
 
 **La idea.** Si ubicas tu cambio buscando un texto que el usuario lee, como un título o un rótulo, otra mejora le pegará algo encima y tu cambio dejará de encontrarlo.
 
@@ -66,7 +66,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 22. La segunda corrida es la que encuentra el error
 
-`origin: field`
+`from: 56b0053e` · `by: author`
 
 **La idea.** Un cambio que se repite sin romper nada se comprueba corriéndolo dos veces, no una.
 
@@ -80,7 +80,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 23. Las direcciones por posición caducan
 
-`origin: field`
+`from: d94e6ad5` · `by: author`
 
 **La idea.** Si insertas algo antes de «la celda 9», la celda 9 ya es otra.
 
@@ -94,7 +94,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 24. Escribe con red
 
-`origin: field`
+`from: f7402634` · `by: author`
 
 **La idea.** Abrir un archivo para escribir lo vacía al instante. Si algo falla a media escritura, te quedas con un archivo vacío.
 
@@ -108,7 +108,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 25. Un ajuste no es un estado, y un aviso no es una garantía
 
-`origin: field`
+`from: c5f24f3e` · `by: author`
 
 **La idea.** «La tarea programada está activada» no significa «corrió este mes». Y esperar a que algo avise cuando falla es confiar en que el aviso nunca falle.
 
@@ -122,7 +122,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 48. Si un archivo sale de un generador, el arreglo va en el generador
 
-`origin: field`
+`from: 17fcef8c` · `by: author`
 
 **La idea.** Cuando un archivo se arma con un script o desde otras piezas, el archivo es una salida, no el original. Lo que se corrige directo en él se pierde la próxima vez que se genere, sin aviso.
 
@@ -136,7 +136,7 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### WEB-1. En un archivo que solo crece, una línea rota se lleva también la siguiente
 
-`origin: lab · sonnet · 2026-10` · `packages: web`
+`from: 67b63f0b` · `by: author`
 
 **La idea.** Guardar cada registro como una línea al final de un archivo es sencillo y aguanta muchos a la vez. Pero si una escritura se corta, la línea queda sin su salto y el registro siguiente se pega a ella. Saltarse «las líneas dañadas» al leer se lleva los dos, en silencio. Es la otra cara de la 24: ahí se vacía el archivo; aquí se pierde lo que llega después.
 

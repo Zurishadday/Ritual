@@ -38,11 +38,11 @@ export function detect(project) {
   const packages = Object.entries(PACKAGES).filter(([, ds]) => ds.some((d) => deps.has(d))).map(([p]) => p);
   const claude = path.join(project, "CLAUDE.md");
   const text = existsSync(claude) ? readFileSync(claude, "utf8") : "";
-  const language = /\b(que|para|con|archivo|proyecto|siempre)\b/i.test(text) && !/\b(the|with|always|project)\b/i.test(text.slice(0, 400)) ? "es" : text ? "en" : "es";
+  const language = /\b(que|para|con|archivo|proyecto|siempre)\b/i.test(text) && !/\b(the|with|always|project)\b/i.test(text.slice(0, 400)) ? "es" : "en";
   return { packages, language, dependencies: deps.size };
 }
 
-export function init(project, { packages = [], language = "es" } = {}) {
+export function init(project, { packages = [], language = "en" } = {}) {
   const created = [];
   const dir = path.join(project, ".ritual");
   mkdirSync(path.join(dir, "lessons"), { recursive: true });
@@ -103,6 +103,6 @@ if (import.meta.main) {
     console.log(`Dependencies read: ${d.dependencies}\nDetected packages: ${d.packages.join(", ") || "none (core lessons only)"}\nGuessed language: ${d.language}\nAvailable packages: ${Object.keys(PACKAGES).join(", ")}, security`);
     process.exit(0);
   }
-  const created = init(project, { packages: (value("--packages") ?? "").split(",").map((s) => s.trim()).filter(Boolean), language: value("--language") ?? "es" });
+  const created = init(project, { packages: (value("--packages") ?? "").split(",").map((s) => s.trim()).filter(Boolean), language: value("--language") ?? "en" });
   console.log(created.length ? `✓ created or updated: ${created.join(", ")}` : "✓ nothing to do: Ritual was already set up");
 }

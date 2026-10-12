@@ -4,7 +4,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 13. Un verificador que nunca vio el error no verifica nada
 
-`origin: field`
+`from: eb6c6b31` · `by: author`
 
 **La idea.** Una prueba que siempre pasa puede estar rota. La única forma de saberlo es verla fallar contra el error real.
 
@@ -22,7 +22,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 14. La sonda no viaja por el canal que investiga
 
-`origin: field`
+`from: 5c6ecad0` · `by: author`
 
 **La idea.** Si tu verificación pasa por la misma tubería que pudo causar el daño, el daño también la afecta a ella, y responde lo mismo esté bien o mal.
 
@@ -36,7 +36,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 15. Una prueba que se apaga sola no avisa que se apagó
 
-`origin: field`
+`from: 86581aad` · `by: author`
 
 **La idea.** Las ramas de «si no encuentro el dato, me salto la prueba» se activan justo cuando el mundo cambia, y dejan de vigilar sin que nadie lo note.
 
@@ -52,7 +52,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 16. El filtro de tu verificador suele excluir justo lo que importa
 
-`origin: field`
+`from: 5301da23` · `by: author`
 
 **La idea.** Toda revisión automática filtra lo «relevante», y ese filtro puede dejarla ciega exactamente donde está el problema.
 
@@ -70,7 +70,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 17. Que el código compile no es que corra
 
-`origin: field`
+`from: 2a71a25d` · `by: author`
 
 **La idea.** Un revisor de sintaxis aprueba código que truena al ejecutarse. Una pantalla en blanco con todo «en verde» es el peor fallo posible.
 
@@ -84,7 +84,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 18. Verificar el origen no es verificar lo entregado
 
-`origin: field`
+`from: fd2f11f3` · `by: author`
 
 **La idea.** Si compruebas X y al usuario le llega Y, derivado de X, entre los dos hay código que nadie está mirando.
 
@@ -100,7 +100,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 26. Lo que está en producción también se echa a perder
 
-`origin: field`
+`from: 7b79664a` · `by: author`
 
 **La idea.** Los filtros de calidad suelen revisar lo nuevo. Lo que ya entró se quedó, y sus supuestos envejecen sin que nadie vuelva a preguntar.
 
@@ -114,7 +114,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 28. Quien ejecuta y quien verifica son personas distintas
 
-`origin: field`
+`from: ed079f80` · `by: author`
 
 **La idea.** Si la misma persona ejecuta y confirma, un error de ejecución se confirma a sí mismo.
 
@@ -128,7 +128,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 34. A un hallazgo de QA créele el síntoma y mide la causa
 
-`origin: field`
+`from: b3b868fb` · `by: author`
 
 **La idea.** Un reporte de calidad suele acertar en el síntoma y proponer una causa que es solo una hipótesis.
 

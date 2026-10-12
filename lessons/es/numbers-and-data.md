@@ -4,7 +4,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 1. «No pude leer» no es «no hay nada»
 
-`origin: field` · `groups: tests-and-checks`
+`from: fe96d871` · `by: author`
 
 **La idea.** Todo dato tiene tres estados: lo tengo, de verdad no hubo nada, y no sé. Los dos últimos se dibujan igual en una gráfica, como un cero, y significan lo contrario.
 
@@ -18,7 +18,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 2. Dos cosas con el mismo nombre no son la misma cosa
 
-`origin: field`
+`from: 36e0626d` · `by: author`
 
 **La idea.** «Cliente activo», «fecha», «el jefe», «el umbral»: la misma palabra suele esconder dos definiciones. Cuando dos reportes no cuadran, casi siempre es esto.
 
@@ -34,7 +34,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 3. El periodo en curso siempre está incompleto
 
-`origin: field`
+`from: 23269694` · `by: author`
 
 **La idea.** Un mes que no ha terminado siempre parece peor que uno cerrado. No es una tendencia: es el calendario.
 
@@ -48,7 +48,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 4. Un campo que la fuente sobrescribe no es historia
 
-`origin: field`
+`from: 89a9e01d` · `by: author`
 
 **La idea.** Muchos sistemas guardan solo el valor de hoy. Si construyes una variable «histórica» sobre ese campo, estás midiendo el presente con cara de pasado.
 
@@ -62,7 +62,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 5. Un resultado perfecto es una alerta, no un triunfo
 
-`origin: field`
+`from: 44986978` · `by: author`
 
 **La idea.** Si una variable sola separa casi sin error a los que se fueron de los que se quedaron, lo más probable es que traiga escondido el propio desenlace.
 
@@ -76,7 +76,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 12. Que la consulta corra no prueba que el número esté bien
 
-`origin: field` · `groups: tests-and-checks`
+`from: b2232042` · `by: author`
 
 **La idea.** «No dio error» no es «está bien». Compara contra algo independiente de tu propio cálculo.
 
@@ -94,7 +94,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 36. Mide antes de escribir
 
-`origin: field` · `groups: writing-and-docs`
+`from: 91ed55e0` · `by: author`
 
 **La idea.** Cada cifra de un documento viene de una medición con fecha y fuente, no de la memoria ni de una versión anterior del documento.
 

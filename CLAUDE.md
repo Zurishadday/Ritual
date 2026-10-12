@@ -13,7 +13,7 @@ A public Claude Code plugin: every mistake becomes a lesson, every lesson a rule
 - Core lessons are numbered from 1 and are never renumbered or deleted: a redundant one is marked "Merged into N." Packages use a prefix (`WEB-1`).
 - Every lesson states its origin: `field` (a real mistake with its example), `lab` (broke in a simulation: model and date) or `proposal` (only for security issues that do not visibly break, with a public source).
 - In simulations Sonnet builds; Opus reviews, runs and writes the lesson, in a separate session.
-- Skills are written in English and tell Claude to reply in the user's language. README and lessons in seven languages. The lessons' original is moving from Spanish to English: until `lessons/en/` exists, `lessons/es/` is the original.
+- Skills are written in English and tell Claude to reply in the user's language. README and lessons in seven languages; English is the original. Translations carry a `from:` stamp of the version they came from (`node scripts/lessons.mjs --stamp <language>`); Haiku translates, a native speaker reviews.
 
 ## Ritual
 

@@ -4,7 +4,7 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 8. Enumera a los consumidores, no los recuerdes
 
-`origin: field`
+`from: b3d4e214` · `by: author`
 
 **La idea.** Cuando cambias un dato que otros leen por su nombre, la lista de quién lo lee tiene que estar escrita. La memoria siempre deja uno fuera.
 
@@ -22,7 +22,7 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 9. Un estado vive en varios registros: muévelos juntos
 
-`origin: field`
+`from: bc14d730` · `by: author`
 
 **La idea.** Cerrar un pendiente suele implicar tres lugares: el registro de pendientes, la prueba que lo vigila y el documento que lo describe. Si mueves uno, los otros contradicen.
 
@@ -36,7 +36,7 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 30. Explica antes de hacer y espera el sí
 
-`origin: field`
+`from: 78e8a4b8` · `by: author`
 
 **La idea.** Avanzar rápido en la dirección equivocada no es avanzar.
 
@@ -50,7 +50,7 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 35. Una lista de pendientes escrita de paso envejece
 
-`origin: field`
+`from: 6deec922` · `by: author`
 
 **La idea.** Lo que anotaste «para después» mientras hacías otra cosa puede ya no existir, o haber sido una decisión deliberada.
 
@@ -64,7 +64,7 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 40. El registro dice qué quedó y por qué, no la crónica de tropiezos
 
-`origin: field`
+`from: 8309d6b7` · `by: author`
 
 **La idea.** Un historial de cambios sirve para entender el producto, no para narrar los errores ya resueltos de quien lo hizo.
 
@@ -78,7 +78,7 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 47. Lo que se trabaja en paralelo se cruza en lo compartido
 
-`origin: field`
+`from: 3565a1b4` · `by: author`
 
 **La idea.** Cuando varias personas trabajan a la vez, cada una ve bien su pieza. Lo que comparten (las pruebas, los datos, los documentos de todo el proyecto) junta sus cambios: nombres que chocan, copias que se quedan atrás, pruebas que leen el trabajo a medias de otra persona. Integrar es un trabajo, no un pegado.
 

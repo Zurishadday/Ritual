@@ -4,7 +4,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 10. Los módulos gemelos se cambian juntos
 
-`origin: field`
+`from: 39a1c52b` · `by: author`
 
 **La idea.** Si tu producto tiene dos versiones de la misma pantalla, para dos tipos de usuario, dos regiones o dos productos, una mejora en una es una mejora pendiente en la otra.
 
@@ -18,7 +18,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 19. Una revisión de una sola dimensión no es una revisión
 
-`origin: field`
+`from: e2d5ae25` · `by: author`
 
 **La idea.** «Ya están iguales» exige haber comparado todas las propiedades que se ven, no solo una.
 
@@ -34,7 +34,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 31. Nada técnico en pantalla si no cambia una decisión
 
-`origin: field`
+`from: 60f4261e` · `by: author`
 
 **La idea.** Cada elemento de una pantalla de negocio debe ayudar a decidir algo. Lo que sirve para auditar va en el código; lo que sirve para decidir va en la pantalla, en lenguaje de negocio.
 
@@ -48,7 +48,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 32. Lo que funciona y no se ve se reporta como roto
 
-`origin: field` · `packages: web, apps`
+`from: 62e8051c` · `by: author`
 
 **La idea.** Si un botón cambia algo fuera de la vista, para el usuario funcionar y no funcionar se ven igual.
 
@@ -64,7 +64,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 33. El glifo no es el texto
 
-`origin: field`
+`from: ba84572f` · `by: author`
 
 **La idea.** En letra pequeña, «÷» y «+», «l» y «1», «O» y «0» se confunden. Si dos personas leen lo mismo mal, no están distraídas: es el tamaño de la letra.
 
@@ -80,7 +80,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 41. Comprueba en el formato que lee la gente
 
-`origin: field` · `groups: tests-and-checks` · `packages: web`
+`from: d5bc89cb` · `by: author`
 
 **La idea.** Buscar una palabra en el texto no prueba que se vea. El texto puede estar en otro lugar del documento mientras el formato que lo debía mostrar sale vacío.
 
@@ -98,7 +98,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 45. El camino del error también lo recorre alguien
 
-`origin: field` · `packages: web, apps`
+`from: 93409a9c` · `by: author`
 
 **La idea.** Si solo pruebas lo que pasa cuando todo sale bien, quien se equivoca encuentra el hueco. Y al aprender, equivocarse es lo más común.
 
@@ -112,7 +112,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 46. Lo que corre en cada petición no puede crecer con el contenido
 
-`origin: field` · `packages: web`
+`from: b7ad7ec2` · `by: author`
 
 **La idea.** Algo que se hace en cada página, como leer todo el contenido o recalcular un índice, cuesta poco con diez páginas y mucho con cien. Crece de a poco y nadie lo nota, hasta que algo empieza a fallar «de vez en cuando».
 
@@ -126,7 +126,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 49. Una regla general no debe ganarle en silencio a las particulares
 
-`origin: field` · `packages: web`
+`from: 4a81cf45` · `by: author`
 
 **La idea.** Una regla que aplica a todo (un estilo global, un valor por defecto) puede pisar lo que cada pieza decidió para sí, sin que nada avise.
 
@@ -140,7 +140,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### WEB-2. Un formulario público recibe robots desde el primer día
 
-`origin: lab · sonnet · 2026-10` · `groups: scripts-and-files` · `packages: web`
+`from: 6a05ed7d` · `by: author`
 
 **La idea.** Un formulario abierto a internet no lo llenan solo personas. Si no frena lo automático y quien lee los mensajes no puede limpiarlos, la primera ola de basura entierra a los clientes de verdad.
 
@@ -154,7 +154,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### WEB-3. Un respaldo que nadie probó no es respaldo
 
-`origin: lab · sonnet · 2026-10` · `packages: web`
+`from: c0e4cb66` · `by: author`
 
 **La idea.** Un formulario con `method` y `action` promete que funciona aunque falle el JavaScript. Si el servidor solo responde lo que espera el JavaScript, la promesa es falsa y la persona termina frente a código.
 
@@ -168,7 +168,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### WEB-4. Si deshabilitas el botón, el foco se va con él
 
-`origin: lab · sonnet · 2026-10` · `packages: web`
+`from: 4dc9e2b6` · `by: author`
 
 **La idea.** Deshabilitar el botón mientras se envía evita el doble envío, pero el botón pierde el foco y el navegador lo manda al documento. Quien usa teclado, después del aviso, empieza otra vez desde arriba.
 
