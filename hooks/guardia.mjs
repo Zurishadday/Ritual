@@ -118,7 +118,7 @@ if (import.meta.main) {
   }
   if (process.argv.includes("--bitacora")) {
     const ruta = dir && path.join(dir, "local", "guardia.jsonl");
-    const lineas = ruta && existsSync(ruta) ? readFileSync(ruta, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l)) : [];
+    const lineas = ruta && existsSync(ruta) ? readFileSync(ruta, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) : [];
     if (!lineas.length) { console.log("Sin bloqueos anotados."); process.exit(0); }
     const porRegla = {};
     for (const l of lineas) (porRegla[l.regla] ??= []).push(l);

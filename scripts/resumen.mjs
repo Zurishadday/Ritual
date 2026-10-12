@@ -9,8 +9,13 @@
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { anotarLinea } from "../hooks/comun.mjs";
 
-const leerJsonl = (ruta) => (existsSync(ruta) ? readFileSync(ruta, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) : []);
+/** Los registros legibles, y en `rotas` cuántas líneas no se pudieron leer: se dicen, no se saltan en silencio (WEB-1). */
+const leerJsonl = (ruta) => {
+  const todas = existsSync(ruta) ? readFileSync(ruta, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }) : [];
+  return Object.assign(todas.filter(Boolean), { rotas: todas.filter((x) => !x).length });
+};
 const corto = (s, n = 110) => String(s ?? "").replace(/\s+/g, " ").trim().slice(0, n);
 
 export function resumen(proyecto, { ahora = new Date() } = {}) {
@@ -22,9 +27,10 @@ export function resumen(proyecto, { ahora = new Date() } = {}) {
   const reciente = (x) => !desde || x.fecha > desde;
   const lineas = [`Ritual · summary since ${desde ? desde.slice(0, 16).replace("T", " ") : "the beginning"} (now ${ahora.toISOString().slice(0, 16).replace("T", " ")})`];
 
-  const bitacora = leerJsonl(path.join(local, "bitacora.jsonl")).filter(reciente);
+  const leida = leerJsonl(path.join(local, "bitacora.jsonl"));
+  const bitacora = leida.filter(reciente);
   const comandos = bitacora.filter((x) => x.tipo === "comando"), correcciones = bitacora.filter((x) => x.tipo === "correccion");
-  lineas.push("", `Log: ${comandos.length} failed command(s), ${correcciones.length} correction(s)`);
+  lineas.push("", `Log: ${comandos.length} failed command(s), ${correcciones.length} correction(s)${leida.rotas ? ` · ${leida.rotas} unreadable line(s) skipped` : ""}`);
   for (const x of comandos.slice(-15)) lineas.push(`  ${x.fecha.slice(5, 16).replace("T", " ")} cmd  ${corto(x.comando, 80)}  →  ${corto(x.error, 90)}`);
   for (const x of correcciones.slice(-15)) lineas.push(`  ${x.fecha.slice(5, 16).replace("T", " ")} fix  «${corto(x.frase, 90)}»${x.ultimo ? `  while ${x.ultimo.herramienta} ${corto(x.ultimo.objetivo, 60)}` : ""}`);
   if (bitacora.length > 30) lineas.push(`  … ${bitacora.length - 30} more in .ritual/local/bitacora.jsonl`);
@@ -66,14 +72,16 @@ export function probar() {
       JSON.stringify({ fecha: "2026-10-01T10:00:00Z", tipo: "comando", comando: "npm test", error: "Exit code 1\nviejo" }),
       JSON.stringify({ fecha: "2026-10-12T10:00:00Z", tipo: "comando", comando: "npm run build", error: "Exit code 2\nType error" }),
       JSON.stringify({ fecha: "2026-10-12T10:05:00Z", tipo: "correccion", frase: "eso está mal", ultimo: { herramienta: "Edit", objetivo: "src/a.tsx" } }),
-      "esta línea no es json",
+      "{\"fecha\":\"2026-10-12T10:06:00Z\",\"tipo\":\"coman", // escritura cortada, sin salto: lo que deja una caída
     ].join("\n"));
+    // WEB-1: lo que un hook anota después de la línea cortada no debe pegarse a ella.
+    anotarLinea(path.join(tmp, ".ritual", "local", "bitacora.jsonl"), { tipo: "comando", comando: "npm run lint", error: "Exit code 1\ndespués del corte" });
     writeFileSync(path.join(tmp, ".ritual", "local", "guardia.jsonl"), JSON.stringify({ fecha: "2026-10-12T10:01:00Z", regla: "python-c", comando: "python -c 1" }) + "\n");
     writeFileSync(path.join(local, "a.json"), JSON.stringify({ enviados: ["interfaz-y-diseno", "consola-y-herramientas"], ultimo: { fecha: "2026-10-12T10:05:00Z" } }));
     writeFileSync(path.join(tmp, ".ritual", "candidatos.md"), "# Candidatos\n\n| # | Qué | Lección | Estado | Fecha |\n|---|---|---|---|---|\n| 1 | probar x | 13 | abierto | 2026-10-02 |\n| 2 | probar y | 21 | hecho | 2026-10-03 |\n");
     writeFileSync(path.join(tmp, ".ritual", "local", "ultimo-ritual.txt"), "2026-10-05T00:00:00Z");
     const r = resumen(tmp);
-    for (const esperado of ["1 failed command(s), 1 correction(s)", "npm run build", "Type error", "«eso está mal»", "while Edit src/a.tsx", "1 block(s) · python-c ×1", "interfaz-y-diseno (1)", "1 open of 2", "probar x"])
+    for (const esperado of ["2 failed command(s), 1 correction(s)", "después del corte", "1 unreadable line(s) skipped", "npm run build", "Type error", "«eso está mal»", "while Edit src/a.tsx", "1 block(s) · python-c ×1", "interfaz-y-diseno (1)", "1 open of 2", "probar x"])
       if (!r.includes(esperado)) malos.push(`el resumen no dice «${esperado}»`);
     if (r.includes("viejo")) malos.push("el resumen trae un error anterior al último ritual");
     if (r.includes("probar y")) malos.push("el resumen lista un candidato que ya está hecho");
@@ -87,7 +95,7 @@ if (import.meta.main) {
   const args = process.argv.slice(2);
   if (args.includes("--probar")) {
     const malos = probar();
-    console.log(malos ? `${malos} caso(s) mal` : "✓ resumen: filtra por fecha, ignora líneas rotas y lista solo lo abierto");
+    console.log(malos ? `${malos} caso(s) mal` : "✓ resumen: filtra por fecha, cuenta las líneas rotas sin perder la siguiente y lista solo lo abierto");
     process.exit(malos ? 1 : 0);
   }
   const proyecto = path.resolve(args.find((a) => !a.startsWith("--")) ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
