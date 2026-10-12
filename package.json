@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/revisar-publicacion.mjs --probar",
+    "test": "node scripts/revisar-publicacion.mjs --probar && node scripts/lecciones.mjs --probar && node scripts/lecciones.mjs --verificar",
     "revisar": "node scripts/revisar-publicacion.mjs"
   }
 }
