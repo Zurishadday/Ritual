@@ -6,14 +6,11 @@
 import { appendFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { TAXONOMY } from "./lessons.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
-const PACKAGES = {
-  web: ["react", "next", "vue", "nuxt", "svelte", "@sveltejs/kit", "astro", "@angular/core", "tailwindcss", "vite", "streamlit", "django", "flask"],
-  apps: ["express", "fastify", "@nestjs/core", "hono", "prisma", "@prisma/client", "drizzle-orm", "next-auth", "@auth/core", "stripe", "@supabase/supabase-js", "firebase", "fastapi", "django", "sqlalchemy"],
-  crm: ["@hubspot/api-client", "hubspot", "jsforce", "simple-salesforce", "twilio", "@sendgrid/mail", "mailchimp-marketing"],
-  ai: ["openai", "@anthropic-ai/sdk", "anthropic", "langchain", "@langchain/core", "llamaindex", "llama-index", "ai", "@ai-sdk/openai", "transformers", "ollama"],
-};
+// Which dependencies turn each package on: lessons/taxonomy.json, the one list of groups and packages.
+const PACKAGES = Object.fromEntries(Object.entries(TAXONOMY.packages).map(([p, def]) => [p, def.detect]));
 const MARK_START = "<!-- ritual:start -->", MARK_END = "<!-- ritual:end -->";
 const SECTION = {
   es: `## Ritual\n\n${MARK_START}\nLas lecciones de este proyecto viven en \`.ritual/lessons/\`; las del núcleo, en el plugin Ritual. Sus hooks bloquean lo que ya falló, anotan errores y correcciones en \`.ritual/local/\` y muestran las preguntas de cada grupo una vez por sesión. Corre \`/ritual\` al cerrar una sesión o después de un error doloroso, y \`/ritual close\` antes de dar algo por terminado.\n\nReglas que este proyecto ya rompió más de una vez y no se pudieron automatizar:\n\n- (ninguna todavía)\n${MARK_END}\n`,
@@ -100,7 +97,7 @@ if (import.meta.main) {
   const value = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : undefined; };
   if (args.includes("--detect")) {
     const d = detect(project);
-    console.log(`Dependencies read: ${d.dependencies}\nDetected packages: ${d.packages.join(", ") || "none (core lessons only)"}\nGuessed language: ${d.language}\nAvailable packages: ${Object.keys(PACKAGES).join(", ")}, security`);
+    console.log(`Dependencies read: ${d.dependencies}\nDetected packages: ${d.packages.join(", ") || "none (core lessons only)"}\nGuessed language: ${d.language}\nAvailable packages: ${Object.keys(PACKAGES).join(", ")}`);
     process.exit(0);
   }
   const created = init(project, { packages: (value("--packages") ?? "").split(",").map((s) => s.trim()).filter(Boolean), language: value("--language") ?? "en" });

@@ -1,0 +1,34 @@
+{
+  "about": "The one place where Ritual's groups and packages are defined. Groups: what you were doing when the mistake happened (every lesson has one). Packages: what kind of project you are building (only for lessons that apply to that kind alone). `covers` is what decides where a lesson goes; `detect` lists the dependencies that turn a package on at setup. See lessons/TEMPLATE.md#where-a-lesson-goes before adding one.",
+  "groups": [
+    { "slug": "writing-and-docs", "covers": "Writing for people: documentation, manuals, screen text, content, prompts." },
+    { "slug": "numbers-and-data", "covers": "Calculating, measuring or showing a number: dashboards, reports, models, metrics, queries." },
+    { "slug": "tests-and-checks", "covers": "Checking something: automated tests, validators, reviews, calibration." },
+    { "slug": "scripts-and-files", "covers": "A program that writes, generates, transforms or moves files and data." },
+    { "slug": "interface-and-design", "covers": "Something a person will see or use: screens, components, styles, pages, forms." },
+    { "slug": "console-and-tools", "covers": "Running commands, servers, tests or captures, and the tool that gets between you and the system." },
+    { "slug": "git-and-process", "covers": "Saving, closing, handing off or coordinating: commits, states, pending items, parallel work." }
+  ],
+  "packages": {
+    "web": {
+      "covers": "Websites and web front ends: pages, forms, components, styles, what runs in the browser and the small server behind a site.",
+      "detect": ["react", "next", "vue", "nuxt", "svelte", "@sveltejs/kit", "astro", "@angular/core", "tailwindcss", "vite", "streamlit", "django", "flask"]
+    },
+    "apps": {
+      "covers": "Applications with a backend of their own: APIs, authentication, databases, payments, background jobs.",
+      "detect": ["express", "fastify", "@nestjs/core", "hono", "prisma", "@prisma/client", "drizzle-orm", "next-auth", "@auth/core", "stripe", "@supabase/supabase-js", "firebase", "fastapi", "django", "sqlalchemy"]
+    },
+    "crm": {
+      "covers": "Customer systems and messaging: CRMs, email and SMS sending, contact lists, sales pipelines.",
+      "detect": ["@hubspot/api-client", "hubspot", "jsforce", "simple-salesforce", "twilio", "@sendgrid/mail", "mailchimp-marketing"]
+    },
+    "ai": {
+      "covers": "Products built on language models: prompts, agents, retrieval, evaluations, model calls.",
+      "detect": ["openai", "@anthropic-ai/sdk", "anthropic", "langchain", "@langchain/core", "llamaindex", "llama-index", "ai", "@ai-sdk/openai", "transformers", "ollama"]
+    },
+    "security": {
+      "covers": "What does not visibly break: secrets, access, input from outside, data exposure. Only `proposal` lessons with a public source, or lessons confirmed in the field.",
+      "detect": []
+    }
+  }
+}

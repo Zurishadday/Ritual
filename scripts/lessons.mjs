@@ -24,7 +24,27 @@ export const ROOT = path.resolve(import.meta.dirname, "..");
 export const ORIGINAL = "en";
 export const ORIGINS = ["field", "lab", "proposal"];
 // Fixed order of the core groups in the index; packages come after, by name.
-export const GROUPS = ["writing-and-docs", "numbers-and-data", "tests-and-checks", "scripts-and-files", "interface-and-design", "console-and-tools", "git-and-process"];
+// Groups and packages live in one place, lessons/taxonomy.json, with what each one covers.
+export const TAXONOMY = JSON.parse(readFileSync(path.join(ROOT, "lessons", "taxonomy.json"), "utf8"));
+export const GROUPS = TAXONOMY.groups.map((g) => g.slug);
+export const PACKAGES = Object.keys(TAXONOMY.packages);
+const list = (v) => (v ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+
+/** A group or package without a description cannot be chosen well; slugs are lowercase words joined by hyphens. */
+export function taxonomyProblems(t = TAXONOMY) {
+  const problems = [];
+  const slug = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+  for (const g of t.groups ?? []) {
+    if (!slug.test(g.slug ?? "")) problems.push(`group «${g.slug}»: the slug must be lowercase words joined by hyphens`);
+    if (!g.covers?.trim()) problems.push(`group «${g.slug}» has no \`covers\``);
+  }
+  for (const [p, def] of Object.entries(t.packages ?? {})) {
+    if (!slug.test(p)) problems.push(`package «${p}»: the slug must be lowercase words joined by hyphens`);
+    if (!def.covers?.trim()) problems.push(`package «${p}» has no \`covers\``);
+    if (!Array.isArray(def.detect)) problems.push(`package «${p}» needs a \`detect\` list (it can be empty)`);
+  }
+  return problems;
+}
 export const PARTS = {
   en: ["The idea", "Example", "Detector question", "Warning sign", "What to do"],
   es: ["La idea", "Ejemplo", "Pregunta detectora", "Señal de alarma", "Qué hacer"],
@@ -152,6 +172,7 @@ export function check(root = ROOT) {
   const dir = path.join(root, "lessons");
   const languages = languagesIn(dir);
   if (!languages.includes(ORIGINAL)) return [{ file: "lessons", line: 0, message: `missing the original lessons/${ORIGINAL}/`, level: "error" }];
+  for (const m of taxonomyProblems()) error("lessons/taxonomy.json", 0, m);
   const original = readLessons(ORIGINAL, root);
   const byId = new Map(original.lessons.map((l) => [l.id, l]));
 
@@ -160,7 +181,10 @@ export function check(root = ROOT) {
     if (!parts) { error(`lessons/${language}`, 0, `no known names for the five parts in «${language}»: add them to PARTS`); continue; }
     const { groups, lessons } = language === ORIGINAL ? original : readLessons(language, root);
     const bad = (l, message) => error(l.file, l.line, `${l.id}: ${message}`);
-    for (const [g, title] of Object.entries(groups)) if (!title) error(`lessons/${language}/${g}.md`, 1, "the file has no title (# ...)");
+    for (const [g, title] of Object.entries(groups)) {
+      if (!GROUPS.includes(g)) error(`lessons/${language}/${g}.md`, 1, `${g}.md: the file must be named after a group in lessons/taxonomy.json (${GROUPS.join(", ")})`);
+      if (!title) error(`lessons/${language}/${g}.md`, 1, "the file has no title (# ...)");
+    }
 
     const seen = new Map();
     for (const l of lessons) {
@@ -176,7 +200,8 @@ export function check(root = ROOT) {
       for (const p of parts) if (!l.parts[p]) bad(l, `missing part «${p}»`);
       if (language === ORIGINAL) {
         for (const m of originProblems(l.data)) bad(l, m);
-        for (const g of (l.data.groups ?? "").split(",").map((s) => s.trim()).filter(Boolean)) if (!(g in groups)) bad(l, `group «${g}» does not exist`);
+        for (const g of list(l.data.groups)) if (!GROUPS.includes(g)) bad(l, `group «${g}» does not exist`);
+        for (const p of list(l.data.packages)) if (!PACKAGES.includes(p)) bad(l, `package «${p}» does not exist: add it to lessons/taxonomy.json first`);
         for (const m of `${l.title}\n${l.text}`.matchAll(REFERENCE)) if (!byId.has(m[1])) bad(l, `cites a lesson that does not exist (${m[1]})`);
       } else {
         const now = fingerprint(byId.get(l.id));
@@ -237,7 +262,8 @@ export function checkProject(project, language = ORIGINAL) {
       if (l.merged) continue;
       for (const p of parts) if (!l.parts[p]) bad(`missing part «${p}»`);
       for (const m of originProblems(l.data)) bad(m);
-      for (const g of (l.data.groups ?? "").split(",").map((s) => s.trim()).filter(Boolean)) if (!GROUPS.includes(g)) bad(`group «${g}» does not exist`);
+      for (const g of list(l.data.groups)) if (!GROUPS.includes(g)) bad(`group «${g}» does not exist`);
+      for (const p of list(l.data.packages)) if (!PACKAGES.includes(p)) bad(`package «${p}» does not exist in Ritual's lessons/taxonomy.json`);
     }
   }
   return findings;
@@ -284,6 +310,8 @@ const CASES = [
   ["lab with a recalled model", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace(" · claude-sonnet-5-5 · 2026-10", " · ~sonnet · 2026-10") }), "exact model", "error"],
   ["malformed seen", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("seen: gpt-5 2026-11", "seen: gpt-5") }), "in `seen:`", "error"],
   ["group that does not exist", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("groups: git-and-process", "groups: cooking") }), "group «cooking» does not exist", "error"],
+  ["package that does not exist", (f) => ({ ...f, "numbers-and-data.md": f["numbers-and-data.md"].replace("packages: web", "packages: wbe") }), "package «wbe» does not exist", "error"],
+  ["group file that is not in the taxonomy", (f) => ({ ...f, "cooking.md": `# Cooking\n\n${LESSON(5, "Five")}` }), "cooking.md: the file must be named after a group", "error"],
   ["merged into a lesson that does not exist", (f) => ({ ...f, "git-and-process.md": f["git-and-process.md"].replace("Merged into 1.", "Merged into 8.") }), "merged into 8", "error"],
   ["index out of date", (f) => ({ ...f, "README.md": "# Index of lessons\n" }), "index out of date", "error"],
   ["translation missing a part", (f) => ({ ...f, [ES]: f[ES].replace(/\*\*Señal de alarma\.\*\* .*\n/, "") }), "missing part «Señal de alarma»", "error"],
@@ -318,6 +346,11 @@ export function selftest() {
     if (!h.some((x) => x.message.includes(expected) && x.level === level)) failures.push(`«${name}» should give the ${level} «${expected}» and gave: ${h.map((x) => `${x.level} ${x.message}`).join(" | ") || "nothing"}`);
     if (level === "warning" && h.some((x) => x.level === "error")) failures.push(`«${name}» should only warn and gave an error: ${h.filter((x) => x.level === "error").map((x) => x.message).join(" | ")}`);
   }
+  // The taxonomy itself: the real one is clean; one with a bad slug, a missing `covers` and no `detect` is not.
+  if (taxonomyProblems().length) failures.push(`lessons/taxonomy.json has problems: ${taxonomyProblems().join(" | ")}`);
+  const broken = taxonomyProblems({ groups: [{ slug: "Cooking Time", covers: "" }], packages: { games: { covers: "Games." } } }).join(" | ");
+  for (const expected of ["slug must be lowercase", "«Cooking Time» has no `covers`", "«games» needs a `detect` list"])
+    if (!broken.includes(expected)) failures.push(`a broken taxonomy should report «${expected}» and gave: ${broken || "nothing"}`);
   // --stamp writes the right fingerprint on an unstamped translation, and leaves the stamped ones alone.
   const stamped = run({ ...BASE, [ES]: BASE[ES].replace(/`from: \w+` · `by: ai`\n\n/g, "") }, (tmp) => {
     const n = stamp("es", tmp);
