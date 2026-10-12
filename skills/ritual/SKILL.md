@@ -7,7 +7,7 @@ description: Turns the errors of a session into lessons, rules, guard hooks and 
 
 Every mistake becomes a lesson, every lesson a rule, and every rule, when it can, a check. A rule that only lives in text gets forgotten in a long session; a guard or a test does not.
 
-Reply in the language the user writes in. Lessons are written in the project's language (`.ritual/config.json` → `language`). The plugin's lessons live in `lessons/<language>/`, falling back to `lessons/es/` while a translation is missing.
+Reply in the language the user writes in. Lessons are written in the project's language (`.ritual/config.json` → `language`). The plugin's lessons live in `lessons/<language>/`, falling back to `lessons/en/`, the original, while a translation is missing.
 
 Paths below use `${CLAUDE_PLUGIN_ROOT}`, the folder where Ritual is installed. All scripts are Node; run them with `node`.
 
@@ -15,8 +15,13 @@ Paths below use `${CLAUDE_PLUGIN_ROOT}`, the folder where Ritual is installed. A
 
 - The project has no `.ritual/` folder → **Setup**, then stop.
 - The user wrote `/ritual close` (or `/ritual cierre`, or asks for a check before finishing) → **Close review**.
+- The user wrote `/ritual doctor`, or says Ritual does not work (no questions show up, the guard does not block) → **Doctor**.
 - The user wrote `/ritual share` (optionally with a lesson id), or wants to contribute a lesson or a confirmation → **Share**.
 - Otherwise → **Ritual**.
+
+## Doctor (`/ritual doctor`)
+
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs"` and show its output as is. It checks Node, the plugin's library, `.ritual/` (config, guard rules, own lessons) and whether the hooks ran in this session. For each ✕ line, explain the fix in plain words and offer to do the part you can (a broken `.ritual/config.json`, a guard rule whose case fails, a malformed lesson). Installing Node, enabling the plugin and restarting Claude Code are the user's to do. Run it again after a fix. Write nothing else.
 
 ## Setup (first run in a project)
 
