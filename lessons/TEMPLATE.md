@@ -58,4 +58,6 @@ A translation's data line does not repeat the original's. It says which version 
 - `by: ai` means a model translated it and no native speaker has reviewed it yet. If you review one, put your GitHub user there: `by: @your-user`. `by: author` marks the Spanish lessons, written by Ritual's authors before English became the original.
 - When the English lesson changes, its fingerprint changes and the checker warns that the translation is out of date. Translate it again, delete its data line and stamp it.
 
+To add or redo a translation, follow [TRANSLATING.md](TRANSLATING.md): fixed part names and group titles per language.
+
 A missing, unstamped or outdated translation is a **warning**, never an error: a new lesson can go in English alone, and translations catch up after.
