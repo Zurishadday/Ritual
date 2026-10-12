@@ -7,6 +7,7 @@
 모든 실수를 교훈으로, 모든 교훈을 규칙으로, 그리고 가능하다면 모든 규칙을 테스트나 가드로 바꿔 주는 Claude Code 플러그인입니다.
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![Tests](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml/badge.svg)](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
 
@@ -28,6 +29,8 @@ claude plugin install ritual@ritual
 ```
 
 그다음 프로젝트에서 `/ritual`을 입력하세요. 처음 실행하면 의존성을 보고 무엇을 만들고 있는지 알아낸 뒤, 질문을 하나만 합니다(어떤 교훈 패키지를 켤지, 그리고 어떤 언어로 할지). 그리고 `.ritual/` 폴더를 만듭니다. 설정은 이것이 전부입니다.
+
+Node 20.17 이상이 필요해요 (`node --version`). 문제가 생기면 `/ritual doctor`를 입력해 보세요. Node, 설정, 훅이 실제로 실행되고 있는지 확인하고 무엇을 고쳐야 하는지 알려 줘요.
 
 ## 실제 동작 모습
 

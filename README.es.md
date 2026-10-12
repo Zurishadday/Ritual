@@ -7,6 +7,7 @@
 Un plugin de Claude Code que convierte cada error en una lección, cada lección en una regla y cada regla, cuando puede, en una prueba o una guardia.
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![Tests](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml/badge.svg)](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
 
@@ -28,6 +29,8 @@ claude plugin install ritual@ritual
 ```
 
 Después, en tu proyecto, escribe `/ritual`. La primera vez detecta qué construyes a partir de tus dependencias, te pregunta una sola cosa (qué paquetes de lecciones activar y en qué idioma) y crea la carpeta `.ritual/`. Con eso queda todo configurado.
+
+Necesita Node 20.17 o más reciente (`node --version`). Si algo no funciona, escribe `/ritual doctor`: revisa Node, tu configuración y si los hooks realmente se están ejecutando, y te dice qué arreglar.
 
 ## Verlo en acción
 

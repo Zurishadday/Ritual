@@ -7,6 +7,7 @@
 Ritual 是一个 Claude Code 插件，它把每个错误变成一条教训，把每条教训变成一条规则，并在可能的时候，把每条规则变成一项测试或一道守卫。
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![Tests](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml/badge.svg)](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
 
@@ -28,6 +29,8 @@ claude plugin install ritual@ritual
 ```
 
 然后，在你的项目中输入 `/ritual`。第一次使用时，它会根据你的依赖判断你在构建什么，只问你一件事（要开启哪些课程包，以及使用哪种语言），然后创建 `.ritual/` 文件夹。整个设置就只有这些。
+
+需要 Node 20.17 或更高版本（`node --version`）。如果有什么不能用，输入 `/ritual doctor`：它会检查 Node、你的设置以及 hooks 是否真的在运行，并告诉你需要修什么。
 
 ## 实际运行的样子
 

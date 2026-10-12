@@ -7,6 +7,7 @@
 あらゆるミスをレッスンに、あらゆるレッスンをルールに、そしてできる場合にはあらゆるルールをテストかガードに変える Claude Code プラグインです。
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![Tests](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml/badge.svg)](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
 
@@ -28,6 +29,8 @@ claude plugin install ritual@ritual
 ```
 
 その後、プロジェクトで `/ritual` と入力します。初回は、依存関係から何を作っているかを検出し、質問を一つだけします（どのレッスンパッケージを有効にするか、そしてどの言語にするか）。そして `.ritual/` フォルダを作ります。セットアップはそれだけです。
+
+Node 20.17 以降が必要です（`node --version`）。うまく動かないときは `/ritual doctor` と入力してください。Node、設定、フックが実際に動いているかを確認し、直すべき点を教えてくれます。
 
 ## 動作の例
 

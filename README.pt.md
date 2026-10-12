@@ -7,6 +7,7 @@
 Um plugin do Claude Code que transforma cada erro em lição, cada lição em regra e cada regra, quando possível, em um teste ou uma guarda.
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-E8743B)](#install)
+[![Tests](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml/badge.svg)](https://github.com/Zurishadday/Ritual/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/github/license/Zurishadday/Ritual)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/Zurishadday/Ritual)](https://github.com/Zurishadday/Ritual/commits/main)
 
@@ -28,6 +29,8 @@ claude plugin install ritual@ritual
 ```
 
 Depois, no seu projeto, digite `/ritual`. Na primeira vez, ele detecta o que você está construindo pelas suas dependências, faz uma única pergunta (quais pacotes de lições ativar e em qual idioma) e cria a pasta `.ritual/`. Só isso de configuração.
+
+Ele precisa do Node 20.17 ou mais recente (`node --version`). Se algo não funcionar, digite `/ritual doctor`: ele verifica o Node, a sua configuração e se os hooks estão realmente rodando, e diz o que corrigir.
 
 ## Veja em ação
 
