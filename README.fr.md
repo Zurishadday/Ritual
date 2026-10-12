@@ -66,7 +66,7 @@ Chaque leçon a cinq parties, toujours les cinq : **l'idée**, un **exemple** r�
 Chacune indique son origine, ainsi que le modèle et le mois où elle s'est produite (`field · ~opus · 2026-08` ; le `~` signifie qu'elle vient de la mémoire, et non d'un enregistrement) :
 
 - `field` : une vraie erreur dans un projet, avec cet exemple.
-- `lab` : elle a cassé dans une [simulation](simulations/README.md), et indique quel modèle et quand. Elle devient `field` lorsque quelqu'un la confirme dans son propre projet.
+- `lab` : elle a cassé dans une [simulation](simulations/README.fr.md), et indique quel modèle et quand. Elle devient `field` lorsque quelqu'un la confirme dans son propre projet.
 - `proposal` : seulement pour ce qui ne casse pas visiblement (la sécurité), avec une source publique.
 
 Un exemple, la leçon 13 :
@@ -77,7 +77,7 @@ Ritual applique cette leçon à lui-même : chaque règle de garde, chaque contr
 
 ## Les leçons des paquets viennent de simulations
 
-Les leçons par type de projet ne sont pas inventées. Un modèle construit une tâche réaliste sans Ritual ; un autre modèle, dans une autre session, fait tourner ce qui a été construit et note ce qui a cassé, avec des preuves. Ce qui casse entre comme leçon ; ce qui ne casse pas n'entre pas. Chaque tâche est exécutée deux fois : ce qui casse les deux fois est une leçon ; ce qui ne casse qu'une fois reste un candidat. Quand un nouveau modèle sort, les tâches sont relancées, et une leçon qui ne casse plus est rétrogradée, avec des données à l'appui. La méthode et les tâches se trouvent dans [`simulations/`](simulations/README.md).
+Les leçons par type de projet ne sont pas inventées. Un modèle construit une tâche réaliste sans Ritual ; un autre modèle, dans une autre session, fait tourner ce qui a été construit et note ce qui a cassé, avec des preuves. Ce qui casse entre comme leçon ; ce qui ne casse pas n'entre pas. Chaque tâche est exécutée deux fois : ce qui casse les deux fois est une leçon ; ce qui ne casse qu'une fois reste un candidat. Quand un nouveau modèle sort, les tâches sont relancées, et une leçon qui ne casse plus est rétrogradée, avec des données à l'appui. La méthode et les tâches se trouvent dans [`simulations/`](simulations/README.fr.md).
 
 La première était un site pour un atelier de réparation de vélos, avec un formulaire de contact et une page d'administration. Sonnet l'a construit deux fois, et les deux versions échappaient correctement le HTML, gardaient les requêtes à l'intérieur du dossier public et tenaient face à 300 messages simultanés. Malgré cela, les deux perdaient en silence le message arrivé après une écriture interrompue, les deux acceptaient des centaines de messages venant d'un robot sans moyen de les nettoyer, et l'une affirmait que son test passait alors qu'il échouait une fois sur dix. Chaque constat, avec ses preuves, se trouve dans [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md), à côté du code tel qu'il a été laissé.
 
@@ -87,7 +87,7 @@ Ritual est aussi vérifié avec ses propres leçons. WEB-1 a trouvé le même bu
 
 La façon la plus simple : **confirmer une leçon**. Si une leçon vous est aussi arrivée, [ouvrez une demande de confirmation](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml) avec votre exemple anonyme et le modèle que vous utilisiez. Chaque confirmation ajoute ce modèle à la liste `seen:` de la leçon : la bibliothèque sait ainsi à quels modèles une erreur s'applique, et quels modèles plus récents ne la commettent plus. Une leçon `lab` ou `proposal` accompagnée d'un exemple réel devient `field`, avec votre nom si vous le souhaitez.
 
-Ritual tourne avec Claude : une leçon qui ne s'est produite qu'avec un autre modèle est vérifiée avec Claude avant que quiconque reçoive sa question ([comment](simulations/README.md#checking-a-contributed-lesson)).
+Ritual tourne avec Claude : une leçon qui ne s'est produite qu'avec un autre modèle est vérifiée avec Claude avant que quiconque reçoive sa question ([comment](simulations/README.fr.md#vérifier-une-leçon-contribuée)).
 
 Vous pouvez aussi :
 

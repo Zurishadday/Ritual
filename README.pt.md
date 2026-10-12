@@ -66,7 +66,7 @@ Toda lição tem cinco partes, sempre as cinco: **a ideia**, um **exemplo** real
 Cada uma indica de onde veio, com qual modelo e em que mês aconteceu (`field · ~opus · 2026-08`; o `~` quer dizer que vem da memória, não de um registro):
 
 - `field`: um erro real em um projeto, com esse exemplo.
-- `lab`: quebrou numa [simulação](simulations/README.md), e indica qual modelo e quando. Vira `field` quando alguém confirma no próprio projeto.
+- `lab`: quebrou numa [simulação](simulations/README.pt.md), e indica qual modelo e quando. Vira `field` quando alguém confirma no próprio projeto.
 - `proposal`: só para o que não quebra à vista (segurança), com uma fonte pública.
 
 Um exemplo, a lição 13:
@@ -77,7 +77,7 @@ O Ritual aplica essa lição a si mesmo: toda regra da Guarda, todo verificador 
 
 ## As lições de pacote vêm de simulações
 
-As lições por tipo de projeto não são inventadas. Um modelo constrói uma tarefa realista sem o Ritual; outro modelo, em outra sessão, roda o que foi construído e registra o que quebrou, com evidências. O que quebra entra como lição; o que não quebra, não entra. Cada tarefa roda duas vezes: o que quebra nas duas vezes é lição; o que quebra uma vez fica como candidato. Quando sai um modelo novo, as tarefas rodam de novo, e uma lição que deixa de quebrar é rebaixada, com dados. O método e as tarefas estão em [`simulations/`](simulations/README.md).
+As lições por tipo de projeto não são inventadas. Um modelo constrói uma tarefa realista sem o Ritual; outro modelo, em outra sessão, roda o que foi construído e registra o que quebrou, com evidências. O que quebra entra como lição; o que não quebra, não entra. Cada tarefa roda duas vezes: o que quebra nas duas vezes é lição; o que quebra uma vez fica como candidato. Quando sai um modelo novo, as tarefas rodam de novo, e uma lição que deixa de quebrar é rebaixada, com dados. O método e as tarefas estão em [`simulations/`](simulations/README.pt.md).
 
 A primeira foi um site para uma oficina de bicicletas, com formulário de contato e uma página de administração. O Sonnet a construiu duas vezes, e as duas versões escaparam corretamente o HTML, mantiveram as requisições dentro da pasta pública e aguentaram 300 mensagens ao mesmo tempo. Mesmo assim, as duas perderam em silêncio a mensagem que chegou depois de uma gravação interrompida, as duas aceitaram centenas de mensagens de um bot sem nenhuma forma de limpá-las, e uma delas disse que o teste passava quando, uma em cada dez vezes, falhava. Cada achado está em [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md) com suas evidências, ao lado do código como ficou.
 
@@ -87,7 +87,7 @@ O Ritual também é verificado com as próprias lições. A WEB-1 encontrou o me
 
 O jeito mais fácil: **confirme uma lição**. Se uma lição também aconteceu de verdade com você, [abra uma confirmação](https://github.com/Zurishadday/Ritual/issues/new?template=confirm-a-lesson.yml) com o seu exemplo anônimo e o modelo que você estava usando. Cada confirmação acrescenta esse modelo à lista `seen:` da lição, assim a biblioteca passa a saber a quais modelos um erro se aplica e quais modelos novos já não o cometem. Uma lição `lab` ou `proposal` com um exemplo real vira `field`, com o seu nome, se você quiser.
 
-O Ritual roda com Claude, então uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta ([como](simulations/README.md#checking-a-contributed-lesson)).
+O Ritual roda com Claude, então uma lição que só aconteceu com outro modelo é verificada com Claude antes que alguém receba a sua pergunta ([como](simulations/README.pt.md#como-verificar-uma-lição-contribuída)).
 
 Você também pode:
 

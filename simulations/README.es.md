@@ -1,6 +1,6 @@
 # Simulaciones
 
-[English](README.md) · **Español**
+[English](README.md) · **Español** · [Português](README.pt.md) · [Français](README.fr.md) · [中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 Las lecciones de los paquetes (`web`, `apps`, `crm`, `ai`) no se inventan: salen de ver a un modelo construir algo y romperse. Cada simulación es una tarea realista, escrita como la pediría un cliente, que un modelo construye sin Ritual. Después, otro modelo, en otra sesión, ejecuta lo construido y anota lo que se rompió, con evidencia. Lo que se rompe entra como lección con `origin: lab · <modelo> · <año-mes>`; lo que no se rompe, no entra.
 

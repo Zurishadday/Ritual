@@ -1,6 +1,6 @@
 # Simulations
 
-**English** · [Español](README.es.md)
+**English** · [Español](README.es.md) · [Português](README.pt.md) · [Français](README.fr.md) · [中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 The lessons from the packages (`web`, `apps`, `crm`, `ai`) are not invented. They come from watching a model build something and break. Each simulation is a realistic task, written the way a client would ask for it, that a model builds without Ritual. Then another model, in another session, runs what was built and notes what broke, with evidence. What breaks becomes a lesson with `origin: lab · <model> · <year-month>`. What doesn't break doesn't go in.
 
