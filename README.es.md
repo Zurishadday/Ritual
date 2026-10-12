@@ -96,7 +96,7 @@ Antes de abrir el pull request: `npm test`. Corre la calibración de cada verifi
 
 ## Idiomas
 
-El original es el inglés. Las lecciones están en [inglés](lessons/en/README.md) y en [español](lessons/es/README.md); las demás traducciones (português, français, 中文, 日本語, 한국어) están en camino. Las hace una IA y cada una dice de qué versión del original salió: si el original cambia, el verificador avisa que la traducción quedó vieja. Se agradece la revisión de hablantes nativos.
+El original es el inglés. Las lecciones están en siete idiomas: [English](lessons/en/README.md) · [Español](lessons/es/README.md) · [Português](lessons/pt/README.md) · [Français](lessons/fr/README.md) · [中文](lessons/zh-CN/README.md) · [日本語](lessons/ja/README.md) · [한국어](lessons/ko/README.md). Las traduce una IA y cada lección dice de qué versión del original salió: si el original cambia, el verificador avisa que la traducción quedó vieja. Las que dicen `by: ai` esperan la revisión de alguien nativo. El README, por ahora, en [English](README.md) y español.
 
 ## Licencia
 
