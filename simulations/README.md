@@ -1,18 +1,20 @@
-# Simulaciones
+# Simulations
 
-Las lecciones de los paquetes (`web`, `apps`, `crm`, `ai`) no se inventan: salen de ver a un modelo construir algo y romperse. Cada simulación es una tarea realista, escrita como la pediría un cliente, que un modelo construye sin Ritual. Después, otro modelo, en otra sesión, ejecuta lo construido y anota lo que se rompió, con evidencia. Lo que se rompe entra como lección con `origin: lab · <modelo> · <año-mes>`; lo que no se rompe, no entra.
+**English** · [Español](README.es.md)
 
-## Método
+The lessons from the packages (`web`, `apps`, `crm`, `ai`) are not invented. They come from watching a model build something and break. Each simulation is a realistic task, written the way a client would ask for it, that a model builds without Ritual. Then another model, in another session, runs what was built and notes what broke, with evidence. What breaks becomes a lesson with `origin: lab · <model> · <year-month>`. What doesn't break doesn't go in.
 
-1. **Construye** un modelo mecánico (Sonnet), en una carpeta limpia, con el texto de `TASK.md` tal cual y nada más. No ve lecciones, ni hooks, ni esta carpeta.
-2. **Revisa** un modelo de juicio (Opus), en otra sesión, con `REVIEW.md`: corre lo construido, prueba los caminos que la gente recorre de verdad (el vacío, el error, el doble clic, el celular, el teclado) y busca lo que no truena pero es error (una clave, un texto sin escapar). Cada hallazgo lleva su evidencia: el comando y su salida, o lo que se vio en pantalla. El revisor no arregla nada.
-3. **Escribe las lecciones** el mismo modelo de juicio, con las cinco partes, y el revisor humano del repositorio las integra: comprueba que ninguna del núcleo ya las cubra y corre el verificador.
-4. **Cada tarea se corre dos veces.** Lo que se rompe las dos veces es lección; lo que se rompe una vez queda como candidato.
+## Method
 
-Cada corrida se guarda en `<tarea>/runs/<año-mes>-<modelo>-<n>/` (`2026-10-sonnet-1`, `2026-10-sonnet-2`): el código tal como quedó (es el proyecto de ejemplo con errores reales, y el caso de calibración de sus lecciones) y `FINDINGS.md`.
+1. **Build** with a mechanical model (Sonnet), in a clean folder, using the text of `TASK.md` as it is and nothing else. It does not see lessons, hooks, or this folder.
+2. **Review** with a judgment model (Opus), in another session, using `REVIEW.md`. It runs what was built and tries the paths people actually take (empty input, errors, a double click, mobile, the keyboard), and it looks for what doesn't blow up but is still wrong (a password, unescaped text). Each finding comes with its evidence: the command and its output, or what was seen on screen. The reviewer fixes nothing.
+3. **Write the lessons** with the same judgment model, in the five parts. The human reviewer of the repository then integrates them: checks that none of them is already covered by the core, and runs the verifier.
+4. **Each task is run twice.** What breaks both times is a lesson. What breaks once stays a candidate.
 
-## Cómo repetir una simulación
+Each run is saved in `<task>/runs/<year-month>-<model>-<n>/` (`2026-10-sonnet-1`, `2026-10-sonnet-2`): the code as it was left (it is the example project with real bugs, and the calibration case for its lessons) and `FINDINGS.md`.
 
-Cuando sale un modelo nuevo, se vuelve a correr la tarea. Una lección que ya no se rompe no se borra: se baja (`demoted` en la configuración del proyecto que la use) y la corrida lo deja escrito. Así la biblioteca se achica sola cuando los modelos mejoran, con datos.
+## How to repeat a simulation
 
-Para proponer una tarea nueva, abre un issue con el texto de la tarea y qué tipo de proyecto representa.
+When a new model comes out, the task is run again. A lesson that no longer breaks is not deleted. It is demoted (`demoted` in the configuration of the project that uses it), and the run records it. This way the library shrinks on its own when the models improve, based on data.
+
+To propose a new task, open an issue with the text of the task and the kind of project it represents.

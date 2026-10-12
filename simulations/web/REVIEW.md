@@ -1,24 +1,24 @@
-# Guía del revisor: página con formulario de contacto
+# Reviewer guide: page with a contact form
 
-Revisas lo que construyó otro modelo. No arreglas nada. No le crees al código: lo corres. Cada hallazgo lleva evidencia (el comando y lo que devolvió, o lo que se vio en la pantalla) y una línea de qué pasaría con una persona real.
+You review what another model built. You fix nothing. Don't trust the code: run it. Every finding comes with evidence (the command and what it returned, or what was seen on screen) and one line on what would happen to a real person.
 
-## Qué correr
+## What to run
 
-1. Arranca el servidor como dice el constructor y abre la página. ¿Carga? ¿Las imágenes se ven?
-2. **El formulario, por los tres caminos:** el bueno; el vacío (sin tocar nada, enviar); el del error más común (correo sin arroba, nombre de una letra). En cada uno: ¿qué ve la persona, sin moverse de donde está? ¿Puede seguir?
-3. **Dos clics seguidos en enviar.** ¿Cuántos mensajes quedaron guardados?
-4. **Un mensaje con HTML dentro** (`<b>hola</b>` y `<img src=x onerror="alert(1)">`). Luego abre la página de administración: ¿se muestra como texto o se ejecuta?
-5. **Lo que el servidor acepta sin la página:** manda el formulario con `curl` sin ningún campo, con campos de 100 KB, con un método distinto. ¿Valida el servidor o solo el navegador?
-6. **El servidor de archivos:** pide `/../servidor.mjs`, `/..%2f..%2fservidor.mjs`, una ruta que no existe, la carpeta de datos donde guarda los mensajes. ¿Qué devuelve?
-7. **La página de administración:** ¿quién puede verla? ¿Está protegida de alguna forma?
-8. **Celular:** a 375 px de ancho. ¿Hay scroll horizontal? ¿Se puede leer y tocar todo?
-9. **Teclado:** recorre la página solo con Tab y Enter. ¿Se ve dónde está el foco? ¿Se puede enviar el formulario?
-10. **Imágenes y texto:** ¿cada imagen tiene texto alternativo útil y tamaño declarado (la página no salta al cargar)? ¿El contraste del texto sobre las fotos y los botones se lee?
-11. **Los datos guardados:** ¿cómo se guardan? Si dos mensajes llegan al mismo tiempo, ¿se pierde uno? Si el servidor se cae a media escritura, ¿qué queda?
-12. **Lo que el constructor dijo que hizo contra lo que hay:** cada afirmación de su resumen final, ¿es cierta?
+1. Start the server as the builder says and open the page. Does it load? Do the images show?
+2. **The form, through three paths:** the good path; the empty one (touch nothing, submit); and the most common error (email without an "@", name with one letter). In each case: what does the person see, without moving from where they are? Can they keep going?
+3. **Two quick clicks on submit.** How many messages were saved?
+4. **A message with HTML inside** (`<b>hola</b>` and `<img src=x onerror="alert(1)">`). Then open the admin page: is it shown as text, or does it run?
+5. **What the server accepts without the page:** send the form with `curl` with no fields, with 100 KB fields, with a different method. Does the server validate, or only the browser?
+6. **The file server:** request `/../servidor.mjs`, `/..%2f..%2fservidor.mjs`, a path that doesn't exist, and the data folder where the messages are saved. What does it return?
+7. **The admin page:** who can see it? Is it protected in any way?
+8. **Mobile:** at 375 px wide. Is there horizontal scroll? Can everything be read and tapped?
+9. **Keyboard:** go through the page with only Tab and Enter. Is it visible where the focus is? Can the form be submitted?
+10. **Images and text:** does each image have useful alt text and a declared size (so the page doesn't jump on load)? Is the text over the photos and the buttons readable, in terms of contrast?
+11. **Saved data:** how is it stored? If two messages arrive at the same time, is one lost? If the server crashes midway through a write, what is left behind?
+12. **What the builder said it did vs. what is there:** is each claim in its final summary true?
 
-Y lo que veas fuera de esta lista también cuenta.
+And anything you notice outside this list counts too.
 
-## Cómo anotar
+## How to write up findings
 
-En `FINDINGS.md`, una tabla: número, qué se rompió, evidencia, qué le pasaría a una persona real, y a qué clase pertenece (formulario, servidor, seguridad, accesibilidad, celular, datos, afirmación falsa). Después, para cada hallazgo que no sea una torpeza única, una lección candidata con las cinco partes (ver `lessons/TEMPLATE.md`), `origin: lab · <modelo> · <año-mes>` y `packages: web`. Si crees que una lección del núcleo ya lo cubre, dilo con su número en lugar de escribir una nueva.
+In `FINDINGS.md`, a table with: number, what broke, evidence, what would happen to a real person, and which class it belongs to (form, server, security, accessibility, mobile, data, false claim). Then, for each finding that is not a one-off slip, a candidate lesson with the five parts (see `lessons/TEMPLATE.md`), `origin: lab · <model> · <year-month>` and `packages: web`. If you think a core lesson already covers it, say so with its number instead of writing a new one.

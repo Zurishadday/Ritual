@@ -1,5 +1,7 @@
 # Ritual
 
+[English](README.md) · **Español** · [Português](README.pt.md) · [Français](README.fr.md) · [中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+
 **Claude se equivoca una vez. Ritual se asegura de que sea la última.**
 
 Ritual es un plugin de Claude Code para cualquier proyecto. Su idea es una sola: **cada error se vuelve lección, cada lección se vuelve regla y cada regla, cuando se puede, se vuelve prueba o guardia.** Otras herramientas anotan lo aprendido; esta llega hasta comprobarlo, porque una regla que solo está escrita se olvida en una sesión larga, y una que se revisa sola no.
@@ -96,7 +98,7 @@ Antes de abrir el pull request: `npm test`. Corre la calibración de cada verifi
 
 ## Idiomas
 
-El original es el inglés. Las lecciones están en siete idiomas: [English](lessons/en/README.md) · [Español](lessons/es/README.md) · [Português](lessons/pt/README.md) · [Français](lessons/fr/README.md) · [中文](lessons/zh-CN/README.md) · [日本語](lessons/ja/README.md) · [한국어](lessons/ko/README.md). Las traduce una IA y cada lección dice de qué versión del original salió: si el original cambia, el verificador avisa que la traducción quedó vieja. Las que dicen `by: ai` esperan la revisión de alguien nativo. El README, por ahora, en [English](README.md) y español.
+El original es el inglés. Las lecciones están en siete idiomas: [English](lessons/en/README.md) · [Español](lessons/es/README.md) · [Português](lessons/pt/README.md) · [Français](lessons/fr/README.md) · [中文](lessons/zh-CN/README.md) · [日本語](lessons/ja/README.md) · [한국어](lessons/ko/README.md). Las traduce una IA y cada lección dice de qué versión del original salió: si el original cambia, el verificador avisa que la traducción quedó vieja. Las que dicen `by: ai` esperan la revisión de alguien nativo.
 
 ## Licencia
 

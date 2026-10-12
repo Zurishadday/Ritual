@@ -1,5 +1,7 @@
 # Ritual
 
+**English** · [Español](README.es.md) · [Português](README.pt.md) · [Français](README.fr.md) · [中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+
 **Claude makes a mistake once. Ritual makes sure it's the last time.**
 
 Ritual is a Claude Code plugin for any project. It has one idea: **every mistake becomes a lesson, every lesson becomes a rule, and every rule, when it can, becomes a test or a guard.** Other tools write down what was learned; this one goes as far as checking it, because a rule that only lives in text gets forgotten in a long session, and one that checks itself does not.
@@ -96,7 +98,7 @@ Before opening a pull request: `npm test`. It runs the calibration of every chec
 
 ## Languages
 
-English is the original. The lessons are in seven languages: [English](lessons/en/README.md) · [Español](lessons/es/README.md) · [Português](lessons/pt/README.md) · [Français](lessons/fr/README.md) · [中文](lessons/zh-CN/README.md) · [日本語](lessons/ja/README.md) · [한국어](lessons/ko/README.md). Each translation says which version of the original it came from: when the original changes, the checker warns that the translation is out of date. This README: English · [Español](README.es.md).
+English is the original. The lessons are in seven languages: [English](lessons/en/README.md) · [Español](lessons/es/README.md) · [Português](lessons/pt/README.md) · [Français](lessons/fr/README.md) · [中文](lessons/zh-CN/README.md) · [日本語](lessons/ja/README.md) · [한국어](lessons/ko/README.md). Each translation says which version of the original it came from: when the original changes, the checker warns that the translation is out of date.
 
 ## License
 

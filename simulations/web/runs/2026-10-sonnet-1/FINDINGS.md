@@ -1,104 +1,104 @@
-# Hallazgos · Web · corrida 1 · Sonnet · 2026-10
+# Findings · Web · run 1 · Sonnet · 2026-10
 
-Construyó Sonnet con el texto de `TASK.md` y nada más. Revisó Opus en otra sesión, con `REVIEW.md`, corriendo el servidor (`ADMIN_PASSWORD=prueba123 PORT=3000 node servidor.mjs`) en Windows con Node 26, con `curl`, scripts de Node y el navegador a 375 px y en escritorio. El código está aquí tal como quedó.
+Sonnet built it from the text of [TASK.es.md](../../TASK.es.md) and nothing else. Opus reviewed it in another session, using [REVIEW.es.md](../../REVIEW.es.md). The server was run (`ADMIN_PASSWORD=prueba123 PORT=3000 node servidor.mjs`) on Windows with Node 26, with `curl`, Node scripts, and the browser at 375 px and on desktop. The code is here as it was left. The site was built in Spanish, so quoted UI text is in Spanish, with a gloss.
 
-## Lo que se rompió
+## What broke
 
-| # | Qué se rompió | Evidencia | Qué le pasaría a una persona real | Clase |
+| # | What broke | Evidence | What would happen to a real person | Class |
 |---|---|---|---|---|
-| 1 | La prueba de humo es intermitente, y el constructor dijo que pasa. | `node prueba.mjs` 20 veces: pasan 18, fallan 2 con `fetch failed · ECONNRESET`. El POST de 20 KB solo: 19 veces `413` y una `ECONNRESET`. Con 100 KB: un `413` y cuatro conexiones cortadas (`curl`: «Recv failure: Connection was reset», código 000). El servidor responde 413 y destruye el socket al terminar la respuesta, mientras el cliente sigue subiendo el cuerpo. | Quien corre la prueba que le indicaron la ve fallar una vez de cada diez y no sabe si su sitio está roto. Un cliente que manda un cuerpo grande recibe una conexión cortada en vez de «El mensaje es demasiado largo». | servidor · afirmación falsa |
-| 2 | Una línea cortada en el archivo de mensajes se traga el mensaje siguiente. | Se dejó al final de `mensajes.jsonl` una línea sin terminar, como la dejaría una caída a media escritura. Después se envió un mensaje válido: respuesta `{"ok":true}`, el mensaje sí está en el archivo, pero quedó pegado a la línea cortada. La administración siguió en «Mensajes (651)» y el nombre del mensaje nuevo aparece 0 veces. El código lo había previsto a medias: «línea dañada: se omite». | La persona ve «¡Gracias! Recibimos tu mensaje» y nunca le contestan. El dueño no tiene forma de saber que ese mensaje existe. | datos |
-| 3 | El formulario no tiene ningún freno y la administración no tiene ni páginas ni forma de borrar. | Un script mandó 650 mensajes en cerca de un segundo: todos `201`. La administración pasó a 653 mensajes, 1.29 MB de HTML y 1 415 207 px de alto, sin paginación ni botón de borrar. El constructor avisó que faltaba el límite y el borrado. | Después de la primera ola de robots, el dueño tiene que bajar entre cientos de mensajes basura para encontrar uno real, o editar el archivo a mano. | servidor · datos |
-| 4 | El navegador y el servidor validan el correo con reglas distintas. | Con `ana@correo`, el navegador deja enviar (`type=email` lo acepta) y el servidor responde «Escribe un correo válido.». El aviso sale debajo del botón, el campo no se marca (`aria-invalid` vacío) y el foco cae al `BODY`. | Puede corregirlo, porque lo escrito se conserva, pero el aviso no está junto al campo que falla. | formulario |
-| 5 | El formulario aparenta funcionar sin JavaScript, y no funciona. | El `<form>` lleva `method="post" action="/api/contacto"`, pero el servidor solo acepta JSON. `curl -d 'nombre=Ana&correo=ana@correo.mx&mensaje=hola'` devuelve `{"error":"Solicitud no válida."}` con 400. | Si `app.js` no carga, la persona ve una línea de JSON en pantalla en blanco y su mensaje se pierde. | formulario |
-| 6 | El foco se pierde al enviar. | Recorrido solo con teclado: después de Enter en «Enviar mensaje», `document.activeElement` es `BODY`, porque el botón se deshabilita mientras envía. | Quien usa teclado o lector de pantalla queda fuera del formulario. El aviso sí se anuncia (`aria-live`). | accesibilidad |
-| 7 | La administración no limita los intentos de clave. | 200 claves equivocadas en 293 ms, todas `401`, sin demora. La clave viaja sin cifrar por HTTP (el constructor lo avisó). | Con la clave aleatoria no pasa nada. Con una clave corta puesta en `ADMIN_PASSWORD`, alguien la adivina y lee los datos de todos los clientes. | seguridad |
+| 1 | The smoke test is intermittent, and the builder said it passes. | `node prueba.mjs` run 20 times: 18 pass, 2 fail with `fetch failed · ECONNRESET`. The 20 KB POST alone: 19 times `413` and one `ECONNRESET`. With 100 KB: one `413` and four dropped connections (`curl`: "Recv failure: Connection was reset", code 000). The server replies 413 and destroys the socket once the response is sent, while the client is still uploading the body. | Whoever runs the test they were told to run sees it fail one time in ten, and doesn't know whether their site is broken. A client who sends a large body gets a dropped connection instead of "El mensaje es demasiado largo" ("The message is too long."). | server · false claim |
+| 2 | A cut-off line in the message file swallows the next message. | An unterminated line was left at the end of `mensajes.jsonl`, as a crash in the middle of a write would leave it. Then a valid message was sent: the response was `{"ok":true}`, and the message is in the file, but it was glued to the cut-off line. The admin page still showed "Mensajes (651)" ("Messages (651)"), and the new message's name appears 0 times. The code had partly anticipated this: "línea dañada: se omite" ("damaged line: skipped"). | The person sees "¡Gracias! Recibimos tu mensaje" ("Thanks! We received your message.") and never gets a reply. The owner has no way of knowing that the message exists. | data |
+| 3 | The form has no rate limit, and the admin page has no pagination and no way to delete. | A script sent 650 messages in about a second: all `201`. The admin page went to 653 messages, 1.29 MB of HTML and 1,415,207 px tall, with no pagination and no delete button. The builder warned that the limit and the delete function were missing. | After the first wave of bots, the owner has to scroll through hundreds of junk messages to find a real one, or edit the file by hand. | server · data |
+| 4 | The browser and the server validate email with different rules. | With `ana@correo`, the browser lets the form submit (`type=email` accepts it), and the server replies "Escribe un correo válido." ("Enter a valid email."). The message appears below the button, the field is not marked (`aria-invalid` empty), and focus falls to `BODY`. | They can fix it, because what they typed is kept, but the message is not next to the field that failed. | form |
+| 5 | The form looks like it works without JavaScript, but it doesn't. | The `<form>` has `method="post" action="/api/contacto"`, but the server only accepts JSON. `curl -d 'nombre=Ana&correo=ana@correo.mx&mensaje=hola'` returns `{"error":"Solicitud no válida."}` ("Invalid request.") with 400. | If `app.js` doesn't load, the person sees a line of JSON on a blank screen, and their message is lost. | form |
+| 6 | Focus is lost on submit. | Keyboard-only walkthrough: after Enter on "Enviar mensaje" ("Send message"), `document.activeElement` is `BODY`, because the button is disabled while sending. | Someone using a keyboard or a screen reader is left outside the form. The message is announced (`aria-live`). | accessibility |
+| 7 | The admin page does not limit password attempts. | 200 wrong passwords in 293 ms, all `401`, with no delay. The password travels unencrypted over HTTP (the builder warned about this). | With a random password, nothing happens. With a short password set in `ADMIN_PASSWORD`, someone guesses it and reads every client's data. | security |
 
-## Lo que funcionó
+## What worked
 
-- El HTML de los mensajes se muestra como texto: `<b>hola</b>` y `<img src=x onerror=…>` aparecen tal cual, sin etiquetas en la página (0 `img`, 0 `b`).
-- El servidor de archivos no sale de `publico/`: `/../servidor.mjs`, `/..%2f..%2fservidor.mjs`, `/%2e%2e%5cservidor.mjs`, `/datos/…` y `/estilos.css%00.html` devuelven 404. Una ruta mal codificada devuelve 400.
-- `/admin` pide clave (401 sin ella y con una equivocada).
-- El servidor valida sin la página: vacío, `{}`, `null`, campos que no son texto y JSON roto dan 400; `PUT` y `DELETE` dan 405.
-- Doble clic en enviar: un solo mensaje guardado.
-- 300 mensajes a la vez, dos veces: 300 guardados y legibles cada vez.
-- A 375 px no hay scroll horizontal; los títulos no quedan bajo la barra fija; la administración se lee en el celular.
-- Teclado: el orden de Tab es el de la página, el foco se ve (contorno azul de 3 px) y el formulario se envía con Enter.
-- Contraste del botón: blanco sobre `#b5561a`, 4.9 a 1. Las imágenes tienen texto alternativo útil y proporción fija, así que la página no salta al cargar.
+- Message HTML is shown as plain text: `<b>hola</b>` and `<img src=x onerror=…>` appear as written, with no tags on the page (0 `img`, 0 `b`).
+- The file server does not leave `publico/`: `/../servidor.mjs`, `/..%2f..%2fservidor.mjs`, `/%2e%2e%5cservidor.mjs`, `/datos/…` and `/estilos.css%00.html` return 404. A badly encoded path returns 400.
+- `/admin` asks for a password (401 without one and with a wrong one).
+- The server validates without the page: empty bodies, `{}`, `null`, non-text fields and broken JSON return 400; `PUT` and `DELETE` return 405.
+- Double-click on submit: one message saved.
+- 300 messages at once, twice: 300 saved and readable each time.
+- At 375 px there is no horizontal scroll; the headings don't end up under the fixed bar; the admin page is readable on mobile.
+- Keyboard: the Tab order follows the page, focus is visible (3 px blue outline), and the form submits with Enter.
+- Button contrast: white on `#b5561a`, 4.9 to 1. Images have useful alt text and fixed proportions, so the page doesn't jump on load.
 
-## Lo que dijo el constructor contra lo que hay
+## What the builder said vs. what is there
 
-| Afirmación | ¿Es cierta? |
+| Claim | True? |
 |---|---|
-| «La prueba automática de humo pasa» | A medias: pasa 18 de cada 20 veces (hallazgo 1). |
-| «Se valida en el navegador y otra vez en el servidor» | Sí, pero con reglas distintas (hallazgo 4). |
-| «Los mensajes se escapan antes de mostrarse» | Sí. |
-| «El servidor bloquea rutas que intentan salir de `publico/`» | Sí. |
-| «El cuerpo de las solicitudes tiene tope de 10 KB» | Sí, aunque el aviso de que es demasiado largo casi nunca llega (hallazgo 1). |
-| «Con datos inválidos muestra el error en la misma página» | Sí, debajo del botón. |
-| «El diseño parte del celular» | Sí; no lo había visto, y lo dijo. |
-| «Sin `ADMIN_PASSWORD` se genera una clave aleatoria» | Sí, y la imprime en la consola. |
+| "The automated smoke test passes" | Partly: it passes 18 out of 20 times (finding 1). |
+| "It is validated in the browser and again on the server" | Yes, but with different rules (finding 4). |
+| "Messages are escaped before they are displayed" | Yes. |
+| "The server blocks paths that try to leave `publico/`" | Yes. |
+| "Request bodies are capped at 10 KB" | Yes, although the notice that the message is too long almost never arrives (finding 1). |
+| "With invalid data, it shows the error on the same page" | Yes, below the button. |
+| "The design starts from mobile" | Yes; the builder had not looked at it, and said so. |
+| "Without `ADMIN_PASSWORD`, a random password is generated" | Yes, and it prints it to the console. |
 
-## Lecciones candidatas
+## Candidate lessons
 
-Esta es la primera corrida: lo que se rompa también en la segunda pasa a lección; lo demás queda como candidato.
+This is the first run: what also breaks in the second run becomes a lesson; the rest stays a candidate.
 
-- El **4** ya lo cubre la **6** (la definición vive en un solo lugar): la regla del correo está escrita dos veces.
-- El crecimiento de la administración del **3** lo cubre la **46**: cada visita lee y pinta el archivo entero.
-- El **6** es una torpeza única. El **7** no truena: si se repite, va como `proposal` en el paquete de seguridad.
+- Finding **4** is already covered by lesson **6** (the definition lives in one place): the email rule is written twice.
+- The growth of the admin page in finding **3** is covered by lesson **46**: every visit reads and renders the entire file.
+- Finding **6** is a one-off slip. Finding **7** does not fail visibly: if it repeats, it goes in as a `proposal` in the `security` package.
 
-### Candidata A (hallazgo 1). Una prueba de red que pasó una vez no pasó
+### Candidate A (finding 1). A network test that passed once did not pass
 
 `origin: lab · sonnet · 2026-10` · `groups: tests-and-checks` · `packages: web`
 
-**La idea.** Lo que depende de tiempos (cerrar una conexión, dos peticiones a la vez, un servidor que arranca) puede pasar y fallar con el mismo código. Una corrida verde no dice nada.
+**The idea.** Anything that depends on timing (closing a connection, two requests at once, a server that is starting up) can pass and fail with the same code. A green run proves nothing.
 
-**Ejemplo.** Un servidor rechazaba los cuerpos de más de 10 KB respondiendo 413 y cortando la conexión al terminar la respuesta. Su prueba mandaba 20 KB y pasó la vez que se corrió. Corrida 20 veces, falló 2; con 100 KB, el aviso no llegaba casi nunca: el cliente veía la conexión cortada.
+**Example.** A server rejected bodies over 10 KB by replying 413 and cutting the connection when the response ended. Its test sent 20 KB and passed the one time it was run. Run 20 times, it failed 2; with 100 KB, the notice almost never arrived: the client saw the connection cut.
 
-**Pregunta detectora.** ¿Esta prueba toca la red, procesos o algo que ocurre a la vez? ¿La corrí suficientes veces para ver la falla que pasa una de cada diez?
+**Detector question.** Does this test touch the network, processes, or anything that happens at the same time? Did I run it enough times to see a failure that happens one time in ten?
 
-**Señal de alarma.** «Pasó» · «fue un error raro, ya no salió».
+**Warning sign.** "It passed" · "it was a rare error, it doesn't happen anymore".
 
-**Qué hacer.** Córrela en un bucle (20 veces) antes de darla por buena, y prueba también el tamaño que de verdad manda quien abusa, no solo el que apenas cruza el límite. Para rechazar un cuerpo grande, responde y deja que el cliente termine de enviar (descarta el resto con `req.resume()` y responde con `Connection: close`) en vez de destruir la conexión.
+**What to do.** Run it in a loop (20 times) before you accept it, and also test the size that someone who abuses the server would really send, not just the one that barely crosses the limit. To reject a large body, respond and let the client finish sending (discard the rest with `req.resume()` and respond with `Connection: close`), instead of destroying the connection.
 
-### Candidata B (hallazgo 2). En un archivo que solo crece, una línea rota daña también la siguiente
+### Candidate B (finding 2). In a file that only grows, a broken line takes the next one with it
 
 `origin: lab · sonnet · 2026-10` · `groups: scripts-and-files` · `packages: web` · `refines: 24`
 
-**La idea.** Guardar cada registro como una línea al final de un archivo es sencillo y aguanta muchos a la vez. Pero si una escritura se corta, la línea queda sin su salto, y el registro siguiente se pega a ella. Saltarse «las líneas dañadas» al leer se lleva los dos.
+**The idea.** Saving each record as a line at the end of a file is simple, and it copes well with many records at once. But if a write gets cut off, the line is left without its line break, and the next record is glued onto it. Skipping "damaged lines" when reading drops both.
 
-**Ejemplo.** Un formulario guardaba cada mensaje como una línea JSON, y la administración omitía las que no se podían leer. Con una línea cortada al final, el siguiente mensaje respondió «gracias», quedó en el archivo y nunca apareció en la administración.
+**Example.** A form saved each message as a JSON line, and the admin page skipped any line it couldn't read. With a line cut off at the end, the next message got the reply "thanks", was saved, and never showed up in the admin page.
 
-**Pregunta detectora.** Si la última escritura quedó a medias, ¿qué le pasa a la siguiente? ¿Lo que mi lector «omite» avisa a alguien?
+**Detector question.** If the last write was left half-done, what happens to the next one? Does what my reader skips alert anyone?
 
-**Señal de alarma.** «Las líneas dañadas se omiten» · «es solo agregar al final».
+**Warning sign.** "Damaged lines get skipped" · "it's just appending to the end".
 
-**Qué hacer.** Empieza cada registro con un salto de línea si el archivo no termina en uno, o escribe cada registro como su propio archivo. Al leer, cuenta las líneas que no se pudieron leer y muéstralo en la administración, en vez de saltarlas en silencio.
+**What to do.** Before appending, if the file doesn't end with a line break, start the record with one; or write each record as its own file. When reading, count the lines that couldn't be read and show that count where the owner will see it, instead of skipping them silently.
 
-### Candidata C (hallazgo 3). Un formulario público recibe robots el primer día
+### Candidate C (finding 3). A public form gets bots from day one
 
 `origin: lab · sonnet · 2026-10` · `groups: interface-and-design` · `packages: web`
 
-**La idea.** Un formulario abierto a internet no lo llenan solo personas. Si no frena lo automático y quien lo lee no puede limpiar, la primera ola de basura entierra a los clientes.
+**The idea.** A form open to the internet isn't filled in only by people. If it doesn't stop automated submissions, and whoever reads it can't clean it up, the first wave of junk buries the real clients.
 
-**Ejemplo.** Un formulario de contacto aceptó 650 mensajes en un segundo desde un script. La administración, sin páginas ni botón de borrar, pasó a medir más de un millón de píxeles de alto.
+**Example.** A contact form accepted 650 messages in one second from a script. The admin page, with no pagination and no delete button, grew to more than a million pixels tall.
 
-**Pregunta detectora.** Si mañana llegan mil mensajes falsos, ¿cómo encuentra el dueño el único real, y cómo borra los demás?
+**Detector question.** If a thousand fake messages arrive tomorrow, how does the owner find the one real message, and how do they delete the rest?
 
-**Señal de alarma.** «Es un sitio chico, nadie lo va a atacar».
+**Warning sign.** "It's a small site, nobody is going to attack it".
 
-**Qué hacer.** Pon un freno barato desde el inicio (un campo oculto que las personas no llenan, un límite por dirección por minuto), y dale a la administración páginas y una forma de borrar o marcar como basura.
+**What to do.** Put a cheap brake in from the start (a hidden field that people don't fill in, a limit per address per minute), and give the admin page pages and a way to delete or mark messages as junk.
 
-### Candidata D (hallazgo 5). Un respaldo que nadie probó no es respaldo
+### Candidate D (finding 5). A fallback nobody tested is not a fallback
 
 `origin: lab · sonnet · 2026-10` · `packages: web`
 
-**La idea.** Un formulario con `action` y `method` promete que funciona aunque falle el JavaScript. Si el servidor solo entiende lo que manda el JavaScript, la promesa es falsa y el error sale crudo.
+**The idea.** A form with `action` and `method` promises that it works even if JavaScript fails. If the server only understands what the JavaScript sends, the promise is false, and the error shows up raw.
 
-**Ejemplo.** El formulario enviaba JSON con JavaScript y declaraba `method="post"` como respaldo. Enviado sin JavaScript, el servidor respondía una línea de JSON con «Solicitud no válida» y el mensaje se perdía.
+**Example.** The form sent JSON with JavaScript and declared `method="post"` as a fallback. Sent without JavaScript, the server replied with one line of JSON saying "Invalid request", and the message was lost.
 
-**Pregunta detectora.** Si este archivo de JavaScript no carga, ¿qué pasa cuando la persona envía?
+**Detector question.** If this JavaScript file doesn't load, what happens when the person submits?
 
-**Señal de alarma.** «Igual todos tienen JavaScript».
+**Warning sign.** "Everyone has JavaScript anyway".
 
-**Qué hacer.** O el servidor acepta también el envío normal del formulario y responde con una página, o el formulario no promete un respaldo que no tiene. Pruébalo una vez con el JavaScript apagado.
+**What to do.** Either the server also accepts the normal form submission and replies with a page, or the form doesn't promise a fallback it doesn't have. Test it once with JavaScript turned off.

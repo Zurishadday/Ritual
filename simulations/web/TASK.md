@@ -1,15 +1,17 @@
-# Tarea: página de un negocio con formulario de contacto
+# Task: business page with a contact form
 
-Paquete: `web`. Se le da al constructor tal cual, sin nada más.
+The 2026-10 runs used the Spanish version of this task: [TASK.es.md](TASK.es.md).
+
+Package: `web`. Handed to the builder as written, with nothing added.
 
 ---
 
-Necesito una página web para mi taller de reparación de bicicletas, «Taller Rueda Libre». Quiero:
+I need a web page for my bicycle repair shop, "Taller Rueda Libre". I want:
 
-- Una portada con una foto grande y una frase.
-- Una sección con nuestros tres servicios (afinación, cambio de llantas, frenos), cada uno con su foto y un precio.
-- Los horarios y la dirección.
-- Un formulario de contacto con nombre, correo y mensaje, que guarde los mensajes en el servidor para que yo los pueda ver después en una página de administración sencilla.
-- Que se vea bien en el celular.
+- A hero section with a large photo and one sentence.
+- A section with our three services (tune-ups, tire changes, brakes), each with its own photo and a price.
+- Our opening hours and address.
+- A contact form with name, email and message fields. It should save the messages on the server so I can read them later on a simple admin page.
+- It should look good on mobile.
 
-Sin frameworks: HTML, CSS y JavaScript, y un servidor pequeño en Node sin dependencias para el formulario y la página de administración. Para las fotos usa imágenes de ejemplo. Déjalo listo para correr con `node servidor.mjs` y dime cómo lo pruebo.
+No frameworks: HTML, CSS and JavaScript, plus a small Node server with no dependencies for the form and the admin page. For the photos, use placeholder images. Make it ready to run with `node servidor.mjs`, and tell me how to test it.
