@@ -1,0 +1,61 @@
+{
+  "idioma": "es",
+  "paquetes": [],
+  "bajadas": [],
+  "grupos": {
+    "practicas-y-pruebas": [
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/tests/**",
+      "**/test/**",
+      "**/__tests__/**",
+      "**/e2e/**",
+      "**/cypress/**"
+    ],
+    "escribir-y-documentar": [
+      "**/*.md",
+      "**/*.mdx",
+      "**/*.rst",
+      "**/*.txt",
+      "**/docs/**",
+      "**/content/**"
+    ],
+    "cifras-y-datos": [
+      "**/*.sql",
+      "**/*.ipynb",
+      "**/*.csv",
+      "**/*.parquet",
+      "**/queries/**",
+      "**/consultas/**",
+      "**/models/**",
+      "**/analytics/**",
+      "**/notebooks/**"
+    ],
+    "scripts-y-archivos": [
+      "**/scripts/**",
+      "**/*.sh",
+      "**/*.ps1",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/Makefile",
+      "**/*.yml",
+      "**/*.yaml",
+      "**/*.toml"
+    ],
+    "interfaz-y-diseno": [
+      "**/*.tsx",
+      "**/*.jsx",
+      "**/*.vue",
+      "**/*.svelte",
+      "**/*.astro",
+      "**/*.css",
+      "**/*.scss",
+      "**/*.html",
+      "**/components/**",
+      "**/pages/**",
+      "**/app/**",
+      "**/views/**",
+      "**/templates/**"
+    ]
+  }
+}

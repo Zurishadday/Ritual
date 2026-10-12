@@ -13,3 +13,13 @@ Plugin público de Claude Code: cada error se vuelve lección, cada lección se 
 - Cada lección lleva su origen: `campo` (un error real con su ejemplo), `laboratorio` (se rompió en una simulación: modelo y fecha) o `propuesta` (solo lo de seguridad que no truena, con fuente pública).
 - En las simulaciones construye Sonnet; revisa, ejecuta y escribe la lección Opus, en una sesión distinta.
 - Las skills se escriben en inglés con la instrucción de responder en el idioma de quien las usa. README y lecciones, en siete idiomas: el español es el original.
+
+## Ritual
+
+<!-- ritual:inicio -->
+Las lecciones de este proyecto viven en `.ritual/lecciones/`; las del núcleo, en el plugin Ritual. Sus hooks bloquean lo que ya falló, anotan errores y correcciones en `.ritual/local/` y muestran las preguntas de cada grupo una vez por sesión. Corre `/ritual` al cerrar una sesión o después de un error doloroso, y `/ritual cierre` antes de dar algo por terminado.
+
+Reglas que este proyecto ya rompió más de una vez y no se pudieron automatizar:
+
+- (ninguna todavía)
+<!-- ritual:fin -->

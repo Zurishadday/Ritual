@@ -3,3 +3,5 @@ fuentes/
 
 node_modules/
 *.log
+# Ritual: bitácora y estado de sesión, solo local
+.ritual/local/
