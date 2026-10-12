@@ -1,4 +1,4 @@
 #!/bin/sh
-# Antes de cada push: nada de lo que se sube nombra el proyecto de origen.
-# Se activa con: git config core.hooksPath scripts/githooks
-exec node "$(dirname "$0")/../revisar-publicacion.mjs"
+# Before every push: nothing that goes up may name the source project.
+# Enable with: git config core.hooksPath scripts/githooks
+exec node "$(dirname "$0")/../check-publish.mjs"

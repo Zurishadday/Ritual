@@ -1,0 +1,12 @@
+{
+  "language": "es",
+  "packages": [],
+  "demoted": [],
+  "groups": {
+    "tests-and-checks": ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/test/**", "**/__tests__/**", "**/e2e/**", "**/cypress/**"],
+    "writing-and-docs": ["**/*.md", "**/*.mdx", "**/*.rst", "**/*.txt", "**/docs/**", "**/content/**"],
+    "numbers-and-data": ["**/*.sql", "**/*.ipynb", "**/*.csv", "**/*.parquet", "**/queries/**", "**/consultas/**", "**/models/**", "**/analytics/**", "**/notebooks/**"],
+    "scripts-and-files": ["**/scripts/**", "**/*.sh", "**/*.ps1", "**/*.mjs", "**/*.cjs", "**/Makefile", "**/*.yml", "**/*.yaml", "**/*.toml"],
+    "interface-and-design": ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/*.svelte", "**/*.astro", "**/*.css", "**/*.scss", "**/*.html", "**/components/**", "**/pages/**", "**/app/**", "**/views/**", "**/templates/**"]
+  }
+}

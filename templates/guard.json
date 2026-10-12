@@ -1,0 +1,12 @@
+{
+  "builtin": ["python-c", "python-no-file", "node-e-backslashes", "heredoc-backslashes", "sed-i-code"],
+  "rules": [
+    {
+      "name": "force-push-to-main",
+      "pattern": "git\\s+push\\b[^\\n]*(--force|-f\\b)[^\\n]*\\b(main|master)\\b",
+      "message": "A forced push to main rewrites shared history. Push to a branch and open a pull request.",
+      "blocks": ["git push --force origin main", "git push -f origin master"],
+      "allows": ["git push origin main", "git push --force-with-lease origin my-branch", "git push -f origin my-branch"]
+    }
+  ]
+}

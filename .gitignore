@@ -1,7 +1,7 @@
-# Material de referencia y lista de palabras que nunca se publican: solo local.
-fuentes/
+# Reference material and the list of words that are never published: local only.
+private/
 
 node_modules/
 *.log
-# Ritual: bitácora y estado de sesión, solo local
+# Ritual: log and session state, local only
 .ritual/local/

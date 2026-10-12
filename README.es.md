@@ -17,7 +17,7 @@ Después, en tu proyecto, escribe `/ritual`. La primera vez detecta qué constru
 
 | Hook | Qué hace | Qué cuesta |
 |---|---|---|
-| **Guardia** | Bloquea los comandos que tu proyecto ya vio fallar y dice qué usar en su lugar. Sus reglas viven en `.ritual/guardia.json`, cada una con un caso que bloquea y otro que deja pasar. | Nada, hasta que bloquea. |
+| **Guardia** | Bloquea los comandos que tu proyecto ya vio fallar y dice qué usar en su lugar. Sus reglas viven en `.ritual/guard.json`, cada una con un caso que bloquea y otro que deja pasar. | Nada, hasta que bloquea. |
 | **Bitácora** | Anota en el momento cada comando que falla y cada corrección tuya («eso está mal», «hazlo de nuevo»), con lo que Claude estaba tocando. | Nada. |
 | **Preguntas** | La primera vez en la sesión que Claude va a editar una prueba, un componente, un script, un documento, una consulta, o a correr un comando o hacer un commit, le muestra las preguntas detectoras de ese grupo. Una vez por grupo y por sesión. | Una línea por lección del grupo, de tres a doce según el grupo y los paquetes. |
 
@@ -36,11 +36,11 @@ Al cerrar una sesión, o después de un error que dolió, escribe `/ritual`. Lee
 6. Guarda todo junto, en el mismo commit, y corre el verificador.
 7. Deja los ejemplos anónimos y, si una lección sirve para cualquier proyecto, te ofrece el texto para compartirla aquí. Nunca publica nada por su cuenta.
 
-Y `/ritual cierre`, antes de dar algo por terminado, recorre las preguntas de los grupos que tocaste contra el cambio y te dice qué falta.
+Y `/ritual close`, antes de dar algo por terminado, recorre las preguntas de los grupos que tocaste contra el cambio y te dice qué falta.
 
 ## La biblioteca
 
-Las lecciones viven en [`lecciones/es/`](lecciones/es/README.md), en siete grupos según **lo que estabas haciendo** cuando pasó:
+Las lecciones viven en [`lessons/es/`](lessons/es/README.md), en siete grupos según **lo que estabas haciendo** cuando pasó:
 
 | Grupo | De qué trata |
 |---|---|
@@ -59,13 +59,13 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 | `web` | 4: lo que se pierde tras una escritura cortada, los robots en un formulario público, el respaldo sin JavaScript y el foco al enviar. |
 | `apps`, `crm`, `ia` | En camino, con el mismo método. |
 
-Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca «fusionada en la N», no se borra. El formato completo está en [`lecciones/PLANTILLA.md`](lecciones/PLANTILLA.md).
+Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca «fusionada en la N», no se borra. El formato completo está en [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).
 
 Cada una dice de dónde salió:
 
-- `campo`: de un error real en un proyecto, con ese ejemplo.
-- `laboratorio`: se rompió en una [simulación](simulaciones/LEEME.md), y dice qué modelo y cuándo. Pasa a `campo` cuando alguien la confirma en un proyecto suyo.
-- `propuesta`: solo para lo que no «truena» (seguridad), con fuente pública.
+- `field`: de un error real en un proyecto, con ese ejemplo.
+- `lab`: se rompió en una [simulación](simulations/README.md), y dice qué modelo y cuándo. Pasa a `field` cuando alguien la confirma en un proyecto suyo.
+- `proposal`: solo para lo que no «truena» (seguridad), con fuente pública.
 
 Un ejemplo, la 13:
 
@@ -75,15 +75,15 @@ Ritual se aplica esa lección a sí mismo: cada regla del guardia, cada verifica
 
 ## Las lecciones de los paquetes salen de simulaciones
 
-Las lecciones por tipo de proyecto no se inventan. Un modelo construye una tarea realista sin Ritual; otro modelo, en otra sesión, ejecuta lo construido y anota lo que se rompió, con evidencia. Lo que se rompe entra como lección; lo que no, no. Cada tarea se corre dos veces: lo que se rompe las dos veces es lección; lo que se rompe una vez queda como candidato. Cuando sale un modelo nuevo, las tareas se vuelven a correr, y una lección que ya no se rompe se baja con datos. El método y las tareas están en [`simulaciones/`](simulaciones/LEEME.md).
+Las lecciones por tipo de proyecto no se inventan. Un modelo construye una tarea realista sin Ritual; otro modelo, en otra sesión, ejecuta lo construido y anota lo que se rompió, con evidencia. Lo que se rompe entra como lección; lo que no, no. Cada tarea se corre dos veces: lo que se rompe las dos veces es lección; lo que se rompe una vez queda como candidato. Cuando sale un modelo nuevo, las tareas se vuelven a correr, y una lección que ya no se rompe se baja con datos. El método y las tareas están en [`simulations/`](simulations/README.md).
 
-La primera fue un sitio para un taller de bicicletas con formulario de contacto y página de administración. Sonnet lo construyó dos veces, y las dos versiones escapaban bien el HTML, no dejaban salir de la carpeta pública y aguantaron 300 mensajes a la vez. Aun así, las dos perdían en silencio el mensaje que llegaba después de una escritura cortada, las dos aceptaban cientos de mensajes de un robot sin forma de limpiarlos, y una dijo que su prueba pasaba cuando fallaba una vez de cada diez. Cada hallazgo está con su evidencia en [`simulaciones/web/corridas/`](simulaciones/web/corridas/2026-10-sonnet-2/HALLAZGOS.md), junto al código tal como quedó.
+La primera fue un sitio para un taller de bicicletas con formulario de contacto y página de administración. Sonnet lo construyó dos veces, y las dos versiones escapaban bien el HTML, no dejaban salir de la carpeta pública y aguantaron 300 mensajes a la vez. Aun así, las dos perdían en silencio el mensaje que llegaba después de una escritura cortada, las dos aceptaban cientos de mensajes de un robot sin forma de limpiarlos, y una dijo que su prueba pasaba cuando fallaba una vez de cada diez. Cada hallazgo está con su evidencia en [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md), junto al código tal como quedó.
 
 Ritual también se revisa con sus lecciones. La WEB-1 encontró el mismo error en su propia bitácora, y se corrigió con una prueba que primero se vio fallar.
 
 ## Contribuir
 
-La forma más fácil: **confirma una lección**. Si una de `laboratorio` o `propuesta` te pasó de verdad, abre un issue con tu ejemplo anónimo y pasa a `campo`, con tu nombre si quieres.
+La forma más fácil: **confirma una lección**. Si una de `lab` o `proposal` te pasó de verdad, abre un issue con tu ejemplo anónimo y pasa a `field`, con tu nombre si quieres.
 
 También puedes:
 
@@ -92,7 +92,7 @@ También puedes:
 - **Corregir una traducción**: las hace Claude y se agradece la revisión de hablantes nativos.
 - **Agregar una regla al guardia** o un caso que debía dejar pasar.
 
-Antes de abrir el pull request: `npm test`. Corre la calibración de cada verificador y hook, y revisa que cada lección traiga sus cinco partes y que el índice esté al día (`node scripts/lecciones.mjs --indice` lo regenera).
+Antes de abrir el pull request: `npm test`. Corre la calibración de cada verificador y hook, y revisa que cada lección traiga sus cinco partes y que el índice esté al día (`node scripts/lessons.mjs --index` lo regenera).
 
 ## Idiomas
 

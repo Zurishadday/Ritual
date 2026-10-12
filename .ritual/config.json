@@ -1,9 +1,9 @@
 {
-  "idioma": "es",
-  "paquetes": [],
-  "bajadas": [],
-  "grupos": {
-    "practicas-y-pruebas": [
+  "language": "en",
+  "packages": [],
+  "demoted": [],
+  "groups": {
+    "tests-and-checks": [
       "**/*.test.*",
       "**/*.spec.*",
       "**/tests/**",
@@ -12,7 +12,7 @@
       "**/e2e/**",
       "**/cypress/**"
     ],
-    "escribir-y-documentar": [
+    "writing-and-docs": [
       "**/*.md",
       "**/*.mdx",
       "**/*.rst",
@@ -20,7 +20,7 @@
       "**/docs/**",
       "**/content/**"
     ],
-    "cifras-y-datos": [
+    "numbers-and-data": [
       "**/*.sql",
       "**/*.ipynb",
       "**/*.csv",
@@ -31,7 +31,7 @@
       "**/analytics/**",
       "**/notebooks/**"
     ],
-    "scripts-y-archivos": [
+    "scripts-and-files": [
       "**/scripts/**",
       "**/*.sh",
       "**/*.ps1",
@@ -42,7 +42,7 @@
       "**/*.yaml",
       "**/*.toml"
     ],
-    "interfaz-y-diseno": [
+    "interface-and-design": [
       "**/*.tsx",
       "**/*.jsx",
       "**/*.vue",
