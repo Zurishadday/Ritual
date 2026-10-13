@@ -58,5 +58,6 @@
       "**/views/**",
       "**/templates/**"
     ]
-  }
+  },
+  "about": "A Claude Code plugin: Node hooks and scripts, and a library of lessons in seven languages"
 }

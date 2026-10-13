@@ -11,7 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { isMain } from "../hooks/common.mjs";
 import { BUILTIN, rulesOf, selftest as calibrate } from "../hooks/guard.mjs";
-import { configDir, status } from "../hooks/update.mjs";
+import { configDir, status } from "../hooks/start.mjs";
 import { ORIGINAL, PACKAGES, PARTS, ROOT, check, checkProject, readLessons } from "./lessons.mjs";
 import { init } from "./init.mjs";
 
@@ -63,6 +63,8 @@ export function diagnose(project, { node = process.versions.node, now = Date.now
     if (unknown.length) error(`.ritual/config.json turns on package(s) that do not exist, whose lessons never show: ${unknown.join(", ")}. Packages: ${PACKAGES.join(", ")}.`);
     if (!PARTS[language]) warn(`.ritual/config.json says language «${language}», which Ritual has no lessons in; it uses English. Languages: ${Object.keys(PARTS).join(", ")}.`);
     if (!unknown.length) ok(`.ritual/config.json: language ${language}, packages ${(config.packages ?? []).join(", ") || "none"}`);
+    if (String(config.about ?? "").trim()) ok(`About: ${config.about}`);
+    else warn("No `about` in .ritual/config.json: Ritual doesn't know what this project is, so it can't tell which lesson packages fit. Ask Claude to fill it in (it reads the README and proposes the packages): the right packages catch this kind of project's mistakes, and the rest cost no tokens.");
   }
 
   const guard = json(path.join(dir, "guard.json"));
@@ -131,6 +133,10 @@ export function selftest() {
     const config = readFileSync(path.join(tmp, ".ritual", "config.json"), "utf8");
     file("config.json", config.replace('"web"', '"wbe"'));
     expect("unknown package", {}, "wbe");
+    // No about is a warning, never an error; with one, it is shown.
+    const level = (cfg) => { file("config.json", JSON.stringify(cfg)); return diagnose(tmp, { node: "22.18.0", now, inClaude: false, platform: "linux", claudeConfig: path.join(tmp, "no-config") }).find((f) => /about/i.test(f.text))?.level; };
+    if (level({ language: "en", packages: [] }) !== "warn") bad.push("a config without about should warn");
+    if (level({ language: "en", packages: [], about: "A course" }) !== "ok") bad.push("a config with about should show it");
     file("config.json", config.slice(0, -5));
     expect("broken config", {}, "config.json does not parse");
     file("config.json", config);

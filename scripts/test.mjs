@@ -13,7 +13,7 @@ const STEPS = [
   "hooks/guard.mjs --selftest",
   "hooks/log.mjs --selftest",
   "hooks/questions.mjs --selftest",
-  "hooks/update.mjs --selftest",
+  "hooks/start.mjs --selftest",
   "scripts/init.mjs --selftest",
   "scripts/summary.mjs --selftest",
   "scripts/share.mjs --selftest",

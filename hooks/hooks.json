@@ -1,9 +1,9 @@
 {
-  "description": "Ritual: blocks commands that already failed, logs errors and corrections, injects each group's detector questions once per session, and reminds weekly to update when auto-update is off. All hooks do nothing until the project has a .ritual/ folder (created by /ritual).",
+  "description": "Ritual: blocks commands that already failed, logs errors and corrections, injects each group's detector questions once per session, reminds weekly to update when auto-update is off, and asks once what the project is when its `about` is missing. All hooks do nothing until the project has a .ritual/ folder (created by /ritual).",
   "hooks": {
     "SessionStart": [
       {
-        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/update.mjs\"", "timeout": 10 }]
+        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/start.mjs\"", "timeout": 10 }]
       }
     ],
     "PreToolUse": [
