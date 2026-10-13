@@ -10,13 +10,19 @@
 //        node scripts/simulate.mjs --probe          what a builder session sees of your setup (cheap, haiku)
 //        node scripts/simulate.mjs --selftest
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { isMain } from "../hooks/common.mjs";
 import { ORIGINAL, ROOT, TAXONOMY, readLessons } from "./lessons.mjs";
 
 const HOUR = 60 * 60 * 1000;
+
+/** An empty folder for a session, by its long path: on Windows os.tmpdir() can be an 8.3 short path (C:\Users\ABCDEF~1\…), and
+ * Claude Code then treats files there as outside the project and denies every Write in dontAsk mode. */
+export function workDir(prefix) {
+  return realpathSync.native(mkdtempSync(path.join(os.tmpdir(), prefix)));
+}
 
 /** The claude executable: CLAUDE_BIN, then `claude` on the PATH, then the copy the Claude desktop app brings on Windows. */
 export function claudeBin(env = process.env) {
@@ -135,6 +141,11 @@ export function selftest() {
   if (sub.env.ANTHROPIC_MODEL || sub.env.CLAUDECODE || sub.env.CLAUDE_CODE_DISABLE_CLAUDE_MDS !== "1" || sub.env.CLAUDE_CODE_DISABLE_AUTO_MEMORY !== "1" || sub.env.PATH !== "p") bad.push(`the session env must drop the parent's model and session and turn off CLAUDE.md and memory: ${JSON.stringify(sub.env)}`);
   if (sub.args[sub.args.indexOf("--model") + 1] !== "claude-sonnet-5-5") bad.push("--model must be the one asked for");
   if (!session({ prompt: "x", model: "m", tools: [], budget: 1, env: { ANTHROPIC_API_KEY: "k" } }).args.includes("--bare")) bad.push("with an API key the session must be --bare");
+  // The session folders must be long paths: in an 8.3 short path every Write was denied and the builder wrote nothing.
+  const src = readFileSync(new URL(import.meta.url), "utf8");
+  if (/const dir = mkdtempSync\(/.test(src)) bad.push("session folders must come from workDir() (long path), not mkdtempSync");
+  const wd = workDir("ritual-sim-wd-");
+  try { if (wd !== realpathSync.native(wd) || /~\d/.test(wd)) bad.push(`workDir must return the long path: ${wd}`); } finally { rmSync(wd, { recursive: true, force: true }); }
   // An empty --allowedTools swallows the next flag as a tool name: the probe got text instead of JSON.
   if (session({ prompt: "x", model: "m", tools: [], budget: 1, env: {} }).args.includes("--allowedTools")) bad.push("with no tools, --allowedTools must not be passed (it eats --output-format)");
   const lessons = readLessons().lessons.filter((l) => (l.data.packages ?? "").includes("web"));
@@ -173,7 +184,7 @@ if (isMain(import.meta.url)) {
   if (!bin) { console.error("✕ claude not found: install the command line (https://code.claude.com/docs/en/setup) or set CLAUDE_BIN"); process.exit(1); }
   const cli = spawnSync(bin, ["--version"], { encoding: "utf8" }).stdout.trim().split(" ")[0];
   if (args.includes("--probe")) {
-    const dir = mkdtempSync(path.join(os.tmpdir(), "ritual-probe-"));
+    const dir = workDir("ritual-probe-");
     const s = session({ prompt: "List, word for word where you can: every instruction you were given besides this message (CLAUDE.md, memory, plugins, hooks, output styles), every skill and slash command you can use, and every MCP server. If there is none of a kind, say NONE for it.", model: "haiku", tools: [], budget: 0.5 });
     const r = run(bin, s, dir, 5 * 60 * 1000);
     rmSync(dir, { recursive: true, force: true });
@@ -201,16 +212,19 @@ if (isMain(import.meta.url)) {
   for (let n = 1; n <= runs; n++) {
     const target = path.join(ROOT, "simulations", task, "runs", `${month}-${short}-${n}`);
     if (existsSync(target)) { console.error(`✕ ${path.relative(ROOT, target)} already exists: a run is never overwritten`); process.exit(1); }
-    const dir = mkdtempSync(path.join(os.tmpdir(), `ritual-sim-${task}-`));
+    const dir = workDir(`ritual-sim-${task}-`);
     console.log(`\nRun ${n}: building in ${dir} …`);
     const built = run(bin, session({ prompt: request, model: builder, tools: BUILDER_TOOLS, budget }), dir);
     if (!built.json) { console.error(`✕ the builder did not run (exit ${built.status}):\n${built.stderr}${built.stdout}`); process.exit(1); }
+    // An empty folder is not a build: reviewing it would cost a session and measure nothing.
+    if (!readdirSync(dir).length) { console.error(`✕ the builder left no files. Its last message:\n${built.json.result ?? ""}`); process.exit(1); }
     mkdirSync(target, { recursive: true });
     cpSync(dir, target, { recursive: true });
     writeFileSync(path.join(target, "BUILDER.md"), `# What the builder said\n\n\`${builder}\` · ${built.json.subtype ?? ""} · ${built.json.num_turns ?? "?"} turns · $${built.json.total_cost_usd ?? "?"}\n\n${built.json.result ?? "(no final message)"}\n`);
     console.log(`  built: ${built.json.subtype ?? "?"}, ${built.json.num_turns ?? "?"} turns. Reviewing …`);
     const reviewed = run(bin, session({ prompt: reviewPrompt({ task, request, builderSummary: built.json.result, lessons, month, builder }), model: reviewer, tools: REVIEWER_TOOLS, budget }), dir);
     for (const f of ["FINDINGS.md", "verdicts.json"]) if (existsSync(path.join(dir, f))) cpSync(path.join(dir, f), path.join(target, f));
+    writeFileSync(path.join(target, "REVIEWER.md"), `# What the reviewer said\n\n\`${reviewer}\` · ${reviewed.json?.subtype ?? `exit ${reviewed.status}`} · ${reviewed.json?.num_turns ?? "?"} turns · $${reviewed.json?.total_cost_usd ?? "?"}\n\n${reviewed.json?.result ?? reviewed.stderr ?? "(no final message)"}\n`);
     let v = null;
     try { v = JSON.parse(readFileSync(path.join(dir, "verdicts.json"), "utf8")); } catch { /* the reviewer did not leave verdicts */ }
     if (!v) { console.error(`✕ run ${n}: the reviewer left no readable verdicts.json (exit ${reviewed.status}). The build is kept in ${path.relative(ROOT, target)}.\n${reviewed.stderr}`); process.exit(1); }
