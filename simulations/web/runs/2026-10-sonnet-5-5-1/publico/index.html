@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taller Rueda Libre · Reparación de bicicletas</title>
+  <meta name="description" content="Taller Rueda Libre: afinación, cambio de llantas y frenos para tu bicicleta.">
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="#inicio">Taller Rueda Libre</a>
+    <nav aria-label="Principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#visitanos">Visítanos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="portada">
+      <img src="/img/portada.svg" alt="Bicicleta en un camino con colinas al fondo" width="1600" height="900">
+      <div class="portada-texto">
+        <h1>Tu bici, lista para rodar libre.</h1>
+        <p>Reparaciones honestas, rápidas y hechas con cariño.</p>
+        <a class="boton" href="#contacto">Escríbenos</a>
+      </div>
+    </section>
+
+    <section id="servicios" class="seccion">
+      <h2>Nuestros servicios</h2>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <img src="/img/afinacion.svg" alt="Cadena y engranes de una bicicleta" width="800" height="600" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Afinación</h3>
+            <p>Ajuste de cambios, frenos y rodamientos, limpieza y lubricación de la transmisión.</p>
+            <p class="precio">$250 MXN</p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/llantas.svg" alt="Rueda de bicicleta con llanta nueva" width="800" height="600" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Cambio de llantas</h3>
+            <p>Montaje y balanceo de llanta y cámara. Mano de obra por llanta, sin incluir refacciones.</p>
+            <p class="precio">$120 MXN</p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/frenos.svg" alt="Disco y pinza de freno de bicicleta" width="800" height="600" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Frenos</h3>
+            <p>Cambio de balatas o pastillas, ajuste y purga. Mano de obra, sin incluir refacciones.</p>
+            <p class="precio">$180 MXN</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="visitanos" class="seccion seccion-clara">
+      <h2>Visítanos</h2>
+      <div class="dos-columnas">
+        <div>
+          <h3>Horarios</h3>
+          <table class="horarios">
+            <tbody>
+              <tr><th scope="row">Lunes a viernes</th><td>9:00 – 19:00</td></tr>
+              <tr><th scope="row">Sábado</th><td>9:00 – 15:00</td></tr>
+              <tr><th scope="row">Domingo</th><td>Cerrado</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Dirección</h3>
+          <address>
+            Calle Ejemplo 123, Col. Centro<br>
+            Ciudad de Ejemplo, CP 00000<br>
+            Tel. 55 0000 0000
+          </address>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="seccion">
+      <h2>Contacto</h2>
+      <form id="form-contacto" class="formulario" novalidate>
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" type="text" maxlength="100" autocomplete="name" required>
+
+        <label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" maxlength="200" autocomplete="email" required>
+
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="5" maxlength="2000" required></textarea>
+
+        <!-- Campo trampa para bots; las personas no lo ven -->
+        <div class="trampa" aria-hidden="true">
+          <label for="web">No llenar</label>
+          <input id="web" name="web" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button class="boton" type="submit">Enviar mensaje</button>
+        <p id="estado" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>© Taller Rueda Libre</p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

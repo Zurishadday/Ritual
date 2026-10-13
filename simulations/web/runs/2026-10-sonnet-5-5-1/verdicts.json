@@ -1,0 +1,72 @@
+{
+  "lessons": {
+    "32": {
+      "verdict": "held",
+      "evidence": "browser-tests.mjs at 375x740, real clicks: empty, bad-email, server-rejected and success states all wrote #estado right under the button with inView:true (top 612/bottom 636-661 of vh 740); admin list re-rendered after delete"
+    },
+    "41": {
+      "verdict": "broke",
+      "evidence": "source has .precio{margin-top:auto} to pin prices to card bottom, but rendered at 1280px: computed margin-top [\"0px\",\"0px\",\"0px\"], priceTop 360/384/384 (desktop-servicios.png shows $250 higher); builder never rendered the page"
+    },
+    "45": {
+      "verdict": "broke",
+      "evidence": "server down then submit -> #estado \"Failed to fetch\" (English, technical); and 5 POSTs rejected for correo \"a@b\" from one IP, then the corrected one -> 429 \"Demasiados mensajes. Intenta en un minuto.\""
+    },
+    "46": {
+      "verdict": "broke",
+      "evidence": "http-tests2.mjs: each POST rewrites the whole file: 33.6 ms at 120 msgs (198 KB) -> 61.4 ms at 5000 msgs (10.3 MB); admin GET returns 10,123,110 B; 30 concurrent POSTs at cap -> last answered after 879 ms"
+    },
+    "49": {
+      "verdict": "broke",
+      "evidence": ".tarjeta-cuerpo p{margin:0 0 .8rem} (0,1,1) overrides .precio{margin-top:auto} (0,1,0): computed margin-top 0px on all three, prices at 360/384/384 px"
+    },
+    "WEB-2": {
+      "verdict": "broke",
+      "evidence": "4,900+ bot POSTs from rotating 127.x.y.z all accepted (per-IP limit bypassed); at MAX_MENSAJES 5000 the first real message was silently evicted (\"Seed present: false\"); admin offers only one-by-one Eliminar with confirm(), no filter/bulk delete"
+    },
+    "WEB-3": {
+      "verdict": "broke",
+      "evidence": "scripts disabled, real click on Enviar -> url http://127.0.0.1:3111/?nombre=Sin+JS&correo=nojs%40example.com&mensaje=...&web= | saved: 0 | status text \"\" | fields cleared | scrollY 0"
+    },
+    "WEB-4": {
+      "verdict": "broke",
+      "evidence": "keyboard-only submit: focus while sending BODY, after success BODY, next Tab BODY; admin Eliminar via Enter -> focus BODY, next Tab jumps to first email link in list"
+    },
+    "WEB-1": {
+      "verdict": "held",
+      "evidence": "writes are tmp+rename of a whole JSON array, not an append log: planted half-written mensajes.json.tmp then POST -> 201, count intact, .tmp left: false (a damaged main file instead fails loudly with 500 on every request, see FINDINGS #10)"
+    }
+  },
+  "new": [
+    {
+      "title": "Atomic rename breaks on Windows when a reader outside the write queue has the file open, so a message is lost",
+      "class": "data",
+      "evidence": "40 POSTs interleaved with 40 admin GETs -> POST {\"201\":39,\"500\":1}, saved 39; stderr: EPERM: operation not permitted, rename '...mensajes.json.tmp' -> '...mensajes.json'"
+    },
+    {
+      "title": "Per-IP limit keyed on socket address counts the recommended reverse proxy, not the person, and counts rejected typos",
+      "class": "server",
+      "evidence": "same IP: 5 rejected POSTs (correo a@b) then valid one -> 429; in the browser all POSTs come from 127.0.0.1 and the 6th message in a minute was not saved; LEEME recommends Caddy/nginx in front"
+    },
+    {
+      "title": "White text on the orange CTA buttons fails WCAG AA contrast",
+      "class": "accessibility",
+      "evidence": "white on #e8742c = 3.01:1, hover #cc5f1b = 4.02:1, button text 16px/600 (not large) needs 4.5:1"
+    },
+    {
+      "title": "A damaged mensajes.json makes every submission and the admin list fail with a generic 'Error interno'",
+      "class": "data",
+      "evidence": "file truncated to 5000 B -> POST 500 {\"error\":\"Error interno\"}, GET /api/mensajes 500; log: SyntaxError: Unterminated string in JSON at position 5000"
+    },
+    {
+      "title": "Startup hints use bash syntax on a Windows setup, and with HOST=0.0.0.0 the banner prints localhost instead of the LAN IP",
+      "class": "false claim",
+      "evidence": "banner: 'Para fijar una propia: ADMIN_PASSWORD=tuclave node servidor.mjs'; HOST=0.0.0.0 -> 'Taller Rueda Libre en http://localhost:3112'; password differs per run (70i_OqMcz_73 vs yqHp0pTGtBnf)"
+    },
+    {
+      "title": "Admin Basic auth has no throttle or lockout",
+      "class": "security",
+      "evidence": "50 wrong passwords in a row -> 50 x 401, no delay or lock"
+    }
+  ]
+}

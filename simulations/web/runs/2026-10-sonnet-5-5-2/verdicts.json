@@ -1,0 +1,22 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "Chrome 375x667, tap 'Contacto', fill, tap 'Enviar' -> #estado at y=654..705 of 667 viewport (13 of 51 px visible) while form.reset() empties the fields; the visible change is the text disappearing" },
+    "41": { "verdict": "broke", "evidence": "Builder checked nothing rendered ('probado solo en el código'); rendered screenshot movil-arriba.png shows the h1 'Tu bici, lista para' drawn over the white #fff bike frame and ~#f0b36a sky (~1.9:1), a defect invisible in the CSS" },
+    "45": { "verdict": "broke", "evidence": "5x POST correo 'ana@example' (400 each) then corrected valid POST -> 429 'Demasiados mensajes' for 10 min; also server-side error leaves activeElement=BODY and correo aria-invalid=null (empty and no-@ paths held: focus moves to the field with native message)" },
+    "46": { "verdict": "broke", "evidence": "n=0/20k/40k/80k msgs: one POST 10/62/135/236 ms, admin GET 3.5/117/277/447 ms (0/13/27/53 MB body), 5 concurrent POSTs 10/189/421/814 ms - whole file read+parsed+rewritten every request" },
+    "49": { "verdict": "broke", "evidence": "General per-IP rate limit runs before field validation: the 6th attempt returns 429 'Demasiados mensajes' instead of the specific 'Escribe un correo válido.' (CSS general rules held: scroll-padding 64px vs 88px mobile header still leaves h2 at y=112 below bar bottom 88)" },
+    "WEB-2": { "verdict": "broke", "evidence": "Only DELETE /api/mensajes/<uuid> exists, one confirm() + full reload per message, no search/filter/pagination/bulk delete; curl POST without honeypot field saved normally; 80k msgs -> admin GET 53 MB in 447 ms" },
+    "WEB-3": { "verdict": "broke", "evidence": "Chrome with JS disabled, real click on 'Enviar' -> saved delta 0, #estado ''; GET /?nombre=Ana&correo=..&mensaje=.. -> 200 index.html, saved delta 0; <form> has no method/action; urlencoded POST /api/contacto -> 400 'Datos inválidos'" },
+    "WEB-4": { "verdict": "broke", "evidence": "Chrome keyboard: Enter on 'Enviar' -> success, activeElement=BODY; next Tab -> BODY (focus leaves page); same BODY focus after server-rejected email" },
+    "WEB-1": { "verdict": "held", "evidence": "Store is whole-file JSON written to .tmp then rename(); 7 SIGKILLs 2-60 ms into a POST on a 56 MB file -> mensajes.json parsed 7/7, no leftover .tmp (but a file corrupted by other means blocks all writes: see new finding)" }
+  },
+  "new": [
+    { "title": "An unreadable message store makes every new submission fail, with only a console stack trace as signal", "class": "data", "evidence": "mensajes.json truncated to '[{\"id\":\"x\",\"nombre\":\"Ana\"' -> valid POST 500 'Error interno', admin GET 500, stderr SyntaxError" },
+    { "title": "Hero headline over the photo has insufficient contrast at mobile width (crosses white bike frame and light sky)", "class": "accessibility", "evidence": "movil-arriba.png at 375px: white h1 over #fff frame (~1:1) and ~#f0b36a sky (~1.9:1); gradient covers only lower part of text block" },
+    { "title": "Admin Basic-auth login has no failed-attempt limit", "class": "security", "evidence": "200 wrong passwords in a row -> 200 x 401 in 615 ms, none blocked" },
+    { "title": "Oversize body gets a connection reset instead of the intended 413", "class": "server", "evidence": "POST /api/contacto with 100 KB fields -> ECONNRESET (req.destroy() before responding)" },
+    { "title": "Non-string fields coerced and saved", "class": "server", "evidence": "{\"nombre\":{\"a\":1},...} -> 201, stored nombre '[object Object]'" },
+    { "title": "Images have no declared width/height", "class": "accessibility", "evidence": "4/4 <img> width=null height=null; desktop fresh-load CLS 0.0731" },
+    { "title": "Publishing instruction given in bash syntax to a PowerShell user", "class": "false claim", "evidence": "Summary says 'usa HOST=0.0.0.0' next to a PowerShell example; in PowerShell it must be $env:HOST='0.0.0.0'" }
+  ]
+}

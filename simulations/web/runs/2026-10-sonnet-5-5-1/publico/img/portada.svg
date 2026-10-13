@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fc4d9"/>
+      <stop offset="1" stop-color="#f7e3b5"/>
+    </linearGradient>
+    <g id="rueda">
+      <circle r="150" fill="none" stroke="#1a1a1a" stroke-width="14"/>
+      <circle r="136" fill="none" stroke="#bbb" stroke-width="3"/>
+      <g stroke="#ddd" stroke-width="2">
+        <line x1="-136" y1="0" x2="136" y2="0"/>
+        <line x1="0" y1="-136" x2="0" y2="136"/>
+        <line x1="-96" y1="-96" x2="96" y2="96"/>
+        <line x1="-96" y1="96" x2="96" y2="-96"/>
+        <line x1="-126" y1="-52" x2="126" y2="52"/>
+        <line x1="-126" y1="52" x2="126" y2="-52"/>
+        <line x1="-52" y1="-126" x2="52" y2="126"/>
+        <line x1="-52" y1="126" x2="52" y2="-126"/>
+      </g>
+      <circle r="12" fill="#555"/>
+    </g>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <circle cx="1280" cy="230" r="90" fill="#fff3c4" opacity=".9"/>
+  <path d="M0 620 Q300 440 640 560 T1300 520 T1600 580 V900 H0Z" fill="#6aa889"/>
+  <path d="M0 700 Q400 560 800 660 T1600 650 V900 H0Z" fill="#3f8a63"/>
+  <rect y="760" width="1600" height="140" fill="#2d6a4c"/>
+  <ellipse cx="810" cy="772" rx="420" ry="16" fill="#000" opacity=".2"/>
+  <use href="#rueda" x="610" y="620"/>
+  <use href="#rueda" x="1010" y="620"/>
+  <g fill="none" stroke="#e8742c" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M610 620 L760 440 L930 440 L1010 620"/>
+    <path d="M760 440 L820 620 L610 620"/>
+    <path d="M930 440 L820 620"/>
+    <path d="M930 440 L960 360"/>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="14" stroke-linecap="round">
+    <line x1="745" y1="415" x2="800" y2="415"/>
+    <line x1="925" y1="360" x2="1000" y2="350"/>
+    <line x1="820" y1="620" x2="850" y2="690"/>
+  </g>
+  <circle cx="820" cy="620" r="26" fill="#555"/>
+</svg>

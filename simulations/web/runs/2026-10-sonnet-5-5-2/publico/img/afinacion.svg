@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#dcebe5"/>
+  <g transform="translate(230 200)" fill="#1f6f5c">
+    <circle r="85"/>
+    <g id="d"><rect x="-14" y="-115" width="28" height="40" rx="4"/></g>
+    <use href="#d" transform="rotate(45)"/><use href="#d" transform="rotate(90)"/><use href="#d" transform="rotate(135)"/>
+    <use href="#d" transform="rotate(180)"/><use href="#d" transform="rotate(225)"/><use href="#d" transform="rotate(270)"/><use href="#d" transform="rotate(315)"/>
+    <circle r="35" fill="#dcebe5"/>
+  </g>
+  <g transform="translate(400 200) rotate(35)" fill="#e9822b">
+    <rect x="-14" y="-110" width="28" height="200" rx="8"/>
+    <path d="M-40 -150 a40 40 0 1 1 80 0 l-20 0 l0 25 l-40 0 l0 -25z"/>
+  </g>
+</svg>
