@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 40 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40 |
-| `claude-sonnet-5-5` | 4 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4 |
+| `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-opus-5-5` | 0 | 1 | 27 |
 
@@ -80,7 +80,8 @@ The most general mistakes: different models made them.
 | [47. What's worked on in parallel collides in what's shared](en/git-and-process.md#47-whats-worked-on-in-parallel-collides-in-whats-shared) | `~sonnet` 2026-09 |
 | [48. If a file comes from a generator, the fix goes in the generator](en/scripts-and-files.md#48-if-a-file-comes-from-a-generator-the-fix-goes-in-the-generator) | `~sonnet` 2026-09 |
 | [49. A general rule must not silently beat the specific ones](en/interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
-| [WEB-1. In a file that only grows, a broken line takes the next one with it](en/scripts-and-files.md#web-1-in-a-file-that-only-grows-a-broken-line-takes-the-next-one-with-it) | `claude-sonnet-5-5` 2026-10 |
+| [WEB-1. A damaged store must not take the next record down with it](en/scripts-and-files.md#web-1-a-damaged-store-must-not-take-the-next-record-down-with-it) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-2. A public form gets bots from day one](en/interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-3. A fallback nobody tested is not a fallback](en/interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-4. If you disable the button, focus goes with it](en/interface-and-design.md#web-4-if-you-disable-the-button-focus-goes-with-it) | `claude-sonnet-5-5` 2026-10 |
+| [WEB-5. A password login without an attempt limit is only as strong as the weakest password](en/interface-and-design.md#web-5-a-password-login-without-an-attempt-limit-is-only-as-strong-as-the-weakest-password) | `claude-sonnet-5-5` 2026-10 |

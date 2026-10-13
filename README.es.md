@@ -122,7 +122,7 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 
 | Paquete | Lecciones |
 |---|---|
-| `web` | 4: lo que se pierde tras una escritura cortada, los robots en un formulario público, el respaldo sin JavaScript y el foco al enviar. |
+| `web` | 5: lo que se pierde cuando se dañan los datos guardados, los robots en un formulario público, el respaldo sin JavaScript, el foco al enviar y un inicio de sesión sin límite de intentos. |
 | `apps`, `crm`, `ai` | En camino, con el mismo método. |
 | El tuyo | Un tipo de proyecto que falte (móvil, datos, juegos…) empieza con su primera lección: mira [dónde va una lección](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

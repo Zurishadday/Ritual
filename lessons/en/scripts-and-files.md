@@ -134,16 +134,18 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **What to do.** Before fixing a file, find out where it comes from. Fix the source (the template, the script, the submission) and regenerate; if you have to fix the output, fix the source too in the same step. Whoever reviews generated output says what changed so it gets moved into the source. And before rebuilding a file from its sources, compare it with what's going to come out: anything that differs is a fix that would be lost.
 
-### WEB-1. In a file that only grows, a broken line takes the next one with it
+### WEB-1. A damaged store must not take the next record down with it
 
 `origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`
 
-**The idea.** Saving each record as a line at the end of a file is simple and copes well with lots of records. But if a write gets cut off, the line is left without its line break, and the next record gets glued onto it. Skipping "damaged lines" when reading drops both, silently. It is the other side of lesson 24: there the file gets emptied; here, whatever comes after is lost.
+**The idea.** However a site saves its records, one damaged write can take what comes after it down too. With records appended as lines, a line cut short glues the next record onto it, and a reader that skips "damaged lines" drops both, silently. With all records in one file that is read, changed and written back whole, once that file can't be read every new record fails, and only a console nobody watches says so. It is the other side of lesson 24: there the file gets emptied; here, whatever comes after is lost.
 
-**Example.** In both runs of the Web simulation, the form saved each message as a JSON line, and the admin panel skipped any it couldn't read. With a line cut off at the end of the file, the next message got the reply "Thanks!", was saved, and never showed up in the admin panel. One of the two versions had a comment that said "damaged line: skipped".
+**Example.** In both runs of the first Web simulation, the form saved each message as a JSON line, and the admin panel skipped any it couldn't read. With a line cut off at the end of the file, the next message got the reply "Thanks!", was saved, and never showed up in the admin panel. One of the two versions had a comment that said "damaged line: skipped".
 
-**Detector question.** If the last write was left half-done, what happens to the next one? Does what my reader skips alert anyone?
+**Another example.** In both runs of the rerun, every message lived in one JSON file, written to a temporary file and then renamed, so a crash mid-write no longer hurt. But with the file damaged any other way (a hand edit, a full disk, a bad restore), every new visitor got "Internal error", the admin page showed nothing, and the only signal was a stack trace in the server console.
 
-**Warning sign.** "Damaged lines get skipped" · "it's just appending to the end".
+**Detector question.** If the store is damaged tomorrow, what happens to the next visitor's record, and who finds out?
 
-**What to do.** Before appending, if the file doesn't end with a line break, start the record with one; or save each record in its own file. When reading, count the lines that couldn't be read and show that count where the owner will see it. Test it by manually leaving a line cut short, then writing a record after it.
+**Warning sign.** "Damaged lines get skipped" · "it's just appending to the end" · "the write is atomic, so the file can't break".
+
+**What to do.** Keep a new record from depending on old ones: append to a file that ends in a line break (start the record with one if it doesn't), or save each record in its own file, rather than rewriting one file that holds them all. When reading, count what couldn't be read and show that count where the owner will see it. Test it by damaging the store by hand (cut the last line short, truncate the file), then sending a record.

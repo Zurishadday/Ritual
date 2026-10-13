@@ -179,3 +179,17 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 **Señal de alarma.** «Lo deshabilito para que no le den dos veces».
 
 **Qué hacer.** Al terminar el envío, pon el foco donde sigue la persona: en el campo con error (marcado con `aria-invalid` y su mensaje junto a él) o en el aviso de éxito. O evita el doble envío sin deshabilitar, con `aria-disabled` y una bandera. Recorre el error solo con teclado.
+
+### WEB-5. Un inicio de sesión sin límite de intentos solo es tan fuerte como la contraseña más débil
+
+`from: 0e974320` · `by: ai`
+
+**La idea.** Un inicio de sesión que responde a cada contraseña incorrecta a toda velocidad deja que cualquiera pruebe miles por minuto. Una contraseña predeterminada fuerte esconde el problema hasta que el dueño pone la suya, y nada impide que la suya sea corta.
+
+**Ejemplo.** En las dos corridas de la repetición de la simulación Web, la página de administración pedía contraseña y nunca limitaba los intentos fallidos: 200 contraseñas incorrectas seguidas recibieron 200 rechazos en menos de un segundo, y ninguna fue bloqueada. La contraseña predeterminada era larga y aleatoria, pero el resumen final de quien construyó el sitio le explicaba al dueño cómo poner una nueva, y nada exigía que fuera larga.
+
+**Pregunta detectora.** ¿Cuántas contraseñas incorrectas puede probar alguien contra este inicio de sesión en un minuto, y qué pasa después de la quinta?
+
+**Señal de alarma.** «La contraseña predeterminada es fuerte» · «es solo la página de administración».
+
+**Qué hacer.** Frena o bloquea los fallos repetidos, por dirección y por cuenta, con una espera que crezca con cada intento. Exige una longitud mínima cuando el dueño ponga una contraseña. Pruébalo: envía veinte contraseñas incorrectas seguidas y comprueba que las últimas se rechazan.

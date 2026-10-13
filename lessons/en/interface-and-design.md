@@ -179,3 +179,17 @@ What applies when a person is going to see or use what you build: screens, compo
 **Warning sign.** "I disable it so nobody can submit twice."
 
 **What to do.** When submission finishes, put focus where the person needs to continue: on the field with the error (marked with `aria-invalid` and its message next to it) or on the success notice. Or prevent the double submission without disabling, using `aria-disabled` and a flag. Go through the error using only the keyboard.
+
+### WEB-5. A password login without an attempt limit is only as strong as the weakest password
+
+`origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`
+
+**The idea.** A login that answers every wrong password at full speed lets anyone try thousands a minute. A strong default password hides the problem until the owner sets their own, and nothing stops that one from being short.
+
+**Example.** In both runs of the Web simulation rerun, the admin page asked for a password and never limited failed attempts: 200 wrong passwords in a row got 200 refusals in under a second, none blocked. The default password was long and random, but the builder's own summary told the owner how to set a new one, and nothing required it to be long.
+
+**Detector question.** How many wrong passwords can someone try against this login in a minute, and what happens after the fifth?
+
+**Warning sign.** "The default password is strong" · "it's only the admin page".
+
+**What to do.** Slow down or block repeated failures, per address and per account, with a wait that grows. Require a minimum length when the owner sets a password. Test it: send twenty wrong passwords in a row and check that the last ones are refused.

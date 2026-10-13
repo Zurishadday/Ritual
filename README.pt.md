@@ -122,7 +122,7 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 
 | Pacote | Lições |
 |---|---|
-| `web` | 4: o que se perde depois de uma gravação interrompida, robôs num formulário público, o recurso de contingência sem JavaScript, e o foco no botão de envio. |
+| `web` | 5: perda de dados salvos quando são danificados, robôs num formulário público, o recurso de contingência sem JavaScript, o foco no envio e login sem limite de tentativas. |
 | `apps`, `crm`, `ai` | A caminho, com o mesmo método. |
 | O seu | Um tipo de projeto que ainda não tem (móvel, dados, jogos…) começa com a sua primeira lição: veja [onde vai uma lição](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

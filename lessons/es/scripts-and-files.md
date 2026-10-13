@@ -134,16 +134,18 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 **Qué hacer.** Antes de corregir un archivo, averigua de dónde sale. Corrige la fuente (la plantilla, el script, la entrega) y vuelve a generar; si tienes que corregir la salida, corrige también la fuente en el mismo paso. Quien revisa algo generado avisa qué cambió para que pase a la fuente. Y antes de rehacer un archivo desde sus fuentes, compáralo con lo que va a salir: lo que difiera es un arreglo que se perdería.
 
-### WEB-1. En un archivo que solo crece, una línea rota se lleva también la siguiente
+### WEB-1. Un almacenamiento dañado no debe arrastrar consigo el registro siguiente
 
-`from: 67b63f0b` · `by: author`
+`from: e896b1e3` · `by: ai`
 
-**La idea.** Guardar cada registro como una línea al final de un archivo es sencillo y aguanta muchos a la vez. Pero si una escritura se corta, la línea queda sin su salto y el registro siguiente se pega a ella. Saltarse «las líneas dañadas» al leer se lleva los dos, en silencio. Es la otra cara de la 24: ahí se vacía el archivo; aquí se pierde lo que llega después.
+**La idea.** Sin importar cómo guarde sus registros un sitio, una escritura dañada puede arrastrar también lo que viene después. Si los registros se agregan como líneas, una línea cortada a medias pega el registro siguiente a ella, y un lector que se salta las «líneas dañadas» descarta los dos, en silencio. Si todos los registros están en un solo archivo que se lee, se modifica y se vuelve a escribir completo, en cuanto ese archivo no se puede leer, cada registro nuevo falla, y solo una consola que nadie mira lo dice. Es el otro lado de la lección 24: allí se vacía el archivo; aquí se pierde lo que viene después.
 
-**Ejemplo.** En las dos corridas de la simulación Web, el formulario guardaba cada mensaje como una línea JSON, y la administración omitía las que no podía leer. Con una línea cortada al final del archivo, el mensaje siguiente respondió «¡Gracias!», quedó guardado y nunca apareció en la administración. Una de las dos versiones decía en un comentario «línea dañada: se omite».
+**Ejemplo.** En las dos corridas de la primera simulación Web, el formulario guardaba cada mensaje como una línea JSON, y el panel de administración omitía las que no podía leer. Con una línea cortada al final del archivo, el mensaje siguiente recibió la respuesta «¡Gracias!», se guardó y nunca apareció en el panel de administración. Una de las dos versiones tenía un comentario que decía «línea dañada: se omite».
 
-**Pregunta detectora.** Si la última escritura quedó a medias, ¿qué le pasa a la siguiente? ¿Lo que mi lector omite le avisa a alguien?
+**Otro ejemplo.** En las dos corridas de la repetición, todos los mensajes vivían en un solo archivo JSON que se escribía en un archivo temporal y luego se renombraba, así que un fallo a media escritura ya no hacía daño. Pero con el archivo dañado de cualquier otra forma (una edición a mano, un disco lleno, una restauración mal hecha), cada visitante nuevo recibía «Error interno», la página de administración no mostraba nada, y la única señal era un error en la consola del servidor.
 
-**Señal de alarma.** «Las líneas dañadas se omiten» · «es solo agregar al final».
+**Pregunta detectora.** Si mañana el almacenamiento se daña, ¿qué le pasa al registro del siguiente visitante, y quién se entera?
 
-**Qué hacer.** Antes de agregar, si el archivo no termina en salto de línea, empieza el registro con uno; o guarda cada registro en su propio archivo. Al leer, cuenta las líneas que no se pudieron leer y muéstralo donde lo vea el dueño. Pruébalo dejando una línea cortada a mano y enviando un registro después.
+**Señal de alarma.** «Las líneas dañadas se omiten» · «es solo agregar al final» · «la escritura es atómica, así que el archivo no se puede romper».
+
+**Qué hacer.** Haz que un registro nuevo no dependa de los anteriores: agrégalo al final de un archivo que termine en salto de línea (si no termina, empieza el registro con uno), o guarda cada registro en su propio archivo, en lugar de reescribir un archivo que los contiene todos. Al leer, cuenta lo que no se pudo leer y muestra ese número donde lo vea el dueño. Pruébalo dañando el almacenamiento a mano (corta la última línea, trunca el archivo) y después envía un registro.

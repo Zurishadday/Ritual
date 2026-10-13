@@ -44,7 +44,7 @@
 - **24.** [Write with a safety net](scripts-and-files.md#24-write-with-a-safety-net)
 - **25.** [A setting is not a status, and an alert is not a guarantee](scripts-and-files.md#25-a-setting-is-not-a-status-and-an-alert-is-not-a-guarantee)
 - **48.** [If a file comes from a generator, the fix goes in the generator](scripts-and-files.md#48-if-a-file-comes-from-a-generator-the-fix-goes-in-the-generator)
-- **WEB-1.** [In a file that only grows, a broken line takes the next one with it](scripts-and-files.md#web-1-in-a-file-that-only-grows-a-broken-line-takes-the-next-one-with-it)
+- **WEB-1.** [A damaged store must not take the next record down with it](scripts-and-files.md#web-1-a-damaged-store-must-not-take-the-next-record-down-with-it)
 
 ## Interface and design
 
@@ -60,6 +60,7 @@
 - **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)
 - **WEB-3.** [A fallback nobody tested is not a fallback](interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback)
 - **WEB-4.** [If you disable the button, focus goes with it](interface-and-design.md#web-4-if-you-disable-the-button-focus-goes-with-it)
+- **WEB-5.** [A password login without an attempt limit is only as strong as the weakest password](interface-and-design.md#web-5-a-password-login-without-an-attempt-limit-is-only-as-strong-as-the-weakest-password)
 
 ## Console and tools
 

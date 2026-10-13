@@ -134,16 +134,18 @@ O que vale quando um programa escreve, gera, transforma ou move arquivos e dados
 
 **O que fazer.** Antes de corrigir um arquivo, descubra de onde ele vem. Corrija a fonte (o template, o script, a entrega) e regenere; se for preciso corrigir a saída, corrija a fonte também no mesmo passo. Quem revisa uma saída gerada diz o que mudou para que a mudança seja levada para a fonte. E antes de reconstruir um arquivo a partir das suas fontes, compare-o com o que vai sair: tudo o que for diferente é uma correção que se perderia.
 
-### WEB-1. Em um arquivo que só cresce, uma linha quebrada leva a seguinte junto
+### WEB-1. Um armazenamento danificado não pode levar o próximo registro junto
 
-`from: 67b63f0b` · `by: ai`
+`from: e896b1e3` · `by: ai`
 
-**A ideia.** Salvar cada registro como uma linha no fim de um arquivo é simples e lida bem com muitos registros. Mas se uma escrita é interrompida, a linha fica sem a quebra de linha, e o registro seguinte fica grudado nela. Pular “linhas danificadas” na leitura descarta os dois, em silêncio. É o outro lado da lição 24: lá o arquivo é esvaziado; aqui, o que vem depois é perdido.
+**A ideia.** Qualquer que seja a forma como um site salva seus registros, uma escrita danificada pode levar consigo o que vem depois. Com registros acrescentados como linhas, uma linha cortada gruda o registro seguinte nela, e um leitor que pula “linhas danificadas” descarta as duas, em silêncio. Com todos os registros num só arquivo que é lido, alterado e gravado por inteiro, quando esse arquivo não pode mais ser lido, todo registro novo falha, e só um console que ninguém olha avisa. É o outro lado da lição 24: lá o arquivo é esvaziado; aqui, o que vem depois é perdido.
 
-**Exemplo.** Nas duas execuções da simulação Web, o formulário salvava cada mensagem como uma linha JSON, e o painel administrativo pulava qualquer linha que não conseguia ler. Com uma linha cortada no fim do arquivo, a mensagem seguinte recebeu a resposta “Obrigado!”, foi salva e nunca apareceu no painel. Uma das duas versões tinha um comentário que dizia “linha danificada: pulada”.
+**Exemplo.** Nas duas execuções da primeira simulação Web, o formulário salvava cada mensagem como uma linha JSON, e o painel administrativo pulava qualquer linha que não conseguia ler. Com uma linha cortada no fim do arquivo, a mensagem seguinte recebeu a resposta “Obrigado!”, foi salva e nunca apareceu no painel. Uma das duas versões tinha um comentário que dizia “linha danificada: pulada”.
 
-**Pergunta detectora.** Se a última escrita ficou pela metade, o que acontece com a próxima? O que o meu leitor pula alerta alguém?
+**Outro exemplo.** Nas duas execuções da repetição, cada mensagem ficava num único arquivo JSON, gravado num arquivo temporário e depois renomeado, então uma queda no meio da escrita já não atrapalhava. Mas com o arquivo danificado de outra forma (uma edição feita à mão, um disco cheio, uma restauração malfeita), todo visitante novo recebia “Erro interno”, a página administrativa não mostrava nada, e o único sinal era um rastro de erro no console do servidor.
 
-**Sinal de alerta.** “Linhas danificadas são puladas” · “é só acrescentar no fim”.
+**Pergunta detectora.** Se o armazenamento for danificado amanhã, o que acontece com o registro do próximo visitante, e quem percebe?
 
-**O que fazer.** Antes de acrescentar, se o arquivo não termina com quebra de linha, comece o registro com uma; ou salve cada registro num arquivo próprio. Na leitura, conte as linhas que não puderam ser lidas e mostre essa contagem onde o dono vai vê-la. Teste deixando manualmente uma linha cortada e depois escrevendo um registro depois dela.
+**Sinal de alerta.** “Linhas danificadas são puladas” · “é só acrescentar no fim” · “a escrita é atômica, então o arquivo não pode quebrar”.
+
+**O que fazer.** Faça um registro novo não depender dos antigos: acrescente a um arquivo que termina com quebra de linha (comece o registro com uma, se ele não terminar), ou salve cada registro num arquivo próprio, em vez de reescrever um arquivo que contém todos. Na leitura, conte o que não pôde ser lido e mostre essa contagem onde o dono vai vê-la. Teste danificando o armazenamento à mão (corte a última linha, trunque o arquivo) e depois envie um registro.

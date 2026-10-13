@@ -120,7 +120,7 @@ On top of the groups sit the **packages** per kind of project: lessons that only
 
 | Package | Lessons |
 |---|---|
-| `web` | 4: what gets lost after a cut-off write, bots on a public form, the fallback without JavaScript, and focus on submit. |
+| `web` | 5: what gets lost when the saved data gets damaged, bots on a public form, the fallback without JavaScript, focus on submit, and a login with no limit on attempts. |
 | `apps`, `crm`, `ai` | On the way, with the same method. |
 | Yours | A kind of project that's missing (mobile, data, games…) starts with its first lesson: see [where a lesson goes](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

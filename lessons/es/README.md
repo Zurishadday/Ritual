@@ -46,7 +46,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **24.** [Escribe con red](scripts-and-files.md#24-escribe-con-red)
 - **25.** [Un ajuste no es un estado, y un aviso no es una garantía](scripts-and-files.md#25-un-ajuste-no-es-un-estado-y-un-aviso-no-es-una-garantía)
 - **48.** [Si un archivo sale de un generador, el arreglo va en el generador](scripts-and-files.md#48-si-un-archivo-sale-de-un-generador-el-arreglo-va-en-el-generador)
-- **WEB-1.** [En un archivo que solo crece, una línea rota se lleva también la siguiente](scripts-and-files.md#web-1-en-un-archivo-que-solo-crece-una-línea-rota-se-lleva-también-la-siguiente)
+- **WEB-1.** [Un almacenamiento dañado no debe arrastrar consigo el registro siguiente](scripts-and-files.md#web-1-un-almacenamiento-dañado-no-debe-arrastrar-consigo-el-registro-siguiente)
 
 ## Interfaz y diseño
 
@@ -62,6 +62,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **WEB-2.** [Un formulario público recibe robots desde el primer día](interface-and-design.md#web-2-un-formulario-público-recibe-robots-desde-el-primer-día)
 - **WEB-3.** [Un respaldo que nadie probó no es respaldo](interface-and-design.md#web-3-un-respaldo-que-nadie-probó-no-es-respaldo)
 - **WEB-4.** [Si deshabilitas el botón, el foco se va con él](interface-and-design.md#web-4-si-deshabilitas-el-botón-el-foco-se-va-con-él)
+- **WEB-5.** [Un inicio de sesión sin límite de intentos solo es tan fuerte como la contraseña más débil](interface-and-design.md#web-5-un-inicio-de-sesión-sin-límite-de-intentos-solo-es-tan-fuerte-como-la-contraseña-más-débil)
 
 ## Consola y herramientas
 

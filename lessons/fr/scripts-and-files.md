@@ -134,16 +134,18 @@ Ce qui s'applique quand un programme écrit, génère, transforme ou déplace de
 
 **Que faire.** Avant de corriger un fichier, découvrez d'où il vient. Corrigez la source (le modèle, le script, la contribution) et régénérez ; si vous devez corriger la sortie, corrigez aussi la source dans la même étape. Celui qui relit une sortie générée dit ce qui a changé pour que ce soit reporté dans la source. Et avant de reconstruire un fichier à partir de ses sources, comparez-le avec ce qui va en sortir : tout ce qui diffère est une correction qui serait perdue.
 
-### WEB-1. Dans un fichier qui ne fait que grandir, une ligne cassée entraîne la suivante
+### WEB-1. Un stockage endommagé ne doit pas entraîner l'enregistrement suivant avec lui
 
-`from: 67b63f0b` · `by: ai`
+`from: e896b1e3` · `by: ai`
 
-**L'idée.** Enregistrer chaque enregistrement comme une ligne à la fin d'un fichier est simple et supporte bien un grand nombre d'enregistrements. Mais si une écriture est interrompue, la ligne reste sans son saut de ligne, et l'enregistrement suivant se colle dessus. Ignorer les « lignes abîmées » à la lecture fait disparaître les deux, sans bruit. C'est l'autre face de la leçon 24 : là, le fichier est vidé ; ici, ce qui suit est perdu.
+**L'idée.** Quelle que soit la façon dont un site enregistre ses données, une écriture endommagée peut aussi faire tomber ce qui vient après. Si les enregistrements sont ajoutés sous forme de lignes, une ligne coupée court colle l'enregistrement suivant à elle, et un lecteur qui saute les « lignes endommagées » perd les deux, sans rien signaler. Si tous les enregistrements sont dans un seul fichier, lu, modifié puis réécrit en entier, dès que ce fichier ne peut plus être lu, chaque nouvel enregistrement échoue, et seule une console que personne ne regarde le signale. C'est l'autre face de la leçon 24 : là, le fichier se vide ; ici, tout ce qui suit se perd.
 
-**Exemple.** Dans les deux exécutions de la simulation Web, le formulaire enregistrait chaque message sous forme de ligne JSON, et le panneau d'administration ignorait toute ligne qu'il ne pouvait pas lire. Avec une ligne coupée à la fin du fichier, le message suivant a reçu la réponse « Merci ! », a été enregistré, et n'est jamais apparu dans le panneau d'administration. L'une des deux versions avait un commentaire disant « ligne abîmée : ignorée ».
+**Exemple.** Dans les deux exécutions de la première simulation Web, le formulaire enregistrait chaque message sous forme de ligne JSON, et le panneau d'administration sautait toute ligne qu'il ne pouvait pas lire. Avec une ligne coupée à la fin du fichier, le message suivant a reçu la réponse « Merci ! », a été enregistré, et n'est jamais apparu dans le panneau d'administration. Une des deux versions avait un commentaire qui disait « ligne endommagée : ignorée ».
 
-**Question détectrice.** Si la dernière écriture est restée à moitié faite, que se passe-t-il pour la suivante ? Ce que mon lecteur saute, alerte-t-il quelqu'un ?
+**Autre exemple.** Dans les deux exécutions de la relance, chaque message se trouvait dans un seul fichier JSON, écrit d'abord dans un fichier temporaire puis renommé, si bien qu'un plantage au milieu de l'écriture ne faisait plus de mal. Mais avec le fichier endommagé d'une autre façon (une modification à la main, un disque plein, une mauvaise restauration), chaque nouveau visiteur recevait « Erreur interne », la page d'administration n'affichait rien, et le seul signal était une trace d'erreur dans la console du serveur.
 
-**Signal d'alarme.** « Les lignes abîmées sont ignorées » · « ça ne fait qu'ajouter à la fin ».
+**Question détectrice.** Si le stockage est endommagé demain, que devient l'enregistrement du prochain visiteur, et qui s'en aperçoit ?
 
-**Que faire.** Avant d'ajouter, si le fichier ne se termine pas par un saut de ligne, commencez l'enregistrement par un saut de ligne ; ou enregistrez chaque enregistrement dans son propre fichier. À la lecture, comptez les lignes qui n'ont pu être lues et affichez ce compte là où le responsable le verra. Testez en laissant volontairement une ligne coupée, puis en écrivant un enregistrement après elle.
+**Signal d'alarme.** « Les lignes endommagées sont sautées » · « on ajoute juste à la fin » · « l'écriture est atomique, donc le fichier ne peut pas se casser ».
+
+**Que faire.** Faites en sorte qu'un nouvel enregistrement ne dépende pas des anciens : ajoutez-le à un fichier qui se termine par un saut de ligne (commencez l'enregistrement par un saut de ligne s'il n'y en a pas), ou enregistrez chaque enregistrement dans son propre fichier, plutôt que de réécrire un seul fichier qui les contient tous. À la lecture, comptez ce qui n'a pas pu être lu et affichez ce compte là où le propriétaire le verra. Testez en endommageant le stockage à la main (coupez la dernière ligne, tronquez le fichier), puis en envoyant un enregistrement.

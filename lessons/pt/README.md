@@ -46,7 +46,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **24.** [Escreva com rede de segurança](scripts-and-files.md#24-escreva-com-rede-de-segurança)
 - **25.** [Uma configuração não é um status, e um alerta não é uma garantia](scripts-and-files.md#25-uma-configuração-não-é-um-status-e-um-alerta-não-é-uma-garantia)
 - **48.** [Se um arquivo vem de um gerador, a correção vai no gerador](scripts-and-files.md#48-se-um-arquivo-vem-de-um-gerador-a-correção-vai-no-gerador)
-- **WEB-1.** [Em um arquivo que só cresce, uma linha quebrada leva a seguinte junto](scripts-and-files.md#web-1-em-um-arquivo-que-só-cresce-uma-linha-quebrada-leva-a-seguinte-junto)
+- **WEB-1.** [Um armazenamento danificado não pode levar o próximo registro junto](scripts-and-files.md#web-1-um-armazenamento-danificado-não-pode-levar-o-próximo-registro-junto)
 
 ## Interface e design
 
@@ -62,6 +62,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **WEB-2.** [Um formulário público recebe robôs desde o primeiro dia](interface-and-design.md#web-2-um-formulário-público-recebe-robôs-desde-o-primeiro-dia)
 - **WEB-3.** [Um fallback que ninguém testou não é fallback](interface-and-design.md#web-3-um-fallback-que-ninguém-testou-não-é-fallback)
 - **WEB-4.** [Se você desabilita o botão, o foco vai junto](interface-and-design.md#web-4-se-você-desabilita-o-botão-o-foco-vai-junto)
+- **WEB-5.** [Login com senha sem limite de tentativas só é tão forte quanto a senha mais fraca](interface-and-design.md#web-5-login-com-senha-sem-limite-de-tentativas-só-é-tão-forte-quanto-a-senha-mais-fraca)
 
 ## Console e ferramentas
 

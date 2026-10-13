@@ -179,3 +179,17 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 **Signal d'alarme.** « Je le désactive pour que personne n'envoie deux fois. »
 
 **Que faire.** Quand l'envoi se termine, placez le focus là où la personne doit continuer : sur le champ en erreur (marqué avec `aria-invalid` et son message à côté) ou sur l'avis de succès. Ou empêchez le double envoi sans désactiver, avec `aria-disabled` et un indicateur. Parcourez l'erreur en n'utilisant que le clavier.
+
+### WEB-5. Une connexion par mot de passe sans limite de tentatives n'est pas plus solide que le mot de passe le plus faible
+
+`from: 0e974320` · `by: ai`
+
+**L'idée.** Une connexion qui répond à chaque mauvais mot de passe à pleine vitesse permet à n'importe qui d'en essayer des milliers par minute. Un mot de passe par défaut solide masque le problème tant que le propriétaire n'en choisit pas un lui-même, et rien n'empêche que ce choix soit court.
+
+**Exemple.** Dans les deux exécutions de la relance de la simulation Web, la page d'administration demandait un mot de passe et ne limitait jamais les échecs : 200 mauvais mots de passe d'affilée ont reçu 200 refus en moins d'une seconde, sans aucun blocage. Le mot de passe par défaut était long et aléatoire, mais le compte rendu de celui qui a construit le site indiquait au propriétaire comment en définir un nouveau, et rien n'exigeait qu'il soit long.
+
+**Question détectrice.** Combien de mauvais mots de passe peut-on essayer sur cette connexion en une minute, et que se passe-t-il après le cinquième ?
+
+**Signal d'alarme.** « Le mot de passe par défaut est solide » · « ce n'est que la page d'administration ».
+
+**Que faire.** Ralentissez ou bloquez les échecs répétés, par adresse et par compte, avec une attente qui s'allonge à chaque fois. Exigez une longueur minimale quand le propriétaire définit un mot de passe. Testez : envoyez vingt mauvais mots de passe d'affilée et vérifiez que les derniers sont refusés.

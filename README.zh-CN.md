@@ -122,7 +122,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 | 课程包 | 教训 |
 |---|---|
-| `web` | 4 条：被中断的写入之后丢失了什么、公开表单上的机器人、没有 JavaScript 时的后备方案，以及提交时的焦点。 |
+| `web` | 5 条：保存数据损坏后的丢失、公开表单上的机器人、没有 JavaScript 时的后备方案、提交时的焦点，以及无尝试次数限制的登录。 |
 | `apps`、`crm`、`ai` | 正在制作中，采用同样的方法。 |
 | 你的 | 缺少的某类项目（移动端、数据、游戏……）从它的第一条教训开始：参见[一条教训放在哪里](lessons/TEMPLATE.md#where-a-lesson-goes)。 |
 

@@ -179,3 +179,17 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 **Sinal de alerta.** “Desabilito para ninguém enviar duas vezes.”
 
 **O que fazer.** Quando o envio terminar, coloque o foco onde a pessoa precisa continuar: no campo com erro (marcado com `aria-invalid` e a mensagem ao lado) ou no aviso de sucesso. Ou evite o duplo envio sem desabilitar, usando `aria-disabled` e uma flag. Percorra o erro usando só o teclado.
+
+### WEB-5. Login com senha sem limite de tentativas só é tão forte quanto a senha mais fraca
+
+`from: 0e974320` · `by: ai`
+
+**A ideia.** Um login que responde a cada senha errada em velocidade máxima permite que qualquer um tente milhares por minuto. Uma senha padrão forte esconde o problema até o dono definir a sua, e nada impede que essa seja curta.
+
+**Exemplo.** Nas duas execuções da repetição da simulação Web, a página administrativa pedia uma senha e nunca limitava as tentativas erradas: 200 senhas erradas seguidas receberam 200 recusas em menos de um segundo, nenhuma bloqueada. A senha padrão era longa e aleatória, mas o resumo de quem construiu o site explicava ao dono como definir uma nova, e nada exigia que ela fosse longa.
+
+**Pergunta detectora.** Quantas senhas erradas alguém consegue testar nesse login em um minuto, e o que acontece depois da quinta?
+
+**Sinal de alerta.** “A senha padrão é forte” · “é só a página administrativa”.
+
+**O que fazer.** Desacelere ou bloqueie as falhas repetidas, por endereço e por conta, com uma espera que cresce a cada falha. Exija um tamanho mínimo quando o dono definir uma senha. Teste: envie vinte senhas erradas seguidas e confira que as últimas são recusadas.

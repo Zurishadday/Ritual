@@ -46,7 +46,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **24.** [Écrire avec un filet de sécurité](scripts-and-files.md#24-écrire-avec-un-filet-de-sécurité)
 - **25.** [Un réglage n'est pas un statut, et une alerte n'est pas une garantie](scripts-and-files.md#25-un-réglage-nest-pas-un-statut-et-une-alerte-nest-pas-une-garantie)
 - **48.** [Si un fichier vient d'un générateur, la correction va dans le générateur](scripts-and-files.md#48-si-un-fichier-vient-dun-générateur-la-correction-va-dans-le-générateur)
-- **WEB-1.** [Dans un fichier qui ne fait que grandir, une ligne cassée entraîne la suivante](scripts-and-files.md#web-1-dans-un-fichier-qui-ne-fait-que-grandir-une-ligne-cassée-entraîne-la-suivante)
+- **WEB-1.** [Un stockage endommagé ne doit pas entraîner l'enregistrement suivant avec lui](scripts-and-files.md#web-1-un-stockage-endommagé-ne-doit-pas-entraîner-lenregistrement-suivant-avec-lui)
 
 ## Interface et design
 
@@ -62,6 +62,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **WEB-2.** [Un formulaire public reçoit des robots dès le premier jour](interface-and-design.md#web-2-un-formulaire-public-reçoit-des-robots-dès-le-premier-jour)
 - **WEB-3.** [Un repli que personne n'a testé n'est pas un repli](interface-and-design.md#web-3-un-repli-que-personne-na-testé-nest-pas-un-repli)
 - **WEB-4.** [Si vous désactivez le bouton, le focus part avec lui](interface-and-design.md#web-4-si-vous-désactivez-le-bouton-le-focus-part-avec-lui)
+- **WEB-5.** [Une connexion par mot de passe sans limite de tentatives n'est pas plus solide que le mot de passe le plus faible](interface-and-design.md#web-5-une-connexion-par-mot-de-passe-sans-limite-de-tentatives-nest-pas-plus-solide-que-le-mot-de-passe-le-plus-faible)
 
 ## Console et outils
 

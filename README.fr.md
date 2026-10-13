@@ -122,7 +122,7 @@ Au-dessus des groupes se trouvent les **paquets** par type de projet : des leço
 
 | Paquet | Leçons |
 |---|---|
-| `web` | 4 : ce qui se perd après une écriture interrompue, les robots sur un formulaire public, le repli sans JavaScript, et le focus sur l'envoi. |
+| `web` | 5 : perte des données sauvegardées en cas d'altération, les robots sur un formulaire public, le repli sans JavaScript, le focus sur l'envoi et une connexion sans limite de tentatives. |
 | `apps`, `crm`, `ai` | En préparation, avec la même méthode. |
 | Le vôtre | Un type de projet qui manque (mobile, données, jeux…) commence par sa première leçon : voir [où va une leçon](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
