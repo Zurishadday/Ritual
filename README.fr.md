@@ -149,6 +149,8 @@ Les leçons par type de projet ne sont pas inventées. Un modèle construit une 
 
 La première était un site pour un atelier de réparation de vélos, avec un formulaire de contact et une page d'administration. Sonnet l'a construit deux fois. Les deux versions échappaient correctement le HTML, gardaient les requêtes dans le dossier public et tenaient face à 300 messages à la fois. Malgré cela, les deux perdaient en silence le message arrivé après une écriture interrompue, les deux acceptaient des centaines de messages venant d'un robot sans aucun moyen de les nettoyer, et l'une affirmait que son test passait alors qu'il échouait une fois sur dix. Chaque constat, avec ses preuves, se trouve dans [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md), à côté du code tel qu'il a été laissé.
 
+La seconde fois, un script l'a exécuté ([`scripts/simulate.mjs`](scripts/simulate.mjs)) : Sonnet 5.5 a construit dans des sessions isolées et Opus 5.5 a relu. L'erreur décrite par sept des neuf leçons web s'est reproduite dans les deux exécutions. L'erreur exacte de WEB-1 ne s'est pas reproduite, mais son mécanisme, si : une fois le fichier de données endommagé, chaque nouveau message échouait, donc la leçon a été renforcée, pas rétrogradée. Et une nouvelle erreur est apparue dans les deux exécutions, une connexion administrateur sans limite de tentatives, qui est devenue WEB-5. La comparaison se trouve dans [le résumé](simulations/web/runs/2026-10-sonnet-5-5-summary.md).
+
 Ritual est aussi vérifié avec ses propres leçons. WEB-1 a trouvé le même bug dans le journal de Ritual lui-même, et il a été corrigé avec un test vu échouer d'abord.
 
 ## Contribuer

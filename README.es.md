@@ -149,6 +149,8 @@ Las lecciones por tipo de proyecto no se inventan. Un modelo construye una tarea
 
 La primera fue un sitio para un taller de bicicletas con formulario de contacto y página de administración. Sonnet lo construyó dos veces, y las dos versiones escapaban bien el HTML, no salían de la carpeta pública y aguantaron 300 mensajes a la vez. Aun así, las dos perdían en silencio el mensaje que llegaba después de una escritura cortada, las dos aceptaban cientos de mensajes de un robot sin forma de limpiarlos, y una decía que su prueba pasaba cuando fallaba una vez de cada diez. Cada hallazgo está con su evidencia en [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md), junto al código tal como quedó.
 
+La segunda vez la corrió un script ([`scripts/simulate.mjs`](scripts/simulate.mjs)): Sonnet 5.5 construyó en sesiones aisladas y Opus 5.5 revisó. El error de siete de las nueve lecciones de web se repitió en las dos corridas. El error exacto de WEB-1 no, pero su mecanismo sí: en cuanto el archivo de datos se dañaba, cada mensaje nuevo fallaba, así que la lección se afinó en lugar de bajarse. Y apareció un error nuevo en las dos corridas, un acceso de administración sin límite de intentos, que se volvió WEB-5. La comparación está en [el resumen](simulations/web/runs/2026-10-sonnet-5-5-summary.md).
+
 Ritual también se revisa con sus propias lecciones. WEB-1 encontró el mismo error en la bitácora de Ritual, y se corrigió con una prueba que primero se vio fallar.
 
 ## Contribuir

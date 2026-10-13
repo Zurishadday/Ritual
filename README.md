@@ -147,6 +147,8 @@ Lessons per kind of project are not made up. One model builds a realistic task w
 
 The first one was a website for a bike repair shop with a contact form and an admin page. Sonnet built it twice, and both versions escaped HTML properly, kept requests inside the public folder and held up under 300 messages at once. Even so, both silently lost the message that arrived after a cut-off write, both accepted hundreds of messages from a bot with no way to clean them up, and one said its test passed when it failed one time in ten. Every finding is in [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md) with its evidence, next to the code as it was left.
 
+The second time, a script ran it ([`scripts/simulate.mjs`](scripts/simulate.mjs)): Sonnet 5.5 built in isolated sessions and Opus 5.5 reviewed. The mistake of seven of the nine web lessons happened again in both runs. WEB-1's exact mistake didn't, but its mechanism did: once the data file was damaged, every new message failed, so the lesson was sharpened, not demoted. And a new mistake showed up in both runs, an admin login with no limit on attempts, which became WEB-5. The comparison is in [the summary](simulations/web/runs/2026-10-sonnet-5-5-summary.md).
+
 Ritual is checked with its own lessons too. WEB-1 found the same bug in Ritual's own log, and it was fixed with a test that was seen failing first.
 
 ## Contributing

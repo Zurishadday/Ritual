@@ -149,6 +149,8 @@ As lições por tipo de projeto não são inventadas. Um modelo constrói uma ta
 
 A primeira foi um site para uma oficina de bicicletas, com formulário de contato e uma página de administração. O Sonnet a construiu duas vezes, e as duas versões escaparam corretamente o HTML, mantiveram as requisições dentro da pasta pública e aguentaram 300 mensagens ao mesmo tempo. Mesmo assim, as duas perderam em silêncio a mensagem que chegou depois de uma gravação interrompida, as duas aceitaram centenas de mensagens de um bot sem nenhuma forma de limpá-las, e uma delas disse que o teste passava quando, uma em cada dez vezes, falhava. Cada achado está em [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md) com suas evidências, ao lado do código como ficou.
 
+Na segunda vez, um script executou a simulação ([`scripts/simulate.mjs`](scripts/simulate.mjs)): o Sonnet 5.5 construiu em sessões isoladas e o Opus 5.5 revisou. O erro de sete das nove lições da web voltou a acontecer nas duas execuções. O erro exato da WEB-1 não voltou, mas o seu mecanismo sim: depois que o arquivo de dados ficou danificado, todas as novas mensagens falhavam, por isso a lição foi reforçada, não rebaixada. E apareceu um erro novo nas duas execuções, um login de administrador sem limite de tentativas, que passou a ser a WEB-5. A comparação está [no resumo](simulations/web/runs/2026-10-sonnet-5-5-summary.md).
+
 O Ritual também é verificado com as próprias lições. A WEB-1 encontrou o mesmo bug no próprio registro do Ritual, e foi corrigido com um teste que antes foi visto falhar.
 
 ## Contribuindo
