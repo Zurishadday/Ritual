@@ -50,6 +50,7 @@ export function summary(project, { now = new Date() } = {}) {
   const openRows = rows.filter((l) => /\|\s*open\s*\|/i.test(l));
   lines.push("", `Candidates: ${openRows.length} open of ${rows.length}`);
   for (const l of openRows.slice(0, 10)) lines.push(`  ${short(l, 140)}`);
+  if (openRows.length > 10) lines.push(`  … ${openRows.length - 10} more in .ritual/candidates.md`);
   return lines.join("\n");
 }
 
@@ -85,6 +86,11 @@ export function selftest() {
     if (r.includes("old")) bad.push("the summary includes an error from before the last ritual");
     if (r.includes("check y")) bad.push("the summary lists a candidate that is already done");
     if (groups(tmp).join() !== "interface-and-design,console-and-tools") bad.push(`--groups gave ${groups(tmp).join()}`);
+    // More open candidates than the summary lists: it says how many it left out, so none is lost by being eleventh.
+    const many = Array.from({ length: 12 }, (_, i) => `| ${i + 1} | check ${i + 1} | 13 | open | 2026-10-02 |`).join("\n");
+    writeFileSync(path.join(tmp, ".ritual", "candidates.md"), `# Candidates\n\n| # | What it would check | Lesson | Status | Date |\n|---|---|---|---|---|\n${many}\n`);
+    const long = summary(tmp);
+    if (!long.includes("12 open of 12") || !long.includes("2 more in .ritual/candidates.md")) bad.push("with 12 open candidates the summary must say it lists 10 and that 2 more are in candidates.md");
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
