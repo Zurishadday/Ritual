@@ -19,6 +19,7 @@ const STEPS = [
   "scripts/doctor.mjs --selftest",
   "scripts/maintain.mjs --selftest",
   "scripts/simulate.mjs --selftest",
+  "scripts/site.mjs --selftest",
   "assets/social/card.mjs --selftest",
 ];
 
