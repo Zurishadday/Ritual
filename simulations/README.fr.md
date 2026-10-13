@@ -17,6 +17,8 @@ Chaque exécution est enregistrée dans `<tâche>/runs/<année-mois>-<modèle>-<
 
 Quand sort un nouveau modèle, la tâche est relancée. Une leçon qui ne casse plus n'est pas supprimée : elle est rétrogradée (`demoted`, dans la configuration du projet qui l'utilise), et l'exécution le consigne. Ainsi, la bibliothèque se réduit d'elle-même quand les modèles s'améliorent, sur la base de données.
 
+C'est le script qui le fait : `node scripts/simulate.mjs <task>` (par exemple `web`). Sonnet construit et Opus relit, deux fois, chacun dans sa propre session Claude Code isolée, et le script compare les exécutions : une leçon dont l'erreur s'est reproduite dans toutes les exécutions est confirmée avec ce modèle, et une leçon dont l'erreur ne s'est produite dans aucune exécution est candidate à la rétrogradation. Vérifiez d'abord l'isolation avec `node scripts/simulate.mjs --probe` : le modèle qui construit ne doit voir ni votre CLAUDE.md, ni votre mémoire, ni vos plugins. Rien dans la bibliothèque ne change tant que le mainteneur ne l'applique pas avec `/maintain`.
+
 Pour proposer une nouvelle tâche, ouvrez une issue avec le texte de la tâche et le type de projet qu'elle représente.
 
 ## Vérifier une leçon contribuée

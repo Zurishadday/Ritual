@@ -19,6 +19,7 @@ The judgment is yours; the mechanics are in `node scripts/maintain.mjs`. Never e
 - "translations", or `npm test` warns that one is out of date → **Translations**.
 - "release", "publish", "users don't get the change" → **Release**.
 - "card", "lesson of the week", "post a lesson" → **Cards**.
+- "simulation", "a new model came out", checking a contributed lesson with Claude → **Simulation**.
 
 ## Confirmation (`confirmation` issue)
 
@@ -56,6 +57,19 @@ The judgment is yours; the mechanics are in `node scripts/maintain.mjs`. Never e
 3. Put each translation in `lessons/<language>/<group>.md`, replacing the outdated one or inserting it in id order.
 4. Check each one against the English: the same inline code spans, the same numbers, and every part present. Haiku has dropped list items and renamed packages before.
 5. `node scripts/lessons.mjs --stamp <language>` for each language (`by: ai`), then `--index`, then `npm test`: no warnings left.
+
+## Simulation
+
+Rerun a task when a new model comes out, or check a contributed lesson with Claude (turn its reproduce field into a `simulations/<task>/TASK.md` first, with `Package:` and a `---` line before the client's request, plus a REVIEW.md).
+
+1. `node scripts/simulate.mjs --probe`. The builder must see none of the user's CLAUDE.md, memory, plugins or MCP servers. With `ANTHROPIC_API_KEY` set, the script uses `--bare` and is fully isolated. With a subscription login it only switches things off flag by flag, so read what the probe says. If the CLI is not logged in, the user runs `claude auth login`: credentials are theirs to enter.
+2. `node scripts/simulate.mjs <task> --dry-run` shows the plan. Then run it without `--dry-run`. It uses the user's plan or API budget: ask first, saying how many sessions (runs × 2) and the `--budget` per session. Defaults: 2 runs, `claude-sonnet-5-5` builds, `claude-opus-5-5` reviews.
+3. It writes `simulations/<task>/runs/<month>-<model>-<n>/` (code, BUILDER.md, FINDINGS.md, verdicts.json) and `<month>-<model>-summary.md`.
+4. Read every FINDINGS.md: the verdicts are the reviewer's judgment, and you check them against their evidence.
+   - **Broke in every run:** add `seen:` with `maintain.mjs seen`.
+   - **Held in every run:** a candidate to demote. Write it in the summary; demoting is a decision for the maintainer.
+   - **New mistakes:** one that broke in every run becomes a lab lesson (TEMPLATE, then **Lesson** step 5 with a file you write). One that broke in a single run stays a candidate.
+5. Commit the runs and the summary, then apply the lesson changes in their own commits.
 
 ## Cards
 

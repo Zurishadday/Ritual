@@ -17,6 +17,8 @@ Cada rodada é salva em `<tarefa>/runs/<ano-mês>-<modelo>-<n>/` (`2026-10-sonne
 
 Quando sai um modelo novo, a tarefa é rodada de novo. Uma lição que deixa de quebrar não é apagada: é rebaixada (`demoted`, na configuração do projeto que a usa), e a rodada registra isso. Assim a biblioteca encolhe sozinha quando os modelos melhoram, com base em dados.
 
+O script faz isso: `node scripts/simulate.mjs <task>` (por exemplo `web`). Sonnet constrói e Opus revisa, duas vezes, cada uma na sua própria sessão isolada do Claude Code, e o script compara as execuções: uma lição cujo erro aconteceu em todas as execuções é confirmada com esse modelo, e uma cujo erro não aconteceu em nenhuma é candidata a ser rebaixada. Verifique primeiro o isolamento com `node scripts/simulate.mjs --probe`: o modelo que constrói não pode ver o seu CLAUDE.md, a memória nem os plugins. Nada na biblioteca muda até que o mantenedor o aplique com `/maintain`.
+
 Para propor uma tarefa nova, abra uma issue com o texto da tarefa e o tipo de projeto que ela representa.
 
 ## Como verificar uma lição contribuída
