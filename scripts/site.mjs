@@ -23,6 +23,8 @@ const UI = {
   ko: { title: "Claude가 같은 실수를 반복하지 않도록 돕는 교훈", search: "교훈 검색", group: "그룹", package: "패키지", model: "확인된 모델", all: "전체", core: "모든 프로젝트", count: "전체 {total}개 중 {n}개", none: "일치하는 교훈이 없습니다. 필터를 줄여 보세요.", seen: "확인된 모델", source: "GitHub에서 보기", install: "Claude Code에 설치", more: "예시와 해결 방법", ai: "AI가 번역함. 원어민의 검토를 기다리는 중입니다.", share: "같은 실수를 본 적이 있나요? /ritual share로 공유하세요." },
 };
 
+// Search ignores case and accents ("cache" finds "caché"); the page's script folds the query the same way.
+export const fold = (s) => String(s).normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 const html = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 /** The little markdown lessons use: paragraphs, inline code and *italics*. Everything is escaped first. */
 export function inline(text) {
@@ -57,7 +59,7 @@ export function page(language) {
     const pkgs = (o.data.packages ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     const seen = modelsOf(o);
     const rest = Object.entries(l.parts).filter(([p]) => p !== own[0] && p !== own[2] && p !== own[3]);
-    const text = [l.title, ...Object.values(l.parts)].join(" ").toLowerCase().replace(/\s+/g, " ");
+    const text = fold([l.title, ...Object.values(l.parts)].join(" ")).replace(/\s+/g, " ");
     return `<article id="l-${html(o.id)}" data-group="${html(o.group)}" data-packages="${html(pkgs.join(" "))}" data-models="${html(seen.map((m) => m.model).join(" "))}" data-text="${html(text)}"${lang !== language ? ` lang="${ORIGINAL}"` : ""}>
 <header><a class="id" href="#l-${html(o.id)}">${html(o.id)}</a><h2>${html(l.title)}</h2></header>
 <div class="tags"><span class="tag">${html(title(o.group))}</span>${pkgs.map((p) => `<span class="tag pkg">${html(p)}</span>`).join("")}</div>
@@ -134,7 +136,7 @@ ${cards}
 const count = ${JSON.stringify(t.count)}, all = [...document.querySelectorAll("article")];
 const q = document.getElementById("q"), g = document.getElementById("group"), p = document.getElementById("package"), m = document.getElementById("model");
 function apply() {
-  const words = q.value.toLowerCase().split(/\\s+/).filter(Boolean);
+  const words = q.value.normalize("NFD").replace(/\\p{M}/gu, "").toLowerCase().split(/\\s+/).filter(Boolean);
   let n = 0;
   for (const a of all) {
     const pk = a.dataset.packages.split(" ").filter(Boolean);
@@ -188,6 +190,7 @@ export function selftest() {
       if (/\*\*|\]\(/.test(tagline(language))) bad.push(`${language}: the tagline still has markdown: ${tagline(language).slice(0, 60)}`);
     }
     if (!readFileSync(path.join(out, "es", "index.html"), "utf8").includes("Pregunta detectora")) bad.push("the Spanish page should use the Spanish part names");
+    if (!/<article id="l-27"[^>]*data-text="[^"]*\bcache\b/.test(readFileSync(path.join(out, "es", "index.html"), "utf8"))) bad.push("searching «cache» must find «caché» on the Spanish page (accents folded)");
     if (!readFileSync(path.join(out, "index.html"), "utf8").includes('data-models="~opus claude-opus-5-5"')) bad.push("lesson 27 should be filterable by both its models");
   } finally { rmSync(out, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
