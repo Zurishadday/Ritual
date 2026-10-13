@@ -29,7 +29,7 @@ claude plugin marketplace add Zurishadday/Ritual
 claude plugin install ritual@ritual
 ```
 
-然后，在你的项目中输入 `/ritual`。第一次使用时，它会根据你的依赖判断你在构建什么，只问你一件事（要开启哪些课程包，以及使用哪种语言），然后创建 `.ritual/` 文件夹。整个设置就只有这些。
+然后，在你的项目中输入 `/ritual`。第一次运行时，它会根据你的依赖和 README 判断你在构建什么，并只问你一件事：项目是什么、启用哪些课程包及原因，以及使用哪种语言。然后它会创建 `.ritual/` 文件夹。设置就只有这些。
 
 需要 Node 20.17 或更高版本（`node --version`）。如果有什么不能用，输入 `/ritual doctor`：它会检查 Node、你的设置以及 hooks 是否真的在运行，并告诉你需要修什么。
 

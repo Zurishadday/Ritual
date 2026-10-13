@@ -29,7 +29,7 @@ claude plugin marketplace add Zurishadday/Ritual
 claude plugin install ritual@ritual
 ```
 
-Ensuite, dans votre projet, tapez `/ritual`. La première fois, il détecte ce que vous construisez à partir de vos dépendances, vous pose une seule question (quels paquets de leçons activer, et dans quelle langue) et crée le dossier `.ritual/`. Il n'y a pas d'autre configuration à faire.
+Ensuite, dans votre projet, tapez `/ritual`. La première fois, il détermine ce que vous construisez à partir de vos dépendances et de votre README, puis vous pose une seule question : ce qu'est le projet, quels paquets de leçons activer et pourquoi, et dans quelle langue. Il crée ensuite le dossier `.ritual/`. C'est toute la configuration nécessaire.
 
 Il nécessite Node 20.17 ou une version plus récente (`node --version`). Si quelque chose ne fonctionne pas, tapez `/ritual doctor` : il vérifie Node, votre configuration et si les hooks tournent vraiment, et indique ce qu'il faut corriger.
 
