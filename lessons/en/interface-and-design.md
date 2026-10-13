@@ -18,7 +18,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 19. A review of one dimension is not a review
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: claude-sonnet-5-5 2026-10`
 
 **The idea.** "They're already the same" requires having compared every property you can see, not just one.
 
@@ -80,7 +80,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 41. Check in the format the reader actually sees
 
-`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks` · `packages: web`
+`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks` · `packages: web` · `seen: claude-sonnet-5-5 2026-10`
 
 **The idea.** Finding a word in the text doesn't prove it shows up. The text can be somewhere else in the document while the format that was supposed to display it comes out empty.
 
@@ -98,7 +98,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 45. Someone walks the error path too
 
-`origin: field · ~sonnet · 2026-09` · `packages: web, apps`
+`origin: field · ~sonnet · 2026-09` · `packages: web, apps` · `seen: claude-sonnet-5-5 2026-10`
 
 **The idea.** If you only test what happens when everything goes right, whoever makes a mistake finds the gap. And when learning, making mistakes is the most common thing.
 
@@ -112,7 +112,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 46. What runs on every request can't grow with the content
 
-`origin: field · ~sonnet · 2026-09` · `packages: web`
+`origin: field · ~sonnet · 2026-09` · `packages: web` · `seen: claude-sonnet-5-5 2026-10`
 
 **The idea.** Something done on every page, like reading all the content or recalculating an index, costs little with ten pages and a lot with a hundred. It grows gradually and nobody notices, until something starts failing "every now and then."
 
@@ -126,7 +126,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 49. A general rule must not silently beat the specific ones
 
-`origin: field · ~sonnet · 2026-09` · `packages: web`
+`origin: field · ~sonnet · 2026-09` · `packages: web` · `seen: claude-sonnet-5-5 2026-10`
 
 **The idea.** A rule that applies to everything (a global style, a default value) can override what each piece decided for itself, without anything warning you.
 

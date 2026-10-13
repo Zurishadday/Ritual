@@ -11,15 +11,21 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 40 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40 |
+| `claude-sonnet-5-5` | 4 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
-| `claude-sonnet-5-5` | 4 | 0 | WEB-1, WEB-2, WEB-3, WEB-4 |
 | `claude-opus-5-5` | 0 | 1 | 27 |
 
 ## Seen with more than one model
 
 The most general mistakes: different models made them.
 
+- [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
+- [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
+- [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
+- [45. Someone walks the error path too](en/interface-and-design.md#45-someone-walks-the-error-path-too) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
+- [46. What runs on every request can't grow with the content](en/interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
+- [49. A general rule must not silently beat the specific ones](en/interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
 
 ## By lesson
 
@@ -43,7 +49,7 @@ The most general mistakes: different models made them.
 | [16. Your checker's filter usually excludes exactly what matters](en/tests-and-checks.md#16-your-checkers-filter-usually-excludes-exactly-what-matters) | `~opus` 2026-08 |
 | [17. Code that compiles is not code that runs](en/tests-and-checks.md#17-code-that-compiles-is-not-code-that-runs) | `~opus` 2026-08 |
 | [18. Checking the source is not checking what gets delivered](en/tests-and-checks.md#18-checking-the-source-is-not-checking-what-gets-delivered) | `~opus` 2026-08 |
-| [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) | `~opus` 2026-08 |
+| [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) | `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again) |
 | [20. Idempotent is not the same as updatable](en/scripts-and-files.md#20-idempotent-is-not-the-same-as-updatable) | `~opus` 2026-08 |
 | [21. Your marker must be your own](en/scripts-and-files.md#21-your-marker-must-be-your-own) | `~opus` 2026-08 |
 | [22. The second run is the one that finds the bug](en/scripts-and-files.md#22-the-second-run-is-the-one-that-finds-the-bug) | `~opus` 2026-08 |
@@ -53,7 +59,7 @@ The most general mistakes: different models made them.
 | [26. What's in production can go bad too](en/tests-and-checks.md#26-whats-in-production-can-go-bad-too) | `~opus` 2026-08 |
 | [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [28. Whoever runs it and whoever verifies it are different people](en/tests-and-checks.md#28-whoever-runs-it-and-whoever-verifies-it-are-different-people) | `~opus` 2026-08 |
-| [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) | `~opus` 2026-08 |
+| [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) | `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again) |
 | [30. Explain before acting, and wait for the yes](en/git-and-process.md#30-explain-before-acting-and-wait-for-the-yes) | `~opus` 2026-08 |
 | [31. Nothing technical on screen unless it changes a decision](en/interface-and-design.md#31-nothing-technical-on-screen-unless-it-changes-a-decision) | `~opus` 2026-08 |
 | [32. Something that works but can't be seen gets reported as broken](en/interface-and-design.md#32-something-that-works-but-cant-be-seen-gets-reported-as-broken) | `~opus` 2026-08 |
@@ -65,15 +71,15 @@ The most general mistakes: different models made them.
 | [38. What you don't know gets marked, not invented](en/writing-and-docs.md#38-what-you-dont-know-gets-marked-not-invented) | `~opus` 2026-08 |
 | [39. Version it in plain sight](en/writing-and-docs.md#39-version-it-in-plain-sight) | `~opus` 2026-08 |
 | [40. The log says what was left and why, not a chronicle of missteps](en/git-and-process.md#40-the-log-says-what-was-left-and-why-not-a-chronicle-of-missteps) | `~opus` 2026-08 |
-| [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) | `~sonnet` 2026-09 |
+| [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
 | [42. Work on the current version](en/writing-and-docs.md#42-work-on-the-current-version) | `~sonnet` 2026-09 |
 | [43. Reread from start to finish after many corrections](en/writing-and-docs.md#43-reread-from-start-to-finish-after-many-corrections) | `~sonnet` 2026-09 |
 | [44. What you cut from the output can be the verdict](en/console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict) | `~sonnet` 2026-09 |
-| [45. Someone walks the error path too](en/interface-and-design.md#45-someone-walks-the-error-path-too) | `~sonnet` 2026-09 |
-| [46. What runs on every request can't grow with the content](en/interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content) | `~sonnet` 2026-09 |
+| [45. Someone walks the error path too](en/interface-and-design.md#45-someone-walks-the-error-path-too) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
+| [46. What runs on every request can't grow with the content](en/interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
 | [47. What's worked on in parallel collides in what's shared](en/git-and-process.md#47-whats-worked-on-in-parallel-collides-in-whats-shared) | `~sonnet` 2026-09 |
 | [48. If a file comes from a generator, the fix goes in the generator](en/scripts-and-files.md#48-if-a-file-comes-from-a-generator-the-fix-goes-in-the-generator) | `~sonnet` 2026-09 |
-| [49. A general rule must not silently beat the specific ones](en/interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones) | `~sonnet` 2026-09 |
+| [49. A general rule must not silently beat the specific ones](en/interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
 | [WEB-1. In a file that only grows, a broken line takes the next one with it](en/scripts-and-files.md#web-1-in-a-file-that-only-grows-a-broken-line-takes-the-next-one-with-it) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-2. A public form gets bots from day one](en/interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-3. A fallback nobody tested is not a fallback](en/interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback) | `claude-sonnet-5-5` 2026-10 |

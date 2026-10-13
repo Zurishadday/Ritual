@@ -22,7 +22,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 29. Check the command before handing it to someone else
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: claude-sonnet-5-5 2026-10`
 
 **The idea.** Whoever runs someone else's command does it blind. Every broken command spends the trust they'd give the next one.
 
