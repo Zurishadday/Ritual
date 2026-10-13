@@ -4,7 +4,7 @@
 // here, we would publish exactly what we want to hide. Without a list there is no check: it fails loudly, it does not pass as clean.
 // Matches case-insensitively and at the start of a word, so a word also finds its plurals. It first removes the
 // allowed words (the author), so a nickname is not found inside the full name.
-// Usage: node scripts/check-publish.mjs             checks what git would upload (tracked and new non-ignored files)
+// Usage: node scripts/check-publish.mjs             checks what git would upload (tracked and new non-ignored files, and the messages of unpushed commits)
 //        node scripts/check-publish.mjs --selftest  calibrates: one case that must fail and one that must pass
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
@@ -69,6 +69,15 @@ if (isMain(import.meta.url)) {
       total++;
     }
   }
-  console.log(total ? `✕ ${total} mention(s) of what is never published. Do not push anything.` : `✓ ${files.length} file(s) clean`);
+  // Commit messages are published too: the ones not pushed yet (all of them if there is no upstream).
+  let range = ["HEAD"];
+  try { execFileSync("git", ["rev-parse", "@{u}"], { cwd: ROOT, stdio: "ignore" }); range = ["@{u}..HEAD"]; } catch { /* no upstream */ }
+  const log = execFileSync("git", ["log", ...range, "--format=@@%h%n%B"], { cwd: ROOT, encoding: "utf8" });
+  const commits = log.split("@@").filter(Boolean);
+  for (const c of commits) {
+    const [hash, ...body] = c.split("\n");
+    for (const h of find(body.join("\n"), words)) { console.log(`commit ${hash}  «${h.word}»  ${h.text}`); total++; }
+  }
+  console.log(total ? `✕ ${total} mention(s) of what is never published. Do not push anything.` : `✓ ${files.length} file(s) and ${commits.length} unpushed commit message(s) clean`);
   process.exit(total ? 1 : 0);
 }
