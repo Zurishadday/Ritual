@@ -45,10 +45,11 @@ export function shareText(f) {
   return [head, "", data, "", rest.join("\n").trim(), "", `**Where it goes.** ${where}`, "", `**Transfers to.**\n${(f.transfer ?? "").trim()}`, "", `**How to reproduce.** ${(f.reproduce ?? "").trim()}`, ""].join("\n");
 }
 
-/** The next free id: core numbers never repeat across files, and a package counts with its prefix (WEB-5). */
+/** The next free id: core numbers never repeat across files, and a package counts with its prefix (WEB-5; a package
+ * whose slug is long names a short one with `prefix` in taxonomy.json: education → EDU-1). */
 export function nextId(lessons, pkg) {
   if (!pkg) return String(Math.max(0, ...lessons.filter((l) => /^\d+$/.test(l.id)).map((l) => Number(l.id))) + 1);
-  const prefix = pkg.toUpperCase();
+  const prefix = TAXONOMY.packages[pkg]?.prefix ?? pkg.toUpperCase();
   return `${prefix}-${Math.max(0, ...lessons.filter((l) => l.id.startsWith(`${prefix}-`)).map((l) => Number(l.id.slice(prefix.length + 1)))) + 1}`;
 }
 
@@ -112,6 +113,7 @@ export function selftest() {
   if (nextId(lessons) !== String(top + 1)) bad.push(`nextId core: ${nextId(lessons)}, expected ${top + 1}`);
   if (nextId([{ id: "WEB-2" }, { id: "WEB-10" }, { id: "3" }], "web") !== "WEB-11") bad.push("nextId must count WEB-10 as 10, not as text");
   if (nextId([], "games") !== "GAMES-1") bad.push("a new package starts at 1");
+  if (nextId([{ id: "EDU-4" }], "education") !== "EDU-5") bad.push(`a package with a prefix in taxonomy.json counts with it: gave ${nextId([{ id: "EDU-4" }], "education")}`);
   const entry = libraryEntry({ ...share.lesson, data: { ...share.lesson.data, groups: "scripts-and-files, tests-and-checks" } }, "54", "field · claude-sonnet-5-5 · 2026-11");
   if (entry.group !== "scripts-and-files" || !entry.text.startsWith("### 54. A reader") || !entry.text.includes("`groups: tests-and-checks`") || /Where it goes|Transfers to|How to reproduce/.test(entry.text)) bad.push(`libraryEntry: ${entry.text.slice(0, 200)}`);
   const file = "# Scripts\n\nIntro.\n\n### 6. Six\n\n`origin: field · ~opus · 2026-08`\n\n**The idea.** x\n\n### 48. Forty-eight\n\n`origin: field · ~sonnet · 2026-09`\n\n**The idea.** y\n\n### WEB-1. Web\n\n`origin: lab · claude-sonnet-5-5 · 2026-10`\n\n**The idea.** z\n";

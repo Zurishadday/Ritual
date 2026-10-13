@@ -29,6 +29,11 @@
     "security": {
       "covers": "What does not visibly break: secrets, access, input from outside, data exposure. Only `proposal` lessons with a public source, or lessons confirmed in the field.",
       "detect": []
+    },
+    "education": {
+      "covers": "Projects that teach: courses, lessons, exercises, quizzes, tutorials and the platforms that deliver and grade them.",
+      "detect": [],
+      "prefix": "EDU"
     }
   }
 }
