@@ -107,3 +107,17 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 **Signal d'alarme.** « C'est le chiffre qu'on avait déjà » · « ça sort à peu près ça » · « on voit bien qu'ils passent tous ».
 
 **Que faire.** Avant d'écrire un chiffre, mesurez-le à nouveau et notez à côté quelles données et quelle date l'ont fourni. Les mots de quantité (« presque », « plus de », « la plupart ») sont des chiffres déguisés : mesurez-les de la même façon. Et si une image contient des calculs, faites en sorte que le même script qui la dessine fasse le calcul.
+
+### 50. Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles
+
+`from: 0b385079` · `by: ai`
+
+**L'idée.** Un exemple ne confirme votre explication que si l'explication rivale donnerait un résultat différent. Si les deux prédisent la même chose, l'exemple vous laisse croire celle qui vous est venue en premier à l'esprit.
+
+**Exemple.** Une leçon comparait l'effet d'une hausse de cinq points sur la première étape d'un tunnel de conversion et sur sa dernière étape. La première l'emportait, et le texte disait : « elles valent plus là où il y a plus de visites ». Mais la première étape était aussi celle qui convertissait le moins, et c'était la vraie cause ; dans un tunnel où la première étape convertit mieux, c'est la dernière qui l'emporte, malgré moins de visites. Dans un autre projet, une page était accusée de mettre 2.7 s à se charger ; un test qui demandait les pages une à une passait même sans le correctif, parce que la vraie cause était quarante requêtes lancées en même temps.
+
+**Question détectrice.** Quelle autre explication donnerait ce même résultat ? Mon exemple l'écarte-t-il ?
+
+**Signal d'alarme.** « Les chiffres le confirment. »
+
+**Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux.

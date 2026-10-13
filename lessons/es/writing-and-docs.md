@@ -89,3 +89,73 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 **Señal de alarma.** «Cada arreglo lo revisé en su lugar».
 
 **Qué hacer.** Al cerrar cada ronda, busca por tema todo lo que dice el documento sobre lo que corregiste.
+
+### 51. Lo que a ti te parece obvio es lo primero que hay que enseñar
+
+`from: 1fed11d1` · `by: author`
+
+**La idea.** Quien ya sabe no ve los pasos que da sin pensar. Por eso su primer ejemplo trae varias cosas nuevas a la vez, y quien empieza se pierde en la primera línea.
+
+**Ejemplo.** Un curso de programación para principiantes empezaba con una celda que traía seis cosas nuevas a la vez, y el plan nunca enseñaba qué es un tipo de dato ni que el `=` guarda y se lee de derecha a izquierda. La dueña del curso lo dijo en una frase: «asumes muchas cosas de los estudiantes». Después, tres lecciones decían «como arrastrar una fórmula», y ninguna lo había enseñado: decían «copiar la fórmula hacia abajo».
+
+**Pregunta detectora.** En mi primer ejemplo, ¿cuántas cosas son nuevas para alguien que no sabe nada? ¿Ya se explicó cada símbolo, cada palabra, cada nombre de botón y cada acción que pido?
+
+**Señal de alarma.** «Eso lo entiende cualquiera» · «es solo una línea» · «es la palabra de siempre».
+
+**Qué hacer.** Antes de escribir, lista lo que tu ejemplo da por sabido (símbolos, palabras, clics, cosas que el estudiante ya debería haber armado) y enséñalo primero: una idea nueva a la vez, cada símbolo explicado la primera vez que aparece. Busca cada palabra que coincide con el nombre de un botón, y cada acción que pides, como buscas un símbolo. Si se puede, deja que una revisión automática compare lo que usa cada ejemplo con lo que ya se enseñó.
+
+### 52. Sobre una herramienta que cambia rápido se escribe desde la práctica de hoy, no de memoria
+
+`from: 15098a47` · `by: author`
+
+**La idea.** Una lección o una guía sobre una herramienta que cambia cada pocos meses envejece mientras se escribe, si sale de lo que recuerda quien la escribe. Su premisa puede ser falsa antes de que la lea la primera persona.
+
+**Ejemplo.** El plan de un módulo de «análisis con IA» empezaba con «la IA no ve tus datos, así que describe tu tabla en lugar de pegarla». La dueña del curso señaló que hoy los agentes se conectan a la base, corren las consultas solos y devuelven el número. Una investigación con fuentes y fechas lo confirmó: copiar código de un chat era como se trabajaba dos años antes. Varias lecciones se reescribieron alrededor de lo que sigue siendo cierto: definir la pregunta, supervisar al agente y comprobar el número.
+
+**Pregunta detectora.** ¿Qué premisas de este texto dependen de lo que la herramienta puede hacer hoy? ¿Cuándo las comprobé por última vez, y contra qué fuente?
+
+**Señal de alarma.** «Así funciona» · «todo el mundo lo hace así».
+
+**Qué hacer.** Antes de escribir sobre una herramienta que cambia rápido, investiga la práctica actual con fuentes y fechas: qué hace hoy, qué es gratis, qué usa de verdad la gente. Arma el texto alrededor de la habilidad que sobrevive a la siguiente versión (plantear, supervisar, verificar) y deja los pasos de la herramienta en un solo lugar que se pueda actualizar. Marca lo que no pudiste comprobar y pruébalo a mano antes de publicar.
+
+### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
+
+`from: a7bc9d8b` · `by: author`
+
+**La idea.** Una pregunta deja de medir si la respuesta ya apareció: en una imagen, en la idea clave, en la explicación de otro ejercicio, en el título de un paso o en una lección anterior. Quien contesta bien pudo haberla leído.
+
+**Ejemplo.** Una ilustración con la cifra correcta quedaba arriba de la práctica que pedía calcularla. Una lección preguntaba qué pasa al guardar otro valor en una variable, en un paso titulado «Guardar otra vez reemplaza». Un resumen debajo del quiz final se leía antes de contestarlo. Y un recuadro que aparece tras el primer intento, aunque falle, daba la dirección de la respuesta.
+
+**Pregunta detectora.** Esta cifra, imagen o frase, ¿la ve el estudiante antes de contestar, aquí o en una lección anterior? No solo la cifra exacta: también una aproximación («unas 25»), la conclusión escrita al pie de una imagen, un título, un «acabas de ver que…», o lo que muestra en pantalla el error más probable de un ejercicio anterior.
+
+**Señal de alarma.** «Es solo contexto» · «es solo el título» · «es el pie de la imagen».
+
+**Qué hacer.** Busca cada respuesta en todo lo que se ve antes de su pregunta, también en lo que aparece tras un primer intento fallido, en lo que imprime el código de partida al correrlo, en los archivos que se descargan y en lo que se puede contar en un dibujo. Escribe el título del paso y los objetivos al final, y léelos junto al resultado de cada predicción. Una revisión automática encuentra las cifras exactas; las aproximaciones y las frases con otras palabras solo las encuentra quien lee con la respuesta en mente.
+
+### EDU-3. Una pregunta con dos respuestas defendibles no mide nada
+
+`from: 3f95b2da` · `by: author`
+
+**La idea.** Si con lo que dice el enunciado otra opción también se puede defender, quien elige la «equivocada» por una buena razón queda marcado como error, y quien acierta pudo acertar por suerte. La pregunta mide la frase que falta, no la idea.
+
+**Ejemplo.** Una pregunta pedía qué hacer con un descuento vacío «cuando la venta no tuvo descuento». La lección había enseñado que un vacío que es un dato se deja, así que «dejarlo» se defendía; la respuesta esperada, rellenar con cero, dependía de algo que el enunciado no decía: que se quería el promedio de todas las ventas. En otra, «la medida principal es la parte que paga el segundo mes» no decía de quiénes, y las dos versiones empataban o no según cómo se leyera.
+
+**Pregunta detectora.** Con lo que dice el enunciado y lo que enseñó la lección, ¿puedo defender otra opción? ¿Qué dato tendría que saber para descartarla, y está escrito?
+
+**Señal de alarma.** «Se sobreentiende» · «es obvio que se refiere a…».
+
+**Qué hacer.** Para cada opción equivocada, escribe en una línea por qué está mal usando solo el enunciado y la lección. Si para descartarla necesitas un dato que no está escrito, agrégalo al enunciado: el propósito de la cuenta, la regla del sistema, el denominador de una proporción, lo que se sabe de los datos. En un ejercicio de clasificar, prueba cada elemento contra cada categoría, no solo contra la suya.
+
+### EDU-5. Una pista apunta a la causa del error, no a la respuesta
+
+`from: 2fa4365d` · `by: author`
+
+**La idea.** Una pista aparece después de un intento fallido. Si da la respuesta, la línea que resuelve el ejercicio o lo que separa la solución del error más probable, el segundo intento mide la copia.
+
+**Ejemplo.** Al revisar las 277 prácticas revisadas de un curso, cambiaron 82 pistas en 49 archivos. Unas daban la línea que resuelve («el segundo es la…»). Otras dictaban el orden que separa la solución de su error común. En los ejercicios de cuadrar contra un resultado anterior, la pista decía «debe dar lo mismo que en la lección 2.2»: quien recordaba el número de antes lo podía escribir sin hacer el paso.
+
+**Pregunta detectora.** ¿Quien lee esta pista podría pasar el siguiente intento sin la habilidad? ¿Nombra la respuesta, la línea que resuelve, los pasos que mide el ejercicio o el número de antes con el que debe cuadrar?
+
+**Señal de alarma.** «Es solo un empujón» · «ya lo intentó una vez».
+
+**Qué hacer.** Escribe la pista sobre la causa del error probable («las posiciones empiezan en 0, no en 1») y cita solo lo ya enseñado. Deja el «debe dar lo mismo que antes» para la explicación que aparece al responder, donde enseña que dos métodos con el mismo número son una verificación. Revisa cada pista contra el error más probable de su ejercicio, no sola.

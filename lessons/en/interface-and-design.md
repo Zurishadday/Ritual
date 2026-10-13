@@ -80,7 +80,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 41. Check in the format the reader actually sees
 
-`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks` · `packages: web` · `seen: claude-sonnet-5-5 2026-10`
+`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks` · `packages: web` · `seen: claude-sonnet-5-5 2026-10, claude-opus-5-5 2026-10`
 
 **The idea.** Finding a word in the text doesn't prove it shows up. The text can be somewhere else in the document while the format that was supposed to display it comes out empty.
 
@@ -89,6 +89,8 @@ What applies when a person is going to see or use what you build: screens, compo
 **Another example.** A "there are more columns to the right" notice was added and taken as done because the code was there. It never appeared: a general table style removed the condition that turned it on. Someone else saw it in a screenshot.
 
 **One more example.** An answer option said "Total: {2 * 78}" in the file. When the page was drawn, the system calculated what was between the braces and showed "Total: 156": two identical options. Only someone who looked at the screen saw it.
+
+**Variant.** The screenshots a reviewer judges can show a screen nobody reaches. A course's capture tool answered each code exercise with a filler line just to move on, so the "after" screenshot showed that line and a "not the expected result" message: reviewers never saw what a learner sees after getting it right. On desktop the captures also took in the header and the side menu, and the lesson came out as an unreadable strip. When capturing for review, answer each step the way a successful user would, and capture only the part under review.
 
 **Detector question.** Did I see the exact element the way the reader sees it, or did I only find the word (or the code) in the source?
 

@@ -10,6 +10,11 @@
 - **39.** [Version it in plain sight](writing-and-docs.md#39-version-it-in-plain-sight)
 - **42.** [Work on the current version](writing-and-docs.md#42-work-on-the-current-version)
 - **43.** [Reread from start to finish after many corrections](writing-and-docs.md#43-reread-from-start-to-finish-after-many-corrections)
+- **51.** [What looks obvious to you is the first thing to teach](writing-and-docs.md#51-what-looks-obvious-to-you-is-the-first-thing-to-teach)
+- **52.** [Write about a fast-moving tool from today's practice, not from memory](writing-and-docs.md#52-write-about-a-fast-moving-tool-from-todays-practice-not-from-memory)
+- **EDU-2.** [What learners see before answering can't contain the answer](writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer)
+- **EDU-3.** [A question with two defensible answers measures nothing](writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing)
+- **EDU-5.** [A hint points at the cause of the mistake, not at the answer](writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer)
 
 ## Numbers and data
 
@@ -20,6 +25,7 @@
 - **5.** [A perfect result is a warning, not a win](numbers-and-data.md#5-a-perfect-result-is-a-warning-not-a-win)
 - **12.** [Running the query doesn't prove the number is right](numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right)
 - **36.** [Measure before you write](numbers-and-data.md#36-measure-before-you-write)
+- **50.** [If two explanations predict the same thing, your example doesn't choose between them](numbers-and-data.md#50-if-two-explanations-predict-the-same-thing-your-example-doesnt-choose-between-them)
 
 ## Tests and checks
 
@@ -32,6 +38,8 @@
 - **26.** [What's in production can go bad too](tests-and-checks.md#26-whats-in-production-can-go-bad-too)
 - **28.** [Whoever runs it and whoever verifies it are different people](tests-and-checks.md#28-whoever-runs-it-and-whoever-verifies-it-are-different-people)
 - **34.** [Trust the symptom in a QA finding and measure the cause](tests-and-checks.md#34-trust-the-symptom-in-a-qa-finding-and-measure-the-cause)
+- **EDU-1.** [If the answer comes out the same without the skill, the exercise doesn't measure it](tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it)
+- **EDU-4.** [If you can guess the right option by its place or its length, the quiz measures guessing](tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-or-its-length-the-quiz-measures-guessing)
 
 ## Scripts and files
 

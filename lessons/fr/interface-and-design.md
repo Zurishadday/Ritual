@@ -80,7 +80,8 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 ### 41. Vérifier dans le format que le lecteur voit réellement
 
-`from: d5bc89cb` · `by: ai`
+`from: 10a08b3c` · `by: ai`
+
 
 **L'idée.** Trouver un mot dans le texte ne prouve pas qu'il s'affiche. Le texte peut se trouver ailleurs dans le document pendant que le format censé l'afficher sort vide.
 
@@ -89,6 +90,8 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 **Autre exemple.** Un avertissement « il y a d'autres colonnes à droite » avait été ajouté et considéré comme fait parce que le code était là. Il n'apparaissait jamais : un style de tableau général supprimait la condition qui l'activait. Quelqu'un d'autre l'a vu sur une capture d'écran.
 
 **Encore un exemple.** Une option de réponse disait « Total : {2 * 78} » dans le fichier. Quand la page a été dessinée, le système a calculé ce qui se trouvait entre les accolades et a affiché « Total : 156 » : deux options identiques. Seule une personne qui a regardé l'écran l'a vu.
+
+**Variante.** Les captures d'écran que juge un relecteur peuvent montrer un écran que personne n'atteint. L'outil de capture d'un cours répondait à chaque exercice de code par une ligne de remplissage juste pour passer à la suite, si bien que la capture « après » montrait cette ligne et un message « pas le résultat attendu » : les relecteurs ne voyaient jamais ce que voit l'apprenant après une bonne réponse. Sur ordinateur, les captures incluaient aussi l'en-tête et le menu latéral, et la leçon sortait en une bande illisible. Pour capturer en vue d'une relecture, répondez à chaque étape comme le ferait un utilisateur qui réussit, et ne capturez que la partie relue.
 
 **Question détectrice.** Ai-je vu l'élément exact tel que le lecteur le voit, ou ai-je seulement trouvé le mot (ou le code) dans la source ?
 

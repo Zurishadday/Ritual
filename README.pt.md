@@ -18,7 +18,7 @@ Um plugin do Claude Code que transforma cada erro em lição, cada lição em re
 
 Outras ferramentas anotam o que foi aprendido; esta vai até o fim e confere, porque uma regra que existe só em texto é esquecida numa sessão longa, e uma que se confere sozinha não.
 
-Ele traz **49 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
+Ele traz **52 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
 
 <a name="install"></a>
 
@@ -123,6 +123,7 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 | Pacote | Lições |
 |---|---|
 | `web` | 5: perda de dados salvos quando são danificados, robôs num formulário público, o recurso de contingência sem JavaScript, o foco no envio e login sem limite de tentativas. |
+| `education` | 5: exercício aprovado sem a habilidade, resposta visível antes da pergunta, duas respostas defensáveis, adivinhar pela posição ou pelo tamanho, e dica que entrega a resposta. |
 | `apps`, `crm`, `ai` | A caminho, com o mesmo método. |
 | O seu | Um tipo de projeto que ainda não tem (móvel, dados, jogos…) começa com a sua primeira lição: veja [onde vai uma lição](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

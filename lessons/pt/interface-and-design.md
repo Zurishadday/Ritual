@@ -80,7 +80,8 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 ### 41. Confira no formato que o leitor de fato vê
 
-`from: d5bc89cb` · `by: ai`
+`from: 10a08b3c` · `by: ai`
+
 
 **A ideia.** Encontrar uma palavra no texto não prova que ela aparece. O texto pode estar em algum lugar do documento enquanto o formato que deveria exibi-lo sai vazio.
 
@@ -89,6 +90,8 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 **Outro exemplo.** Um aviso de “há mais colunas à direita” foi adicionado e dado como pronto porque o código estava lá. Ele nunca apareceu: um estilo geral de tabela removeu a condição que o ativava. Outra pessoa viu numa captura de tela.
 
 **Mais um exemplo.** Uma opção de resposta dizia “Total: {2 * 78}” no arquivo. Quando a página foi desenhada, o sistema calculou o que estava entre as chaves e mostrou “Total: 156”: duas opções idênticas. Só quem olhou a tela viu.
+
+**Variante.** As capturas de tela que um revisor julga podem mostrar uma tela que ninguém alcança. A ferramenta de captura de um curso respondia cada exercício de código com uma linha de preenchimento só para seguir em frente, então a captura “depois” mostrava essa linha e a mensagem “resultado não esperado”: os revisores nunca viram o que o estudante vê ao acertar. No desktop, as capturas também pegavam o cabeçalho e o menu lateral, e a lição saía como uma faixa ilegível. Ao capturar para revisão, responda cada passo como um usuário bem-sucedido responderia, e capture apenas a parte em revisão.
 
 **Pergunta detectora.** Eu vi o elemento exato como o leitor o vê, ou só encontrei a palavra (ou o código) na fonte?
 

@@ -89,3 +89,73 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 **Signal d'alarme.** « J'ai vérifié chaque correction à son emplacement. »
 
 **Que faire.** À la fin de chaque série, cherchez par sujet tout ce que le document dit sur ce que vous avez corrigé.
+
+### 51. Ce qui vous paraît évident est la première chose à enseigner
+
+`from: 1fed11d1` · `by: ai`
+
+**L'idée.** Quelqu'un qui sait déjà ne voit pas les étapes qu'il franchit sans y penser. Son premier exemple apporte donc plusieurs notions nouvelles à la fois, et un débutant se perd dès la première ligne.
+
+**Exemple.** Un cours de programmation pour débutants s'ouvrait sur une cellule qui introduisait six notions nouvelles à la fois, et le plan n'enseignait jamais ce qu'est un type de donnée, ni que `=` stocke et lit de droite à gauche. Le responsable du cours l'a formulé en une phrase : « vous supposez beaucoup de choses sur les apprenants ». Plus tard, trois leçons disaient « comme en faisant glisser une formule » ; aucune leçon n'avait enseigné le glisser-déposer, seulement « recopier la formule vers le bas ».
+
+**Question détectrice.** Dans mon premier exemple, combien de notions sont nouvelles pour quelqu'un qui ne sait rien ? Chaque symbole, chaque mot, chaque nom de bouton et chaque action que je demande a-t-il déjà été enseigné ?
+
+**Signal d'alarme.** « N'importe qui comprend ça » · « ce n'est qu'une ligne » · « c'est le mot habituel ».
+
+**Que faire.** Avant d'écrire, listez ce que votre exemple tient pour acquis (symboles, mots, clics, choses que l'apprenant aurait déjà dû construire) et enseignez-les d'abord : une idée nouvelle à la fois, chaque symbole expliqué à sa première apparition. Cherchez chaque mot qui correspond au nom d'un bouton, et chaque action demandée, de la même façon que vous cherchez un symbole. Si c'est possible, laissez une vérification automatique comparer ce que chaque exemple utilise avec ce qui a déjà été enseigné.
+
+### 52. Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire
+
+`from: 15098a47` · `by: ai`
+
+**L'idée.** Une leçon ou un guide sur un outil qui change tous les quelques mois devient périmé pendant qu'on l'écrit s'il repose sur ce que l'auteur se rappelle. Sa prémisse peut être fausse avant même que le premier lecteur la lise.
+
+**Exemple.** Un plan de module « analyse avec l'IA » commençait par « l'IA ne peut pas voir vos données, décrivez donc votre tableau au lieu de le coller ». Le responsable du cours a fait remarquer que les agents se connectent désormais à la base de données, exécutent eux-mêmes les requêtes et renvoient le chiffre. Une recherche avec sources et dates l'a confirmé : copier du code depuis un chat était la façon de faire deux ans plus tôt. Plusieurs leçons ont été réécrites autour de ce qui tient encore : définir la question, superviser l'agent et vérifier le chiffre.
+
+**Question détectrice.** Lesquelles des prémisses de ce texte dépendent de ce que l'outil sait faire aujourd'hui ? Quand les ai-je vérifiées pour la dernière fois, et d'après quelle source ?
+
+**Signal d'alarme.** « C'est comme ça que ça marche » · « tout le monde fait comme ça ».
+
+**Que faire.** Avant d'écrire sur un outil qui évolue vite, cherchez la pratique actuelle avec des sources et des dates : ce que l'outil fait maintenant, ce qui est gratuit, ce que les gens utilisent réellement. Construisez le texte autour de la compétence qui survivra à la prochaine version (cadrer, superviser, vérifier), et gardez les étapes propres à l'outil à un seul endroit, facile à mettre à jour. Signalez ce que vous n'avez pas pu vérifier, et essayez vous-même avant de publier.
+
+### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
+
+`from: a7bc9d8b` · `by: ai`
+
+**L'idée.** Une question cesse de mesurer dès que sa réponse est déjà apparue : dans une image, dans l'idée clé, dans l'explication d'un autre exercice, dans le titre d'une étape ou dans une leçon précédente. Celui qui répond juste vient peut-être de la lire.
+
+**Exemple.** Une illustration avec le bon chiffre était placée au-dessus de l'exercice qui le demandait. Une leçon demandait ce qui se passe quand on stocke une nouvelle valeur dans une variable, dans une étape intitulée « Stocker à nouveau la remplace ». Un résumé placé sous le quiz final était lu avant d'y répondre. Une boîte de retour qui apparaît après la première tentative, même ratée, donnait la direction de la réponse.
+
+**Question détectrice.** L'apprenant voit-il ce chiffre, cette image ou cette formulation avant de répondre, ici ou dans une leçon précédente ? Pas seulement le nombre exact : aussi une approximation (« environ 25 »), la conclusion écrite dans une légende, un titre, un « vous venez de voir que… », ou ce que montre à l'écran la mauvaise réponse la plus probable d'un exercice précédent.
+
+**Signal d'alarme.** « C'est juste du contexte » · « ce n'est que le titre » · « c'est la légende ».
+
+**Que faire.** Cherchez chaque réponse dans tout ce qui est montré avant sa question, y compris ce qui apparaît après une première tentative ratée, ce que le code de départ affiche à l'exécution, les fichiers téléchargeables et ce qui peut être compté dans un dessin. Rédigez en dernier le titre de l'étape et les objectifs d'apprentissage, et relisez-les à côté du résultat de chaque prédiction. Une vérification automatique trouve les chiffres exacts ; les approximations et les paraphrases ne sont repérées que par quelqu'un qui lit en ayant la réponse à l'esprit.
+
+### EDU-3. Une question à deux réponses défendables ne mesure rien
+
+`from: 3f95b2da` · `by: ai`
+
+**L'idée.** Si, avec ce que dit l'énoncé, une autre option peut aussi se défendre, celui qui choisit la « mauvaise » pour une bonne raison est pénalisé, et celui qui tombe juste a peut-être eu de la chance. La question mesure la phrase manquante, pas l'idée.
+
+**Exemple.** Une question demandait quoi faire d'une remise vide « quand la vente n'avait pas de remise ». La leçon avait enseigné qu'un vide qui est un fait reste vide, donc « la laisser telle quelle » était défendable ; la réponse attendue, le remplacer par zéro, dépendait de quelque chose que l'énoncé ne disait jamais : que le but était la moyenne sur toutes les ventes. Dans une autre, « la mesure principale est la part de clients qui paient le deuxième mois » ne disait pas la part de qui, et les deux lectures donnaient des résultats tantôt égaux, tantôt différents.
+
+**Question détectrice.** Avec ce que dit l'énoncé et ce que la leçon a enseigné, puis-je défendre une autre option ? Quel fait faudrait-il pour l'écarter, et est-il écrit ?
+
+**Signal d'alarme.** « Ça va de soi » · « évidemment, ça veut dire… ».
+
+**Que faire.** Pour chaque mauvaise option, écrivez une ligne qui explique pourquoi elle est fausse, en utilisant seulement l'énoncé et la leçon. Si l'exclure demande un fait qui n'est pas écrit, ajoutez-le à l'énoncé : le but du calcul, la règle du système, le dénominateur d'une proportion, ce qu'on sait des données. Dans un exercice de tri, testez chaque élément dans chaque catégorie, et pas seulement dans la sienne.
+
+### EDU-5. Un indice pointe vers la cause de l'erreur, pas vers la réponse
+
+`from: 2fa4365d` · `by: ai`
+
+**L'idée.** Un indice apparaît après une mauvaise tentative. S'il donne la réponse, la ligne qui résout l'exercice, ou ce qui sépare la solution de l'erreur la plus probable, la deuxième tentative mesure la capacité à recopier.
+
+**Exemple.** La révision de 277 exercices vérifiés d'un cours a modifié 82 indices dans 49 fichiers. Certains donnaient la ligne qui résout l'exercice (« la deuxième est la… »). D'autres imposaient l'ordre qui sépare la solution de son erreur courante. Dans les exercices « vérifier par rapport à un résultat précédent », l'indice disait « cela doit correspondre à ce que vous avez obtenu dans la leçon 2.2 » : celui qui se souvenait du nombre précédent pouvait le taper sans faire l'étape.
+
+**Question détectrice.** Quelqu'un qui lit cet indice pourrait-il réussir la tentative suivante sans la compétence ? Nomme-t-il la réponse, la ligne de solution, les étapes que l'exercice mesure, ou le nombre précédent auquel il doit correspondre ?
+
+**Signal d'alarme.** « Ce n'est qu'un petit coup de pouce » · « ils ont déjà essayé une fois ».
+
+**Que faire.** Rédigez l'indice sur la cause de l'erreur probable (« les positions commencent à 0, pas à 1 »), et ne citez que ce qui a déjà été enseigné. Gardez « cela doit correspondre au nombre précédent » pour l'explication affichée après la réponse, où l'on apprend que deux méthodes qui donnent le même nombre constituent une vérification. Relisez les indices au regard de l'erreur la plus probable de l'exercice, et non isolément.

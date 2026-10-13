@@ -139,3 +139,31 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 **Señal de alarma.** «El reporte ya dice cuál es la causa».
 
 **Qué hacer.** Mide antes y después del arreglo. Un arreglo que mejora el síntoma a medias todavía no está cerrado.
+
+### EDU-1. Si la respuesta sale igual sin la habilidad, el ejercicio no la mide
+
+`from: 4a591edc` · `by: author`
+
+**La idea.** Un ejercicio comprueba una habilidad solo si quien se la salta obtiene otro resultado. Si el punto de partida, un ejemplo o un atajo ya dan la respuesta correcta, el ejercicio aprueba a todos. Es la lección 13 aplicada a ejercicios: una revisión vale algo solo después de verla rechazar el error.
+
+**Ejemplo.** Una práctica pedía la compra más grande del verano, con un filtro de fechas. La más grande de toda la tabla también era del verano: sin el filtro salía el mismo número, y el ejercicio la aceptaba. Otra exigía que el código tuviera un `=`, y pasaba con el resultado tecleado a mano, `total = 1945`. La revisión miraba la letra, no la habilidad.
+
+**Pregunta detectora.** ¿Qué resultado obtiene quien omite justo lo que enseño, o quien entrega el ejercicio sin tocarlo? ¿Es distinto del correcto? ¿Elegí un caso donde los dos cálculos coinciden por casualidad (el primer grupo, el primer paso, el total)?
+
+**Señal de alarma.** «Con la respuesta correcta da el número, ya funciona».
+
+**Qué hacer.** Resuelve cada ejercicio tres veces: sin tocarlo, con el error más probable y bien. Solo la tercera debe pasar. Prueba en todos la misma lista de atajos: el número tecleado, el código de partida con la respuesta agregada al final, el síntoma corregido a mano en lugar de la causa, la palabra exigida usada vacía, y una corrida con la memoria de un intento anterior. Deja la tolerancia más chica que la distancia entre la respuesta y el error probable, y escribe tres formas correctas que usaría un estudiante, para no rechazar lo que está bien.
+
+### EDU-4. Si adivinas la correcta por su lugar o su largo, el quiz mide la suerte
+
+`from: dcfa5304` · `by: author`
+
+**La idea.** Cada pregunta puede estar bien sola y el conjunto delatar la respuesta: la correcta es siempre la segunda, siempre la más larga o siempre la de largo medio. Los estudiantes notan los patrones antes que quien escribe.
+
+**Ejemplo.** En el quiz de cierre de un módulo, la correcta era la segunda opción en seis de siete preguntas. En todo un curso, la correcta era la más larga en el 55 % de las preguntas, cuando al azar, con tres opciones, toca una de cada tres. Después de emparejar los largos a mano, la correcta quedó como la más corta en seis de siete preguntas de una lección, y en medio en todas las de tres lecciones seguidas.
+
+**Pregunta detectora.** Si leo solo el lugar y el largo de las opciones, sin el texto, ¿adivino la correcta más de una vez de cada tres?
+
+**Señal de alarma.** «Revisé cada pregunta y todas están bien».
+
+**Qué hacer.** Baraja las opciones al mostrarlas, con un orden que no salga de dónde se escribió la correcta. Mide la más larga, la más corta y la de en medio por archivo, y junta por módulo los archivos chicos, para que unas pocas preguntas no escondan el patrón. Lee el conteo contra lo que pediste: emparejar a mano puede mover la pista en lugar de quitarla.

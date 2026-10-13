@@ -18,7 +18,7 @@ Un plugin de Claude Code que convierte cada error en una lección, cada lección
 
 Otras herramientas anotan lo aprendido; Ritual llega hasta comprobarlo, porque una regla que solo vive en texto se olvida en una sesión larga, y una que se comprueba sola, no.
 
-Trae **49 lecciones de campo**, cada una nacida de un error real; **paquetes por tipo de proyecto**, cuyas lecciones salen de ver a un modelo construir algo y romperse; y **un comando**, `/ritual`, que convierte los errores de tu sesión en lecciones tuyas, y tus lecciones en reglas que se cumplen solas.
+Trae **52 lecciones de campo**, cada una nacida de un error real; **paquetes por tipo de proyecto**, cuyas lecciones salen de ver a un modelo construir algo y romperse; y **un comando**, `/ritual`, que convierte los errores de tu sesión en lecciones tuyas, y tus lecciones en reglas que se cumplen solas.
 
 <a name="install"></a>
 
@@ -123,6 +123,7 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 | Paquete | Lecciones |
 |---|---|
 | `web` | 5: lo que se pierde cuando se dañan los datos guardados, los robots en un formulario público, el respaldo sin JavaScript, el foco al enviar y un inicio de sesión sin límite de intentos. |
+| `education` | 5: un ejercicio que se aprueba sin la habilidad, la respuesta visible antes de la pregunta, dos respuestas defendibles, adivinar por el lugar o el largo, y una pista que regala la respuesta. |
 | `apps`, `crm`, `ai` | En camino, con el mismo método. |
 | El tuyo | Un tipo de proyecto que falte (móvil, datos, juegos…) empieza con su primera lección: mira [dónde va una lección](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

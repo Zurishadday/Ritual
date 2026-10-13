@@ -89,3 +89,73 @@ What applies when you write for others: documentation, manuals, screen text, con
 **Warning sign.** "I checked each fix where it was."
 
 **What to do.** When you finish each round, search by topic for everything the document says about what you corrected.
+
+### 51. What looks obvious to you is the first thing to teach
+
+`origin: field · ~opus · 2026-10` · `groups: interface-and-design`
+
+**The idea.** Someone who already knows doesn't see the steps they take without thinking. So their first example brings several new things at once, and a beginner gets lost on the first line.
+
+**Example.** A programming course for beginners opened with a cell that had six new things at once, and the plan never taught what a data type is or that `=` stores and reads right to left. The course owner said it in one sentence: "you assume a lot about the students." Later, three lessons said "like dragging a formula"; no lesson had taught dragging, only "copying the formula down".
+
+**Detector question.** In my first example, how many things are new to someone who knows nothing? Has every symbol, every word, every button name and every action I ask for been taught before?
+
+**Warning sign.** "Anyone gets that" · "it's just one line" · "it's the usual word."
+
+**What to do.** Before writing, list what your example takes for granted (symbols, words, clicks, things the learner should have built already) and teach those first: one new idea at a time, each symbol explained the first time it appears. Search for each word that matches a button's name, and each action you ask for, the way you search for a symbol. If possible, let an automatic check compare what each example uses with what was already taught.
+
+### 52. Write about a fast-moving tool from today's practice, not from memory
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** A lesson or a guide about a tool that changes every few months goes stale while it's being written if it comes from what the author remembers. Its premise can be false before the first reader sees it.
+
+**Example.** A plan for an "analysis with AI" module opened with "the AI can't see your data, so describe your table instead of pasting it". The course owner pointed out that agents now connect to the database, run the queries themselves and hand back the number. Research with sources and dates confirmed it: copying code out of a chat was how it was done two years earlier. Several lessons were rewritten around what still holds: defining the question, supervising the agent and checking the number.
+
+**Detector question.** Which of this text's premises depend on what the tool can do today? When did I last check them, and against what source?
+
+**Warning sign.** "That's how it works" · "everyone does it like this."
+
+**What to do.** Before writing about a fast-moving tool, look up current practice with sources and dates: what the tool does now, what is free, what people actually use. Build the text around the skill that survives the next version (framing, supervising, verifying), and keep tool-specific steps in one place that can be updated. Mark what you couldn't verify, and try it by hand before publishing.
+
+### EDU-2. What learners see before answering can't contain the answer
+
+`origin: field · ~opus · 2026-10` · `packages: education`
+
+**The idea.** A question stops measuring once its answer has already appeared: in an image, in the key idea, in another exercise's explanation, in a step title or in an earlier lesson. Whoever answers right may have just read it.
+
+**Example.** An illustration with the right figure sat above the practice that asked for it. A lesson asked what happens when you store a new value in a variable, in a step titled "Storing again replaces it". A summary placed under the final quiz was read before answering it. A feedback box that appears after the first attempt, even a failed one, gave the direction of the answer.
+
+**Detector question.** Does the learner see this figure, image or phrase before answering, here or in an earlier lesson? Not only the exact number: also an approximation ("about 25"), the conclusion written in a caption, a title, a "you just saw that…", or what the most likely wrong answer of an earlier exercise shows on screen.
+
+**Warning sign.** "It's just context" · "it's only the title" · "it's the caption."
+
+**What to do.** Look for each answer in everything shown before its question, including what appears after a first failed attempt, what starting code prints when run, downloadable files and what can be counted in a drawing. Write the step title and the learning goals last, and read them next to the result of each prediction. An automatic check finds exact figures; approximations and paraphrases are found only by someone reading with the answer in mind.
+
+### EDU-3. A question with two defensible answers measures nothing
+
+`origin: field · ~opus · 2026-10` · `packages: education`
+
+**The idea.** If, with what the prompt says, another option can also be defended, whoever picks the "wrong" one for a good reason is marked wrong, and whoever gets it right may have been lucky. The question measures the missing sentence, not the idea.
+
+**Example.** A question asked what to do with an empty discount "when the sale had no discount". The lesson had taught that a blank that is a fact stays blank, so "leave it" was defensible; the expected answer, filling it with zero, depended on something the prompt never said: that the goal was the average over all sales. In another, "the main metric is the share who pay the second month" didn't say share of whom, and the two versions tied or differed depending on the reading.
+
+**Detector question.** With what the prompt says and what the lesson taught, can I defend another option? What fact would I need to rule it out, and is it written?
+
+**Warning sign.** "It goes without saying" · "obviously it means…"
+
+**What to do.** For each wrong option, write one line on why it is wrong using only the prompt and the lesson. If ruling it out needs a fact that isn't written, add it to the prompt: the purpose of the calculation, the rule of the system, the denominator of a proportion, what is known about the data. In a sorting exercise, test every item against every category, not only its own.
+
+### EDU-5. A hint points at the cause of the mistake, not at the answer
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: tests-and-checks` · `packages: education`
+
+**The idea.** A hint shows up after a wrong attempt. If it gives the answer, the line that solves the exercise, or what separates the solution from the most likely mistake, the second attempt measures copying.
+
+**Example.** A review of a course's 277 checked practices changed 82 hints in 49 files. Some gave the line that solves it ("the second one is the…"). Some dictated the order that separates the solution from its common mistake. In "check against an earlier result" exercises, the hint said "it should match what you got in lesson 2.2": whoever remembered the earlier number could type it without doing the step.
+
+**Detector question.** Could someone who reads this hint pass the next attempt without the skill? Does it name the answer, the solving line, the steps the exercise measures, or the earlier number it should match?
+
+**Warning sign.** "It's only a nudge" · "they already tried once."
+
+**What to do.** Write the hint about the cause of the likely mistake ("positions start at 0, not at 1"), and cite only what was already taught. Keep the "it should match the earlier number" for the explanation shown after answering, where it teaches that two methods giving the same number is a verification. Review hints against the exercise's most likely mistake, not on their own.

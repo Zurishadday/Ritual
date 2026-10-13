@@ -80,7 +80,8 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 41. Comprueba en el formato que lee la gente
 
-`from: d5bc89cb` · `by: author`
+`from: 10a08b3c` · `by: author`
+
 
 **La idea.** Buscar una palabra en el texto no prueba que se vea. El texto puede estar en otro lugar del documento mientras el formato que lo debía mostrar sale vacío.
 
@@ -89,6 +90,8 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 **Otro ejemplo.** Se agregó un aviso de «hay más columnas a la derecha» y se dio por hecho porque el código estaba ahí. Nunca aparecía: un estilo general de las tablas le quitaba la condición que lo encendía. Lo vio otra persona en una captura.
 
 **Un ejemplo más.** Una opción de respuesta decía en el archivo «Total: {2 * 78}». Al dibujar la página, el sistema calculó lo que iba entre llaves y mostró «Total: 156»: dos opciones idénticas. Solo lo vio quien miró la pantalla.
+
+**Variante.** Las capturas que juzga un revisor pueden mostrar una pantalla a la que nadie llega. La herramienta de capturas de un curso contestaba cada ejercicio de código con una línea de relleno solo para avanzar, así que la captura de «después» mostraba esa línea y el aviso «no es el resultado esperado»: los revisores nunca vieron lo que ve un estudiante que acierta. En escritorio, además, las capturas incluían la cabecera y el menú lateral, y la lección quedaba como una franja ilegible. Al capturar para revisar, contesta cada paso como lo haría quien acierta, y captura solo la parte que se revisa.
 
 **Pregunta detectora.** ¿Vi el elemento exacto tal como lo ve el lector, o solo encontré la palabra (o el código) en la fuente?
 

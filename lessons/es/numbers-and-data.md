@@ -107,3 +107,17 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 **Señal de alarma.** «Es la cifra que ya teníamos» · «da más o menos eso» · «se ve que todas pasan».
 
 **Qué hacer.** Antes de escribir una cifra, mídela otra vez y anota junto a ella de qué dato y de qué fecha salió. Las palabras de cantidad («casi», «más de», «la mayoría») son cifras con disfraz: se miden igual. Y si una imagen trae cuentas, que las haga el mismo script que la dibuja.
+
+### 50. Si dos explicaciones predicen lo mismo, tu ejemplo no elige entre ellas
+
+`from: 0b385079` · `by: author`
+
+**La idea.** Un ejemplo confirma tu explicación solo si la explicación rival daba otro resultado. Si las dos predicen lo mismo, el ejemplo te deja creer la que se te ocurrió primero.
+
+**Ejemplo.** Una lección comparaba subir cinco puntos la primera etapa de un embudo contra subirlos en la última. Ganaba la primera, y el texto decía: «valen más donde hay más visitas». Pero la primera etapa también era la que menos convertía, y esa era la causa: en un embudo donde la primera convierte mejor, gana la última aunque tenga menos visitas. En otro proyecto se culpó a una página de tardar 2.7 s; una prueba que pedía las páginas una por una pasaba aun sin el arreglo, porque la causa real eran cuarenta peticiones al mismo tiempo.
+
+**Pregunta detectora.** ¿Qué otra explicación daría este mismo resultado? ¿Mi ejemplo la descarta?
+
+**Señal de alarma.** «Los números lo confirman».
+
+**Qué hacer.** Antes de enseñar o reportar por qué pasa algo, escribe la explicación rival y arma un caso donde las dos predigan distinto. Compara partes del mismo tamaño, prueba con otro tamaño de ejemplo y mide una afirmación general en datos simulados antes de escribirla. Si no logras separarlas, di que el ejemplo es compatible con las dos.

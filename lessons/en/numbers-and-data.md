@@ -107,3 +107,17 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 **Warning sign.** "It's the figure we already had" · "it comes out about that" · "you can see they all pass."
 
 **What to do.** Before writing a figure, measure it again and note next to it what data and what date it came from. Quantity words ("almost," "more than," "most") are numbers in disguise: measure them the same way. And if an image has calculations in it, have the same script that draws it do the math.
+
+### 50. If two explanations predict the same thing, your example doesn't choose between them
+
+`origin: field · ~opus · 2026-10` · `groups: writing-and-docs, tests-and-checks`
+
+**The idea.** An example confirms your explanation only if the rival explanation would give a different result. If both predict the same, the example lets you believe whichever came to mind first.
+
+**Example.** A lesson compared raising a funnel's first step by five points against raising its last step. The first won, and the text said: "they're worth more where there are more visits". But the first step was also the one that converted least, and that was the cause; in a funnel where the first step converts better, the last one wins despite having fewer visits. In another project, a page was blamed for loading in 2.7 s; a test that requested pages one by one passed even without the fix, because the real cause was forty requests at once.
+
+**Detector question.** What other explanation would give this same result? Does my example rule it out?
+
+**Warning sign.** "The numbers confirm it."
+
+**What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both.

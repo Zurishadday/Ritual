@@ -12,6 +12,11 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **39.** [Versionner à la vue de tous](writing-and-docs.md#39-versionner-à-la-vue-de-tous)
 - **42.** [Travailler sur la version actuelle](writing-and-docs.md#42-travailler-sur-la-version-actuelle)
 - **43.** [Relire du début à la fin après de nombreuses corrections](writing-and-docs.md#43-relire-du-début-à-la-fin-après-de-nombreuses-corrections)
+- **51.** [Ce qui vous paraît évident est la première chose à enseigner](writing-and-docs.md#51-ce-qui-vous-paraît-évident-est-la-première-chose-à-enseigner)
+- **52.** [Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire](writing-and-docs.md#52-écrire-sur-un-outil-qui-évolue-vite-à-partir-de-la-pratique-daujourdhui-pas-de-mémoire)
+- **EDU-2.** [Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse](writing-and-docs.md#edu-2-ce-que-lapprenant-voit-avant-de-répondre-ne-peut-pas-contenir-la-réponse)
+- **EDU-3.** [Une question à deux réponses défendables ne mesure rien](writing-and-docs.md#edu-3-une-question-à-deux-réponses-défendables-ne-mesure-rien)
+- **EDU-5.** [Un indice pointe vers la cause de l'erreur, pas vers la réponse](writing-and-docs.md#edu-5-un-indice-pointe-vers-la-cause-de-lerreur-pas-vers-la-réponse)
 
 ## Chiffres et données
 
@@ -22,6 +27,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **5.** [Un résultat parfait est un avertissement, pas une victoire](numbers-and-data.md#5-un-résultat-parfait-est-un-avertissement-pas-une-victoire)
 - **12.** [Exécuter la requête ne prouve pas que le chiffre est juste](numbers-and-data.md#12-exécuter-la-requête-ne-prouve-pas-que-le-chiffre-est-juste)
 - **36.** [Mesurer avant d'écrire](numbers-and-data.md#36-mesurer-avant-décrire)
+- **50.** [Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles](numbers-and-data.md#50-si-deux-explications-prédisent-la-même-chose-votre-exemple-ne-tranche-pas-entre-elles)
 
 ## Tests et vérifications
 
@@ -34,6 +40,8 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **26.** [Ce qui est en production peut aussi se dégrader](tests-and-checks.md#26-ce-qui-est-en-production-peut-aussi-se-dégrader)
 - **28.** [Celui qui exécute et celui qui vérifie sont deux personnes différentes](tests-and-checks.md#28-celui-qui-exécute-et-celui-qui-vérifie-sont-deux-personnes-différentes)
 - **34.** [Croire le symptôme d'un constat QA et mesurer la cause](tests-and-checks.md#34-croire-le-symptôme-dun-constat-qa-et-mesurer-la-cause)
+- **EDU-1.** [Si la réponse est la même sans la compétence, l'exercice ne la mesure pas](tests-and-checks.md#edu-1-si-la-réponse-est-la-même-sans-la-compétence-lexercice-ne-la-mesure-pas)
+- **EDU-4.** [Si l'on peut deviner la bonne option à sa place ou à sa longueur, le quiz mesure la devinette](tests-and-checks.md#edu-4-si-lon-peut-deviner-la-bonne-option-à-sa-place-ou-à-sa-longueur-le-quiz-mesure-la-devinette)
 
 ## Scripts et fichiers
 

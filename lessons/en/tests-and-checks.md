@@ -139,3 +139,31 @@ What applies when you check something: automated tests, validators, reviews, cal
 **Warning sign.** "The report already says what the cause is."
 
 **What to do.** Measure before and after the fix. A fix that only partly improves the symptom is not closed yet.
+
+### EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it
+
+`origin: field · ~opus · 2026-10` · `packages: education`
+
+**The idea.** An exercise checks a skill only if someone who skips that skill gets a different result. If the starting point, an example or a shortcut already produces the right answer, the exercise passes everyone. It is lesson 13 for exercises: a check is worth something only once you have seen it reject the mistake.
+
+**Example.** A practice asked for the largest purchase of the summer, using a date filter. The largest purchase of the whole table was also from the summer: without the filter the number was the same, and the exercise accepted it. Another practice required the code to contain an `=`; it passed with the result typed by hand, `total = 1945`. The check looked at the letter, not the skill.
+
+**Detector question.** What result does someone get who skips exactly what I teach, or who submits the exercise untouched? Is it different from the right one? Did I pick a case where both calculations happen to match (the first group, the first step, the total)?
+
+**Warning sign.** "With the right answer it gives the number, so it works."
+
+**What to do.** Solve every exercise three times: untouched, with the most likely mistake, and correctly. Only the third may pass. Then run the same list of shortcuts on every exercise: the number typed by hand, the starting code with the answer added at the end, the symptom fixed by hand instead of the cause, the required word used empty, and a run with memory left over from an earlier attempt. Keep any tolerance smaller than the distance between the answer and the most likely mistake, and write three correct forms a learner would use, so the check doesn't reject what is right.
+
+### EDU-4. If you can guess the right option by its place or its length, the quiz measures guessing
+
+`origin: field · ~opus · 2026-10` · `packages: education`
+
+**The idea.** Each question can be fine on its own and the set still give the answer away: the right option is always second, always the longest, or always the middle-sized one. Learners notice patterns faster than authors do.
+
+**Example.** In one module's closing quiz the right answer was the second option in six of seven questions. Across a course, the right option was the longest in 55 % of questions, when chance with three options is one in three. After the length was balanced by hand, the right option ended up as the shortest in six of seven questions of one lesson, and as the middle one in every question of three lessons in a row.
+
+**Detector question.** If I read only the position and the length of the options, without the text, do I guess the right one more than once in three?
+
+**Warning sign.** "I checked each question, they're all correct."
+
+**What to do.** Shuffle the options when they are shown, with an order that doesn't come from where the right one was written. Measure longest, shortest and middle per file, and pool small files per module, so a few questions don't hide the pattern. Read the count against what you asked for: a balancing pass can move the giveaway instead of removing it.

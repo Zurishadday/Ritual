@@ -18,7 +18,7 @@ Un plugin pour Claude Code qui transforme chaque erreur en leçon, chaque leçon
 
 D'autres outils notent ce qui a été appris ; Ritual va plus loin et le vérifie, car une règle qui n'existe que sous forme de texte finit par être oubliée au milieu d'une longue session, alors qu'une règle qui se vérifie elle-même ne l'est pas.
 
-Il livre **49 leçons de terrain**, chacune née d'une vraie erreur ; des **paquets par type de projet**, dont les leçons viennent de l'observation d'un modèle en train de construire quelque chose puis de le casser ; et **une seule commande**, `/ritual`, qui transforme les erreurs de votre session en vos propres leçons, et vos leçons en règles qui s'appliquent d'elles-mêmes.
+Il livre **52 leçons de terrain**, chacune née d'une vraie erreur ; des **paquets par type de projet**, dont les leçons viennent de l'observation d'un modèle en train de construire quelque chose puis de le casser ; et **une seule commande**, `/ritual`, qui transforme les erreurs de votre session en vos propres leçons, et vos leçons en règles qui s'appliquent d'elles-mêmes.
 
 <a name="install"></a>
 
@@ -123,6 +123,7 @@ Au-dessus des groupes se trouvent les **paquets** par type de projet : des leço
 | Paquet | Leçons |
 |---|---|
 | `web` | 5 : perte des données sauvegardées en cas d'altération, les robots sur un formulaire public, le repli sans JavaScript, le focus sur l'envoi et une connexion sans limite de tentatives. |
+| `education` | 5 : un exercice réussi sans la compétence, la réponse visible avant la question, deux réponses défendables, deviner par la position ou la longueur, et un indice qui donne la réponse. |
 | `apps`, `crm`, `ai` | En préparation, avec la même méthode. |
 | Le vôtre | Un type de projet qui manque (mobile, données, jeux…) commence par sa première leçon : voir [où va une leçon](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

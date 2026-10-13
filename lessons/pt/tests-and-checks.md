@@ -139,3 +139,31 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 **Sinal de alerta.** “O relatório já diz qual é a causa.”
 
 **O que fazer.** Meça antes e depois da correção. Uma correção que melhora só em parte o sintoma ainda não está fechada.
+
+### EDU-1. Se a resposta sai igual sem a habilidade, o exercício não a mede
+
+`from: 4a591edc` · `by: ai`
+
+**A ideia.** Um exercício só verifica uma habilidade se quem pula essa habilidade obtém um resultado diferente. Se o ponto de partida, um exemplo ou um atalho já produz a resposta certa, o exercício aprova todo mundo. É a lição 13 aplicada a exercícios: uma verificação só vale alguma coisa depois que você a viu rejeitar o erro.
+
+**Exemplo.** Um exercício pedia a maior compra do verão, usando um filtro de datas. A maior compra de toda a tabela também tinha sido no verão: sem o filtro, o número era o mesmo, e o exercício aceitou. Outro exigia que o código tivesse um `=`; passou com o resultado digitado à mão, `total = 1945`. A verificação olhava a letra, não a habilidade.
+
+**Pergunta detectora.** Que resultado obtém quem pula exatamente o que eu ensino, ou quem entrega o exercício sem mexer? Ele é diferente do certo? Escolhi um caso em que os dois cálculos por acaso coincidem (o primeiro grupo, o primeiro passo, o total)?
+
+**Sinal de alerta.** “Com a resposta certa ele dá o número, então funciona.”
+
+**O que fazer.** Resolva cada exercício três vezes: sem mexer, com o erro mais provável, e corretamente. Só a terceira pode passar. Depois, rode a mesma lista de atalhos em todos os exercícios: o número digitado à mão, o código inicial com a resposta acrescentada no fim, o sintoma corrigido à mão em vez da causa, a palavra exigida usada vazia, e uma execução com estado deixado por uma tentativa anterior. Mantenha qualquer margem de tolerância menor que a distância entre a resposta e o erro mais provável, e escreva três formas corretas que um estudante usaria, para que a verificação não rejeite o que está certo.
+
+### EDU-4. Se dá para adivinhar a opção certa pela posição ou pelo tamanho, o quiz mede adivinhação
+
+`from: dcfa5304` · `by: ai`
+
+**A ideia.** Cada pergunta pode estar boa isoladamente e, ainda assim, o conjunto entregar a resposta: a opção certa é sempre a segunda, sempre a mais longa, ou sempre a de tamanho intermediário. Os estudantes percebem padrões mais rápido que os autores.
+
+**Exemplo.** No quiz final de um módulo, a resposta certa era a segunda opção em seis de sete perguntas. Em um curso inteiro, a opção certa era a mais longa em 55 % das perguntas, quando o acaso, com três opções, dá uma em três. Depois que o tamanho foi equilibrado à mão, a opção certa acabou sendo a mais curta em seis de sete perguntas de uma lição, e a do meio em todas as perguntas de três lições seguidas.
+
+**Pergunta detectora.** Se eu ler só a posição e o tamanho das opções, sem o texto, acerto a certa mais de uma vez em três?
+
+**Sinal de alerta.** “Eu revisei cada pergunta, todas estão certas.”
+
+**O que fazer.** Embaralhe as opções na hora de mostrá-las, com uma ordem que não venha de onde a certa foi escrita. Meça a mais longa, a mais curta e a do meio em cada arquivo, e agrupe arquivos pequenos por módulo, para que poucas perguntas não escondam o padrão. Compare a contagem com o que você pediu: uma passagem de balanceamento pode deslocar a pista em vez de eliminá-la.

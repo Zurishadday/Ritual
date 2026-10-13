@@ -89,3 +89,73 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 **Sinal de alerta.** “Conferi cada correção no seu lugar.”
 
 **O que fazer.** Ao terminar cada rodada, busque por assunto tudo o que o documento diz sobre o que você corrigiu.
+
+### 51. O que parece óbvio para você é a primeira coisa a ensinar
+
+`from: 1fed11d1` · `by: ai`
+
+**A ideia.** Quem já sabe não percebe os passos que dá sem pensar. Por isso o primeiro exemplo traz várias coisas novas de uma vez, e um iniciante se perde na primeira linha.
+
+**Exemplo.** Um curso de programação para iniciantes abriu com uma célula que tinha seis coisas novas ao mesmo tempo, e o plano nunca ensinava o que é um tipo de dado nem que o `=` guarda e lê da direita para a esquerda. O responsável pelo curso resumiu em uma frase: “você presume muito sobre os estudantes”. Depois, três lições diziam “como arrastar uma fórmula”; nenhuma tinha ensinado a arrastar, só “copiar a fórmula para baixo”.
+
+**Pergunta detectora.** No meu primeiro exemplo, quantas coisas são novas para quem não sabe nada? Cada símbolo, cada palavra, cada nome de botão e cada ação que eu peço já foi ensinado?
+
+**Sinal de alerta.** “Qualquer um entende” · “é só uma linha” · “é a palavra de sempre.”
+
+**O que fazer.** Antes de escrever, liste o que o seu exemplo dá por certo (símbolos, palavras, cliques, coisas que o estudante já deveria ter construído) e ensine essas coisas primeiro: uma ideia nova por vez, cada símbolo explicado na primeira vez em que aparece. Procure cada palavra igual ao nome de um botão, e cada ação que você pede, do mesmo jeito que procura um símbolo. Se possível, deixe uma verificação automática comparar o que cada exemplo usa com o que já foi ensinado.
+
+### 52. Escreva sobre uma ferramenta que muda rápido a partir da prática de hoje, não da memória
+
+`from: 15098a47` · `by: ai`
+
+**A ideia.** Uma lição ou um guia sobre uma ferramenta que muda a cada poucos meses fica desatualizado enquanto é escrito, se vier do que o autor lembra. A premissa pode estar errada antes de o primeiro leitor chegar a ela.
+
+**Exemplo.** Um plano para um módulo de “análise com IA” começou com “a IA não consegue ver seus dados, então descreva sua tabela em vez de colá-la”. O responsável pelo curso observou que agentes agora se conectam ao banco de dados, executam as consultas sozinhos e devolvem o número. Uma pesquisa com fontes e datas confirmou: copiar código de um chat era a forma de fazer dois anos antes. Várias lições foram reescritas em torno do que ainda vale: definir a pergunta, supervisionar o agente e conferir o número.
+
+**Pergunta detectora.** Quais premissas deste texto dependem do que a ferramenta faz hoje? Quando eu as verifiquei pela última vez, e em qual fonte?
+
+**Sinal de alerta.** “É assim que funciona” · “todo mundo faz assim.”
+
+**O que fazer.** Antes de escrever sobre uma ferramenta que muda rápido, pesquise a prática atual com fontes e datas: o que a ferramenta faz agora, o que é gratuito, o que as pessoas de fato usam. Construa o texto em torno da habilidade que sobrevive à próxima versão (enquadrar, supervisionar, verificar) e mantenha os passos específicos da ferramenta em um só lugar, que possa ser atualizado. Marque o que você não conseguiu verificar e teste à mão antes de publicar.
+
+### EDU-2. O que o estudante vê antes de responder não pode conter a resposta
+
+`from: a7bc9d8b` · `by: ai`
+
+**A ideia.** Uma pergunta deixa de medir alguma coisa quando a resposta já apareceu: em uma imagem, na ideia principal, na explicação de outro exercício, no título de um passo ou em uma lição anterior. Quem acerta pode ter acabado de ler a resposta.
+
+**Exemplo.** Uma ilustração com a figura certa ficou acima da prática que pedia essa figura. Uma lição perguntava o que acontece quando você guarda um novo valor em uma variável, em um passo intitulado “Guardar de novo substitui”. Um resumo colocado abaixo do questionário final era lido antes de responder ao questionário. Uma caixa de feedback que aparece depois da primeira tentativa, mesmo quando errada, já dava a direção da resposta.
+
+**Pergunta detectora.** O estudante vê esta figura, imagem ou frase antes de responder, aqui ou em uma lição anterior? Não só o número exato: também uma aproximação (“cerca de 25”), a conclusão escrita em uma legenda, um título, um “você acabou de ver que…”, ou o que a resposta errada mais provável de um exercício anterior mostra na tela.
+
+**Sinal de alerta.** “É só contexto” · “é só o título” · “é a legenda.”
+
+**O que fazer.** Procure cada resposta em tudo que é mostrado antes da pergunta, inclusive o que aparece depois de uma primeira tentativa errada, o que o código inicial imprime ao rodar, os arquivos para baixar e o que pode ser contado em um desenho. Escreva por último o título do passo e os objetivos de aprendizagem, e leia-os ao lado do resultado de cada previsão. Uma verificação automática encontra números exatos; aproximações e paráfrases só são encontradas por alguém que leia com a resposta em mente.
+
+### EDU-3. Uma pergunta com duas respostas defensáveis não mede nada
+
+`from: 3f95b2da` · `by: ai`
+
+**A ideia.** Se, com o que o enunciado diz, outra opção também pode ser defendida, quem escolhe a “errada” por um bom motivo é marcado como errado, e quem acerta pode ter tido sorte. A pergunta mede a frase que faltou, não a ideia.
+
+**Exemplo.** Uma questão perguntava o que fazer com um desconto vazio “quando a venda não teve desconto”. A lição tinha ensinado que um campo em branco que é um fato continua em branco, então “deixar como está” era defensável; a resposta esperada, preencher com zero, dependia de algo que o enunciado nunca disse: que o objetivo era a média de todas as vendas. Em outra, “a métrica principal é a proporção que paga o segundo mês” não dizia proporção de quem, e as duas versões empatavam ou davam resultados diferentes, conforme a leitura.
+
+**Pergunta detectora.** Com o que o enunciado diz e o que a lição ensinou, consigo defender outra opção? Que fato eu precisaria para descartá-la, e ele está escrito?
+
+**Sinal de alerta.** “Isso está subentendido” · “obviamente quer dizer…”
+
+**O que fazer.** Para cada opção errada, escreva uma linha dizendo por que ela está errada, usando apenas o enunciado e a lição. Se descartá-la exige um fato que não está escrito, acrescente-o ao enunciado: a finalidade do cálculo, a regra do sistema, o denominador de uma proporção, o que se sabe sobre os dados. Em um exercício de classificação, teste cada item contra todas as categorias, e não só contra a sua.
+
+### EDU-5. Uma dica aponta para a causa do erro, não para a resposta
+
+`from: 2fa4365d` · `by: ai`
+
+**A ideia.** A dica aparece depois de uma tentativa errada. Se ela dá a resposta, a linha que resolve o exercício, ou o que separa a solução do erro mais provável, a segunda tentativa mede cópia.
+
+**Exemplo.** Uma revisão das 277 práticas verificadas de um curso mudou 82 dicas em 49 arquivos. Algumas davam a linha que resolve (“o segundo é o…”). Algumas ditavam a ordem que separa a solução do erro comum. Em exercícios de “confira com um resultado anterior”, a dica dizia “deve bater com o que você obteve na lição 2.2”: quem lembrasse o número anterior podia digitá-lo sem fazer o passo.
+
+**Pergunta detectora.** Alguém que lê esta dica consegue passar na próxima tentativa sem a habilidade? Ela nomeia a resposta, a linha que resolve, os passos que o exercício mede, ou o número anterior com o qual deveria bater?
+
+**Sinal de alerta.** “É só um empurrãozinho” · “eles já tentaram uma vez.”
+
+**O que fazer.** Escreva a dica sobre a causa do erro provável (“as posições começam em 0, não em 1”), e cite apenas o que já foi ensinado. Guarde o “deve bater com o número anterior” para a explicação mostrada depois de responder, onde ensina que dois métodos que dão o mesmo número são uma verificação. Revise as dicas contra o erro mais provável do exercício, e não isoladamente.

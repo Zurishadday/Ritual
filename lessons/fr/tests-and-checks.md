@@ -139,3 +139,31 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 **Signal d'alarme.** « Le rapport dit déjà quelle est la cause. »
 
 **Que faire.** Mesurez avant et après la correction. Une correction qui n'améliore qu'en partie le symptôme n'est pas encore close.
+
+### EDU-1. Si la réponse est la même sans la compétence, l'exercice ne la mesure pas
+
+`from: 4a591edc` · `by: ai`
+
+**L'idée.** Un exercice ne vérifie une compétence que si quelqu'un qui saute cette compétence obtient un résultat différent. Si le point de départ, un exemple ou un raccourci produit déjà la bonne réponse, l'exercice valide tout le monde. C'est la leçon 13 appliquée aux exercices : un contrôle n'a de valeur qu'une fois que vous l'avez vu rejeter l'erreur.
+
+**Exemple.** Un exercice demandait le plus gros achat de l'été, avec un filtre de date. Le plus gros achat de toute la table était aussi un achat d'été : sans le filtre, le résultat était le même, et l'exercice l'a accepté. Un autre exercice exigeait que le code contienne un `=` ; il passait avec le résultat tapé à la main, `total = 1945`. Le contrôle regardait la lettre, pas la compétence.
+
+**Question détectrice.** Quel résultat obtient quelqu'un qui saute exactement ce que j'enseigne, ou qui rend l'exercice sans y toucher ? Est-il différent du bon ? Ai-je choisi un cas où les deux calculs tombent juste par hasard (le premier groupe, la première étape, le total) ?
+
+**Signal d'alarme.** « Avec la bonne réponse, il donne le chiffre, donc ça marche. »
+
+**Que faire.** Résolvez chaque exercice trois fois : sans y toucher, avec l'erreur la plus probable, et correctement. Seule la troisième version doit passer. Puis appliquez la même liste de raccourcis à chaque exercice : le nombre tapé à la main, le code de départ avec la réponse ajoutée à la fin, le symptôme corrigé à la main au lieu de la cause, le mot exigé employé à vide, et une exécution avec la mémoire laissée par une tentative précédente. Gardez toute tolérance inférieure à l'écart entre la réponse et l'erreur la plus probable, et écrivez trois formes correctes qu'un apprenant utiliserait, pour que le contrôle ne rejette pas ce qui est juste.
+
+### EDU-4. Si l'on peut deviner la bonne option à sa place ou à sa longueur, le quiz mesure la devinette
+
+`from: dcfa5304` · `by: ai`
+
+**L'idée.** Chaque question peut être correcte prise isolément, et l'ensemble donner quand même la réponse : la bonne option est toujours la deuxième, toujours la plus longue, ou toujours de taille moyenne. Les apprenants repèrent les régularités plus vite que les auteurs.
+
+**Exemple.** Dans le quiz de clôture d'un module, la bonne réponse était la deuxième option dans six questions sur sept. Sur l'ensemble d'un cours, la bonne option était la plus longue dans 55 % des questions, alors que le hasard, avec trois options, donne une chance sur trois. Après un rééquilibrage de la longueur à la main, la bonne option s'est retrouvée la plus courte dans six questions sur sept d'une leçon, et celle du milieu dans chaque question de trois leçons de suite.
+
+**Question détectrice.** Si je ne lis que la position et la longueur des options, sans le texte, est-ce que je devine la bonne plus d'une fois sur trois ?
+
+**Signal d'alarme.** « J'ai vérifié chaque question, elles sont toutes correctes. »
+
+**Que faire.** Mélangez les options à l'affichage, selon un ordre qui ne dépend pas de l'endroit où la bonne a été écrite. Mesurez la plus longue, la plus courte et celle du milieu par fichier, et regroupez les petits fichiers par module, pour que quelques questions ne cachent pas la régularité. Relisez les chiffres au regard de ce que vous visiez : une passe d'équilibrage peut déplacer l'indice qui trahit la réponse au lieu de le supprimer.

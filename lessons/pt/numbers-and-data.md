@@ -107,3 +107,17 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 **Sinal de alerta.** “É o número que a gente já tinha” · “dá mais ou menos isso” · “dá para ver que todos passam”.
 
 **O que fazer.** Antes de escrever um número, meça de novo e anote ao lado de que dados e de que data ele veio. Palavras de quantidade (“quase”, “mais de”, “a maioria”) são números disfarçados: meça-as do mesmo jeito. E se uma imagem tem contas dentro, faça o mesmo script que a desenha fazer a conta.
+
+### 50. Se duas explicações preveem a mesma coisa, seu exemplo não escolhe entre elas
+
+`from: 0b385079` · `by: ai`
+
+**A ideia.** Um exemplo só confirma a sua explicação se a explicação rival daria um resultado diferente. Se as duas preveem o mesmo, o exemplo faz você acreditar na que lhe ocorreu primeiro.
+
+**Exemplo.** Uma lição comparou subir em cinco pontos o primeiro passo de um funil com subir o último. O primeiro venceu, e o texto dizia: “eles valem mais onde há mais visitas”. Mas o primeiro passo também era o que menos convertia, e essa era a causa: em um funil em que o primeiro passo converte melhor, o último vence apesar de ter menos visitas. Em outro projeto, uma página foi culpada por carregar em 2.7 s; um teste que requisitava as páginas uma por uma passava mesmo sem a correção, porque a causa real eram quarenta requisições ao mesmo tempo.
+
+**Pergunta detectora.** Que outra explicação daria este mesmo resultado? Meu exemplo a descarta?
+
+**Sinal de alerta.** “Os números confirmam.”
+
+**O que fazer.** Antes de ensinar ou reportar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se você não consegue separá-las, diga que o exemplo é compatível com as duas.

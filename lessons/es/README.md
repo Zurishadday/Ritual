@@ -12,6 +12,11 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **39.** [Versiona a la vista](writing-and-docs.md#39-versiona-a-la-vista)
 - **42.** [Trabaja sobre la versión vigente](writing-and-docs.md#42-trabaja-sobre-la-versión-vigente)
 - **43.** [Relee de punta a punta después de muchas correcciones](writing-and-docs.md#43-relee-de-punta-a-punta-después-de-muchas-correcciones)
+- **51.** [Lo que a ti te parece obvio es lo primero que hay que enseñar](writing-and-docs.md#51-lo-que-a-ti-te-parece-obvio-es-lo-primero-que-hay-que-enseñar)
+- **52.** [Sobre una herramienta que cambia rápido se escribe desde la práctica de hoy, no de memoria](writing-and-docs.md#52-sobre-una-herramienta-que-cambia-rápido-se-escribe-desde-la-práctica-de-hoy-no-de-memoria)
+- **EDU-2.** [Lo que se ve antes de responder no puede traer la respuesta](writing-and-docs.md#edu-2-lo-que-se-ve-antes-de-responder-no-puede-traer-la-respuesta)
+- **EDU-3.** [Una pregunta con dos respuestas defendibles no mide nada](writing-and-docs.md#edu-3-una-pregunta-con-dos-respuestas-defendibles-no-mide-nada)
+- **EDU-5.** [Una pista apunta a la causa del error, no a la respuesta](writing-and-docs.md#edu-5-una-pista-apunta-a-la-causa-del-error-no-a-la-respuesta)
 
 ## Cifras y datos
 
@@ -22,6 +27,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **5.** [Un resultado perfecto es una alerta, no un triunfo](numbers-and-data.md#5-un-resultado-perfecto-es-una-alerta-no-un-triunfo)
 - **12.** [Que la consulta corra no prueba que el número esté bien](numbers-and-data.md#12-que-la-consulta-corra-no-prueba-que-el-número-esté-bien)
 - **36.** [Mide antes de escribir](numbers-and-data.md#36-mide-antes-de-escribir)
+- **50.** [Si dos explicaciones predicen lo mismo, tu ejemplo no elige entre ellas](numbers-and-data.md#50-si-dos-explicaciones-predicen-lo-mismo-tu-ejemplo-no-elige-entre-ellas)
 
 ## Prácticas y pruebas
 
@@ -34,6 +40,8 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **26.** [Lo que está en producción también se echa a perder](tests-and-checks.md#26-lo-que-está-en-producción-también-se-echa-a-perder)
 - **28.** [Quien ejecuta y quien verifica son personas distintas](tests-and-checks.md#28-quien-ejecuta-y-quien-verifica-son-personas-distintas)
 - **34.** [A un hallazgo de QA créele el síntoma y mide la causa](tests-and-checks.md#34-a-un-hallazgo-de-qa-créele-el-síntoma-y-mide-la-causa)
+- **EDU-1.** [Si la respuesta sale igual sin la habilidad, el ejercicio no la mide](tests-and-checks.md#edu-1-si-la-respuesta-sale-igual-sin-la-habilidad-el-ejercicio-no-la-mide)
+- **EDU-4.** [Si adivinas la correcta por su lugar o su largo, el quiz mide la suerte](tests-and-checks.md#edu-4-si-adivinas-la-correcta-por-su-lugar-o-su-largo-el-quiz-mide-la-suerte)
 
 ## Scripts y archivos
 

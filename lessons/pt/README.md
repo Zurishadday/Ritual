@@ -12,6 +12,11 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **39.** [Versione à vista de todos](writing-and-docs.md#39-versione-à-vista-de-todos)
 - **42.** [Trabalhe na versão atual](writing-and-docs.md#42-trabalhe-na-versão-atual)
 - **43.** [Releia do início ao fim depois de muitas correções](writing-and-docs.md#43-releia-do-início-ao-fim-depois-de-muitas-correções)
+- **51.** [O que parece óbvio para você é a primeira coisa a ensinar](writing-and-docs.md#51-o-que-parece-óbvio-para-você-é-a-primeira-coisa-a-ensinar)
+- **52.** [Escreva sobre uma ferramenta que muda rápido a partir da prática de hoje, não da memória](writing-and-docs.md#52-escreva-sobre-uma-ferramenta-que-muda-rápido-a-partir-da-prática-de-hoje-não-da-memória)
+- **EDU-2.** [O que o estudante vê antes de responder não pode conter a resposta](writing-and-docs.md#edu-2-o-que-o-estudante-vê-antes-de-responder-não-pode-conter-a-resposta)
+- **EDU-3.** [Uma pergunta com duas respostas defensáveis não mede nada](writing-and-docs.md#edu-3-uma-pergunta-com-duas-respostas-defensáveis-não-mede-nada)
+- **EDU-5.** [Uma dica aponta para a causa do erro, não para a resposta](writing-and-docs.md#edu-5-uma-dica-aponta-para-a-causa-do-erro-não-para-a-resposta)
 
 ## Números e dados
 
@@ -22,6 +27,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **5.** [Resultado perfeito é um alerta, não uma vitória](numbers-and-data.md#5-resultado-perfeito-é-um-alerta-não-uma-vitória)
 - **12.** [Rodar a consulta não prova que o número está certo](numbers-and-data.md#12-rodar-a-consulta-não-prova-que-o-número-está-certo)
 - **36.** [Meça antes de escrever](numbers-and-data.md#36-meça-antes-de-escrever)
+- **50.** [Se duas explicações preveem a mesma coisa, seu exemplo não escolhe entre elas](numbers-and-data.md#50-se-duas-explicações-preveem-a-mesma-coisa-seu-exemplo-não-escolhe-entre-elas)
 
 ## Testes e verificações
 
@@ -34,6 +40,8 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **26.** [O que está em produção também pode estragar](tests-and-checks.md#26-o-que-está-em-produção-também-pode-estragar)
 - **28.** [Quem roda e quem verifica são pessoas diferentes](tests-and-checks.md#28-quem-roda-e-quem-verifica-são-pessoas-diferentes)
 - **34.** [Confie no sintoma de um achado de QA e meça a causa](tests-and-checks.md#34-confie-no-sintoma-de-um-achado-de-qa-e-meça-a-causa)
+- **EDU-1.** [Se a resposta sai igual sem a habilidade, o exercício não a mede](tests-and-checks.md#edu-1-se-a-resposta-sai-igual-sem-a-habilidade-o-exercício-não-a-mede)
+- **EDU-4.** [Se dá para adivinhar a opção certa pela posição ou pelo tamanho, o quiz mede adivinhação](tests-and-checks.md#edu-4-se-dá-para-adivinhar-a-opção-certa-pela-posição-ou-pelo-tamanho-o-quiz-mede-adivinhação)
 
 ## Scripts e arquivos
 
