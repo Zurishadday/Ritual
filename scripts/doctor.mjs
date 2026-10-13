@@ -11,6 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { isMain } from "../hooks/common.mjs";
 import { BUILTIN, rulesOf, selftest as calibrate } from "../hooks/guard.mjs";
+import { configDir, status } from "../hooks/update.mjs";
 import { ORIGINAL, PACKAGES, PARTS, ROOT, check, checkProject, readLessons } from "./lessons.mjs";
 import { init } from "./init.mjs";
 
@@ -30,7 +31,7 @@ function json(file) {
 }
 
 /** @returns {{level: "ok" | "warn" | "error", text: string}[]} */
-export function diagnose(project, { node = process.versions.node, now = Date.now(), inClaude = !!process.env.CLAUDECODE, platform = process.platform } = {}) {
+export function diagnose(project, { node = process.versions.node, now = Date.now(), inClaude = !!process.env.CLAUDECODE, platform = process.platform, claudeConfig = configDir() } = {}) {
   const out = [];
   const ok = (text) => out.push({ level: "ok", text }), warn = (text) => out.push({ level: "warn", text }), error = (text) => out.push({ level: "error", text });
 
@@ -40,6 +41,14 @@ export function diagnose(project, { node = process.versions.node, now = Date.now
   const library = check(ROOT).filter((f) => f.level === "error");
   if (library.length) error(`The plugin's library has ${library.length} error(s): reinstall Ritual (claude plugin install ritual@ritual). First: ${library[0].file}: ${library[0].message}`);
   else ok(`Plugin library: ${readLessons(ORIGINAL).lessons.length} lessons`);
+
+  // Only for an installed copy: a checkout loaded by hand has no install record.
+  const copy = status(claudeConfig, ROOT);
+  if (copy.updated) {
+    const days = Math.floor((now - copy.updated) / (24 * 60 * 60 * 1000)), when = copy.updated.toISOString().slice(0, 10);
+    if (copy.autoUpdate) ok(`Updates: automatic (this copy is from ${when})`);
+    else warn(`Updates: off. This copy is from ${when} (${days} day(s) ago), and new lessons only arrive when you update. Turn on auto-update once (/plugin → Marketplaces → ritual → Enable auto-update), or run claude plugin update ritual@ritual and start a new session.`);
+  }
 
   const dir = path.join(project, ".ritual");
   if (!existsSync(dir)) { error(`${project} has no .ritual/ folder, so the hooks do nothing here. Type /ritual to set it up.`); return out; }
@@ -94,7 +103,7 @@ export function selftest() {
   const tmp = mkdtempSync(path.join(os.tmpdir(), "ritual-doctor-"));
   const now = Date.parse("2026-10-12T12:00:00Z");
   const stamp = (date) => { mkdirSync(path.join(tmp, ".ritual", "local", "sessions"), { recursive: true }); writeFileSync(path.join(tmp, ".ritual", "local", "sessions", "s.json"), JSON.stringify({ sent: [], last: { tool: "Bash", target: "x", date } })); };
-  const errors = (opts = {}) => diagnose(tmp, { node: "22.18.0", now, inClaude: true, platform: "linux", ...opts }).filter((f) => f.level === "error").map((f) => f.text);
+  const errors = (opts = {}) => diagnose(tmp, { node: "22.18.0", now, inClaude: true, platform: "linux", claudeConfig: path.join(tmp, "no-config"), ...opts }).filter((f) => f.level === "error").map((f) => f.text);
   const expect = (name, opts, needle) => { const e = errors(opts); if (!e.some((t) => t.includes(needle))) bad.push(`${name}: expected an error with «${needle}», got ${e.length ? e.join(" | ") : "none"}`); };
   const file = (f, text) => writeFileSync(path.join(tmp, ".ritual", f), text);
   try {
@@ -104,6 +113,16 @@ export function selftest() {
     const good = errors();
     if (good.length) bad.push(`a good setup should have no errors, got ${good.join(" | ")}`);
     expect("old Node", { node: "20.11.1" }, "is older than");
+    // An installed copy with auto-update off is a warning (never an error); with it on, it says so.
+    const claudeConfig = path.join(tmp, "claude-config");
+    mkdirSync(path.join(claudeConfig, "plugins"), { recursive: true });
+    writeFileSync(path.join(claudeConfig, "plugins", "installed_plugins.json"), JSON.stringify({ plugins: { "ritual@ritual": [{ installPath: ROOT, lastUpdated: "2026-09-01T00:00:00Z" }] } }));
+    const updates = (autoUpdate) => {
+      writeFileSync(path.join(claudeConfig, "settings.json"), JSON.stringify({ extraKnownMarketplaces: { ritual: { source: { source: "github", repo: "Zurishadday/Ritual" }, autoUpdate } } }));
+      return diagnose(tmp, { node: "22.18.0", now, inClaude: false, platform: "linux", claudeConfig }).find((f) => f.text.startsWith("Updates:"));
+    };
+    if (updates(false)?.level !== "warn" || !updates(false).text.includes("41 day(s) ago")) bad.push(`auto-update off should warn with the copy's age: ${JSON.stringify(updates(false))}`);
+    if (updates(true)?.level !== "ok") bad.push(`auto-update on should say so: ${JSON.stringify(updates(true))}`);
     expect("hooks not running inside Claude", { now: now + 10 * 60 * 1000 }, "hooks are not running");
     if (errors({ now: now + 10 * 60 * 1000, inClaude: false }).length) bad.push("from a terminal, an old stamp should only warn");
     rmSync(path.join(tmp, ".ritual", "local", "sessions"), { recursive: true });

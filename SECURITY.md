@@ -1,6 +1,6 @@
 # Security
 
-Ritual's hooks run on your machine on every command and edit Claude makes. They only read `.ritual/` and the plugin's own files, write only to `.ritual/local/`, never use the network, and do nothing in a project without `.ritual/`. Its scripts use `gh` and `git` only when you run them yourself.
+Ritual's hooks run on your machine on every command and edit Claude makes. They read `.ritual/` and the plugin's own files, plus, once per session, Claude Code's own record of installed plugins and marketplaces (to know when Ritual was last updated and whether auto-update is on). They write only to `.ritual/local/`, never use the network, and do nothing in a project without `.ritual/`. Its scripts use `gh` and `git` only when you run them yourself.
 
 ## Reporting a vulnerability
 
