@@ -72,19 +72,27 @@ export function checkShare(text, names = []) {
   return { problems, lesson: l, where };
 }
 
+/** The kind of project a lesson comes from: the packages turned on in .ritual/config.json. Never the `about` line,
+ * which can name the project. It tells the maintainer where a lesson goes and which kinds of project make which mistakes. */
+export function kindOf(project) {
+  let packages = [];
+  try { packages = JSON.parse(readFileSync(path.join(project, ".ritual", "config.json"), "utf8")).packages ?? []; } catch { /* not set up */ }
+  return packages.length ? packages.join(", ") : "core only";
+}
+
 const formLink = (template, fields) => `${REPO}/issues/new?${new URLSearchParams({ template, ...fields }).toString()}`;
 
-export function shareUrl(l, where) {
+export function shareUrl(l, where, kind = "") {
   const [, model, month] = (l.data.origin ?? "").split("·").map((s) => s.trim());
   const body = [`### ${l.title}`, "", ...PARTS.en.flatMap((p) => [`**${p}.** ${l.parts[p]}`, ""])].join("\n").trim();
   return formLink("share-a-lesson.yml", {
-    title: `Lesson: ${l.title}`, model: model ?? "", month: month ?? "", group: l.data.groups ?? "", where,
+    title: `Lesson: ${l.title}`, model: model ?? "", month: month ?? "", kind, group: l.data.groups ?? "", where,
     lesson: body, transfer: l.parts["Transfers to"] ?? "", reproduce: l.parts["How to reproduce"] ?? "",
   });
 }
 
-export function confirmUrl(id, model, month, example) {
-  return formLink("confirm-a-lesson.yml", { title: `Confirm lesson ${id}`, lesson: id, model, month, example });
+export function confirmUrl(id, model, month, example, kind = "") {
+  return formLink("confirm-a-lesson.yml", { title: `Confirm lesson ${id}`, lesson: id, model, month, kind, example });
 }
 
 function context(group) {
@@ -146,7 +154,12 @@ export function selftest() {
   try {
     mkdirSync(path.join(project, ".ritual"), { recursive: true });
     writeFileSync(path.join(project, "package.json"), JSON.stringify({ name: "@acme/invoice-tool" }));
-    writeFileSync(path.join(project, ".ritual", "config.json"), JSON.stringify({ private: ["Globex Bank"] }));
+    writeFileSync(path.join(project, ".ritual", "config.json"), JSON.stringify({ private: ["Globex Bank"], packages: ["web", "education"], about: "The billing portal of Globex Bank" }));
+    // The kind of project goes with a shared lesson: the packages on, never the about line (it can name the project).
+    const kind = kindOf(project);
+    if (kind !== "web, education") failures.push(`kindOf should give the packages on: gave «${kind}»`);
+    if (/globex|billing/i.test(kind)) failures.push("kindOf must never carry the about line");
+    if (kindOf(path.join(tmp, "nowhere")) !== "core only") failures.push("a project with no packages on is «core only»");
     execFileSync("git", ["init", "-q", project]);
     execFileSync("git", ["-C", project, "remote", "add", "origin", "https://github.com/acme/billing-portal.git"]);
     const names = projectNames(project);
@@ -155,12 +168,14 @@ export function selftest() {
     if (!namesIn("In Taller Rueda Libre the form lost a message.", names).includes("taller rueda libre")) failures.push("the folder name with spaces should be found");
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   // The link opens the right form with every field, survives a round trip, and fits in a URL.
-  const url = shareUrl(good.lesson, good.where);
+  const url = shareUrl(good.lesson, good.where, "web, education");
+  if (new URL(url).searchParams.get("kind") !== "web, education") failures.push("the share link should carry the kind of project");
   const q = new URL(url).searchParams;
   if (q.get("template") !== "share-a-lesson.yml" || q.get("model") !== "claude-opus-5-5" || q.get("month") !== "2026-10" || q.get("where") !== "core" || q.get("group") !== "scripts-and-files") failures.push(`the share link has wrong fields: ${url.slice(0, 200)}`);
   if (!q.get("lesson").includes("**Detector question.** If the last write was cut") || !q.get("transfer").includes("chat app")) failures.push("the share link lost the lesson or the transfers");
   if (url.length > MAX_URL) failures.push(`the share link is ${url.length} characters, over ${MAX_URL}`);
-  const c = new URL(confirmUrl("WEB-1", "claude-sonnet-5-5", "2026-11", "Same thing in a booking form.")).searchParams;
+  const c = new URL(confirmUrl("WEB-1", "claude-sonnet-5-5", "2026-11", "Same thing in a booking form.", "web")).searchParams;
+  if (c.get("kind") !== "web") failures.push("the confirm link should carry the kind of project");
   if (c.get("template") !== "confirm-a-lesson.yml" || c.get("lesson") !== "WEB-1" || c.get("example") !== "Same thing in a booking form.") failures.push("the confirm link has wrong fields");
   for (const m of failures) console.error(`✕ ${m}`);
   return failures.length;
@@ -180,7 +195,7 @@ if (isMain(import.meta.url)) {
     const { problems, lesson, where } = checkShare(readFileSync(args[0], "utf8"), projectNames(project));
     for (const p of problems) console.log(`✕ ${p}`);
     if (problems.length) process.exit(1);
-    const url = shareUrl(lesson, where);
+    const url = shareUrl(lesson, where, kindOf(project));
     if (url.length > MAX_URL) { console.log(`✕ the lesson is too long for a link (${url.length} characters): shorten it, or open ${REPO}/issues/new?template=share-a-lesson.yml and paste it`); process.exit(1); }
     console.log(`✓ ready to share. Open this link, read it, and submit it yourself:\n${url}`);
     process.exit(0);
@@ -188,7 +203,7 @@ if (isMain(import.meta.url)) {
   if (cmd === "confirm") {
     const [id, model, month, file] = args;
     if (!id || !model || !/^\d{4}-\d{2}$/.test(month ?? "") || !file || !existsSync(file)) { console.error("✕ usage: node scripts/share.mjs confirm <id> <model> <YYYY-MM> <example-file>"); process.exit(1); }
-    console.log(`✓ Open this link, read it, and submit it yourself:\n${confirmUrl(id, model, month, readFileSync(file, "utf8").trim())}`);
+    console.log(`✓ Open this link, read it, and submit it yourself:\n${confirmUrl(id, model, month, readFileSync(file, "utf8").trim(), kindOf(path.resolve(process.env.CLAUDE_PROJECT_DIR ?? process.cwd())))}`);
     process.exit(0);
   }
   console.error("✕ usage: node scripts/share.mjs context [group] | check <file> [project] | confirm <id> <model> <YYYY-MM> <example-file> | --selftest");

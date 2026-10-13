@@ -25,6 +25,12 @@ body:
       placeholder: 2026-10
     validations:
       required: true
+  - type: input
+    id: kind
+    attributes:
+      label: Kind of project
+      description: The Ritual packages turned on in your project (`/ritual share` fills it in), or "core only". Nothing that names the project.
+      placeholder: web, education
   - type: textarea
     id: example
     attributes:

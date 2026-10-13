@@ -98,12 +98,12 @@ function readIssue(n) {
 export function selftest() {
   const bad = [];
   const fields = formFields(FORMS.lesson);
-  if (fields.map((f) => f.id).join() !== "model,month,group,where,lesson,transfer,reproduce") bad.push(`share form fields: ${fields.map((f) => f.id).join()}`);
+  if (fields.map((f) => f.id).join() !== "model,month,kind,group,where,lesson,transfer,reproduce") bad.push(`share form fields: ${fields.map((f) => f.id).join()}`);
   const body = "### Model\r\n\r\nclaude-sonnet-5-5\r\n\r\n### Month it happened\r\n\r\n2026-11\r\n\r\n### Group (what you were doing)\r\n\r\nscripts-and-files\r\n\r\n### Where it goes\r\n\r\ncore\r\n\r\n### The lesson\r\n\r\n### A reader that skips bad lines loses the next one too\r\n\r\n**The idea.** A cut-off write glues the next record to it.\r\n\r\n**Example.** A log dropped the record after a crash.\r\n\r\n**Detector question.** If the last write was cut, what happens to the next one?\r\n\r\n**Warning sign.** \"Damaged lines get skipped.\"\r\n\r\n**What to do.** Start with a line break if the file does not end in one.\r\n\r\n### Two other kinds of project it applies to\r\n\r\nA data pipeline that appends rows to a CSV.\r\nA chat app that stores messages one per line.\r\n\r\n### How to reproduce it\r\n\r\nAsk for a script that appends JSON lines, cut the last one by hand.";
   const f = parseForm(body, fields);
   if (f.model !== "claude-sonnet-5-5" || f.where !== "core" || !f.lesson?.startsWith("### A reader") || !f.lesson.includes("**What to do.**") || !f.transfer?.includes("chat app")) bad.push(`parseForm: ${JSON.stringify(f).slice(0, 300)}`);
-  const c = parseForm("### Lesson number\n\n27\n\n### Model\n\nclaude-opus-5-5\n\n### Month it happened\n\n2026-10\n\n### Your example\n\nIt happened.\n\n### Did Ritual's question show up before the mistake?\n\n_No response_", formFields(FORMS.confirmation));
-  if (c.lesson !== "27" || c.example !== "It happened." || c.fired !== "") bad.push(`parseForm on a confirmation: ${JSON.stringify(c)}`);
+  const c = parseForm("### Lesson number\n\n27\n\n### Model\n\nclaude-opus-5-5\n\n### Month it happened\n\n2026-10\n\n### Kind of project\n\nweb, education\n\n### Your example\n\nIt happened.\n\n### Did Ritual's question show up before the mistake?\n\n_No response_", formFields(FORMS.confirmation));
+  if (c.lesson !== "27" || c.example !== "It happened." || c.fired !== "" || c.kind !== "web, education") bad.push(`parseForm on a confirmation: ${JSON.stringify(c)}`);
   const share = checkShare(shareText(f));
   if (share.problems.length) bad.push(`a form lesson should pass the share check: ${share.problems.join(" | ")}`);
   const pkg = checkShare(shareText({ ...f, where: "package web" }));
