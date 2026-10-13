@@ -33,7 +33,7 @@ claude plugin install ritual@ritual
 
 Node 20.17 以降が必要です（`node --version`）。うまく動かないときは `/ritual doctor` と入力してください。Node、設定、フックが実際に動いているかを確認し、直すべき点を教えてくれます。
 
-**アップデート。** Ritual はコミットのたびに良くなっています。`claude plugin update ritual@ritual` を実行して新しいセッションを開始するか、`/plugin` → Marketplaces で `ritual` マーケットプレイスの自動アップデートをオンにしてください。
+**自動更新を一度オンにしておきましょう。** 新しいレッスンは頻繁に届きますが、Claude Code は Anthropic 以外の Marketplaces については自動更新をオフのままにします。`/plugin` と入力して Marketplaces を開き、`ritual` を選んで Enable auto-update を押してください。デスクトップアプリでは、Claude に「ritual マーケットプレイスの自動更新を有効にして」と頼めます。すると Claude Code の `settings.json` の `ritual` エントリに `"autoUpdate": true` が追加されます。設定するまで、Ritual は週に一度お知らせします。手動で更新する場合は `claude plugin update ritual@ritual` を実行してから、新しいセッションを始めてください。
 
 **`claude` が見つからない？** Claude デスクトップアプリだけを入れている場合に起こります。アプリには独自のコピーが含まれています。コマンドラインをインストールしてください（[方法](https://code.claude.com/docs/en/setup)）。プラグインはアプリと共有されます。その後、アプリを再起動してください。
 

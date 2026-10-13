@@ -33,7 +33,7 @@ claude plugin install ritual@ritual
 
 需要 Node 20.17 或更高版本（`node --version`）。如果有什么不能用，输入 `/ritual doctor`：它会检查 Node、你的设置以及 hooks 是否真的在运行，并告诉你需要修什么。
 
-**更新。** Ritual 每次提交都会变得更好。运行 `claude plugin update ritual@ritual` 并开启新会话，或者在 `/plugin` → Marketplaces 中为 `ritual` 市场开启自动更新。
+**只需开启一次自动更新。** 新的课程会经常推出，而 Claude Code 对非 Anthropic 的 Marketplaces 默认关闭自动更新。输入 `/plugin`，打开 Marketplaces，选择 `ritual`，然后点击 Enable auto-update。在桌面应用中，你可以让 Claude「为 ritual marketplace 开启自动更新」，它会在你的 Claude Code `settings.json` 的 `ritual` 条目里添加 `"autoUpdate": true`。在你这样做之前，Ritual 每周提醒你一次。手动更新：运行 `claude plugin update ritual@ritual`，然后开始一个新会话。
 
 **找不到 `claude`？** 只安装了 Claude 桌面应用时会出现这种情况，因为桌面应用自带一份副本。请安装命令行工具（[方法](https://code.claude.com/docs/en/setup)）：它与应用共享插件。然后重启应用。
 

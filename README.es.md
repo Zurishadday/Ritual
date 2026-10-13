@@ -33,7 +33,7 @@ Después, en tu proyecto, escribe `/ritual`. La primera vez detecta qué constru
 
 Necesita Node 20.17 o más reciente (`node --version`). Si algo no funciona, escribe `/ritual doctor`: revisa Node, tu configuración y si los hooks realmente se están ejecutando, y te dice qué arreglar.
 
-**Actualizar.** Ritual mejora con cada commit. Ejecuta `claude plugin update ritual@ritual` e inicia una sesión nueva, o activa la actualización automática del marketplace `ritual` en `/plugin` → Marketplaces.
+**Activa la actualización automática una vez.** Llegan lecciones nuevas con frecuencia, y Claude Code deja apagada la actualización automática de los marketplaces que no son de Anthropic. Escribe `/plugin`, abre Marketplaces, elige `ritual` y Enable auto-update. En la app de escritorio, pídele a Claude que «active la actualización automática del marketplace ritual»: Claude agrega `"autoUpdate": true` a la entrada `ritual` de tu `settings.json` de Claude Code. Mientras no lo hagas, Ritual te lo recuerda una vez por semana. Para actualizar a mano: `claude plugin update ritual@ritual`, y luego inicia una sesión nueva.
 
 **¿No se encuentra `claude`?** Eso pasa cuando solo tienes la aplicación de escritorio de Claude, que trae su propia copia. Instala la línea de comandos ([cómo](https://code.claude.com/docs/en/setup)): comparte los plugins con la aplicación. Luego reinicia la aplicación.
 
