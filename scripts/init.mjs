@@ -61,7 +61,9 @@ export function init(project, { packages = [], language, about = "" } = {}) {
   if (configText !== (existsSync(config) ? readFileSync(config, "utf8") : "")) { writeFileSync(config, configText); created.push(".ritual/config.json"); }
   if (!existsSync(path.join(dir, "guard.json"))) { cpSync(path.join(PLUGIN, "templates", "guard.json"), path.join(dir, "guard.json")); created.push(".ritual/guard.json"); }
   if (!existsSync(path.join(dir, "candidates.md"))) { cpSync(path.join(PLUGIN, "templates", "candidates.md"), path.join(dir, "candidates.md")); created.push(".ritual/candidates.md"); }
-  if (!existsSync(path.join(dir, "lessons", ".gitkeep"))) { writeFileSync(path.join(dir, "lessons", ".gitkeep"), ""); created.push(".ritual/lessons/"); }
+  // The placeholder only keeps an empty folder in git: once the project has its own lessons, a rerun leaves it out.
+  const lessons = path.join(dir, "lessons");
+  if (!existsSync(path.join(lessons, ".gitkeep")) && !readdirSync(lessons).some((f) => f.endsWith(".md"))) { writeFileSync(path.join(lessons, ".gitkeep"), ""); created.push(".ritual/lessons/"); }
   const gitignore = path.join(project, ".gitignore");
   const ignored = existsSync(gitignore) ? readFileSync(gitignore, "utf8") : "";
   if (!/^\.ritual\/local\/?\s*$/m.test(ignored)) { appendFileSync(gitignore, `${ignored && !ignored.endsWith("\n") ? "\n" : ""}# Ritual: log and session state, local only\n.ritual/local/\n`); created.push(".gitignore"); }
@@ -102,6 +104,11 @@ export function selftest() {
     init(tmp, { packages: ["education"], about: "A programming course for beginners, in Spanish" });
     const later = JSON.parse(readFileSync(path.join(tmp, ".ritual", "config.json"), "utf8"));
     if (later.language !== "es" || !later.packages.includes("education")) bad.push(`a later run with only --about and --packages must keep the language: gave ${later.language}, ${later.packages}`);
+    // Once the project has its own lessons, the placeholder is not needed: a rerun must not bring it back.
+    rmSync(path.join(tmp, ".ritual", "lessons", ".gitkeep"));
+    writeFileSync(path.join(tmp, ".ritual", "lessons", "console-and-tools.md"), "# Console\n");
+    const withLessons = init(tmp, { packages: ["education"] });
+    if (existsSync(path.join(tmp, ".ritual", "lessons", ".gitkeep")) || withLessons.includes(".ritual/lessons/")) bad.push("a rerun recreated .ritual/lessons/.gitkeep although the folder already has lessons");
     const empty = mkdtempSync(path.join(os.tmpdir(), "ritual-empty-"));
     try { if (detect(empty).packages.length) bad.push("an empty project should not detect packages"); init(empty); if (!existsSync(path.join(empty, "CLAUDE.md"))) bad.push("in a project without CLAUDE.md it should have created it"); } finally { rmSync(empty, { recursive: true, force: true }); }
   } finally { rmSync(tmp, { recursive: true, force: true }); }
