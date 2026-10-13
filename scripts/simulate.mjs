@@ -24,6 +24,26 @@ export function workDir(prefix) {
   return realpathSync.native(mkdtempSync(path.join(os.tmpdir(), prefix)));
 }
 
+/** Local paths out of what a run saves, so a committed run names nobody's machine: the build folder becomes
+ * `<build folder>` (in both slash styles), and any other home folder (C:\Users\<name>, /Users/<name>, /home/<name>,
+ * short 8.3 forms included) becomes `~`. */
+export function scrub(text, dir) {
+  let out = text;
+  for (const f of [...new Set([dir, dir.replace(/\\/g, "/")])]) out = out.split(f).join("<build folder>");
+  return out.replace(/(?:[A-Za-z]:)?([\\/])(?:Users|home)\1[^\\/\s"'`)<>]+/g, "~");
+}
+
+/** Scrubs every text file of a saved run. */
+export function scrubRun(target, dir) {
+  for (const entry of readdirSync(target, { recursive: true, withFileTypes: true })) {
+    if (!entry.isFile() || !/\.(md|json|mjs|js|html|css|txt|svg)$/.test(entry.name)) continue;
+    const file = path.join(entry.parentPath ?? entry.path, entry.name);
+    const text = readFileSync(file, "utf8");
+    const clean = scrub(text, dir);
+    if (clean !== text) writeFileSync(file, clean);
+  }
+}
+
 /** The claude executable: CLAUDE_BIN, then `claude` on the PATH, then the copy the Claude desktop app brings on Windows. */
 export function claudeBin(env = process.env) {
   if (env.CLAUDE_BIN) return env.CLAUDE_BIN;
@@ -146,6 +166,10 @@ export function selftest() {
   if (/const dir = mkdtempSync\(/.test(src)) bad.push("session folders must come from workDir() (long path), not mkdtempSync");
   const wd = workDir("ritual-sim-wd-");
   try { if (wd !== realpathSync.native(wd) || /~\d/.test(wd)) bad.push(`workDir must return the long path: ${wd}`); } finally { rmSync(wd, { recursive: true, force: true }); }
+  // A saved run names no machine: the build folder and any home folder go, in every form.
+  const dirty = "Built in C:\\Users\\Alex\\AppData\\Local\\Temp\\ritual-sim-web-x and C:/Users/Alex/AppData/Local/Temp/ritual-sim-web-x/a.js; also C:\\Users\\ALEXAN~1\\x, /home/alex/p and /Users/alex/p.";
+  const scrubbed = scrub(dirty, "C:\\Users\\Alex\\AppData\\Local\\Temp\\ritual-sim-web-x");
+  if (scrubbed !== "Built in <build folder> and <build folder>/a.js; also ~\\x, ~/p and ~/p.") bad.push(`scrub: ${scrubbed}`);
   // An empty --allowedTools swallows the next flag as a tool name: the probe got text instead of JSON.
   if (session({ prompt: "x", model: "m", tools: [], budget: 1, env: {} }).args.includes("--allowedTools")) bad.push("with no tools, --allowedTools must not be passed (it eats --output-format)");
   const lessons = readLessons().lessons.filter((l) => (l.data.packages ?? "").includes("web"));
@@ -225,6 +249,7 @@ if (isMain(import.meta.url)) {
     const reviewed = run(bin, session({ prompt: reviewPrompt({ task, request, builderSummary: built.json.result, lessons, month, builder }), model: reviewer, tools: REVIEWER_TOOLS, budget }), dir);
     for (const f of ["FINDINGS.md", "verdicts.json"]) if (existsSync(path.join(dir, f))) cpSync(path.join(dir, f), path.join(target, f));
     writeFileSync(path.join(target, "REVIEWER.md"), `# What the reviewer said\n\n\`${reviewer}\` · ${reviewed.json?.subtype ?? `exit ${reviewed.status}`} · ${reviewed.json?.num_turns ?? "?"} turns · $${reviewed.json?.total_cost_usd ?? "?"}\n\n${reviewed.json?.result ?? reviewed.stderr ?? "(no final message)"}\n`);
+    scrubRun(target, dir);
     let v = null;
     try { v = JSON.parse(readFileSync(path.join(dir, "verdicts.json"), "utf8")); } catch { /* the reviewer did not leave verdicts */ }
     if (!v) { console.error(`✕ run ${n}: the reviewer left no readable verdicts.json (exit ${reviewed.status}). The build is kept in ${path.relative(ROOT, target)}.\n${reviewed.stderr}`); process.exit(1); }
