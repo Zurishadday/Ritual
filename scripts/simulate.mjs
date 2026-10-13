@@ -41,7 +41,7 @@ export function claudeBin(env = process.env) {
 /** Arguments and environment for an isolated headless session. */
 export function session({ prompt, model, tools, budget, env = process.env }) {
   const bare = !!env.ANTHROPIC_API_KEY;
-  const args = [...(bare ? ["--bare"] : []), "-p", prompt, "--model", model, "--permission-mode", "dontAsk", "--allowedTools", ...tools,
+  const args = [...(bare ? ["--bare"] : []), "-p", prompt, "--model", model, "--permission-mode", "dontAsk", ...(tools.length ? ["--allowedTools", ...tools] : []),
     "--output-format", "json", "--max-turns", "80", "--max-budget-usd", String(budget), "--no-session-persistence",
     "--strict-mcp-config", "--disable-slash-commands", "--setting-sources", "project,local"];
   const clean = Object.fromEntries(Object.entries(env).filter(([k]) => !/^(ANTHROPIC_MODEL|ANTHROPIC_SMALL_FAST_MODEL|CLAUDE_PROJECT_DIR|CLAUDECODE|CLAUDE_CODE_ENTRYPOINT|CLAUDE_CODE_SESSION_ID)$/.test(k)));
@@ -135,6 +135,8 @@ export function selftest() {
   if (sub.env.ANTHROPIC_MODEL || sub.env.CLAUDECODE || sub.env.CLAUDE_CODE_DISABLE_CLAUDE_MDS !== "1" || sub.env.CLAUDE_CODE_DISABLE_AUTO_MEMORY !== "1" || sub.env.PATH !== "p") bad.push(`the session env must drop the parent's model and session and turn off CLAUDE.md and memory: ${JSON.stringify(sub.env)}`);
   if (sub.args[sub.args.indexOf("--model") + 1] !== "claude-sonnet-5-5") bad.push("--model must be the one asked for");
   if (!session({ prompt: "x", model: "m", tools: [], budget: 1, env: { ANTHROPIC_API_KEY: "k" } }).args.includes("--bare")) bad.push("with an API key the session must be --bare");
+  // An empty --allowedTools swallows the next flag as a tool name: the probe got text instead of JSON.
+  if (session({ prompt: "x", model: "m", tools: [], budget: 1, env: {} }).args.includes("--allowedTools")) bad.push("with no tools, --allowedTools must not be passed (it eats --output-format)");
   const lessons = readLessons().lessons.filter((l) => (l.data.packages ?? "").includes("web"));
   const prompt = reviewPrompt({ task: "web", request, builderSummary: "Done.", lessons, month: "2026-11", builder: "claude-sonnet-5-5" });
   for (const x of ["## Your guide", "Two quick clicks", "- WEB-1 · ", "verdicts.json", "origin: lab · claude-sonnet-5-5 · 2026-11", "packages: web", "Done."]) if (!prompt.includes(x)) bad.push(`the review prompt lacks «${x}»`);
