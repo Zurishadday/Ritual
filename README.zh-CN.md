@@ -90,6 +90,8 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 **实测：**在同一个网页任务和同一模型上，课程包的教训在没有 Ritual 时每次构建会破坏 7.5 次，有 Ritual 时为 1.7 次，修复剩下的问题所花的成本约为一半。构建的成本更高，因此构建加修复最终大致持平。这只是一个任务、几次运行：数据、方法和局限见 [模拟](simulations/README.zh-CN.md#ab)。
 
+<p align="center"><a href="simulations/README.zh-CN.md#ab"><img src="assets/ab-chart.png" alt="使用 Ritual 后，每次构建剩下的已知错误从 7.5 个降到 1.7 个，修复所需的 token 减少 53%，总成本大致相同" width="540"></a></p>
+
 在 **web** 课程包下，收尾会针对你机器上运行的网站执行 `scripts/web-check.mjs`：在关闭 JavaScript 的情况下并用键盘提交表单，发送一阵突发请求和几次被拒绝的尝试，并保存手机和桌面的截图。它仅限本地地址，并会说明发送了多少条测试消息。
 
 会话结束时，或在一次造成伤害的错误之后，输入 `/ritual`。它读取日志，找出每个错误本应被哪条教训拦住、又为何没有拦住，并沿着阶梯向上攀升：只要能做到，教训就变成守卫规则或测试。

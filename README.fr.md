@@ -90,6 +90,8 @@ Les quatre premiers ne font que placer devant Claude, au bon moment, ce que votr
 
 **Mesuré :** sur la même tâche web et le même modèle, les erreurs que couvrent les leçons du paquet sont apparues 7,5 fois par construction sans Ritual et 1,7 fois avec, et corriger ce qui restait a coûté environ moitié moins. Construire coûte plus cher, donc construire plus corriger est arrivé à peu près à égalité. Une tâche et quelques exécutions : les données, la méthode et les limites se trouvent dans [simulations](simulations/README.fr.md#ab).
 
+<p align="center"><a href="simulations/README.fr.md#ab"><img src="assets/ab-chart.png" alt="Avec Ritual, 1,7 erreur connue par construction au lieu de 7,5, 53 % de tokens en moins pour les corriger, et presque le même coût total" width="540"></a></p>
+
 Avec le paquet **web**, la clôture lance `scripts/web-check.mjs` sur le site qui tourne sur votre machine : il envoie le formulaire avec JavaScript désactivé et au clavier, envoie une rafale et quelques tentatives rejetées, et enregistre des captures d'écran téléphone et ordinateur. Adresses locales uniquement ; il indique combien de messages de test il a envoyés.
 
 Quand vous fermez une session, ou après une erreur qui a fait mal, tapez `/ritual`. Il lit le journal, trouve quelle leçon aurait dû attraper chaque erreur et pourquoi elle ne l'a pas fait, puis monte l'échelle : une leçon devient une règle de garde ou un test chaque fois que c'est possible.

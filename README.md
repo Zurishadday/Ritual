@@ -88,6 +88,8 @@ The first four only put in front of Claude, at the right moment, what your proje
 
 **Measured:** on the same web task and model, the package's lessons broke 7.5 times per build without Ritual and 1.7 with it, and fixing what was left cost about half. Building costs more, so build plus fix came out about even. One task and a few runs: the data, the method and the limits are in [simulations](simulations/README.md#does-ritual-help-an-ab-on-the-web-task).
 
+<p align="center"><a href="simulations/README.md#does-ritual-help-an-ab-on-the-web-task"><img src="assets/ab-chart.png" alt="With Ritual, 1.7 known mistakes left per build instead of 7.5, 53% fewer tokens to fix them, about the same total cost" width="540"></a></p>
+
 With the **web** package, the close runs `scripts/web-check.mjs` against the site running on your machine: it submits the form with JavaScript off and with the keyboard, sends a burst and a few rejected attempts, and saves phone and desktop screenshots. Local addresses only; it says how many test messages it sent.
 
 When you close a session, or after a mistake that hurt, type `/ritual`. It reads the log, finds which lesson should have caught each mistake and why it didn't, and climbs the ladder: a lesson becomes a guard rule or a test whenever it can.
