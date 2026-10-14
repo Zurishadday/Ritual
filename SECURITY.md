@@ -1,6 +1,6 @@
 # Security
 
-Ritual's hooks run on your machine on every command and edit Claude makes. They read `.ritual/` and the plugin's own files, plus, once per session, Claude Code's own record of installed plugins and marketplaces (to know when Ritual was last updated and whether auto-update is on). They write only to `.ritual/local/`, never use the network, and do nothing in a project without `.ritual/`. Its scripts use `gh` and `git` only when you run them yourself.
+Ritual's hooks run on your machine on every command and edit Claude makes. They read `.ritual/` and the plugin's own files, plus, once per session, Claude Code's own record of installed plugins and marketplaces (to know when Ritual was last updated and whether auto-update is on). They write only to `.ritual/local/`, never use the network, and do nothing in a project without `.ritual/`. Its scripts use `gh` and `git` only when you run them yourself. `scripts/web-check.mjs`, which the close asks Claude to run in a web project, opens a headless Edge or Chrome and sends test submissions only to local addresses (localhost, 127.x, [::1], *.localhost, *.test), and refuses any other.
 
 ## Reporting a vulnerability
 

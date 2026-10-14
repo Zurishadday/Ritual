@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// SessionStart hook. After a compaction or /clear it lets each group's questions come back (the context lost them).
+// SessionStart hook. It gives the lessons of the project's packages before any plan (hooks/questions.mjs packageBrief).
+// After a compaction or /clear it lets each group's questions come back (the context lost them).
 // It rewrites .ritual/local/lessons.md, every group's active questions, for agents that run without hooks.
 // And two notices for Claude, each at most once a week per project:
 // - Update: new lessons are published often, but Claude Code leaves auto-update off for a marketplace that is not
@@ -9,11 +10,13 @@
 //   the right packages catch that kind of project's mistakes, and the ones left off cost no tokens.
 // It reads only local files: the project's .ritual/ and Claude Code's own record of installed plugins. No network.
 // Usage: node hooks/start.mjs --selftest
+import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { writeDigest } from "./questions.mjs";
+import { DEFAULT_CONFIG, packageBrief, writeDigest } from "./questions.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 const DAY = 24 * 60 * 60 * 1000;
@@ -128,6 +131,12 @@ export function selftest() {
     writeDigest(ritual);
     const digestFile = path.join(ritual, "local", "lessons.md");
     if (!existsSync(digestFile) || !readFileSync(digestFile, "utf8").includes("## Console and tools")) bad.push("the session start should write .ritual/local/lessons.md");
+    // End to end: a project with a package gets its lessons at the start, and the session records it (for the simulation's trace).
+    config({ about: "A bike shop's site", packages: ["web"] });
+    const run = spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.dirname(ritual), CLAUDE_CONFIG_DIR: tmp }, input: JSON.stringify({ session_id: "s2", source: "startup" }) });
+    const said = JSON.parse(run.stdout || "{}").hookSpecificOutput?.additionalContext ?? "";
+    if (!said.includes("- WEB-2 · ") || !said.includes("A bike shop's site")) bad.push(`the session start should give the package lessons: ${said.slice(0, 160) || run.stderr.slice(0, 160)}`);
+    if (!readJson(path.join(ritual, "local", "sessions", "s2.json"), {}).brief) bad.push("the session start should record that it gave the brief");
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
@@ -144,6 +153,8 @@ if (isMain(import.meta.url)) {
   if (!ritual) process.exit(0);
   resetQuestions(ritual, input);
   writeDigest(ritual);
-  const text = [notice({ config: configDir(), ritual }), aboutNotice({ ritual })].filter(Boolean).join("\n\n");
+  const brief = packageBrief({ ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) }, ritual);
+  if (brief) { const state = session(ritual, input?.session_id); state.data.brief = true; state.save(); }
+  const text = [brief, notice({ config: configDir(), ritual }), aboutNotice({ ritual })].filter(Boolean).join("\n\n");
   if (text) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: text } }));
 }

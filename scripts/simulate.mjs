@@ -8,7 +8,7 @@
 // With --with-ritual the builder works in a project set up with Ritual (the task's package) and the plugin loaded: the
 // A/B half that measures what Ritual changes, in mistakes and in spend. Its runs and summary are named <month>-<model>-ritual-*.
 // Usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5]
-//                                  [--language en|es] [--budget 5] [--with-ritual] [--dry-run]
+//                                  [--language en|es] [--budget 5] [--with-ritual] [--tag v2] [--dry-run]
 //        node scripts/simulate.mjs <task> --rereview <saved run> [same flags]   the same build, reviewed again
 //        node scripts/simulate.mjs --probe          what a builder session sees of your setup (cheap, haiku)
 //        node scripts/simulate.mjs --selftest
@@ -134,14 +134,19 @@ export function compare(runs, ids) {
 /** One line about a session's spend, from its --output-format json. */
 export const spend = (json) => `${json?.num_turns ?? "?"} turns · $${json?.total_cost_usd ?? "?"} · ${json?.usage?.output_tokens ?? "?"} output tokens`;
 
-/** What Ritual did in a build, from the .ritual/local it left: the groups whose questions went out, and the guard blocks. */
+/** What Ritual did in a build, from the .ritual/local it left: whether the package lessons went out at the start, the
+ * groups whose questions went out, the guard blocks, and whether the close sent the builder back to check. */
 export function ritualTrace(local) {
   const sessions = path.join(local, "sessions");
-  const sent = existsSync(sessions) ? [...new Set(readdirSync(sessions).flatMap((f) => { try { return JSON.parse(readFileSync(path.join(sessions, f), "utf8")).sent ?? []; } catch { return []; } }))] : [];
+  const states = existsSync(sessions) ? readdirSync(sessions).map((f) => readJson(path.join(sessions, f), {})) : [];
+  const sent = [...new Set(states.flatMap((s) => s.sent ?? []))];
   const guard = path.join(local, "guard.jsonl");
   const blocks = existsSync(guard) ? readFileSync(guard, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l).rule; } catch { return "?"; } }) : [];
-  return { sent, blocks };
+  return { brief: states.some((s) => s.brief), sent, blocks, closed: states.some((s) => s.closed) };
 }
+
+/** One line about what Ritual did in a build. */
+export const traceLine = (t) => `Ritual: ${t.brief ? "package lessons at the start, " : ""}questions for ${t.sent?.join(", ") || "no group"}, ${t.blocks?.length ?? 0} guard block(s)${t.blocks?.length ? ` (${t.blocks.join(", ")})` : ""}${t.closed ? ", sent back once to check before finishing" : ""}`;
 
 /** What the script writes into a saved run, next to the build. */
 const RUN_FILES = ["BUILDER.md", "REVIEWER.md", "FINDINGS.md", "verdicts.json", "run.json"];
@@ -158,7 +163,7 @@ export function summary({ task, month, builder, reviewer, cli, isolation, runs, 
   return [
     `# ${task} · ${month} · ${builder}${ritual ? " · with Ritual" : ""}`, "",
     `Built by \`${builder}\`${ritual ? " with Ritual loaded (its hooks; CLAUDE.md stays off, as in every run)" : ""}, reviewed by \`${reviewer}\`, ${runs} run(s), Claude Code ${cli}, isolation: ${isolation}.`, "",
-    ...(spends.length ? ["## Spend", "", ...spends.map((s, i) => `- Run ${s.run ?? i + 1} · builder ${s.built} · reviewer ${s.reviewed}${s.ritual ? ` · Ritual: questions for ${s.ritual.sent.join(", ") || "no group"}, ${s.ritual.blocks.length} guard block(s)${s.ritual.blocks.length ? ` (${s.ritual.blocks.join(", ")})` : ""}` : ""}`), ""] : []),
+    ...(spends.length ? ["## Spend", "", ...spends.map((s, i) => `- Run ${s.run ?? i + 1} · builder ${s.built} · reviewer ${s.reviewed}${s.ritual ? ` · ${traceLine(s.ritual)}` : ""}`), ""] : []),
     "## Lessons of the package", "",
     line("The mistake happened in every run", result.confirmed, `Confirmed with this model: \`node scripts/maintain.mjs seen <id> ${builder} ${month}\` for each.`),
     line("The mistake happened in no run", result.held, "Candidates to demote for this model: check the evidence before anything else."),
@@ -178,7 +183,7 @@ function run(bin, s, cwd, timeout = HOUR) {
 }
 
 const flag = (args, name, fallback) => { const i = args.indexOf(name); return i >= 0 && args[i + 1] ? args[i + 1] : fallback; };
-const VALUED = ["--runs", "--builder", "--reviewer", "--language", "--budget", "--rereview"];
+const VALUED = ["--runs", "--builder", "--reviewer", "--language", "--budget", "--rereview", "--tag"];
 /** The task: the first word that is neither a flag nor a flag's value (`--with-ritual web` names the task). */
 export const taskArg = (args) => args.find((a, i) => !a.startsWith("--") && !VALUED.includes(args[i - 1]));
 
@@ -233,21 +238,21 @@ export function selftest() {
     const got = collect(runsDir, "m-s-ritual-");
     if (got.map((s) => s.n).join() !== "1,2,10" || got[0].spend.built !== "3 turns" || got[2].verdicts.lessons.A.verdict !== "held" || collect(runsDir, "m-s-").map((s) => s.n).join() !== "1") bad.push(`collect: ${JSON.stringify(got.map((s) => s.n))}`);
   } finally { rmSync(runsDir, { recursive: true, force: true }); }
-  for (const [args, want] of [[["web", "--rereview", "2026-10-s-1"], "web"], [["--rereview", "2026-10-s-1", "web"], "web"], [["--with-ritual", "web"], "web"], [["--runs", "3", "web"], "web"], [["--dry-run", "web", "--language", "es"], "web"], [["--language", "es"], undefined]]) {
+  for (const [args, want] of [[["--tag", "v2", "web"], "web"], [["web", "--rereview", "2026-10-s-1"], "web"], [["--rereview", "2026-10-s-1", "web"], "web"], [["--with-ritual", "web"], "web"], [["--runs", "3", "web"], "web"], [["--dry-run", "web", "--language", "es"], "web"], [["--language", "es"], undefined]]) {
     if (taskArg(args) !== want) bad.push(`taskArg(${args.join(" ")}) should be ${want}, gave ${taskArg(args)}`);
   }
   if (spend({ num_turns: 3, total_cost_usd: 0.5, usage: { output_tokens: 100 } }) !== "3 turns · $0.5 · 100 output tokens" || spend(null) !== "? turns · $? · ? output tokens") bad.push(`spend: ${spend({ num_turns: 3, total_cost_usd: 0.5, usage: { output_tokens: 100 } })}`);
   const local = mkdtempSync(path.join(os.tmpdir(), "ritual-sim-trace-"));
   try {
-    if (JSON.stringify(ritualTrace(local)) !== '{"sent":[],"blocks":[]}') bad.push("ritualTrace: an untouched project should show nothing sent and nothing blocked");
+    if (JSON.stringify(ritualTrace(local)) !== '{"brief":false,"sent":[],"blocks":[],"closed":false}') bad.push(`ritualTrace: an untouched project should show nothing given, sent, blocked or closed: ${JSON.stringify(ritualTrace(local))}`);
     mkdirSync(path.join(local, "sessions"));
     writeFileSync(path.join(local, "sessions", "a.json"), JSON.stringify({ sent: ["web-pages", "console-and-tools"] }));
-    writeFileSync(path.join(local, "sessions", "b.json"), JSON.stringify({ sent: ["web-pages"] }));
+    writeFileSync(path.join(local, "sessions", "b.json"), JSON.stringify({ sent: ["web-pages"], brief: true, closed: true }));
     writeFileSync(path.join(local, "guard.jsonl"), '{"rule":"verdict-through-tail","command":"x"}\n{"rule":"sed-on-code"}\n');
     const t = ritualTrace(local);
-    if (JSON.stringify(t) !== '{"sent":["web-pages","console-and-tools"],"blocks":["verdict-through-tail","sed-on-code"]}') bad.push(`ritualTrace: ${JSON.stringify(t)}`);
+    if (JSON.stringify(t) !== '{"brief":true,"sent":["web-pages","console-and-tools"],"blocks":["verdict-through-tail","sed-on-code"],"closed":true}') bad.push(`ritualTrace: ${JSON.stringify(t)}`);
     const withText = summary({ task: "web", month: "2026-11", builder: "b", reviewer: "r", cli: "1", isolation: "x", runs: 1, result: r, ritual: true, spends: [{ built: "3 turns", reviewed: "9 turns", ritual: t }] });
-    if (!withText.includes("· with Ritual") || !withText.includes("Run 1 · builder 3 turns · reviewer 9 turns · Ritual: questions for web-pages, console-and-tools, 2 guard block(s)")) bad.push(`the Ritual summary lacks its spend or trace:\n${withText}`);
+    if (!withText.includes("· with Ritual") || !withText.includes("Run 1 · builder 3 turns · reviewer 9 turns · Ritual: package lessons at the start, questions for web-pages, console-and-tools, 2 guard block(s) (verdict-through-tail, sed-on-code), sent back once to check before finishing")) bad.push(`the Ritual summary lacks its spend or trace:\n${withText}`);
   } finally { rmSync(local, { recursive: true, force: true }); }
   const fake = mkdtempSync(path.join(os.tmpdir(), "ritual-sim-bin-"));
   try {
@@ -282,14 +287,17 @@ if (isMain(import.meta.url)) {
     process.exit(r.json?.result ? 0 : 1);
   }
   const task = taskArg(args);
-  if (!task || !existsSync(path.join(ROOT, "simulations", task, "TASK.md"))) { console.error("✕ usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5] [--language en|es] [--budget 5] [--with-ritual] [--dry-run] [--rereview <saved run>] | --probe | --selftest"); process.exit(1); }
+  if (!task || !existsSync(path.join(ROOT, "simulations", task, "TASK.md"))) { console.error("✕ usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5] [--language en|es] [--budget 5] [--with-ritual] [--tag v2] [--dry-run] [--rereview <saved run>] | --probe | --selftest"); process.exit(1); }
   const runs = Number(flag(args, "--runs", "2")), builder = flag(args, "--builder", "claude-sonnet-5-5"), reviewer = flag(args, "--reviewer", "claude-opus-5-5");
-  const language = flag(args, "--language", ORIGINAL), budget = Number(flag(args, "--budget", "5")), withRitual = args.includes("--with-ritual");
+  const language = flag(args, "--language", ORIGINAL), budget = Number(flag(args, "--budget", "5")), withRitual = args.includes("--with-ritual"), tag = flag(args, "--tag", "");
   const month = new Date().toISOString().slice(0, 7);
   const pkg = taskPackage(task);
   const lessons = readLessons().lessons.filter((l) => !l.merged && (l.data.packages ?? "").split(",").map((s) => s.trim()).includes(pkg));
   const request = taskText(task, language);
   const short = builder.replace(/^claude-/, "");
+  if (tag && !/^[a-z0-9]+$/.test(tag)) { console.error("✕ --tag is one word of lowercase letters and digits, like v2"); process.exit(1); }
+  // Runs and summary are named <month>-<model>-[ritual-][tag-]<n>: a tag starts a new set without touching the old one.
+  const prefix = `${month}-${short}-${withRitual ? "ritual-" : ""}${tag ? `${tag}-` : ""}`;
   const isolation = session({ prompt: "", model: builder, tools: [], budget }).bare ? "--bare (API key)" : "subscription, flags (checked with --probe?)";
   console.log(`Simulation ${task} (package ${pkg}, ${lessons.length} lesson(s) to check) · builder ${builder}${withRitual ? " with Ritual" : ""} · reviewer ${reviewer} · ${runs} run(s) · up to $${budget} per session · ${isolation} · Claude Code ${cli}`);
   if (args.includes("--dry-run")) {
@@ -316,7 +324,7 @@ if (isMain(import.meta.url)) {
     return true;
   };
   const writeSummary = () => {
-    const prefix = `${month}-${short}-${withRitual ? "ritual-" : ""}`;
+
     const saved = collect(runsDir, prefix);
     const text = summary({ task, month, builder, reviewer, cli, isolation, runs: saved.length, result: compare(saved.map((s) => s.verdicts), lessons.map((l) => l.id)), ritual: withRitual, spends: saved.filter((s) => s.spend.built).map((s) => ({ run: s.n, ...s.spend })) });
     const file = path.join(runsDir, `${prefix}summary.md`);
@@ -328,7 +336,7 @@ if (isMain(import.meta.url)) {
     // The same build, reviewed again (after a review that could run nothing): its BUILDER.md and code stay as they are.
     const target = path.join(runsDir, again);
     const n = Number(again.match(/(\d+)$/)?.[1]);
-    if (!existsSync(path.join(target, "BUILDER.md")) || !again.startsWith(`${month}-${short}-${withRitual ? "ritual-" : ""}`) || !/^\d+$/.test(again.slice(`${month}-${short}-${withRitual ? "ritual-" : ""}`.length))) { console.error(`✕ ${again} is not a saved run of this month, builder and mode (pass the same --builder, --language and --with-ritual as when it was built)`); process.exit(1); }
+    if (!existsSync(path.join(target, "BUILDER.md")) || !again.startsWith(prefix) || !/^\d+$/.test(again.slice(prefix.length))) { console.error(`✕ ${again} is not a saved run of this month, builder and mode (pass the same --builder, --language, --with-ritual and --tag as when it was built)`); process.exit(1); }
     const dir = workDir(`ritual-sim-${task}-`);
     cpSync(target, dir, { recursive: true, filter: (src) => path.dirname(src) !== target || !RUN_FILES.includes(path.basename(src)) });
     const builderSummary = readFileSync(path.join(target, "BUILDER.md"), "utf8").split("\n").slice(4).join("\n").trim();
@@ -339,7 +347,7 @@ if (isMain(import.meta.url)) {
     process.exit(0);
   }
   for (let n = 1; n <= runs; n++) {
-    const target = path.join(ROOT, "simulations", task, "runs", `${month}-${short}-${withRitual ? "ritual-" : ""}${n}`);
+    const target = path.join(ROOT, "simulations", task, "runs", `${prefix}${n}`);
     if (existsSync(target)) { console.error(`✕ ${path.relative(ROOT, target)} already exists: a run is never overwritten`); process.exit(1); }
     const dir = workDir(`ritual-sim-${task}-`);
     // With Ritual: the project is set up as a user would, with the task's package, before the builder starts.
@@ -355,15 +363,15 @@ if (isMain(import.meta.url)) {
       rmSync(path.join(dir, ".ritual"), { recursive: true, force: true });
       for (const [f, text] of Object.entries(setupText)) if (readFileSync(path.join(dir, f), "utf8") === text) rmSync(path.join(dir, f));
       // A hook that never fired measures nothing: don't pay for a review of a run without Ritual labeled as one with it.
-      if (!trace.sent.length && !trace.blocks.length) { console.error(`✕ Ritual's hooks left no trace in the build: no questions went out and nothing was blocked. Check --plugin-dir with this Claude Code (${cli}).`); process.exit(1); }
+      if (!trace.brief && !trace.sent.length && !trace.blocks.length && !trace.closed) { console.error(`✕ Ritual's hooks left no trace in the build: no lessons or questions went out, nothing was blocked, no close. Check --plugin-dir with this Claude Code (${cli}).`); process.exit(1); }
     }
     // An empty folder is not a build: reviewing it would cost a session and measure nothing.
     if (!readdirSync(dir).length) { console.error(`✕ the builder left no files. Its last message:\n${built.json.result ?? ""}`); process.exit(1); }
     mkdirSync(target, { recursive: true });
     cpSync(dir, target, { recursive: true });
-    writeFileSync(path.join(target, "BUILDER.md"), `# What the builder said\n\n\`${builder}\` · ${built.json.subtype ?? ""} · ${spend(built.json)}${trace ? ` · Ritual: questions for ${trace.sent.join(", ") || "no group"}, ${trace.blocks.length} guard block(s)` : ""}\n\n${built.json.result ?? "(no final message)"}\n`);
+    writeFileSync(path.join(target, "BUILDER.md"), `# What the builder said\n\n\`${builder}\` · ${built.json.subtype ?? ""} · ${spend(built.json)}${trace ? ` · ${traceLine(trace)}` : ""}\n\n${built.json.result ?? "(no final message)"}\n`);
     writeFileSync(path.join(target, "run.json"), JSON.stringify({ built: spend(built.json), ritual: trace }, null, 2) + "\n");
-    console.log(`  built: ${built.json.subtype ?? "?"}, ${spend(built.json)}${trace ? `, Ritual sent ${trace.sent.length} group(s) and blocked ${trace.blocks.length}` : ""}. Reviewing …`);
+    console.log(`  built: ${built.json.subtype ?? "?"}, ${spend(built.json)}${trace ? `, ${traceLine(trace)}` : ""}. Reviewing …`);
     if (!review(dir, target, built.json.result, n)) process.exit(1);
   }
   writeSummary();

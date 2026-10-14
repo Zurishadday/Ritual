@@ -74,15 +74,19 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 ## How it works
 
-Three hooks work without you doing anything:
+Five hooks work without you doing anything:
 
 | Hook | What it does | What it costs |
 |---|---|---|
+| 📚 **Package lessons** | At the start of a session, before any plan, it gives Claude the lessons of your project's packages (web, education…): what this kind of project tends to get wrong, while the design can still take it in. | One line per package lesson (ten for web), only with a package on. |
 | 🛡️ **Guard** | Blocks the commands your project has already seen fail and says what to use instead. Its rules live in `.ritual/guard.json`, each with a case it blocks and one it lets through. | Nothing, until it blocks. |
 | 📝 **Log** | Records, as it happens, every command that fails and every correction of yours ("that's wrong", "do it again"), with what Claude was touching. | Nothing. |
 | ❓ **Questions** | The first time in a session that Claude is about to edit a test, a component, a script, a document or a query, or to run a command or make a commit, it shows Claude the detector questions of that group. Once per group and per session. | One line per lesson in the group, three to thirteen depending on the group and the packages. |
+| ✅ **Close** | The first time Claude is about to finish after changing files, it sends it back once to check the work by running it: your packages' lessons and their automatic checks, one line per check on what it ran. `"close": false` in `.ritual/config.json` turns it off. | One extra round per session that changed files. |
 
-None of this changes what Claude does: it only puts in front of it, at the right moment, what your project has already learned.
+The first four only put in front of Claude, at the right moment, what your project has already learned. The close sends it back to run the checks, because in a simulation the questions alone were read and the same mistakes came back.
+
+With the **web** package, the close runs `scripts/web-check.mjs` against the site running on your machine: it submits the form with JavaScript off and with the keyboard, sends a burst and a few rejected attempts, and saves phone and desktop screenshots. Local addresses only; it says how many test messages it sent.
 
 When you close a session, or after a mistake that hurt, type `/ritual`. It reads the log, finds which lesson should have caught each mistake and why it didn't, and climbs the ladder: a lesson becomes a guard rule or a test whenever it can.
 
@@ -100,7 +104,7 @@ When you close a session, or after a mistake that hurt, type `/ritual`. It reads
 
 </details>
 
-And `/ritual close`, before calling something done, walks the questions of the groups you touched against the change and tells you what is missing.
+And `/ritual close`, whenever you want it, walks the questions of the groups you touched against the change and tells you what is missing.
 
 ## The library
 

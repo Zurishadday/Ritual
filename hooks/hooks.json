@@ -1,5 +1,5 @@
 {
-  "description": "Ritual: blocks commands that already failed, logs errors and corrections, injects each group's detector questions once per session, reminds weekly to update when auto-update is off, and asks once what the project is when its `about` is missing. All hooks do nothing until the project has a .ritual/ folder (created by /ritual).",
+  "description": "Ritual: blocks commands that already failed, logs errors and corrections, gives the project's package lessons at session start, injects each group's detector questions once per session, sends Claude back once per session to check its work before it finishes, reminds weekly to update when auto-update is off, and asks once what the project is when its `about` is missing. All hooks do nothing until the project has a .ritual/ folder (created by /ritual).",
   "hooks": {
     "SessionStart": [
       {
@@ -20,6 +20,11 @@
       {
         "matcher": "Bash|PowerShell",
         "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/log.mjs\"", "timeout": 10 }]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/close.mjs\"", "timeout": 10 }]
       }
     ],
     "UserPromptSubmit": [

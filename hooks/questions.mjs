@@ -95,6 +95,33 @@ export function context(group, config, ritual) {
   ].join("\n");
 }
 
+/** The lessons of the project's packages (web, education…), whatever their group: the mistakes this kind of project
+ * makes. The plugin's and the project's own (a project lesson with `packages:`), without merged or demoted ones. */
+export function packageLessons(config, ritual) {
+  const packages = new Set(config.packages ?? []);
+  if (!packages.size) return [];
+  const demoted = new Set((config.demoted ?? []).map(String));
+  const own = [];
+  const projectDir = ritual && path.join(ritual, "lessons");
+  if (projectDir && existsSync(projectDir))
+    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons);
+  const inPackage = (l) => !l.merged && !demoted.has(l.id) && (l.data.packages ?? "").split(",").map((s) => s.trim()).some((p) => packages.has(p));
+  return [...readLessons(ORIGINAL, PLUGIN).lessons.filter(inPackage), ...own.filter(inPackage)];
+}
+
+const lessonLine = (l) => `- ${l.id} · ${l.title} · ${(l.parts["Detector question"] ?? Object.values(l.parts)[2] ?? "").replace(/\s+/g, " ")}`;
+
+/** For the session start: the package lessons before any plan, when the design can still take them in. The questions per
+ * group arrive later, at the first file, when the shape of the work is already decided. */
+export function packageBrief(config, ritual) {
+  const lessons = packageLessons(config, ritual);
+  if (!lessons.length) return null;
+  return [
+    `Ritual · what ${config.about ? `this project (${config.about})` : "this kind of project"} tends to get wrong, from its packages (${config.packages.join(", ")}). When the user asks you to build or change something, design for these from the start, before the first file, and plan how you will check each one by running it, not by reading the code. Reply to the user in their language.`,
+    ...lessons.map(lessonLine),
+  ].join("\n");
+}
+
 /** Every group's active questions in one file, for agents that run without hooks (a read-only reviewer): the plugin
  * lives under a path that changes with each update, .ritual/local/lessons.md does not. Written at every session start. */
 export function digest(config, ritual) {
@@ -194,6 +221,18 @@ export function selftest() {
       input: JSON.stringify({ session_id: "e2e", tool_name: "Write", tool_input: { file_path: path.join(project, "b", "docs", "guide.md") }, cwd: path.join(project, "a") }) });
     const out = run.stdout ?? "";
     if (!out.includes("B-1 · A question from project b?") || out.includes("A-1")) failures.push(`editing a file in project b from a session in a should bring b's lessons: ${out.slice(0, 160) || run.stderr.slice(0, 160)}`);
+    // The close only follows a session that changed files: a Write marks it, a command does not.
+    if (readJson(path.join(project, "b", ".ritual", "local", "sessions", "e2e.json"), {}).edited !== true) failures.push("a Write must mark the session as edited, for the close");
+    spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: "cmd", tool_name: "Bash", tool_input: { command: "npm test" }, cwd: path.join(project, "a") }) });
+    if (readJson(path.join(project, "a", ".ritual", "local", "sessions", "cmd.json"), {}).edited) failures.push("a command must not mark the session as edited");
+    // The package lessons, before any plan: every lesson of the packages that are on, whatever its group.
+    const brief = packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], about: "A bike shop's site" }, null) ?? "";
+    for (const x of ["A bike shop's site", "- WEB-3 · A fallback nobody tested is not a fallback · If this JavaScript", "- WEB-1 · ", "- 46 · "]) if (!brief.includes(x)) failures.push(`the package brief lacks «${x}»`);
+    if (brief.includes("- 27 · ") || brief.includes("- EDU-1 · ")) failures.push("the package brief must hold only the lessons of the packages that are on");
+    if (packageBrief(DEFAULT_CONFIG, null) !== null) failures.push("without packages there is no brief");
+    if ((packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], demoted: ["WEB-3"] }, null) ?? "").includes("- WEB-3 · ")) failures.push("a demoted lesson must not be in the brief");
+    writeFileSync(path.join(own, "interface-and-design.md"), `# Interface\n\n${lesson("P-9", null, "A web question of this project?").replace("2026-10`", "2026-10` · `packages: web`")}`);
+    if (!(packageBrief({ ...DEFAULT_CONFIG, packages: ["web"] }, path.join(project, ".ritual")) ?? "").includes("- P-9 · Own P-9 · A web question of this project?")) failures.push("a project lesson of a package that is on must be in the brief");
   } finally { rmSync(project, { recursive: true, force: true }); }
   for (const failure of failures) console.error(`✕ ${failure}`);
   return failures.length;
@@ -216,6 +255,8 @@ if (isMain(import.meta.url)) {
   const { group, target } = groupOf(input, config, own ? path.dirname(own) : undefined);
   const state = session(ritual, input.session_id);
   state.data.last = { tool: input.tool_name, target, date: new Date().toISOString() };
+  // For the close (hooks/close.mjs): this session changed files, so it gets checked before it ends.
+  if (/^(Edit|Write|MultiEdit|NotebookEdit)$/.test(input.tool_name)) state.data.edited = true;
   if (group && !state.data.sent.includes(group)) {
     const text = context(group, config, ritual);
     if (text) {
