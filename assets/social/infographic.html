@@ -1,0 +1,108 @@
+<!doctype html>
+<!-- Source of assets/infographic.png (1080×1350, for LinkedIn and similar feeds). Render with render() from render.mjs at that size. -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
+<style>
+  html, body { width: 1080px; height: 1350px; }
+  .page { height: 1350px; padding: 44px 60px 44px; display: flex; flex-direction: column; gap: 22px; }
+  .head { display: flex; align-items: center; gap: 26px; }
+  .head img { width: 96px; height: 96px; }
+  .head .title { font-size: 86px; }
+  .head .pill { margin-left: auto; font-size: 21px; }
+  .tagline { font-size: 44px; line-height: 1.2; letter-spacing: -.5px; }
+  .label { font-size: 20px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #7d8590; margin-bottom: 12px; }
+  .box { border-radius: 24px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.10); padding: 20px 26px; }
+  .problem { border-color: rgba(248,81,73,.35); background: rgba(248,81,73,.06); }
+  .problem p { font-size: 27px; line-height: 1.3; margin-bottom: 16px; }
+  .fails { display: flex; gap: 14px; }
+  .fail { flex: 1; display: flex; gap: 12px; align-items: flex-start; font-size: 22px; line-height: 1.3; color: #c9d1d9; }
+  .fail i { flex: none; width: 34px; height: 34px; border-radius: 50%; background: rgba(248,81,73,.18); color: #F85149; font-style: normal; font-weight: 700; display: grid; place-items: center; font-size: 22px; }
+  .steps { display: flex; align-items: stretch; gap: 10px; }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 18px 8px; border-radius: 20px; background: rgba(255,255,255,.04); border: 2px solid; text-align: center; }
+  .step b { font-size: 30px; }
+  .step span { font-size: 19px; color: #9da7b3; line-height: 1.3; }
+  .s1 { border-color: rgba(248,81,73,.55); } .s1 b { color: #F85149; }
+  .s2 { border-color: rgba(240,136,62,.55); } .s2 b { color: #F0883E; }
+  .s3 { border-color: rgba(210,153,34,.55); } .s3 b { color: #D29922; }
+  .s4 { border-color: rgba(63,185,80,.65); background: rgba(63,185,80,.10); } .s4 b { color: #3FB950; }
+  .arrow { align-self: center; font-size: 30px; color: #6e7681; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .feat { display: flex; gap: 18px; align-items: flex-start; }
+  .feat svg { flex: none; width: 56px; height: 56px; }
+  .feat b { display: block; font-size: 27px; margin-bottom: 4px; }
+  .feat span { font-size: 21px; color: #9da7b3; line-height: 1.35; }
+  .nums { display: flex; gap: 16px; }
+  .num { flex: 1; text-align: center; padding: 14px 8px; }
+  .num b { display: block; font-size: 52px; line-height: 1; letter-spacing: -1px; }
+  .num span { font-size: 19px; color: #9da7b3; line-height: 1.3; display: block; margin-top: 8px; }
+  .foot { margin-top: auto; display: flex; align-items: center; gap: 24px; border-color: rgba(63,185,80,.40); background: rgba(63,185,80,.07); }
+  .foot code { display: block; white-space: nowrap; font-family: "Cascadia Code", Consolas, monospace; font-size: 19px; color: #f0f6fc; line-height: 1.6; }
+  .foot code::before { content: "$ "; color: #3FB950; }
+  .foot .free { margin-left: auto; text-align: right; font-size: 20px; color: #9da7b3; line-height: 1.4; }
+  .foot .free b { display: block; font-size: 25px; color: #f0f6fc; }
+</style></head>
+<body><div class="page">
+  <div class="head">
+    <img src="../logo.svg" alt="">
+    <div class="title">Ritual</div>
+    <div class="pill">Open-source plugin for Claude Code</div>
+  </div>
+  <div class="tagline">Claude makes a mistake once.<br><span class="green">Ritual makes sure it's the last time.</span></div>
+
+  <div class="box problem">
+    <p><b class="red">The problem:</b> AI coding agents don't learn between sessions. The same mistakes come back, every time.</p>
+    <div class="fails">
+      <div class="fail"><i>✕</i>Re-runs a command that already failed yesterday</div>
+      <div class="fail"><i>✕</i>Says the tests pass without running them</div>
+      <div class="fail"><i>✕</i>Calls it "done" before it really is</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">How it works</div>
+    <div class="steps">
+      <div class="step s1"><b>Mistake</b><span>logged as it happens</span></div><div class="arrow">→</div>
+      <div class="step s2"><b>Lesson</b><span>with a question that spots it</span></div><div class="arrow">→</div>
+      <div class="step s3"><b>Rule</b><span>a guard that blocks it</span></div><div class="arrow">→</div>
+      <div class="step s4"><b>✓ Check</b><span>a test, seen failing first</span></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">What it does in every session</div>
+    <div class="grid">
+      <div class="box feat">
+        <svg viewBox="0 0 56 56" fill="none" stroke="#F85149" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M28 5 L48 13 V27 C48 40 39 48 28 51 C17 48 8 40 8 27 V13 Z"/><path d="M20 21 L36 37 M36 21 L20 37"/></svg>
+        <div><b>Guards</b><span>Blocks commands that already failed, before they run.</span></div>
+      </div>
+      <div class="box feat">
+        <svg viewBox="0 0 56 56" fill="none" stroke="#F0883E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="28" r="23"/><path d="M21 22 C21 13 35 13 35 22 C35 28 28 28 28 34"/><circle cx="28" cy="42" r="1.5" fill="#F0883E"/></svg>
+        <div><b>Questions</b><span>The right checks for the files it touches, once per session.</span></div>
+      </div>
+      <div class="box feat">
+        <svg viewBox="0 0 56 56" fill="none" stroke="#D29922" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="6" width="34" height="44" rx="5"/><path d="M19 18 H37 M19 27 H37 M19 36 H30"/></svg>
+        <div><b>Log</b><span>Errors and corrections, so your project learns its own lessons.</span></div>
+      </div>
+      <div class="box feat">
+        <svg viewBox="0 0 56 56" fill="none" stroke="#3FB950" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="28" r="23"/><path d="M17 29 L25 37 L40 20"/></svg>
+        <div><b>Close</b><span>Before saying "done", it checks that it really is.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nums">
+    <div class="box num"><b class="orange">62</b><span>lessons ready to use</span></div>
+    <div class="box num"><b class="red">52</b><span>born from real mistakes</span></div>
+    <div class="box num"><b class="amber">7</b><span>languages</span></div>
+    <div class="box num"><b class="green">0</b><span>dependencies</span></div>
+  </div>
+
+  <div class="box foot">
+    <div>
+      <code>claude plugin marketplace add Zurishadday/Ritual</code>
+      <code>claude plugin install ritual@ritual</code>
+    </div>
+    <div class="free"><b>Free · MIT</b>github.com/Zurishadday/Ritual</div>
+  </div>
+</div>
+<script>window.fits = document.querySelector(".page").scrollHeight <= 1350 && document.body.scrollWidth <= 1080;</script>
+</body></html>

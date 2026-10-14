@@ -9,13 +9,14 @@
 // A/B half that measures what Ritual changes, in mistakes and in spend. Its runs and summary are named <month>-<model>-ritual-*.
 // Usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5]
 //                                  [--language en|es] [--budget 5] [--with-ritual] [--dry-run]
+//        node scripts/simulate.mjs <task> --rereview <saved run> [same flags]   the same build, reviewed again
 //        node scripts/simulate.mjs --probe          what a builder session sees of your setup (cheap, haiku)
 //        node scripts/simulate.mjs --selftest
 import { spawnSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { isMain } from "../hooks/common.mjs";
+import { isMain, readJson } from "../hooks/common.mjs";
 import { init } from "./init.mjs";
 import { ORIGINAL, ROOT, TAXONOMY, readLessons } from "./lessons.mjs";
 
@@ -112,6 +113,7 @@ export function reviewPrompt({ task, request, builderSummary, lessons, month, bu
     `1. FINDINGS.md as the guide says, with \`origin: lab · ${builder} · ${month}\` and \`packages: ${lessons[0]?.data.packages ?? ""}\` on candidate lessons.`,
     "2. verdicts.json, exactly this shape:",
     '{ "lessons": { "<id>": { "verdict": "broke" | "held" | "not-checked", "evidence": "<command and output, one line>" } }, "new": [ { "title": "<a mistake no listed lesson covers>", "class": "<form|server|security|accessibility|mobile|data|false claim>", "evidence": "<one line>" } ] }',
+    "Your shell runs only commands that start with `node`, `curl` or `Invoke-WebRequest`, and each part of a `&&` or `;` chain is checked the same way: `cd`, `sleep`, `Start-Sleep`, `Start-Process`, `VAR=value` prefixes and `$env:` assignments are denied. Set a port or an env variable and wait from inside Node (a small .mjs script you write here, or node -e), and start a server with the shell tool's run-in-background option.",
     "Fix nothing in the build. If a port is already in use, a process left by the build may still be running: use another port and do not count it as a finding. Stop any server you start before you finish.",
   ].join("\n");
 }
@@ -141,12 +143,22 @@ export function ritualTrace(local) {
   return { sent, blocks };
 }
 
+/** What the script writes into a saved run, next to the build. */
+const RUN_FILES = ["BUILDER.md", "REVIEWER.md", "FINDINGS.md", "verdicts.json", "run.json"];
+
+/** The saved runs named <prefix><n>, in order, with their verdicts and spend: a summary is rebuilt from them, so a run
+ * reviewed again counts once, with its last review. */
+export function collect(runsDir, prefix) {
+  const names = existsSync(runsDir) ? readdirSync(runsDir).filter((d) => d.startsWith(prefix) && /^\d+$/.test(d.slice(prefix.length))) : [];
+  return names.map((d) => ({ n: Number(d.slice(prefix.length)), verdicts: readJson(path.join(runsDir, d, "verdicts.json"), {}), spend: readJson(path.join(runsDir, d, "run.json"), {}) })).sort((a, b) => a.n - b.n);
+}
+
 export function summary({ task, month, builder, reviewer, cli, isolation, runs, result, ritual = false, spends = [] }) {
   const line = (title, ids, note) => `- **${title}** (${ids.length})${ids.length ? `: ${ids.join(", ")}` : ""}${note && ids.length ? `. ${note}` : ""}`;
   return [
     `# ${task} · ${month} · ${builder}${ritual ? " · with Ritual" : ""}`, "",
     `Built by \`${builder}\`${ritual ? " with Ritual loaded (its hooks; CLAUDE.md stays off, as in every run)" : ""}, reviewed by \`${reviewer}\`, ${runs} run(s), Claude Code ${cli}, isolation: ${isolation}.`, "",
-    ...(spends.length ? ["## Spend", "", ...spends.map((s, i) => `- Run ${i + 1} · builder ${s.built} · reviewer ${s.reviewed}${s.ritual ? ` · Ritual: questions for ${s.ritual.sent.join(", ") || "no group"}, ${s.ritual.blocks.length} guard block(s)${s.ritual.blocks.length ? ` (${s.ritual.blocks.join(", ")})` : ""}` : ""}`), ""] : []),
+    ...(spends.length ? ["## Spend", "", ...spends.map((s, i) => `- Run ${s.run ?? i + 1} · builder ${s.built} · reviewer ${s.reviewed}${s.ritual ? ` · Ritual: questions for ${s.ritual.sent.join(", ") || "no group"}, ${s.ritual.blocks.length} guard block(s)${s.ritual.blocks.length ? ` (${s.ritual.blocks.join(", ")})` : ""}` : ""}`), ""] : []),
     "## Lessons of the package", "",
     line("The mistake happened in every run", result.confirmed, `Confirmed with this model: \`node scripts/maintain.mjs seen <id> ${builder} ${month}\` for each.`),
     line("The mistake happened in no run", result.held, "Candidates to demote for this model: check the evidence before anything else."),
@@ -166,7 +178,7 @@ function run(bin, s, cwd, timeout = HOUR) {
 }
 
 const flag = (args, name, fallback) => { const i = args.indexOf(name); return i >= 0 && args[i + 1] ? args[i + 1] : fallback; };
-const VALUED = ["--runs", "--builder", "--reviewer", "--language", "--budget"];
+const VALUED = ["--runs", "--builder", "--reviewer", "--language", "--budget", "--rereview"];
 /** The task: the first word that is neither a flag nor a flag's value (`--with-ritual web` names the task). */
 export const taskArg = (args) => args.find((a, i) => !a.startsWith("--") && !VALUED.includes(args[i - 1]));
 
@@ -210,7 +222,18 @@ export function selftest() {
   const withPlugin = session({ prompt: "x", model: "m", tools: BUILDER_TOOLS, budget: 1, env: {}, plugin: "/p/ritual" }).args;
   if (withPlugin[withPlugin.indexOf("--plugin-dir") + 1] !== "/p/ritual") bad.push("with plugin, the session must pass --plugin-dir <plugin>");
   if (sub.args.includes("--plugin-dir")) bad.push("without plugin, the session must load none");
-  for (const [args, want] of [[["--with-ritual", "web"], "web"], [["--runs", "3", "web"], "web"], [["--dry-run", "web", "--language", "es"], "web"], [["--language", "es"], undefined]]) {
+  // Two of three reviews ran nothing: every command was denied for not starting with an allowed program.
+  if (!prompt.includes("start with `node`, `curl` or `Invoke-WebRequest`")) bad.push("the review prompt must say which commands its shell allows");
+  // A summary is rebuilt from the saved runs: a run reviewed again counts once, the summary and other modes don't count.
+  const runsDir = mkdtempSync(path.join(os.tmpdir(), "ritual-sim-runs-"));
+  try {
+    for (const [d, v] of [["m-s-ritual-10", "held"], ["m-s-ritual-2", "broke"], ["m-s-ritual-1", "broke"], ["m-s-1", "held"]]) { mkdirSync(path.join(runsDir, d)); writeFileSync(path.join(runsDir, d, "verdicts.json"), JSON.stringify({ lessons: { A: { verdict: v } } })); }
+    writeFileSync(path.join(runsDir, "m-s-ritual-1", "run.json"), JSON.stringify({ built: "3 turns" }));
+    writeFileSync(path.join(runsDir, "m-s-ritual-summary.md"), "");
+    const got = collect(runsDir, "m-s-ritual-");
+    if (got.map((s) => s.n).join() !== "1,2,10" || got[0].spend.built !== "3 turns" || got[2].verdicts.lessons.A.verdict !== "held" || collect(runsDir, "m-s-").map((s) => s.n).join() !== "1") bad.push(`collect: ${JSON.stringify(got.map((s) => s.n))}`);
+  } finally { rmSync(runsDir, { recursive: true, force: true }); }
+  for (const [args, want] of [[["web", "--rereview", "2026-10-s-1"], "web"], [["--rereview", "2026-10-s-1", "web"], "web"], [["--with-ritual", "web"], "web"], [["--runs", "3", "web"], "web"], [["--dry-run", "web", "--language", "es"], "web"], [["--language", "es"], undefined]]) {
     if (taskArg(args) !== want) bad.push(`taskArg(${args.join(" ")}) should be ${want}, gave ${taskArg(args)}`);
   }
   if (spend({ num_turns: 3, total_cost_usd: 0.5, usage: { output_tokens: 100 } }) !== "3 turns · $0.5 · 100 output tokens" || spend(null) !== "? turns · $? · ? output tokens") bad.push(`spend: ${spend({ num_turns: 3, total_cost_usd: 0.5, usage: { output_tokens: 100 } })}`);
@@ -259,7 +282,7 @@ if (isMain(import.meta.url)) {
     process.exit(r.json?.result ? 0 : 1);
   }
   const task = taskArg(args);
-  if (!task || !existsSync(path.join(ROOT, "simulations", task, "TASK.md"))) { console.error("✕ usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5] [--language en|es] [--budget 5] [--with-ritual] [--dry-run] | --probe | --selftest"); process.exit(1); }
+  if (!task || !existsSync(path.join(ROOT, "simulations", task, "TASK.md"))) { console.error("✕ usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5] [--language en|es] [--budget 5] [--with-ritual] [--dry-run] [--rereview <saved run>] | --probe | --selftest"); process.exit(1); }
   const runs = Number(flag(args, "--runs", "2")), builder = flag(args, "--builder", "claude-sonnet-5-5"), reviewer = flag(args, "--reviewer", "claude-opus-5-5");
   const language = flag(args, "--language", ORIGINAL), budget = Number(flag(args, "--budget", "5")), withRitual = args.includes("--with-ritual");
   const month = new Date().toISOString().slice(0, 7);
@@ -273,7 +296,48 @@ if (isMain(import.meta.url)) {
     console.log(`\nBuilder prompt (the request, as written):\n${request}\n\nReview prompt: ${reviewPrompt({ task, request, builderSummary: "(the builder's last message)", lessons, month, builder }).length} characters, ${lessons.length} lesson(s).`);
     process.exit(0);
   }
-  const verdicts = [], spends = [];
+  const runsDir = path.join(ROOT, "simulations", task, "runs");
+  /** The review of a build in `dir`; saves what it left in `target`. @returns {boolean} whether it left verdicts. */
+  const review = (dir, target, builderSummary, n) => {
+    const reviewed = run(bin, session({ prompt: reviewPrompt({ task, request, builderSummary, lessons, month, builder }), model: reviewer, tools: REVIEWER_TOOLS, budget }), dir);
+    for (const f of ["FINDINGS.md", "verdicts.json"]) if (existsSync(path.join(dir, f))) cpSync(path.join(dir, f), path.join(target, f));
+    writeFileSync(path.join(target, "REVIEWER.md"), `# What the reviewer said\n\n\`${reviewer}\` · ${reviewed.json?.subtype ?? `exit ${reviewed.status}`} · ${spend(reviewed.json)}\n\n${reviewed.json?.result ?? reviewed.stderr ?? "(no final message)"}\n`);
+    const record = readJson(path.join(target, "run.json"), {});
+    writeFileSync(path.join(target, "run.json"), JSON.stringify({ ...record, reviewed: spend(reviewed.json) }, null, 2) + "\n");
+    scrubRun(target, dir);
+    let v = null;
+    try { v = JSON.parse(readFileSync(path.join(dir, "verdicts.json"), "utf8")); } catch { /* the reviewer did not leave verdicts */ }
+    if (!v) { console.error(`✕ run ${n}: the reviewer left no readable verdicts.json (exit ${reviewed.status}). The build is kept in ${path.relative(ROOT, target)}.\n${reviewed.stderr}`); return false; }
+    const all = Object.values(v.lessons ?? {});
+    console.log(`  reviewed: ${all.filter((x) => x.verdict === "broke").length} lesson(s) broke, ${(v.new ?? []).length} new mistake(s). Saved in ${path.relative(ROOT, target)}`);
+    // A review that tried nothing says nothing about the build: review the same build again, never build a new one in its place.
+    if (all.length && all.every((x) => x.verdict === "not-checked")) console.error(`  ✕ this review checked no lesson. Read REVIEWER.md, then: node scripts/simulate.mjs ${task} --rereview ${path.basename(target)} ${args.filter((a) => a !== task).join(" ")}`);
+    try { rmSync(dir, { recursive: true, force: true }); } catch { /* a server may still hold it */ }
+    return true;
+  };
+  const writeSummary = () => {
+    const prefix = `${month}-${short}-${withRitual ? "ritual-" : ""}`;
+    const saved = collect(runsDir, prefix);
+    const text = summary({ task, month, builder, reviewer, cli, isolation, runs: saved.length, result: compare(saved.map((s) => s.verdicts), lessons.map((l) => l.id)), ritual: withRitual, spends: saved.filter((s) => s.spend.built).map((s) => ({ run: s.n, ...s.spend })) });
+    const file = path.join(runsDir, `${prefix}summary.md`);
+    writeFileSync(file, text);
+    console.log(`\n${text}\nWritten to ${path.relative(ROOT, file)}. Nothing in lessons/ changed: apply what holds with /maintain.`);
+  };
+  const again = flag(args, "--rereview", null);
+  if (again) {
+    // The same build, reviewed again (after a review that could run nothing): its BUILDER.md and code stay as they are.
+    const target = path.join(runsDir, again);
+    const n = Number(again.match(/(\d+)$/)?.[1]);
+    if (!existsSync(path.join(target, "BUILDER.md")) || !again.startsWith(`${month}-${short}-${withRitual ? "ritual-" : ""}`) || !/^\d+$/.test(again.slice(`${month}-${short}-${withRitual ? "ritual-" : ""}`.length))) { console.error(`✕ ${again} is not a saved run of this month, builder and mode (pass the same --builder, --language and --with-ritual as when it was built)`); process.exit(1); }
+    const dir = workDir(`ritual-sim-${task}-`);
+    cpSync(target, dir, { recursive: true, filter: (src) => path.dirname(src) !== target || !RUN_FILES.includes(path.basename(src)) });
+    const builderSummary = readFileSync(path.join(target, "BUILDER.md"), "utf8").split("\n").slice(4).join("\n").trim();
+    for (const f of ["FINDINGS.md", "verdicts.json"]) rmSync(path.join(target, f), { force: true });
+    console.log(`\nRun ${n}: reviewing the saved build again …`);
+    if (!review(dir, target, builderSummary, n)) process.exit(1);
+    writeSummary();
+    process.exit(0);
+  }
   for (let n = 1; n <= runs; n++) {
     const target = path.join(ROOT, "simulations", task, "runs", `${month}-${short}-${withRitual ? "ritual-" : ""}${n}`);
     if (existsSync(target)) { console.error(`✕ ${path.relative(ROOT, target)} already exists: a run is never overwritten`); process.exit(1); }
@@ -298,21 +362,9 @@ if (isMain(import.meta.url)) {
     mkdirSync(target, { recursive: true });
     cpSync(dir, target, { recursive: true });
     writeFileSync(path.join(target, "BUILDER.md"), `# What the builder said\n\n\`${builder}\` · ${built.json.subtype ?? ""} · ${spend(built.json)}${trace ? ` · Ritual: questions for ${trace.sent.join(", ") || "no group"}, ${trace.blocks.length} guard block(s)` : ""}\n\n${built.json.result ?? "(no final message)"}\n`);
+    writeFileSync(path.join(target, "run.json"), JSON.stringify({ built: spend(built.json), ritual: trace }, null, 2) + "\n");
     console.log(`  built: ${built.json.subtype ?? "?"}, ${spend(built.json)}${trace ? `, Ritual sent ${trace.sent.length} group(s) and blocked ${trace.blocks.length}` : ""}. Reviewing …`);
-    const reviewed = run(bin, session({ prompt: reviewPrompt({ task, request, builderSummary: built.json.result, lessons, month, builder }), model: reviewer, tools: REVIEWER_TOOLS, budget }), dir);
-    for (const f of ["FINDINGS.md", "verdicts.json"]) if (existsSync(path.join(dir, f))) cpSync(path.join(dir, f), path.join(target, f));
-    writeFileSync(path.join(target, "REVIEWER.md"), `# What the reviewer said\n\n\`${reviewer}\` · ${reviewed.json?.subtype ?? `exit ${reviewed.status}`} · ${spend(reviewed.json)}\n\n${reviewed.json?.result ?? reviewed.stderr ?? "(no final message)"}\n`);
-    spends.push({ built: spend(built.json), reviewed: spend(reviewed.json), ritual: trace });
-    scrubRun(target, dir);
-    let v = null;
-    try { v = JSON.parse(readFileSync(path.join(dir, "verdicts.json"), "utf8")); } catch { /* the reviewer did not leave verdicts */ }
-    if (!v) { console.error(`✕ run ${n}: the reviewer left no readable verdicts.json (exit ${reviewed.status}). The build is kept in ${path.relative(ROOT, target)}.\n${reviewed.stderr}`); process.exit(1); }
-    verdicts.push(v);
-    console.log(`  reviewed: ${Object.values(v.lessons ?? {}).filter((x) => x.verdict === "broke").length} lesson(s) broke, ${(v.new ?? []).length} new mistake(s). Saved in ${path.relative(ROOT, target)}`);
-    try { rmSync(dir, { recursive: true, force: true }); } catch { /* a server may still hold it */ }
+    if (!review(dir, target, built.json.result, n)) process.exit(1);
   }
-  const text = summary({ task, month, builder, reviewer, cli, isolation, runs, result: compare(verdicts, lessons.map((l) => l.id)), ritual: withRitual, spends });
-  const file = path.join(ROOT, "simulations", task, "runs", `${month}-${short}-${withRitual ? "ritual-" : ""}summary.md`);
-  writeFileSync(file, text);
-  console.log(`\n${text}\nWritten to ${path.relative(ROOT, file)}. Nothing in lessons/ changed: apply what holds with /maintain.`);
+  writeSummary();
 }
