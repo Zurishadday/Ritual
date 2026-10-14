@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#e3e8ef"/>
+  <g fill="none" stroke="#14352b" stroke-width="10" stroke-linecap="round">
+    <circle cx="300" cy="190" r="130"/>
+    <circle cx="300" cy="190" r="22"/>
+    <path d="M440 110 Q500 190 440 270" stroke-width="30" stroke="#1f7a5a"/>
+    <path d="M500 60 Q560 40 560 120 V250"/>
+  </g>
+  <text x="300" y="385" font-family="sans-serif" font-size="22" text-anchor="middle" fill="#14352b">Imagen de ejemplo</text>
+</svg>

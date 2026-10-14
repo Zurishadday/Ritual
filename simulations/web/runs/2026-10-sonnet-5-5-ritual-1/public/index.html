@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taller Rueda Libre · Reparación de bicicletas</title>
+  <meta name="description" content="Taller Rueda Libre: afinación, cambio de llantas y frenos para tu bicicleta.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="portada">
+    <nav>
+      <strong>Taller Rueda Libre</strong>
+      <a href="#servicios">Servicios</a>
+      <a href="#visitanos">Visítanos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="portada-texto">
+      <h1>Tu bici, lista para rodar libre.</h1>
+      <p>Reparación y mantenimiento hechos con cuidado, a buen precio.</p>
+      <a class="boton" href="#contacto">Escríbenos</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="servicios">
+      <h2>Nuestros servicios</h2>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <img src="img/afinacion.svg" alt="Cadena y engranes de una bicicleta" loading="lazy">
+          <h3>Afinación</h3>
+          <p>Ajuste de cambios, lubricación, frenos y revisión general.</p>
+          <p class="precio">$250</p>
+        </article>
+        <article class="tarjeta">
+          <img src="img/llantas.svg" alt="Llanta de bicicleta" loading="lazy">
+          <h3>Cambio de llantas</h3>
+          <p>Montaje y balanceo de llanta y cámara (mano de obra).</p>
+          <p class="precio">$120</p>
+        </article>
+        <article class="tarjeta">
+          <img src="img/frenos.svg" alt="Freno de bicicleta" loading="lazy">
+          <h3>Frenos</h3>
+          <p>Cambio y ajuste de balatas o pastillas, y purga si aplica.</p>
+          <p class="precio">$180</p>
+        </article>
+      </div>
+      <p class="nota">Precios de ejemplo en MXN; refacciones aparte.</p>
+    </section>
+
+    <section id="visitanos" class="alterna">
+      <h2>Visítanos</h2>
+      <div class="dos-columnas">
+        <div>
+          <h3>Horarios</h3>
+          <ul class="horarios">
+            <li><span>Lunes a viernes</span> <span>9:00 – 19:00</span></li>
+            <li><span>Sábado</span> <span>9:00 – 15:00</span></li>
+            <li><span>Domingo</span> <span>Cerrado</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Dirección</h3>
+          <address>
+            Calle Ejemplo 123, Col. Centro<br>
+            Ciudad de México, CDMX<br>
+            C.P. 00000
+          </address>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <h2>Contáctanos</h2>
+      <form id="formulario" method="post" action="/api/contacto" novalidate>
+        <label class="trampa" aria-hidden="true">No llenar
+          <input name="web" tabindex="-1" autocomplete="off">
+        </label>
+        <label>Nombre
+          <input name="nombre" required maxlength="100" autocomplete="name">
+        </label>
+        <label>Correo
+          <input name="correo" type="email" required maxlength="150" autocomplete="email">
+        </label>
+        <label>Mensaje
+          <textarea name="mensaje" rows="5" required maxlength="2000"></textarea>
+        </label>
+        <button class="boton" type="submit">Enviar mensaje</button>
+        <p id="estado" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>© Taller Rueda Libre</footer>
+  <script src="app.js"></script>
+</body>
+</html>

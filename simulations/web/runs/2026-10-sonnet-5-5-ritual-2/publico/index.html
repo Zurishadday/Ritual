@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taller Rueda Libre — Reparación de bicicletas</title>
+  <meta name="description" content="Taller Rueda Libre: afinación, cambio de llantas y frenos para tu bicicleta.">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="logo" href="#inicio">Taller Rueda Libre</a>
+    <nav>
+      <a href="#servicios">Servicios</a>
+      <a href="#horarios">Horarios</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="portada">
+      <img src="img/portada.svg" alt="Bicicleta en un taller de reparación">
+      <div class="portada-texto">
+        <h1>Tu bici, lista para rodar</h1>
+        <p>Reparación y mantenimiento con cariño, rapidez y precios claros.</p>
+        <a class="boton" href="#contacto">Escríbenos</a>
+      </div>
+    </section>
+
+    <section id="servicios" class="seccion">
+      <h2>Nuestros servicios</h2>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <img src="img/afinacion.svg" alt="Herramientas para afinar una bicicleta" loading="lazy">
+          <div>
+            <h3>Afinación</h3>
+            <p>Ajuste de frenos y cambios, lubricación y revisión general.</p>
+            <p class="precio">$250 MXN</p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="img/llantas.svg" alt="Rueda de bicicleta con llanta nueva" loading="lazy">
+          <div>
+            <h3>Cambio de llantas</h3>
+            <p>Instalación de llanta y cámara, con revisión del rin.</p>
+            <p class="precio">$120 MXN <small>mano de obra por llanta</small></p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="img/frenos.svg" alt="Freno de bicicleta" loading="lazy">
+          <div>
+            <h3>Frenos</h3>
+            <p>Cambio de balatas o pastillas y ajuste de cables.</p>
+            <p class="precio">$180 MXN</p>
+          </div>
+        </article>
+      </div>
+      <p class="nota">Los precios son de ejemplo y no incluyen refacciones.</p>
+    </section>
+
+    <section id="horarios" class="seccion claro">
+      <h2>Horarios y ubicación</h2>
+      <div class="dos-columnas">
+        <div>
+          <h3>Horarios</h3>
+          <ul class="horarios">
+            <li><span>Lunes a viernes</span><span>9:00 – 19:00</span></li>
+            <li><span>Sábado</span><span>9:00 – 15:00</span></li>
+            <li><span>Domingo</span><span>Cerrado</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Dirección</h3>
+          <address>
+            Calle Ejemplo 123, Col. Centro<br>
+            Ciudad de México, CDMX<br>
+            C.P. 00000
+          </address>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="seccion">
+      <h2>Contáctanos</h2>
+      <form id="formulario" method="post" action="/api/contacto" novalidate>
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" type="text" maxlength="100" autocomplete="name" required>
+
+        <label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" maxlength="150" autocomplete="email" required>
+
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="5" maxlength="2000" required></textarea>
+
+        <input class="trampa" name="sitio" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <button class="boton" type="submit">Enviar mensaje</button>
+        <p id="estado" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>© Taller Rueda Libre</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

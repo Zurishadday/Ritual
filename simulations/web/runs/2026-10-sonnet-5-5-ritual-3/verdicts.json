@@ -1,0 +1,23 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "Chrome with scripts disabled: good submit -> /?enviado=1#contacto, saved +1, #aviso-servidor still hidden, 'Gracias' on screen: false" },
+    "41": { "verdict": "broke", "evidence": "Builder claimed 'Funciona también sin JavaScript' from code; Chrome no-JS submit shows no confirmation and no error (aviso hidden, sinjs-vacio.png)" },
+    "45": { "verdict": "broke", "evidence": "sondas.mjs tipo: 5x correo 'luisgmail.com' -> 400 x5, corrected 'luis@gmail.com' -> 429 'Demasiados mensajes'; Chrome 'luis@gmail' -> server 400, activeElement BODY" },
+    "46": { "verdict": "broke", "evidence": "datos.mjs escala: 1k msgs admin 49 ms/0.4 MB; 20k 131 ms/7.2 MB; 40k 224 ms/14.4 MB HTML, 20 parallel admins 2690 ms, post 92 ms (whole file rewritten)" },
+    "49": { "verdict": "broke", "evidence": "per-IP limit runs before validation: 5 rejected (400) posts then a valid one -> 429, the general limit overrides 'fix the field and resend'" },
+    "WEB-2": { "verdict": "broke", "evidence": "No delete/search/paging in /admin; with 40000 messages GET /admin returns one 14.4 MB page; deleting requires hand-editing datos/mensajes.json" },
+    "WEB-3": { "verdict": "broke", "evidence": "Emulation.setScriptExecutionDisabled: empty submit -> /?error=Escribe%20tu%20nombre... but aviso hidden, error text not on screen, form blank" },
+    "WEB-4": { "verdict": "broke", "evidence": "Chrome: correo 'luis@gmail' -> server 400, after button re-enabled document.activeElement = BODY and next Tab = BODY" },
+    "WEB-5": { "verdict": "held", "evidence": "sondas.mjs admin: 5 wrong passwords -> 401 401 401 401 401, 6th -> 429 'Demasiados intentos'" },
+    "WEB-1": { "verdict": "held", "evidence": "truncated mensajes.json + POST -> 201 saved, damaged file kept as mensajes.json.dañado-<ts>; but owner only told via console.error (admin shows '(0)')" }
+  },
+  "new": [
+    { "title": "Per-IP rate limit and admin lockout keyed on socket address collapse behind the recommended proxy", "class": "security", "evidence": "proxy.mjs: visitors 203.0.113.1-7 -> 201 x5, 429, 429; attacker 5 bad passwords then owner with correct password from another IP -> 429" },
+    { "title": "Browser and server email rules disagree (type=email accepts luis@gmail, server regex rejects)", "class": "form", "evidence": "Chrome: 'luis@gmail' passes client check, server returns 400 'Escribe un correo válido.', aria-invalid count 0, focus BODY" },
+    { "title": "Admin lockout blocks the correct password from the same IP", "class": "security", "evidence": "after 5 bad passwords from 127.0.0.1, admin:clave-prueba from 127.0.0.1 -> 429; from ::1 -> 200" },
+    { "title": "Oversized body gets a connection reset instead of the promised 413 message", "class": "server", "evidence": "100 KB JSON or form POST to /api/contacto -> ERR ECONNRESET (req.destroy before 413 written)" },
+    { "title": "Mobile nav tap targets are 21 px tall", "class": "mobile", "evidence": "Chrome 375 px: Servicios 52x21, Visítanos 54x21, Contacto 54x21, brand 107x30" },
+    { "title": "Focus ring #f2a900 on white has 2.0:1 contrast", "class": "accessibility", "evidence": "computed outlineColor rgb(242,169,0) on all Tab stops; luminance 0.473 vs white -> 2.0:1 (< 3:1)" },
+    { "title": "Owner is not told when the message store was damaged; old messages vanish from /admin", "class": "data", "evidence": "damaged file -> /admin shows 'Mensajes recibidos (0)' with no notice; only console.error mentions the backup" }
+  ]
+}

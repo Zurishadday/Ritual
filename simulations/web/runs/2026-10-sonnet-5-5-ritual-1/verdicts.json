@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "Edge 375x740, Tab to button + Enter: status 'Escribe un correo válido.' / '¡Gracias!…' rendered at y=663..687 of 740, right under the button (screenshot kb-after-error.png); no-JS path shows a full Gracias/Error page" },
+    "41": { "verdict": "broke", "evidence": "Builder never ran it and described the lockout from source ('5 contraseñas incorrectas'); in the real Basic-auth flow 5 credential-less GET /admin (the browser's automatic first request) -> correct password gets 429 'espera 15 minutos'" },
+    "45": { "verdict": "held", "evidence": "Edge with JS: empty submit -> 'Completa todos los campos…', focus on nombre; 'J'+'juangmail.com' -> message, focus on correo, values kept; real double click -> 1 saved; 'juan@gmail' -> server 'Escribe un correo válido.', values kept (no-JS error path broke, see WEB-3)" },
+    "46": { "verdict": "held", "evidence": "/admin reads+renders whole file per request but stays small: 26ms@500, 38ms@2k, 62ms@5k, 76ms@10k msgs (4.2MB HTML); visitor POST during an admin render 14-22ms" },
+    "49": { "verdict": "broke", "evidence": "Site-wide per-IP rules run before the specific outcome: the lockout check runs before the password check, so the correct password -> 429; the rate limit counts rejected corrections, so no-JS 6th (valid) submit -> 'Demasiados intentos, espera un minuto.'" },
+    "WEB-2": { "verdict": "broke", "evidence": "1200 bot POSTs from 240 IPs (5 each) -> 1200/1200 accepted; /admin 'Mensajes recibidos (1201)', real message is card #201, 1201 single delete forms with confirm, no search/filter/bulk delete" },
+    "WEB-3": { "verdict": "broke", "evidence": "Edge with scripts disabled: good path -> '¡Gracias!' saved 1, but bad email -> 'No se envió… Volver' and Volver -> /#contacto with fields [\"\",\"\",\"\",\"\"] (typed message lost)" },
+    "WEB-4": { "verdict": "broke", "evidence": "Edge: Tab to 'Enviar mensaje' + Enter -> activeElement BODY after both server error and success; next Tab -> BODY, 2nd Tab -> 'A Servicios' at scrollY 0" },
+    "WEB-5": { "verdict": "held", "evidence": "20 wrong Basic-auth passwords from one IP -> {401:5, 429:15}; limit exists (over-aggressive, see new finding)" },
+    "WEB-1": { "verdict": "broke", "evidence": "datos file ending in a partial line '{\"id\":\"cortado\",…\"nombre\":\"Mar' + visitor POST -> 201, /admin 'Mensajes recibidos (1)', visitor not shown; after an unrelated delete their text is gone from disk; no log/notice" }
+  },
+  "new": [
+    { "title": "Rewrite-and-rename delete drops messages appended during the rewrite", "class": "data", "evidence": "5000 msgs, 1 admin delete + 30 concurrent visitor POSTs -> all 30 got 201, only 27 on disk (5026 vs expected 5029)" },
+    { "title": "Login lockout counts the browser's credential-less first request as a failure and never resets on success, locking out the owner", "class": "security", "evidence": "1 unauthenticated GET + 1 typo + success(200) + 3 unauthenticated GETs -> correct password 429 'espera 15 minutos'" },
+    { "title": "Per-IP rate limit and lockout keyed on socket address become global behind the reverse proxy the builder recommends", "class": "security", "evidence": "All clients on 127.0.0.1 (proxy simulation): 6th POST in a minute from a different visitor -> 429; correct password after 5 bad ones by someone else -> 429; no X-Forwarded-For handling" },
+    { "title": "Browser and server validate email with different rules", "class": "form", "evidence": "'juan@gmail' passes type=email checkValidity() but server returns 400 'Escribe un correo válido.'" }
+  ]
+}

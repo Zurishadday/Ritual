@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Administración — Taller Rueda Libre</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f4f1; color: #222; }
+    header { background: #1d3b2f; color: #fff; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    h1 { font-size: 1.25rem; margin: 0; }
+    main { max-width: 800px; margin: 1.25rem auto; padding: 0 1rem; }
+    article { background: #fff; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+    .meta { color: #666; font-size: .9rem; margin: 0 0 .5rem; }
+    .texto { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 .75rem; }
+    button { font: inherit; cursor: pointer; border: 0; border-radius: 6px; padding: .4rem .8rem; }
+    .borrar { background: #b3261e; color: #fff; }
+    #recargar { background: #f2c14e; color: #222; }
+    #vacio { text-align: center; color: #666; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mensajes recibidos <span id="total"></span></h1>
+    <button id="recargar" type="button">Actualizar</button>
+  </header>
+  <main>
+    <p id="vacio" hidden>Todavía no hay mensajes.</p>
+    <div id="lista"></div>
+  </main>
+  <script>
+    const lista = document.getElementById('lista');
+    const vacio = document.getElementById('vacio');
+    const total = document.getElementById('total');
+
+    function tarjeta(m) {
+      const art = document.createElement('article');
+      const meta = document.createElement('p');
+      meta.className = 'meta';
+      const fecha = new Date(m.fecha).toLocaleString('es-MX');
+      meta.textContent = `${m.nombre} · ${m.correo} · ${fecha}`;
+      const texto = document.createElement('p');
+      texto.className = 'texto';
+      texto.textContent = m.mensaje;
+      const boton = document.createElement('button');
+      boton.className = 'borrar';
+      boton.type = 'button';
+      boton.textContent = 'Borrar';
+      boton.addEventListener('click', async () => {
+        if (!confirm('¿Borrar este mensaje?')) return;
+        await fetch('/api/admin/borrar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: m.id }),
+        });
+        cargar();
+      });
+      art.append(meta, texto, boton);
+      return art;
+    }
+
+    async function cargar() {
+      const respuesta = await fetch('/api/admin/mensajes');
+      const mensajes = await respuesta.json();
+      lista.replaceChildren(...mensajes.map(tarjeta));
+      vacio.hidden = mensajes.length > 0;
+      total.textContent = mensajes.length ? `(${mensajes.length})` : '';
+    }
+
+    document.getElementById('recargar').addEventListener('click', cargar);
+    cargar();
+  </script>
+</body>
+</html>

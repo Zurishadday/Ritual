@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "node browser2.mjs 3417 double: two clicks 30ms apart -> saved: 1 but #estado shows red 'Completa nombre, correo y mensaje.'; nojs: saved: 1 but #estado '' and no 'Gracias' on page" },
+    "41": { "verdict": "broke", "evidence": "builder claimed no-JS form works from reading code; node browser2.mjs 3417 nojs (JS disabled in Chrome) -> /?enviado=1#contacto with #estado '' (no confirmation), empty submit -> bare text page at /api/contacto" },
+    "45": { "verdict": "broke", "evidence": "node probe.mjs 3417 rate: 5 empty submits 400, then a valid message from same IP -> 429 application/json {\"error\":\"Demasiados envíos…\"}; no-JS empty submit -> page text only 'Escribe tu nombre (máx. 100 caracteres).'" },
+    "46": { "verdict": "broke", "evidence": "node data.mjs 3417 growth: 40k msgs (77 MB) -> one POST 429ms, 20 concurrent POSTs 7019ms, GET / during burst 7013ms, admin GET 2007ms for 74 MB (1k msgs: 41ms / 251ms)" },
+    "49": { "verdict": "broke", "evidence": "node probe.mjs 3417 rate: the general per-IP limit runs before validation and before the classic/JSON response choice: rejected attempts consume the quota and a no-JS form gets raw JSON 429" },
+    "WEB-2": { "verdict": "broke", "evidence": "node probe.mjs 3417 bots: 200 spam posts (honeypot empty, 40 IPs) in 1036ms -> accepted 200; admin controls only ['Actualizar','Borrar'] with one confirm() per message, no search or bulk delete" },
+    "WEB-3": { "verdict": "broke", "evidence": "node browser2.mjs 3417 nojs: JS disabled, valid submit -> saved: 1, URL /?enviado=1#contacto, #estado text '' , page includes 'Gracias' false" },
+    "WEB-4": { "verdict": "broke", "evidence": "node browser.mjs 3417 keyboard: Enter on button -> activeElement BODY immediately and after response; next Tab -> BODY (left document), only 2nd Tab -> A 'Taller Rueda Libre'" },
+    "WEB-5": { "verdict": "broke", "evidence": "node probe.mjs 3417 brute: 200 wrong passwords from one IP in 573ms -> {401:10, 429:190}; correct password from same IP right after -> 200 with messages (limit never refuses before checking)" },
+    "WEB-1": { "verdict": "broke", "evidence": "node data.mjs 3417 shape: mensajes.json = {} / null / {\"mensajes\":[]} -> every visitor POST 500 'Error interno' (lista.push is not a function); truncated file did recover (201, copy kept) but admin silently dropped from 252 to 1 messages, console-only notice" }
+  },
+  "new": [
+    { "title": "White hero text over an image checked by eye on desktop only; unreadable where the crop is light on mobile", "class": "accessibility", "evidence": "node contrast.mjs 3417: worst white-on-background contrast at 375px subtitle 2.07:1, H1 2.66:1; 768px subtitle 2.73:1; 1280px subtitle 4.10:1 (need 4.5 / 3)" },
+    { "title": "Mobile nav links are 25px tall tap targets", "class": "mobile", "evidence": "node browser.mjs 3417 mobile: Servicios/Horarios/Contacto height 25px, width ~60px at 375px" },
+    { "title": "Form errors don't mark the offending field (no aria-invalid, no style, focus stays on button)", "class": "accessibility", "evidence": "node browser2.mjs 3417 formjs: after bad email all fields aria-invalid=null, border rgb(170,170,170), focus BUTTON" },
+    { "title": "Server accepts non-string fields and 500s on a JSON null body", "class": "server", "evidence": "node probe.mjs 3417 raw: body 'null' -> 500 Error interno; {nombre:12345, mensaje:{a:1}} -> 201 stored as '[object Object]'" }
+  ]
+}
