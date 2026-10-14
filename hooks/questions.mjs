@@ -7,7 +7,8 @@
 // Core lessons, lessons from the active package (`packages`) and the project's own lessons
 // (.ritual/lessons/<group>.md) are included; demoted ones (`demoted`) are skipped. It also records what was touched last.
 // Usage: node hooks/questions.mjs --selftest
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { ORIGINAL, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
@@ -62,9 +63,19 @@ export function context(group, config, ritual) {
   if (!lessons.length) return null;
   // The project's own lessons may be in any language: the detector question is always the third part.
   const question = (l) => (l.parts["Detector question"] ?? Object.values(l.parts)[2] ?? "").replace(/\s+/g, " ");
+  // A project lesson that refines one in this list takes its place: one sharper question instead of two near-duplicates.
+  const refiners = new Map();
+  for (const l of lessons) if (l.data.refines) refiners.set(l.data.refines, [...(refiners.get(l.data.refines) ?? []), l]);
+  const line = (l) => `- ${l.id}${l.data.refines ? ` (refines ${l.data.refines})` : ""} · ${question(l)}`;
+  const shown = new Set();
+  const lines = [];
+  for (const l of lessons) {
+    if (shown.has(l)) continue;
+    for (const x of refiners.get(l.id) ?? [l]) { lines.push(line(x)); shown.add(x); }
+  }
   return [
     `Ritual · ${title}. Before you continue, run through these detector questions for what you are about to do. If one applies, act on it and say so in one line; if none applies, just continue. Details: lessons/${ORIGINAL}/${group}.md in the Ritual plugin, or .ritual/lessons/ in this project. Reply to the user in their language.`,
-    ...lessons.map((l) => `- ${l.id} · ${question(l)}`),
+    ...lines,
   ].join("\n");
 }
 
@@ -107,6 +118,20 @@ export function selftest() {
   if (withoutWeb.includes("- 46 · ")) failures.push("without the web package, the context has lesson 46, which is web-only");
   if (!withWeb.includes("- 46 · ")) failures.push("with the web package, the context lacks lesson 46");
   if ((context("console-and-tools", { ...DEFAULT_CONFIG, demoted: [27] }, null) ?? "").includes("- 27 · ")) failures.push("a demoted lesson still shows up");
+  // A project lesson that refines a library lesson takes its place, instead of a near-duplicate second question.
+  const project = mkdtempSync(path.join(os.tmpdir(), "ritual-refines-"));
+  try {
+    const own = path.join(project, ".ritual", "lessons");
+    mkdirSync(own, { recursive: true });
+    const lesson = (id, refines, q) => `### ${id}. Own ${id}\n\n\`origin: field · claude-opus-5-5 · 2026-10\`${refines ? ` · \`refines: ${refines}\`` : ""}\n\n**The idea.** x\n\n**Example.** y\n\n**Detector question.** ${q}\n\n**Warning sign.** "z"\n\n**What to do.** w\n`;
+    writeFileSync(path.join(own, "console-and-tools.md"), `# Console\n\n${lesson("P-1", "27", "Sharper question about the console?")}\n${lesson("P-2", "13", "A tests question kept here?")}\n${lesson("P-3", null, "A plain project question?")}`);
+    const text = context("console-and-tools", DEFAULT_CONFIG, path.join(project, ".ritual")) ?? "";
+    const ids = [...text.matchAll(/^- (\S+)/gm)].map((m) => m[1]);
+    if (text.includes("- 27 · ")) failures.push("a refined lesson must not show its original question next to the sharper one");
+    if (!text.includes("- P-1 (refines 27) · Sharper question about the console?")) failures.push(`the refinement should say what it refines: ${text.split("\n").find((l) => l.includes("P-1"))}`);
+    if (ids.indexOf("P-1") !== ids.indexOf("29") - 1) failures.push(`the refinement should sit where 27 was, before 29: ${ids.join(", ")}`);
+    if (!text.includes("- P-2 (refines 13) · ") || !text.includes("- P-3 · ")) failures.push("a refinement of a lesson outside this group, and a plain project lesson, are listed as they are");
+  } finally { rmSync(project, { recursive: true, force: true }); }
   for (const failure of failures) console.error(`✕ ${failure}`);
   return failures.length;
 }

@@ -292,12 +292,14 @@ export function checkProject(project, language = ORIGINAL) {
   if (!existsSync(dir)) return [{ file: ".ritual/lessons", line: 0, message: "does not exist: run /ritual to start", level: "error" }];
   const parts = PARTS[language] ?? PARTS[ORIGINAL];
   const seen = new Set();
+  const refining = [];
   for (const file of readdirSync(dir).filter((a) => a.endsWith(".md")).sort()) {
     const group = file.slice(0, -3);
     const rel = `.ritual/lessons/${file}`;
     if (!GROUPS.includes(group)) { findings.push({ file: rel, line: 1, message: `the file must be named after a group: ${GROUPS.join(", ")}`, level: "error" }); continue; }
     for (const l of readGroupFile(path.join(dir, file), group).lessons) {
       const bad = (m) => findings.push({ file: rel, line: l.line, message: `${l.id}: ${m}`, level: "error" });
+      if (l.data.refines) refining.push({ target: l.data.refines, bad });
       if (!/^[A-Z]+-\d+$/.test(l.id)) bad("a project lesson needs a prefix and number (P-1)");
       if (seen.has(l.id)) bad("duplicate id");
       seen.add(l.id);
@@ -308,6 +310,9 @@ export function checkProject(project, language = ORIGINAL) {
       for (const p of list(l.data.packages)) if (!PACKAGES.includes(p)) bad(`package «${p}» does not exist in Ritual's lessons/taxonomy.json`);
     }
   }
+  // A refinement shows up in its lesson's place: a target that doesn't exist (in the library or the project) is lost.
+  const known = new Set([...readLessons(ORIGINAL).lessons.map((l) => l.id), ...seen]);
+  for (const { target, bad } of refining) if (!known.has(target)) bad(`refines ${target}, which is not a lesson in Ritual's library or in this project`);
   return findings;
 }
 
@@ -421,6 +426,12 @@ export function selftest() {
     writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own", "`origin: field · claude-fable-5-1 · 2026-10` · `refines: 27`")}`);
     const good = checkProject(project);
     if (good.length) failures.push(`the good project lessons gave: ${good.map((x) => x.message).join(" | ")}`);
+    // `refines` must name a lesson that exists: in the library (core or package) or in the project itself.
+    for (const [target, ok] of [["999", false], ["WEB-1", true], ["P-2", true], ["P-9", false]]) {
+      writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own", `\`origin: field · claude-opus-5-5 · 2026-10\` · \`refines: ${target}\``)}\n${LESSON("P-2", "Other")}`);
+      const found = checkProject(project).some((x) => x.message.includes(`refines ${target}`));
+      if (found === ok) failures.push(`refines ${target} should ${ok ? "pass" : "fail: no such lesson"}`);
+    }
     writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Consola\n\n${LESSON("P-1", "Propia", "`origin: field · ~opus · unknown`", "es")}`);
     if (checkProject(project, "es").length) failures.push("a project lesson in the project's language (es) should pass");
     writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Consola\n\n${LESSON("P-1", "Propia", "`origin: field`", "es")}`);
