@@ -16,8 +16,9 @@ const CORRECTION = [
   /\bstill (broken|failing|wrong|the same)\b/i, /\bdoesn't work\b/i, /\byou (broke|missed)\b/i, /\bwrong (file|answer|again)\b/i,
 ];
 
+// A correction comes first: only the opening of a prompt counts, so a long brief that quotes "doesn't work" inside is not one.
 export function isCorrection(prompt) {
-  const p = String(prompt ?? "");
+  const p = String(prompt ?? "").split(/\n\s*\n/)[0].slice(0, 240);
   return CORRECTION.some((r) => r.test(p));
 }
 
@@ -26,6 +27,9 @@ const CASES = [
   ["that's wrong, the test still fails", true], ["redo the last step", true], ["still broken", true], ["that is wrong, the form still loses the message", true], ["it is broken again", true],
   ["no está mal, sigue así", false], ["¿qué es un test?", false], ["crea el componente de login", false], ["the design is not bad", false],
   ["explain how hooks work", false], ["está bien, continúa", false],
+  // A long brief pasted as a prompt is not a correction, even if it quotes one deep inside; a correction comes first.
+  [`Necesito una página para el taller.\n\nRequisitos:\n- un formulario de contacto\n- una página de administración\n\nAntecedentes: la versión anterior no funciona en celular y hubo que hacerlo de nuevo varias veces.\n${"Detalle. ".repeat(40)}`, false],
+  [`eso está mal: el total no cuadra.\n\n${"Aquí va el detalle de lo que vi. ".repeat(20)}`, true],
 ];
 
 export function selftest() {
