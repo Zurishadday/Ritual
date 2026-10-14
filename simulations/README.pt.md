@@ -21,6 +21,26 @@ O script faz isso: `node scripts/simulate.mjs <task>` (por exemplo `web`). Sonne
 
 Para propor uma tarefa nova, abra uma issue com o texto da tarefa e o tipo de projeto que ela representa.
 
+<a name="ab"></a>
+
+## O Ritual ajuda? Um A/B na tarefa web
+
+A mesma tarefa (o pedido web em espanhol), o mesmo construtor (`claude-sonnet-5-5`) e o mesmo revisor (`claude-opus-5-5`), 2026-10, com o Claude Code 2.1.295–2.1.296. Sem o Ritual, depois com os hooks do Ritual carregados e o projeto configurado com o pacote `web` (`--with-ritual`). Depois, o retrabalho: o mesmo construtor, sem o Ritual, recebe os achados do revisor sobre uma construção e os corrige (`--fix`), para que o custo de construir e o de corrigir o que ficou sejam comparados por inteiro.
+
+| | Lições cujo erro apareceu (de 9) | Erros novos | Construir | Corrigir o que foi encontrado | Construir + corrigir |
+|---|---|---|---|---|---|
+| Sem o Ritual ([1](web/runs/2026-10-sonnet-5-5-1), [2](web/runs/2026-10-sonnet-5-5-2)) | 7, 8 | 6, 7 | $0.28, $0.27 | $0.53, $0.45 | **$0.82, $0.72** |
+| Só as perguntas ([1](web/runs/2026-10-sonnet-5-5-ritual-1), [2](web/runs/2026-10-sonnet-5-5-ritual-2), [3](web/runs/2026-10-sonnet-5-5-ritual-3)) | 6, 9, 8 | 4, 4, 7 | $0.26, $0.27, $0.27 | | |
+| Com o Ritual hoje ([1](web/runs/2026-10-sonnet-5-5-ritual-v2-1), [2](web/runs/2026-10-sonnet-5-5-ritual-v2-2), [3](web/runs/2026-10-sonnet-5-5-ritual-v2-3)) | **1, 2, 2** | 4, 5, 4 | $0.38, $0.53, $0.60 | $0.24, $0.17, $0.29 | **$0.63, $0.70, $0.90** |
+
+O que diz:
+
+- **Erros:** o erro dessas nove lições apareceu 7,5 vezes por construção, em média, sem o Ritual, e 1,7 vez com ele: cerca de três quartos a menos. Erros novos, fora das lições, passaram de 6,5 para 4,3.
+- **Custo:** construir com o Ritual custa mais (cerca de $0.23 a mais por construção: ele é desenhado para as lições e volta uma vez para conferir). Corrigir o que ficou custa cerca da metade (−52% em dinheiro, −53% em tokens de saída: 24.300 contra 11.300 em média). Construir mais corrigir sai praticamente igual: $0.77 contra $0.74 em média, uma diferença menor que a variação entre as rodadas. O resultado final parte de muito menos erros pelo mesmo dinheiro.
+- **As perguntas sozinhas não fizeram nada.** A versão que só mostrava as perguntas de cada grupo durante a escrita terminou onde a construção sem o Ritual terminou. O que mudou isso foram as lições de pacote no início e no fechamento, que faz o construtor voltar uma vez antes de terminar.
+
+O que não diz: é uma tarefa, duas ou três rodadas por grupo e um só modelo. Achar os erros não entra na conta: a revisão custou $1.30–$2.40 por construção, igual nos dois grupos. Toda construção e correção que a menciona diz que o shell foi negado para os comandos que tentou, nos dois grupos, então nenhuma delas rodou o site: a verificação automática da web do fechamento nunca rodou, e as correções não foram revisadas de novo.
+
 ## Como verificar uma lição contribuída
 
 O Ritual roda dentro do Claude Code, então uma lição só ganha uma pergunta na sessão de alguém se o erro acontecer com o Claude. Toda lição contribuída e toda confirmação diz com qual modelo e em que mês aconteceu.

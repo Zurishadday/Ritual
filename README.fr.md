@@ -76,15 +76,21 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 ## Fonctionnement
 
-Trois hooks fonctionnent sans que vous ayez rien à faire :
+Cinq hooks fonctionnent sans que vous ayez rien à faire :
 
 | Hook | Ce qu'il fait | Ce que ça coûte |
 |---|---|---|
+| 📚 **Leçons des paquets** | Au début d'une session, avant tout plan, il donne à Claude les leçons des paquets de votre projet (web, éducation…) : ce que ce type de projet a tendance à mal faire, pendant que la conception peut encore en tenir compte. | Une ligne par leçon de paquet (dix pour web), seulement si un paquet est activé. |
 | 🛡️ **Garde** | Bloque les commandes que votre projet a déjà vu échouer, et indique quoi utiliser à la place. Ses règles se trouvent dans `.ritual/guard.json`, chacune avec un cas qu'elle bloque et un cas qu'elle laisse passer. | Rien, tant qu'elle ne bloque pas. |
 | 📝 **Journal** | Enregistre, au fil de l'eau, chaque commande qui échoue et chaque correction de votre part (« c'est faux », « refais-le »), avec ce que Claude était en train de toucher. | Rien. |
 | ❓ **Questions** | La première fois dans une session que Claude s'apprête à modifier un test, un composant, un script, un document ou une requête, ou à lancer une commande ou à faire un commit, il lui montre les questions détectrices de ce groupe. Une fois par groupe et par session. | Une ligne par leçon du groupe, de trois à treize selon le groupe et les paquets. |
+| ✅ **Clôture** | La première fois que Claude s'apprête à finir après avoir modifié des fichiers, il le renvoie une fois pour vérifier le travail en le faisant tourner : les leçons de vos paquets et leurs contrôles automatiques, une ligne par contrôle sur ce qu'il a lancé. `"close": false` dans `.ritual/config.json` le désactive. | Un tour de plus par session qui a modifié des fichiers. |
 
-Rien de cela ne change ce que fait Claude : il place seulement devant lui, au bon moment, ce que votre projet a déjà appris.
+Les quatre premiers ne font que placer devant Claude, au bon moment, ce que votre projet a déjà appris. La clôture le renvoie faire tourner les contrôles, car dans une simulation les questions seules ont été lues et les mêmes erreurs sont revenues.
+
+**Mesuré :** sur la même tâche web et le même modèle, les erreurs que couvrent les leçons du paquet sont apparues 7,5 fois par construction sans Ritual et 1,7 fois avec, et corriger ce qui restait a coûté environ moitié moins. Construire coûte plus cher, donc construire plus corriger est arrivé à peu près à égalité. Une tâche et quelques exécutions : les données, la méthode et les limites se trouvent dans [simulations](simulations/README.fr.md#ab).
+
+Avec le paquet **web**, la clôture lance `scripts/web-check.mjs` sur le site qui tourne sur votre machine : il envoie le formulaire avec JavaScript désactivé et au clavier, envoie une rafale et quelques tentatives rejetées, et enregistre des captures d'écran téléphone et ordinateur. Adresses locales uniquement ; il indique combien de messages de test il a envoyés.
 
 Quand vous fermez une session, ou après une erreur qui a fait mal, tapez `/ritual`. Il lit le journal, trouve quelle leçon aurait dû attraper chaque erreur et pourquoi elle ne l'a pas fait, puis monte l'échelle : une leçon devient une règle de garde ou un test chaque fois que c'est possible.
 
@@ -102,7 +108,7 @@ Quand vous fermez une session, ou après une erreur qui a fait mal, tapez `/ritu
 
 </details>
 
-Et `/ritual close`, avant de déclarer quelque chose terminé, parcourt les questions des groupes que vous avez touchés face au changement, et vous indique ce qui manque.
+Et `/ritual close`, quand vous le voulez, parcourt les questions des groupes que vous avez touchés face au changement, et vous indique ce qui manque.
 
 ## La bibliothèque
 
