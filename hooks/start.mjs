@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// SessionStart hook, two notices for Claude, each at most once a week per project:
+// SessionStart hook. After a compaction or /clear it lets each group's questions come back (the context lost them).
+// And two notices for Claude, each at most once a week per project:
 // - Update: new lessons are published often, but Claude Code leaves auto-update off for a marketplace that is not
 //   Anthropic's, and a plugin can't turn it on. When this copy is over a week old and auto-update is off, say so.
 // - About: the project's .ritual/config.json has no `about` (what the project is), as in projects set up before it
@@ -7,10 +8,10 @@
 //   the right packages catch that kind of project's mistakes, and the ones left off cost no tokens.
 // It reads only local files: the project's .ritual/ and Claude Code's own record of installed plugins. No network.
 // Usage: node hooks/start.mjs --selftest
-import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { isMain, readInput, readJson, ritualDir } from "./common.mjs";
+import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 const DAY = 24 * 60 * 60 * 1000;
@@ -30,6 +31,16 @@ export function status(config, plugin = PLUGIN) {
   const entry = Object.values(installed).flat().find((e) => e?.installPath && same(e.installPath));
   const updated = entry?.lastUpdated ? new Date(entry.lastUpdated) : null;
   return { autoUpdate, updated: updated && !Number.isNaN(+updated) ? updated : null };
+}
+
+/** After a compaction or /clear the session keeps its id, but what the questions hook sent is gone from the context:
+ * forget the groups sent, so each group's questions come back the next time it is touched. */
+export function resetQuestions(ritual, input) {
+  if (!ritual || !["compact", "clear"].includes(input?.source)) return;
+  const state = session(ritual, input.session_id);
+  if (!state.data.sent?.length) return;
+  state.data.sent = [];
+  state.save();
 }
 
 /** True at most once a week per project and notice: it stamps .ritual/local/<name>.json when it says yes. */
@@ -103,6 +114,14 @@ export function selftest() {
     if (!aboutNotice({ ritual, now: now + 8 * DAY })) bad.push("about: a week later it should ask again");
     config({ about: "A programming course for beginners", packages: [] });
     if (aboutNotice({ ritual, now: now + 30 * DAY })) bad.push("a project with about must never be asked");
+    // After a compaction (or /clear) the session keeps its id but has lost the questions: they must come back.
+    const state = path.join(ritual, "local", "sessions", "s1.json");
+    mkdirSync(path.dirname(state), { recursive: true });
+    writeFileSync(state, JSON.stringify({ sent: ["console-and-tools", "writing-and-docs"] }));
+    resetQuestions(ritual, { session_id: "s1", source: "startup" });
+    if (JSON.parse(readFileSync(state, "utf8")).sent.length !== 2) bad.push("a normal start must keep the groups already sent");
+    resetQuestions(ritual, { session_id: "s1", source: "compact" });
+    if (JSON.parse(readFileSync(state, "utf8")).sent.length) bad.push("after a compaction the groups must be sent again");
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
@@ -111,12 +130,13 @@ export function selftest() {
 if (isMain(import.meta.url)) {
   if (process.argv.includes("--selftest")) {
     const bad = selftest();
-    console.log(bad ? `${bad} case(s) wrong` : "✓ session start: update reminder and missing about, each weekly at most, quiet otherwise");
+    console.log(bad ? `${bad} case(s) wrong` : "✓ session start: questions back after a compaction, update reminder and missing about weekly at most");
     process.exit(bad ? 1 : 0);
   }
   const input = await readInput();
   const ritual = ritualDir(input);
   if (!ritual) process.exit(0);
+  resetQuestions(ritual, input);
   const text = [notice({ config: configDir(), ritual }), aboutNotice({ ritual })].filter(Boolean).join("\n\n");
   if (text) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: text } }));
 }
