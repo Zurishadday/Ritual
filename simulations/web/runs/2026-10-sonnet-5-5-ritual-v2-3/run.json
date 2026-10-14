@@ -1,0 +1,14 @@
+{
+  "built": "15 turns · $0.6028137000000001 · 39166 output tokens",
+  "ritual": {
+    "brief": true,
+    "sent": [
+      "scripts-and-files",
+      "interface-and-design",
+      "console-and-tools"
+    ],
+    "blocks": [],
+    "closed": true
+  },
+  "reviewed": "65 turns · $2.404058600000001 · 40461 output tokens"
+}

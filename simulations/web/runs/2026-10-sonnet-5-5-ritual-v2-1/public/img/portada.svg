@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd8a8"/><stop offset="1" stop-color="#ff922b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <circle cx="1250" cy="330" r="150" fill="#fff3bf" opacity=".9"/>
+  <path d="M0 650 L300 450 L540 610 L820 400 L1120 630 L1380 480 L1600 650 V900 H0Z" fill="#5c7c6b"/>
+  <rect y="720" width="1600" height="180" fill="#2b4a3b"/>
+  <g fill="none" stroke="#161616" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="560" cy="650" r="130"/><circle cx="1060" cy="650" r="130"/>
+    <path d="M560 650 L760 650 L680 470 L560 650 M760 650 L930 470 L680 470 M930 470 L1060 650 M930 470 L910 420 M870 420 H950 M680 470 L660 430 M620 430 H700"/>
+  </g>
+  <g fill="#161616"><circle cx="560" cy="650" r="14"/><circle cx="1060" cy="650" r="14"/><circle cx="760" cy="650" r="18"/></g>
+</svg>

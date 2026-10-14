@@ -1,0 +1,113 @@
+:root {
+  --verde: #0f3d3e;
+  --verde-claro: #e6f2f0;
+  --naranja: #c2410c;
+  --naranja-oscuro: #9a3412;
+  --texto: #1c2b2b;
+  --fondo: #fffdf8;
+  --borde: #c9d6d3;
+  --error: #b42318;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+  line-height: 1.6;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--naranja-oscuro); }
+h1, h2, h3 { line-height: 1.2; margin: 0 0 .6rem; }
+h2 { font-size: 1.7rem; }
+p { margin: 0 0 1rem; }
+
+.contenedor { width: 100%; max-width: 68rem; margin: 0 auto; padding: 0 1rem; }
+.contenedor.estrecho, .estrecho { max-width: 40rem; }
+.seccion { padding-top: 3rem; padding-bottom: 3rem; }
+.intro { color: #46605e; }
+
+.solo-lectores {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Cabecera */
+.cabecera { position: sticky; top: 0; z-index: 10; background: var(--verde); color: #fff; }
+.cabecera .contenedor {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: .1rem 1rem; padding-top: .5rem; padding-bottom: .5rem;
+}
+.marca { font-weight: 800; font-size: 1.15rem; color: #fff; text-decoration: none; }
+.menu { display: flex; flex-wrap: wrap; gap: 0 1.1rem; list-style: none; margin: 0; padding: 0; }
+.menu a { display: inline-block; padding: .5rem 0; color: #fff; text-decoration: none; }
+.menu a:hover { text-decoration: underline; }
+
+/* Portada */
+.portada {
+  position: relative; display: grid; align-items: end; overflow: hidden;
+  min-height: 72vh; color: #fff; background: var(--verde);
+}
+.portada img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 55% center;
+}
+.portada::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8, 28, 29, .88), rgba(8, 28, 29, .1) 75%);
+}
+.portada .contenedor { position: relative; z-index: 1; padding-top: 3rem; padding-bottom: 2.5rem; }
+.portada h1 { font-size: clamp(1.9rem, 6vw, 3.4rem); max-width: 18ch; }
+.portada p { font-size: 1.15rem; max-width: 34rem; }
+
+/* Botones */
+.boton {
+  display: inline-block; padding: .75rem 1.4rem; border: 0; border-radius: .5rem;
+  background: var(--naranja); color: #fff; font: inherit; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+}
+.boton:hover { background: var(--naranja-oscuro); }
+:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+
+/* Servicios */
+.tarjetas { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.tarjeta { background: #fff; border: 1px solid var(--borde); border-radius: .75rem; overflow: hidden; }
+.tarjeta img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.tarjeta-texto { padding: 1rem 1.1rem 1.1rem; }
+.precio { margin: 0; font-size: 1.6rem; font-weight: 800; color: var(--verde); }
+.precio span { font-size: .9rem; font-weight: 400; color: #46605e; }
+
+/* Horarios y dirección */
+.franja { background: var(--verde-claro); }
+.dos-columnas { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.horarios { border-collapse: collapse; width: 100%; max-width: 22rem; }
+.horarios th, .horarios td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--borde); }
+address { font-style: normal; margin-bottom: 1rem; }
+
+/* Formulario */
+.formulario { display: grid; gap: 1rem; }
+.campo label { display: block; font-weight: 600; margin-bottom: .25rem; }
+.campo input, .campo textarea {
+  width: 100%; padding: .7rem .8rem; font: inherit; color: inherit;
+  background: #fff; border: 1px solid #7d908d; border-radius: .5rem;
+}
+.campo [aria-invalid="true"] { border-color: var(--error); border-width: 2px; }
+.error { margin: .3rem 0 0; color: var(--error); font-weight: 600; }
+.error:empty { display: none; }
+.estado { margin: 0; padding: .8rem 1rem; border-radius: .5rem; background: var(--verde-claro); border: 1px solid var(--verde); }
+.estado.estado-error { background: #fef3f2; border-color: var(--error); color: var(--error); }
+.estado:empty { display: none; }
+.trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Pie */
+.pie { background: var(--verde); color: #fff; padding: 1.25rem 0; }
+.pie p { margin: 0; }
+
+@media (min-width: 48rem) {
+  .cabecera .contenedor { flex-wrap: nowrap; }
+}

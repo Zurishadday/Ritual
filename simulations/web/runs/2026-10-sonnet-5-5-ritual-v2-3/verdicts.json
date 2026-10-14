@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "node cdp2.mjs 3520 js (Edge): good submit -> 'estado: ¡Gracias, Fer! Recibimos tu mensaje… [inView=true]', focus P#estado; empty submit -> errors next to each field in view (shots2/js-empty.png)" },
+    "41": { "verdict": "held", "evidence": "web-check.mjs: '✓ 41 · no sideways scroll on a 375 px phone'; cdp2 mobile: scrollWidth 375; looked at shots/phone.png and shots/desktop.png: hero, three cards with prices, hours, address, form all readable" },
+    "45": { "verdict": "held", "evidence": "Edge with JS: empty -> 3 field errors, focus #nombre; 'ana@ejemplo' -> email error, focus #correo; without JS 'eva@ejemplo' -> 422 page with error and typed values kept; JS double click -> 'Gil copies: 1' (without JS the server saves 2: finding 5)" },
+    "46": { "verdict": "broke", "evidence": "node probe4.mjs 3521 scale: /admin 16ms at 0 msgs, 688ms/19483ms at 40000 msgs (64 MB); 20 concurrent at 20000 msgs took 19986ms with a failed connection (status 0)" },
+    "49": { "verdict": "held", "evidence": "screenshots show the hero image filling .portada (img{height:auto} doesn't beat .portada img{height:100%}) and cards keep 4:3; web-check '✓ 49 · after 6 rejected submissions (422), a good one was accepted (303)'" },
+    "WEB-2": { "verdict": "broke", "evidence": "node probe4.mjs 3521 flood: 13 addresses x 8 bot msgs -> {303:98, 429:6}; then a real customer from new address 127.0.0.99 -> 429 Retry-After 3600 'Estamos recibiendo muchos mensajes'; admin shows 99 bots, 0 'contiene enlace' badges, nothing about refused people" },
+    "WEB-3": { "verdict": "held", "evidence": "node cdp2.mjs 3520 nojs (Edge, scripts disabled): good click -> /gracias.html '¡Gracias! Recibimos tu mensaje.'; bad email -> 422 page with error + values kept. web-check's ✕ was its click missing during the site's smooth scroll" },
+    "WEB-4": { "verdict": "held", "evidence": "web-check: '✓ WEB-4 · accepted by keyboard: focus ends on P#estado', '✓ WEB-4 · rejected by keyboard: focus ends on INPUT#correo'; cdp2 kbd: Enter on button -> focus P#estado; button is never disabled" },
+    "WEB-5": { "verdict": "held", "evidence": "node probe1.mjs: bad pw 1-5 -> 401, bad pw 6-7 -> 429 Retry-After 60, correct pw during lockout -> 429" },
+    "WEB-1": { "verdict": "held", "evidence": "node probe4.mjs 3521 damaged: appended a half record without newline + null + {\"id\":5} + NUL junk; next message 303 and shown in /admin with 'Hay 4 línea(s) dañada(s)'; delete kept the damaged lines" }
+  },
+  "new": [
+    { "title": "A brake shared by all visitors lets bots shut the form for real customers, silently", "class": "security", "evidence": "probe4 flood: 104 bot POSTs from 13 addresses use up the global 100/hour cap; a real customer from a new address gets 429 Retry-After 3600; the owner is never told" },
+    { "title": "Global focus ring color is visible on the page background but not on the dark header or hero", "class": "accessibility", "evidence": "outline #1d4ed8 vs header #0f3d3e = 1.78:1, vs hero bottom #081c1d = 2.62:1 (needs 3:1); shots2/focus-header.png" },
+    { "title": "The per-address limit counts rejected submissions before validating them", "class": "form", "evidence": "probe2: 4 accepted + 4 rejected from one address, then a valid 9th message -> 429" },
+    { "title": "The server doesn't remove duplicates: two identical POSTs (double submit without JS) are saved twice", "class": "data", "evidence": "probe2 b: two simultaneous identical POSTs -> 303,303, 'saved copies of the double-click message: 2'" }
+  ]
+}

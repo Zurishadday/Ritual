@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <g id="rueda">
+      <circle r="60" fill="none" stroke="#10201f" stroke-width="7"/>
+      <circle r="52" fill="none" stroke="#10201f" stroke-width="2"/>
+      <g stroke="#10201f" stroke-width="1.5">
+        <line x1="-52" x2="52"/><line y1="-52" y2="52"/>
+        <line x1="-37" y1="-37" x2="37" y2="37"/><line x1="-37" y1="37" x2="37" y2="-37"/>
+      </g>
+      <circle r="6" fill="#10201f"/>
+    </g>
+    <g id="bici">
+      <use href="#rueda" x="90" y="170"/>
+      <use href="#rueda" x="310" y="170"/>
+      <g fill="none" stroke="#c2410c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M90 170 L190 170 L170 95 Z"/>
+        <path d="M170 95 L275 90 L190 170"/>
+        <path d="M275 90 L310 170"/>
+        <path d="M275 90 L268 68 L292 66"/>
+        <path d="M152 88 L190 88"/>
+      </g>
+      <circle cx="190" cy="170" r="14" fill="#10201f"/>
+    </g>
+  </defs>
+  <rect width="800" height="600" fill="#fdecd2"/>
+  <rect y="500" width="800" height="100" fill="#f1d3a3"/>
+  <!-- engrane -->
+  <g transform="translate(170 150)">
+    <circle r="52" fill="none" stroke="#0f3d3e" stroke-width="20" stroke-dasharray="13.5 13.5"/>
+    <circle r="40" fill="#0f3d3e"/>
+    <circle r="16" fill="#fdecd2"/>
+  </g>
+  <!-- llave -->
+  <g transform="rotate(35 640 170)">
+    <rect x="628" y="80" width="24" height="200" rx="10" fill="#0f3d3e"/>
+    <circle cx="640" cy="80" r="34" fill="#0f3d3e"/>
+    <rect x="630" y="38" width="20" height="40" fill="#fdecd2"/>
+  </g>
+  <use href="#bici" transform="translate(130 215) scale(1.35)"/>
+</svg>

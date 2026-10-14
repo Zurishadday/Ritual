@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "node tools/browser-tests.mjs at 375px: good submit -> status '¡Gracias! Recibimos tu mensaje…' in view=true under the button; typo -> status and field error in view; empty -> error shown under the focused #nombre" },
+    "41": { "verdict": "broke", "evidence": "builder generated no screenshots; rendered checks show what source reading missed: /admin at 375px scrollWidth 1307 with a long name (shots/m-admin.png), and 'Visítanos' h2 at x=20 vs its columns at x=121 on desktop (shots/d-visitanos.png)" },
+    "45": { "verdict": "held", "evidence": "browser: empty -> 3 field errors, focus #nombre; 'J'/'juan.correo.com' -> 'Ese correo no parece válido', values kept, focus #correo; real double click saved 1 with JS and 1 without JS" },
+    "46": { "verdict": "held", "evidence": "node tools/http-tests.mjs: /admin 28 ms at 5.1 MB (2500 msgs), 35 ms at 10.1 MB (5000, the cap); 20 concurrent 200 ms -> 387 ms; file is capped at 10 MiB so it can't grow further" },
+    "49": { "verdict": "broke", "evidence": "browser at 1280px: '#visitanos h2' left=20, '.dos-columnas' left=121, h2 margin-left 0px: '.seccion h2 {margin:0 0 1rem}' (0,1,1) silently beats '.franja > * {margin:auto}' (0,1,0)" },
+    "WEB-2": { "verdict": "held", "evidence": "8 sequential posts -> 200x5, 429x3; 50 concurrent from one IP -> 5 saved, 45x429; web-check burst of 40 -> 37 refused; honeypot sitio_web, /admin?q= search and delete-marked present (search returned 200)" },
+    "WEB-3": { "verdict": "held", "evidence": "Edge with JS disabled: good -> /contacto 'Mensaje enviado'; empty -> 'Revisa los campos marcados' + 3 field errors; typo -> email error (web-check's ✕ was a false alarm: smooth scroll made its click miss the button)" },
+    "WEB-4": { "verdict": "held", "evidence": "web-check: 'accepted by keyboard: focus ends on P#estado', 'rejected by keyboard: focus ends on INPUT#correo'; button never disabled; next Tab after error -> TEXTAREA#mensaje" },
+    "WEB-5": { "verdict": "held", "evidence": "7 wrong Basic-auth tries in a row -> 401,401,401,401,401,429,429; correct password right after -> 429; 40 wrong in parallel -> 5x401, 35x429" },
+    "WEB-1": { "verdict": "held", "evidence": "truncated last line '{\"id\":\"a2\",…\"nombre\":\"Cort' then a POST -> 200, new record on its own line, admin shows old+new and 'Hay 1 línea dañada…' (but see the new finding on parseable lines without fecha)" }
+  },
+  "new": [
+    { "title": "Error message tells the customer to phone, but the site has no phone number", "class": "form", "evidence": "node tools/full-test.mjs with an 11.2 MB store -> 503 '…o escríbenos por teléfono.'; 'home mentions a phone: false'" },
+    { "title": "No-JS success answered with 200 instead of a 303 redirect: reload saves the message twice", "class": "form", "evidence": "node tools/reload-test.mjs (Edge, JS off) -> after submit saved 1, after reload saved 2: [\"recargar\",\"recargar\"]" },
+    { "title": "No-JS refusals other than field errors (429/413/503) re-render the form empty and lose what was typed", "class": "form", "evidence": "100 KB form POST -> 413 page 'El mensaje es demasiado largo. Nombre Correo electrónico Mensaje' with all fields empty; falla() never passes valores" },
+    { "title": "Admin page scrolls sideways on a phone when a message has a long unbroken name", "class": "mobile", "evidence": "message with a 100-char name, /admin at 375px in Edge -> scrollWidth 1307 (shots/m-admin.png)" },
+    { "title": "One parseable store line without a valid fecha makes the whole admin page return 500 (refines WEB-1)", "class": "data", "evidence": "append {\"id\":\"a3\",\"mensaje\":\"sin fecha\"} -> GET /admin 500 'Algo salió mal', server log 'RangeError: Invalid time value'" }
+  ]
+}

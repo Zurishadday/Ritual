@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b5b92"/>
+      <stop offset="0.55" stop-color="#f08a4b"/>
+      <stop offset="1" stop-color="#ffd8a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#cielo)"/>
+  <circle cx="1150" cy="520" r="110" fill="#ffe8a3" opacity="0.9"/>
+  <path d="M0 600 Q300 470 600 580 T1200 560 T1600 590 V900 H0Z" fill="#3d6b5e"/>
+  <path d="M0 680 Q400 600 800 670 T1600 650 V900 H0Z" fill="#2c5246"/>
+  <rect y="760" width="1600" height="140" fill="#3a3a3a"/>
+  <g stroke="#f4f1ec" stroke-width="8" stroke-dasharray="70 60"><line x1="0" y1="835" x2="1600" y2="835"/></g>
+  <g transform="translate(900 380) scale(2.1)" fill="none" stroke="#14202b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="90" cy="160" r="60"/>
+    <circle cx="310" cy="160" r="60"/>
+    <path d="M90 160 L160 90 L270 90 L190 160 Z"/>
+    <path d="M160 90 L190 160 M270 90 L310 160 M270 90 L262 66 M250 66 L290 66 M145 82 L180 82"/>
+    <circle cx="190" cy="160" r="9" fill="#14202b"/>
+  </g>
+</svg>

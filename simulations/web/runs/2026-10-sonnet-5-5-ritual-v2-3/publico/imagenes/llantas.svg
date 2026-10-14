@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <rect width="800" height="600" fill="#dcecea"/>
+  <rect y="500" width="800" height="100" fill="#bfd9d5"/>
+  <ellipse cx="400" cy="520" rx="230" ry="18" fill="#000" opacity=".15"/>
+  <g transform="translate(400 300)">
+    <circle r="205" fill="none" stroke="#10201f" stroke-width="30"/>
+    <circle r="205" fill="none" stroke="#3a4b49" stroke-width="30" stroke-dasharray="6 10" opacity=".6"/>
+    <circle r="178" fill="none" stroke="#9fb4b1" stroke-width="8"/>
+    <g stroke="#6b7f7c" stroke-width="3">
+      <line x1="-175" x2="175"/><line y1="-175" y2="175"/>
+      <line x1="-124" y1="-124" x2="124" y2="124"/><line x1="-124" y1="124" x2="124" y2="-124"/>
+      <line x1="-162" y1="-67" x2="162" y2="67"/><line x1="-162" y1="67" x2="162" y2="-67"/>
+      <line x1="-67" y1="-162" x2="67" y2="162"/><line x1="-67" y1="162" x2="67" y2="-162"/>
+    </g>
+    <circle r="26" fill="#c2410c"/>
+    <circle r="10" fill="#10201f"/>
+  </g>
+  <!-- palanca desmontadora -->
+  <g transform="rotate(-30 640 450)">
+    <rect x="540" y="440" width="220" height="22" rx="10" fill="#0f3d3e"/>
+    <circle cx="545" cy="451" r="14" fill="#0f3d3e"/>
+  </g>
+</svg>

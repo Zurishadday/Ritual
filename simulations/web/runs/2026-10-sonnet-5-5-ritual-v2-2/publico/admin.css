@@ -1,0 +1,24 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.5; color: #1f2933; background: #f4f1ec; }
+a { color: #0b5c4d; }
+.admin, .envoltorio-simple { max-width: 48rem; margin: 0 auto; padding: 1.25rem; }
+.pagina-simple { background: #f4f1ec; }
+h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
+.resumen { margin: 0 0 1rem; }
+.buscador { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem; }
+.buscador input { flex: 1 1 12rem; padding: 0.5rem; font: inherit; border: 2px solid #8a949e; border-radius: 0.4rem; }
+.buscador button { padding: 0.5rem 0.9rem; font: inherit; }
+.mensaje { background: #fff; border: 1px solid #d8cfc4; border-radius: 0.6rem; padding: 0.9rem 1rem; margin-bottom: 0.9rem; }
+.mensaje header { position: relative; padding-left: 2rem; }
+.mensaje h2 { font-size: 1.1rem; margin: 0; }
+.mensaje header p { margin: 0; color: #5b6672; font-size: 0.95rem; overflow-wrap: anywhere; }
+.marca { position: absolute; left: 0; top: 0.1rem; }
+.marca input { width: 1.3rem; height: 1.3rem; }
+.solo-lectores { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.texto { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0.7rem 0 0; }
+.acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.boton-borrar { padding: 0.55rem 1rem; font: inherit; font-weight: 700; color: #fff; background: #b42318; border: 0; border-radius: 0.4rem; cursor: pointer; }
+.paginas { display: flex; gap: 1rem; align-items: center; margin: 0.5rem 0 1rem; }
+.vacio { padding: 2rem 0; color: #5b6672; }
+.aviso-error { color: #b42318; background: #fdecea; border: 2px solid #b42318; border-radius: 0.5rem; padding: 0.7rem 1rem; font-weight: 600; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid #1c7ed6; outline-offset: 2px; }

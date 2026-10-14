@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "node cdp.mjs (headless Edge, 375px): empty submit -> errores ['Escribe tu nombre.','Escribe tu correo.','Escribe tu mensaje.'], focus #nombre inView=true; success -> '¡Gracias!…' shown 16px below button, estadoVisible=true, focused" },
+    "41": { "verdict": "held", "evidence": "node cdp.mjs screenshots desktop-top.png/mobile-top.png/mobile-common-error.png/mobile-admin.png viewed: hero text readable on dark gradient, red border + error under correo, admin shows escaped HTML as text" },
+    "45": { "verdict": "held", "evidence": "node cdp.mjs: name 'A' + 'anagmail.com' -> 'Revisa el correo…' under field, focus #correo, values kept; fixing email -> saved 1; double click -> 1 saved; triple click 30ms -> 1 saved" },
+    "46": { "verdict": "held", "evidence": "node http.mjs timing: /admin 33.8ms @8 lines, 47.0ms @1008, 62.6ms @4998 (20 concurrent 139.4ms); store capped at 5000 so it cannot grow further" },
+    "49": { "verdict": "held", "evidence": "node cdp.mjs + mobile-common-error.png: .formulario [aria-invalid=true] red border wins over .formulario input grey border; .portada>img height:100% wins over img{height:auto} (hero fills 568px)" },
+    "WEB-2": { "verdict": "broke", "evidence": "node http.mjs seed 1000 + admin -> '1007 mensaje(s)… Página 1 de 21', no search/bulk select, only per-message Borrar or Borrar todos; at cap: flood -> 200,200,503…, real customer gets 503 'Ahora mismo no podemos recibir mensajes'" },
+    "WEB-3": { "verdict": "held", "evidence": "node cdp.mjs with Emulation.setScriptExecutionDisabled: submit -> '/contacto | Gracias · Taller Rueda Libre', 1 saved; bad email a@b -> error page with form prefilled 'A,a@b,hola sin javascript'" },
+    "WEB-4": { "verdict": "held", "evidence": "node cdp.mjs: btnDisabled=false always; after error focus #correo, next Tab #correo->next field; after success focus #estado, next Tab a.marca (visible outline)" },
+    "WEB-5": { "verdict": "held", "evidence": "node http.mjs login: 10 wrong passwords -> 401,401,401,401,401,401,429,429,429,429 (blocks after 6, not 5 as claimed)" },
+    "WEB-1": { "verdict": "held", "evidence": "node http.mjs corrupt: appended half line, next POST -> 200 {ok:true}, saved on its own line; /admin shows 'Hay 1 línea(s) dañada(s)…'" }
+  },
+  "new": [
+    { "title": "Oversized body: socket destroyed before the coded 413 reply, so the client gets a connection reset", "class": "server", "evidence": "node http.mjs form: api 100KB fields -> FETCH-ERROR ECONNRESET; form 100KB fields -> FETCH-ERROR ECONNRESET" },
+    { "title": "Malformed percent-encoding in the path throws in decodeURIComponent and returns 500", "class": "server", "evidence": "node http.mjs basic: RAW /%E0%A4%A -> HTTP/1.1 500 Internal Server Error" },
+    { "title": "Stated rate limits are off by one (6 allowed, summary says 5)", "class": "false claim", "evidence": "node http.mjs login -> 401 x6 then 429; contact flood after 5 browser saves still got one 200" },
+    { "title": "Damaged lines count toward the 5000 cap and cannot be deleted from admin", "class": "data", "evidence": "node http.mjs admin after corrupt+seed: '4999 mensaje(s)', 'Hay 1 línea(s) dañada(s)', 'El buzón está lleno'; borrar() keeps unparsable lines" }
+  ]
+}

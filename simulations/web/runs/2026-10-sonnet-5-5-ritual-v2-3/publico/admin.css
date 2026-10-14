@@ -1,0 +1,16 @@
+.admin { padding-top: 1.5rem; padding-bottom: 3rem; }
+.cuenta { font-weight: 400; color: #46605e; }
+.barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin: 1rem 0; }
+.boton-peligro { background: #b42318; }
+.boton-peligro:hover { background: #912018; }
+.mensaje {
+  position: relative; background: #fff; border: 1px solid var(--borde);
+  border-radius: .6rem; padding: .8rem 1rem .8rem 3rem; margin-bottom: .75rem;
+}
+.mensaje .seleccion { position: absolute; left: 1rem; top: .9rem; }
+.mensaje .seleccion input { width: 1.25rem; height: 1.25rem; }
+.meta { font-size: .95rem; margin-bottom: .4rem; word-break: break-word; }
+.texto { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.insignia { background: #fef0c7; color: #7a2e0e; border: 1px solid #f5c76b; border-radius: 1rem; padding: 0 .5rem; font-size: .8rem; font-weight: 700; }
+.paginas { display: flex; justify-content: space-between; margin-top: 1rem; }
+.admin .estado { margin-bottom: 1rem; }
