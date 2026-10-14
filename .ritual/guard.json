@@ -10,10 +10,24 @@
     },
     {
       "name": "verdict-through-tail",
-      "pattern": "^(?![\\s\\S]*pipefail)[\\s\\S]*(?<![\\w-])(npm test|--selftest|--check)(?![\\w-])(?:[^|;&\\n]|&(?!&))*\\|\\s*(tail|head|grep)\\b",
-      "message": "Piping a test through tail/head/grep hides its verdict: the exit code becomes the pipe's (lesson 44, P-1). Start the command with `set -o pipefail &&`.",
-      "blocks": ["npm test --silent 2>&1 | tail -4 && git commit -m x", "node scripts/lessons.mjs --check | grep problem", "node hooks/guard.mjs --selftest 2>&1 | head -5"],
-      "allows": ["set -o pipefail && npm test --silent 2>&1 | tail -4", "npm test", "git log --oneline | head -3", "node scripts/lessons.mjs --check", "npm test > output.txt; grep -c '✓' output.txt", "node scripts/lessons.mjs --check > out.txt 2>&1; cat out.txt; git diff lessons/en | head -30", "npm test && git log --oneline | head -3"]
+      "pattern": "^(?![\\s\\S]*pipefail)[\\s\\S]*(?<![\\w-])(npm test|--selftest|--check)(?![\\w-])(?:[^|;&\\n]|&(?!&))*\\|\\s*(tail|head|grep|[Ss]elect-[Oo]bject|[Ss]elect|[Ss]elect-[Ss]tring|sls)\\b",
+      "message": "Piping a test through tail/head/grep (or Select-Object, Select-String) hides its verdict: the exit code becomes the pipe's (lesson 44, P-1). Start the command with `set -o pipefail &&`, or save the output to a file and read it.",
+      "blocks": ["npm test --silent 2>&1 | tail -4 && git commit -m x", "node scripts/lessons.mjs --check | grep problem", "node hooks/guard.mjs --selftest 2>&1 | head -5", "node scripts/lessons.mjs --check | Select-Object -Last 3", "node hooks/close.mjs --selftest | Select-String ok"],
+      "allows": ["set -o pipefail && npm test --silent 2>&1 | tail -4", "npm test", "git log --oneline | head -3", "node scripts/lessons.mjs --check", "npm test > output.txt; grep -c '✓' output.txt", "node scripts/lessons.mjs --check > out.txt 2>&1; cat out.txt; git diff lessons/en | head -30", "npm test && git log --oneline | head -3", "Get-ChildItem lessons | Select-Object -First 3"]
+    },
+    {
+      "name": "script-cut-by-select-first",
+      "pattern": "(^|[\\s;&|(])(node|npm|npx)\\b(?:[^|;&\\n]|&(?!&))*\\|\\s*[Ss]elect(-[Oo]bject)?\\s+-[Ff]irst\\b",
+      "message": "`| Select-Object -First` stops the command as soon as it has its lines: a script is cut off before it finishes or cleans up, and its exit code is lost (P-1). Save the output to a file and read the lines you want.",
+      "blocks": ["node \"C:\\Users\\x\\scratchpad\\mutate-rereview.mjs\" | Select-Object -First 1", "npm test | select -First 5"],
+      "allows": ["git log --oneline | Select-Object -First 3", "Get-Content out.txt | Select-Object -First 20", "node x.mjs > out.txt; Get-Content out.txt | Select-Object -First 5", "node scripts/test.mjs | Select-Object -Last 1"]
+    },
+    {
+      "name": "shell-writes-code",
+      "pattern": "([Ss]et-[Cc]ontent|[Aa]dd-[Cc]ontent|[Oo]ut-[Ff]ile)\\b[^|;\\n]*\\.(mjs|cjs|js|ts|tsx|jsx|json|md|html|css|py|ya?ml)\\b|^(?=[\\s\\S]*WriteAllText)[\\s\\S]*\\.(mjs|cjs|js|ts|tsx|jsx|json|md|html|css|py|ya?ml)\\b",
+      "message": "Writing code through PowerShell's text handling changes it on the way: Get-Content reads in the ANSI code page, and in a list the comma binds tighter than + (P-2). Use Edit or Write, or a node script written to a file.",
+      "blocks": ["(Get-Content scripts\\simulate.mjs) -replace 'a', 'b' | Set-Content scripts\\simulate.mjs -Encoding utf8", "$f = \"scripts\\web-check.mjs\"; $t = [IO.File]::ReadAllText($f); [IO.File]::WriteAllText($f, $t.Replace('a', 'b'))", "'{}' | Out-File .ritual\\config.json"],
+      "allows": ["node scripts/test.mjs | Out-File out.txt", "\"done\" | Set-Content notes.txt", "Get-Content scripts\\simulate.mjs -TotalCount 5", "node scripts/simulate.mjs web *> log.txt"]
     }
   ]
 }

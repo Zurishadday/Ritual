@@ -214,6 +214,8 @@ export function selftest() {
   // The session folders must be long paths: in an 8.3 short path every Write was denied and the builder wrote nothing.
   const src = readFileSync(new URL(import.meta.url), "utf8");
   if (/const dir = mkdtempSync\(/.test(src)) bad.push("session folders must come from workDir() (long path), not mkdtempSync");
+  // Twice a commit was blocked by a build saved in the repository with local paths, waiting for its review to be scrubbed.
+  if (!/"run\.json"\), JSON\.stringify\(\{ built:[^\n]*\n(?:\s*\/\/[^\n]*\n)*\s*scrubRun\(target, dir\);/.test(src)) bad.push("a saved build must be scrubbed as soon as it is saved, before the review starts");
   const wd = workDir("ritual-sim-wd-");
   try { if (wd !== realpathSync.native(wd) || /~\d/.test(wd)) bad.push(`workDir must return the long path: ${wd}`); } finally { rmSync(wd, { recursive: true, force: true }); }
   // A saved run names no machine: the build folder and any home folder go, in every form.
@@ -405,6 +407,8 @@ if (isMain(import.meta.url)) {
     cpSync(dir, target, { recursive: true });
     writeFileSync(path.join(target, "BUILDER.md"), `# What the builder said\n\n\`${builder}\` · ${built.json.subtype ?? ""} · ${spend(built.json)}${trace ? ` · ${traceLine(trace)}` : ""}\n\n${built.json.result ?? "(no final message)"}\n`);
     writeFileSync(path.join(target, "run.json"), JSON.stringify({ built: spend(built.json), ritual: trace }, null, 2) + "\n");
+    // Scrubbed now, not only after the review: for the ten minutes a review takes, a commit would find the local paths.
+    scrubRun(target, dir);
     console.log(`  built: ${built.json.subtype ?? "?"}, ${spend(built.json)}${trace ? `, ${traceLine(trace)}` : ""}. Reviewing …`);
     if (!review(dir, target, built.json.result, n)) process.exit(1);
   }

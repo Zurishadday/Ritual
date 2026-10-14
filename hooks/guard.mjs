@@ -11,9 +11,11 @@ import { appendLine, isMain, readInput, readJson, ritualDir } from "./common.mjs
 
 const CODE = /\.(ts|tsx|js|mjs|cjs|py|mdx|css|json)\b/;
 
-// The body of a heredoc is content, not a command: it is removed before searching.
+// The body of a heredoc is content, not a command: it is removed before searching. So is a PowerShell here-string
+// (@'…'@ or @"…"@), the way a commit message is written there: one that named a blocked command got blocked.
 export function stripHeredocs(c) {
-  return c.replace(/<<-?\s*(['"]?)([A-Za-z_]+)\1[^\n]*\n[\s\S]*?\n\s*\2\s*(?=\n|$)/g, "<<heredoc");
+  return c.replace(/<<-?\s*(['"]?)([A-Za-z_]+)\1[^\n]*\n[\s\S]*?\n\s*\2\s*(?=\n|$)/g, "<<heredoc")
+    .replace(/@(['"])\r?\n[\s\S]*?\r?\n\1@/g, "@heredoc");
 }
 
 // Builtin rules: the ones that can't be written as a pattern, because they look at only one part of the command.
@@ -114,6 +116,9 @@ export function selftest(config = DEFAULT) {
   const everywhere = { builtin: [], rules: [{ name: "x", pattern: "danger", message: "m", blocks: ["danger"], allows: ["ok"] }] };
   if (!check("danger", everywhere, "linux")) failures.push("a rule without platforms should block everywhere");
   if (check("danger", { builtin: [], rules: [{ ...everywhere.rules[0], platforms: ["darwin"] }] }, "linux")) failures.push("a rule for darwin should not block on linux");
+  // A PowerShell here-string is content too: a commit message that names a blocked command is not that command.
+  for (const q of ["'", '"']) if (check(`git commit -q -m @${q}\nThe guard now blocks danger.\n${q}@`, everywhere, "linux")) failures.push(`a PowerShell here-string (@${q}…${q}@) must not be read as a command`);
+  if (!check("git commit -q -m @'\nmessage\n'@; danger", everywhere, "linux")) failures.push("a command after a here-string must still be checked");
   for (const m of failures) console.error(`✕ ${m}`);
   return { failures: failures.length, rules: rules.length };
 }
