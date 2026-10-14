@@ -18,6 +18,8 @@ const CORRECTION = [
 
 // A correction comes first: only the opening of a prompt counts, so a long brief that quotes "doesn't work" inside is not one.
 export function isCorrection(prompt) {
+  // A background task's notification comes in as a prompt, but the user did not write it.
+  if (/^\s*<task-notification>/.test(String(prompt ?? ""))) return false;
   const p = String(prompt ?? "").split(/\n\s*\n/)[0].slice(0, 240);
   return CORRECTION.some((r) => r.test(p));
 }
@@ -30,6 +32,8 @@ const CASES = [
   // A long brief pasted as a prompt is not a correction, even if it quotes one deep inside; a correction comes first.
   [`Necesito una página para el taller.\n\nRequisitos:\n- un formulario de contacto\n- una página de administración\n\nAntecedentes: la versión anterior no funciona en celular y hubo que hacerlo de nuevo varias veces.\n${"Detalle. ".repeat(40)}`, false],
   [`eso está mal: el total no cuadra.\n\n${"Aquí va el detalle de lo que vi. ".repeat(20)}`, true],
+  // A background agent's notification arrives as a prompt, but the user did not write it: what the agent reports is not a correction.
+  ["<task-notification>\n<task-id>a1</task-id>\n<status>completed</status>\n<summary>Agent \"Review\" finished</summary>\n<result>The form is still broken on mobile: the button overlaps the field.</result>\n</task-notification>", false],
 ];
 
 export function selftest() {
