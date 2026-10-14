@@ -21,6 +21,24 @@ The script does it: `node scripts/simulate.mjs <task>` (for example `web`). Sonn
 
 To propose a new task, open an issue with the text of the task and the kind of project it represents.
 
+## Does Ritual help? An A/B on the web task
+
+The same task (the Spanish web request), the same builder (`claude-sonnet-5-5`) and the same reviewer (`claude-opus-5-5`), 2026-10, with Claude Code 2.1.295–2.1.296. Without Ritual, then with Ritual's hooks loaded and the project set up with the `web` package (`--with-ritual`). Then the rework: the same builder, without Ritual, gets the reviewer's findings for a build and fixes them (`--fix`), so the cost of building and of fixing what was left compares in full.
+
+| | Lessons that broke (of 9) | New mistakes | Build | Fix what was found | Build + fix |
+|---|---|---|---|---|---|
+| Without Ritual ([1](web/runs/2026-10-sonnet-5-5-1), [2](web/runs/2026-10-sonnet-5-5-2)) | 7, 8 | 6, 7 | $0.28, $0.27 | $0.53, $0.45 | **$0.82, $0.72** |
+| Questions only ([1](web/runs/2026-10-sonnet-5-5-ritual-1), [2](web/runs/2026-10-sonnet-5-5-ritual-2), [3](web/runs/2026-10-sonnet-5-5-ritual-3)) | 6, 9, 8 | 4, 4, 7 | $0.26, $0.27, $0.27 | | |
+| With Ritual today ([1](web/runs/2026-10-sonnet-5-5-ritual-v2-1), [2](web/runs/2026-10-sonnet-5-5-ritual-v2-2), [3](web/runs/2026-10-sonnet-5-5-ritual-v2-3)) | **1, 2, 2** | 4, 5, 4 | $0.38, $0.53, $0.60 | $0.24, $0.17, $0.29 | **$0.63, $0.70, $0.90** |
+
+What it says:
+
+- **Mistakes:** the nine lessons broke 7.5 times per build on average without Ritual, 1.7 with it: about three quarters fewer. New mistakes, outside the lessons, went from 6.5 to 4.3.
+- **Cost:** building with Ritual costs more (about $0.23 more per build: it designs for the lessons and goes back once to check). Fixing what is left costs about half (−52% in money, −53% in output tokens: 24,300 against 11,300 on average). Build plus fix comes out about the same: $0.77 against $0.74 on average, a difference smaller than the spread between runs. The end result starts from far fewer mistakes for the same money.
+- **The questions alone did nothing.** The version that only showed each group's questions while writing ended where the build without Ritual did. What changed it is the package lessons at the start and the close, which sends the builder back once before it finishes.
+
+What it does not say: it is one task, two or three runs per arm and one model. Finding the mistakes is not counted: the review cost $1.30–$2.40 per build, the same for both arms. Every build and fix that mentions it says the shell was denied for the commands it tried, in both arms, so none of them ran the site: the close's automatic web check never ran, and the fixes were not reviewed again.
+
 ## Checking a contributed lesson
 
 Ritual runs inside Claude Code, so a lesson only earns a question in someone's session if the mistake happens with Claude. Every contributed lesson and every confirmation says which model and month it happened with.

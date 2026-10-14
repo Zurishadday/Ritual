@@ -10,6 +10,7 @@
 // Usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5]
 //                                  [--language en|es] [--budget 5] [--with-ritual] [--tag v2] [--dry-run]
 //        node scripts/simulate.mjs <task> --rereview <saved run> [same flags]   the same build, reviewed again
+//        node scripts/simulate.mjs <task> --fix <saved run> [--language es]     what fixing its findings costs (FIX.md)
 //        node scripts/simulate.mjs --probe          what a builder session sees of your setup (cheap, haiku)
 //        node scripts/simulate.mjs --selftest
 import { spawnSync } from "node:child_process";
@@ -149,7 +150,18 @@ export function ritualTrace(local) {
 export const traceLine = (t) => `Ritual: ${t.brief ? "package lessons at the start, " : ""}questions for ${t.sent?.join(", ") || "no group"}, ${t.blocks?.length ?? 0} guard block(s)${t.blocks?.length ? ` (${t.blocks.join(", ")})` : ""}${t.closed ? ", sent back once to check before finishing" : ""}`;
 
 /** What the script writes into a saved run, next to the build. */
-const RUN_FILES = ["BUILDER.md", "REVIEWER.md", "FINDINGS.md", "verdicts.json", "run.json"];
+const RUN_FILES = ["BUILDER.md", "REVIEWER.md", "FINDINGS.md", "verdicts.json", "run.json", "FIX.md"];
+
+/** The client's request again, with what the review found broken: every lesson that broke and every new mistake. */
+export function fixPrompt(request, verdicts, lessons) {
+  const title = Object.fromEntries(lessons.map((l) => [l.id, l.title]));
+  const broke = Object.entries(verdicts.lessons ?? {}).filter(([, x]) => x.verdict === "broke").map(([id, x]) => `- ${title[id] ?? id}: ${x.evidence ?? ""}`);
+  const fresh = (verdicts.new ?? []).map((n) => `- ${n.title}: ${n.evidence ?? ""}`);
+  return [
+    "The current folder holds what you built for the client's request below. A reviewer tried it and found the problems listed after it. Fix every one of them, check each fix, and say in one line per problem what you changed.",
+    "", "## The client's request", "", request, "", "## What the reviewer found", "", ...(broke.length || fresh.length ? [...broke, ...fresh] : ["(nothing)"]),
+  ].join("\n");
+}
 
 /** The saved runs named <prefix><n>, in order, with their verdicts and spend: a summary is rebuilt from them, so a run
  * reviewed again counts once, with its last review. */
@@ -183,7 +195,7 @@ function run(bin, s, cwd, timeout = HOUR) {
 }
 
 const flag = (args, name, fallback) => { const i = args.indexOf(name); return i >= 0 && args[i + 1] ? args[i + 1] : fallback; };
-const VALUED = ["--runs", "--builder", "--reviewer", "--language", "--budget", "--rereview", "--tag"];
+const VALUED = ["--runs", "--builder", "--reviewer", "--language", "--budget", "--rereview", "--tag", "--fix"];
 /** The task: the first word that is neither a flag nor a flag's value (`--with-ritual web` names the task). */
 export const taskArg = (args) => args.find((a, i) => !a.startsWith("--") && !VALUED.includes(args[i - 1]));
 
@@ -238,7 +250,10 @@ export function selftest() {
     const got = collect(runsDir, "m-s-ritual-");
     if (got.map((s) => s.n).join() !== "1,2,10" || got[0].spend.built !== "3 turns" || got[2].verdicts.lessons.A.verdict !== "held" || collect(runsDir, "m-s-").map((s) => s.n).join() !== "1") bad.push(`collect: ${JSON.stringify(got.map((s) => s.n))}`);
   } finally { rmSync(runsDir, { recursive: true, force: true }); }
-  for (const [args, want] of [[["--tag", "v2", "web"], "web"], [["web", "--rereview", "2026-10-s-1"], "web"], [["--rereview", "2026-10-s-1", "web"], "web"], [["--with-ritual", "web"], "web"], [["--runs", "3", "web"], "web"], [["--dry-run", "web", "--language", "es"], "web"], [["--language", "es"], undefined]]) {
+  // The rework: every lesson that broke and every new mistake, with the reviewer's evidence; nothing that held.
+  const fix = fixPrompt("Build me a page.", { lessons: { "WEB-3": { verdict: "broke", evidence: "no-JS submit shows nothing" }, "WEB-1": { verdict: "held", evidence: "ok" } }, new: [{ title: "Focus ring too faint", evidence: "2.0:1" }] }, lessons);
+  if (!fix.includes("Build me a page.") || !fix.includes("- A fallback nobody tested is not a fallback: no-JS submit shows nothing") || !fix.includes("- Focus ring too faint: 2.0:1") || fix.includes("ok")) bad.push(`fixPrompt: ${fix}`);
+  for (const [args, want] of [[["web", "--fix", "2026-10-s-1"], "web"], [["--tag", "v2", "web"], "web"], [["web", "--rereview", "2026-10-s-1"], "web"], [["--rereview", "2026-10-s-1", "web"], "web"], [["--with-ritual", "web"], "web"], [["--runs", "3", "web"], "web"], [["--dry-run", "web", "--language", "es"], "web"], [["--language", "es"], undefined]]) {
     if (taskArg(args) !== want) bad.push(`taskArg(${args.join(" ")}) should be ${want}, gave ${taskArg(args)}`);
   }
   if (spend({ num_turns: 3, total_cost_usd: 0.5, usage: { output_tokens: 100 } }) !== "3 turns · $0.5 · 100 output tokens" || spend(null) !== "? turns · $? · ? output tokens") bad.push(`spend: ${spend({ num_turns: 3, total_cost_usd: 0.5, usage: { output_tokens: 100 } })}`);
@@ -345,6 +360,25 @@ if (isMain(import.meta.url)) {
     if (!review(dir, target, builderSummary, n)) process.exit(1);
     writeSummary();
     process.exit(0);
+  }
+  const toFix = flag(args, "--fix", null);
+  if (toFix) {
+    // The rework a build leaves: the same builder model, without Ritual whatever the build had, gets the reviewer's
+    // findings and fixes them. Its spend goes next to the build's, so build + fix compares in full. The fixed code is
+    // thrown away: the saved build stays the one that was reviewed.
+    const target = path.join(runsDir, toFix);
+    const v = readJson(path.join(target, "verdicts.json"), null);
+    if (!v || !existsSync(path.join(target, "BUILDER.md"))) { console.error(`✕ ${toFix} is not a reviewed run (it needs BUILDER.md and verdicts.json)`); process.exit(1); }
+    const dir = workDir(`ritual-sim-${task}-`);
+    cpSync(target, dir, { recursive: true, filter: (src) => path.dirname(src) !== target || !RUN_FILES.includes(path.basename(src)) });
+    console.log(`\nFixing what the review of ${toFix} found …`);
+    const fixed = run(bin, session({ prompt: fixPrompt(request, v, lessons), model: builder, tools: BUILDER_TOOLS, budget }), dir);
+    writeFileSync(path.join(target, "FIX.md"), `# Fixing what the review found\n\n\`${builder}\` · ${fixed.json?.subtype ?? `exit ${fixed.status}`} · ${spend(fixed.json)}\n\n${fixed.json?.result ?? fixed.stderr ?? "(no final message)"}\n`);
+    writeFileSync(path.join(target, "run.json"), JSON.stringify({ ...readJson(path.join(target, "run.json"), {}), fixed: spend(fixed.json) }, null, 2) + "\n");
+    scrubRun(target, dir);
+    try { rmSync(dir, { recursive: true, force: true }); } catch { /* a server may still hold it */ }
+    console.log(`  fixed: ${fixed.json?.subtype ?? "?"}, ${spend(fixed.json)}. Saved in ${path.relative(ROOT, path.join(target, "FIX.md"))}`);
+    process.exit(fixed.json ? 0 : 1);
   }
   for (let n = 1; n <= runs; n++) {
     const target = path.join(ROOT, "simulations", task, "runs", `${prefix}${n}`);
