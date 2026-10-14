@@ -20,7 +20,7 @@ A public Claude Code plugin: every mistake becomes a lesson, every lesson a rule
 ## Ritual
 
 <!-- ritual:start -->
-This project's lessons live in `.ritual/lessons/`; the core ones, in the Ritual plugin. Its hooks block what already failed, log errors and corrections in `.ritual/local/`, and show each group's questions once per session. Run `/ritual` when closing a session or after a painful bug, and `/ritual close` before calling something done.
+This project's lessons live in `.ritual/lessons/`; the core ones, in the Ritual plugin. Its hooks block what already failed, log errors and corrections in `.ritual/local/`, and show each group's questions once per session; agents that run without hooks find them all in `.ritual/local/lessons.md`. Run `/ritual` when closing a session or after a painful bug, and `/ritual close` before calling something done.
 
 Rules this project broke more than once and could not automate:
 

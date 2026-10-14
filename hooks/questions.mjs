@@ -7,10 +7,12 @@
 // Core lessons, lessons from the active package (`packages`) and the project's own lessons
 // (.ritual/lessons/<group>.md) are included; demoted ones (`demoted`) are skipped. It also records what was touched last.
 // Usage: node hooks/questions.mjs --selftest
+import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { ORIGINAL, readLessons, readGroupFile } from "../scripts/lessons.mjs";
+import { fileURLToPath } from "node:url";
+import { GROUPS, ORIGINAL, TAXONOMY, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
@@ -18,7 +20,7 @@ export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.js
 const GIT = /(^|[\s;&|(])git\s+(commit|push|merge|rebase|tag|cherry-pick|revert)\b/;
 
 /** @returns {{group: string | null, target: string}} */
-export function groupOf(input, config = DEFAULT_CONFIG) {
+export function groupOf(input, config = DEFAULT_CONFIG, projectBase) {
   const tool = input.tool_name;
   if (tool === "Bash" || tool === "PowerShell") {
     const command = String(input.tool_input?.command ?? "");
@@ -26,7 +28,7 @@ export function groupOf(input, config = DEFAULT_CONFIG) {
   }
   const filePath = String(input.tool_input?.file_path ?? input.tool_input?.notebook_path ?? "");
   if (!filePath) return { group: null, target: "" };
-  const base = process.env.CLAUDE_PROJECT_DIR || input.cwd || process.cwd();
+  const base = projectBase ?? (process.env.CLAUDE_PROJECT_DIR || input.cwd || process.cwd());
   // If the path falls outside the project (or the base does not match), the full path is used: the patterns start with **/.
   const rel = path.relative(base, filePath).replace(/\\/g, "/");
   const relative = !rel || rel.startsWith("..") || path.isAbsolute(rel) ? filePath.replace(/\\/g, "/") : rel;
@@ -58,7 +60,8 @@ export function lessonsFor(group, config, ritual) {
   return { title: groups[group] ?? group, lessons: [...lessons.filter(applies), ...own.filter(applies)] };
 }
 
-export function context(group, config, ritual) {
+/** A group's question lines: one per active lesson, a project refinement in its original's place. */
+function questionLines(group, config, ritual) {
   const { title, lessons } = lessonsFor(group, config, ritual);
   if (!lessons.length) return null;
   // The project's own lessons may be in any language: the detector question is always the third part.
@@ -73,10 +76,40 @@ export function context(group, config, ritual) {
     if (shown.has(l)) continue;
     for (const x of refiners.get(l.id) ?? [l]) { lines.push(line(x)); shown.add(x); }
   }
+  return { title, lines };
+}
+
+export function context(group, config, ritual) {
+  const q = questionLines(group, config, ritual);
+  if (!q) return null;
+  const { title, lines } = q;
   return [
     `Ritual · ${title}. Before you continue, run through these detector questions for what you are about to do. If one applies, act on it and say so in one line; if none applies, just continue. Details: lessons/${ORIGINAL}/${group}.md in the Ritual plugin, or .ritual/lessons/ in this project. Reply to the user in their language.`,
     ...lines,
   ].join("\n");
+}
+
+/** Every group's active questions in one file, for agents that run without hooks (a read-only reviewer): the plugin
+ * lives under a path that changes with each update, .ritual/local/lessons.md does not. Written at every session start. */
+export function digest(config, ritual) {
+  const sections = GROUPS.map((g) => [g, questionLines(g, config, ritual)]).filter(([, q]) => q)
+    .flatMap(([g, q]) => [`## ${q.title}`, "", `When you work on: ${TAXONOMY.groups.find((x) => x.slug === g)?.covers ?? g}`, "", ...q.lines, ""]);
+  return ["# Ritual · active detector questions", "", "<!-- Written by the Ritual plugin at every session start: do not edit. -->", "",
+    "For agents that run without Ritual's hooks. Before you review or change something, run through the questions of its group; if one applies, say so. The full lessons: lessons/en/ in the Ritual plugin, and .ritual/lessons/ in this project.", "", ...sections].join("\n");
+}
+
+export function writeDigest(ritual) {
+  if (!ritual) return;
+  const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
+  try { mkdirSync(path.join(ritual, "local"), { recursive: true }); writeFileSync(path.join(ritual, "local", "lessons.md"), digest(config, ritual)); } catch { /* no digest */ }
+}
+
+/** The .ritual/ of the project that holds a file: the nearest one above it, or null. */
+export function nearestRitual(file) {
+  for (let dir = path.dirname(path.resolve(file)); ; dir = path.dirname(dir)) {
+    if (existsSync(path.join(dir, ".ritual"))) return path.join(dir, ".ritual");
+    if (path.dirname(dir) === dir) return null;
+  }
 }
 
 export function selftest() {
@@ -131,6 +164,23 @@ export function selftest() {
     if (!text.includes("- P-1 (refines 27) · Sharper question about the console?")) failures.push(`the refinement should say what it refines: ${text.split("\n").find((l) => l.includes("P-1"))}`);
     if (ids.indexOf("P-1") !== ids.indexOf("29") - 1) failures.push(`the refinement should sit where 27 was, before 29: ${ids.join(", ")}`);
     if (!text.includes("- P-2 (refines 13) · ") || !text.includes("- P-3 · ")) failures.push("a refinement of a lesson outside this group, and a plain project lesson, are listed as they are");
+    // For agents without hooks: every group's active questions, in one file at a stable path.
+    const all = digest(DEFAULT_CONFIG, path.join(project, ".ritual"));
+    for (const x of ["## Console and tools", "## Tests and checks", "- P-1 (refines 27) · Sharper question about the console?", "- 13 · "]) if (!all.includes(x)) failures.push(`the digest lacks «${x}»`);
+    if (all.includes("- 27 · ") || all.includes("- 46 · ")) failures.push("the digest must skip a refined original and a package that is off");
+    // The project of the file being edited, not the session's: the nearest .ritual/ above the file.
+    for (const p of ["a", "b"]) mkdirSync(path.join(project, p, ".ritual"), { recursive: true });
+    mkdirSync(path.join(project, "b", "src", "deep"), { recursive: true });
+    if (nearestRitual(path.join(project, "b", "src", "deep", "x.ts")) !== path.join(project, "b", ".ritual")) failures.push(`a file in project b should use b's .ritual: gave ${nearestRitual(path.join(project, "b", "src", "deep", "x.ts"))}`);
+    if (nearestRitual(path.join(os.tmpdir(), "no-ritual-here-xyz", "x.ts")) !== null) failures.push("a file under no .ritual/ should give null, so the session's is used");
+    // End to end: a session opened in project a, a file edited in project b, gets b's own lessons, not a's.
+    const lessonIn = (p, id, q) => { mkdirSync(path.join(project, p, ".ritual", "lessons"), { recursive: true }); writeFileSync(path.join(project, p, ".ritual", "lessons", "writing-and-docs.md"), `# Writing\n\n${lesson(id, null, q)}`); };
+    lessonIn("a", "A-1", "A question from project a?");
+    lessonIn("b", "B-1", "A question from project b?");
+    const run = spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") },
+      input: JSON.stringify({ session_id: "e2e", tool_name: "Write", tool_input: { file_path: path.join(project, "b", "docs", "guide.md") }, cwd: path.join(project, "a") }) });
+    const out = run.stdout ?? "";
+    if (!out.includes("B-1 · A question from project b?") || out.includes("A-1")) failures.push(`editing a file in project b from a session in a should bring b's lessons: ${out.slice(0, 160) || run.stderr.slice(0, 160)}`);
   } finally { rmSync(project, { recursive: true, force: true }); }
   for (const failure of failures) console.error(`✕ ${failure}`);
   return failures.length;
@@ -143,10 +193,14 @@ if (isMain(import.meta.url)) {
     process.exit(failures ? 1 : 0);
   }
   const input = await readInput();
-  const ritual = ritualDir(input);
-  if (!input || !ritual) process.exit(0);
+  if (!input) process.exit(0);
+  // An edited file belongs to the project of the nearest .ritual/ above it, which may not be the session's.
+  const file = String(input.tool_input?.file_path ?? input.tool_input?.notebook_path ?? "");
+  const own = file ? nearestRitual(file) : null;
+  const ritual = own ?? ritualDir(input);
+  if (!ritual) process.exit(0);
   const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
-  const { group, target } = groupOf(input, config);
+  const { group, target } = groupOf(input, config, own ? path.dirname(own) : undefined);
   const state = session(ritual, input.session_id);
   state.data.last = { tool: input.tool_name, target, date: new Date().toISOString() };
   if (group && !state.data.sent.includes(group)) {

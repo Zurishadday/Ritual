@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // SessionStart hook. After a compaction or /clear it lets each group's questions come back (the context lost them).
+// It rewrites .ritual/local/lessons.md, every group's active questions, for agents that run without hooks.
 // And two notices for Claude, each at most once a week per project:
 // - Update: new lessons are published often, but Claude Code leaves auto-update off for a marketplace that is not
 //   Anthropic's, and a plugin can't turn it on. When this copy is over a week old and auto-update is off, say so.
@@ -12,6 +13,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import os from "node:os";
 import path from "node:path";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
+import { writeDigest } from "./questions.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 const DAY = 24 * 60 * 60 * 1000;
@@ -122,6 +124,10 @@ export function selftest() {
     if (JSON.parse(readFileSync(state, "utf8")).sent.length !== 2) bad.push("a normal start must keep the groups already sent");
     resetQuestions(ritual, { session_id: "s1", source: "compact" });
     if (JSON.parse(readFileSync(state, "utf8")).sent.length) bad.push("after a compaction the groups must be sent again");
+    // The digest for agents without hooks is rewritten at every start, at a path that doesn't change with updates.
+    writeDigest(ritual);
+    const digestFile = path.join(ritual, "local", "lessons.md");
+    if (!existsSync(digestFile) || !readFileSync(digestFile, "utf8").includes("## Console and tools")) bad.push("the session start should write .ritual/local/lessons.md");
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
@@ -137,6 +143,7 @@ if (isMain(import.meta.url)) {
   const ritual = ritualDir(input);
   if (!ritual) process.exit(0);
   resetQuestions(ritual, input);
+  writeDigest(ritual);
   const text = [notice({ config: configDir(), ritual }), aboutNotice({ ritual })].filter(Boolean).join("\n\n");
   if (text) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: text } }));
 }
