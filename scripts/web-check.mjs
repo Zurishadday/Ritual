@@ -108,12 +108,15 @@ const ACTIVE_JS = `(() => { const a = document.activeElement; return !a || a ===
 async function launch(bin) {
   const profile = mkdtempSync(path.join(os.tmpdir(), "ritual-web-check-"));
   // ponytail: no sandbox on Linux, where runners often lack the user namespaces it needs; only local pages are opened.
-  const child = spawn(bin, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check", "--remote-debugging-port=0", `--user-data-dir=${profile}`, ...(process.platform === "linux" ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });
-  let port = null, failed = false;
-  child.on("error", () => { failed = true; });
-  for (let i = 0; i < 100 && !port && !failed; i++) { await sleep(100); try { port = readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0].trim(); } catch { /* not up yet */ } }
+  // On Linux runners /dev/shm is small and Chrome can crash on it; a cold start there has taken over ten seconds.
+  const child = spawn(bin, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check", "--remote-debugging-port=0", `--user-data-dir=${profile}`, ...(process.platform === "linux" ? ["--no-sandbox", "--disable-dev-shm-usage"] : []), "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
+  let port = null, ended = null, said = "";
+  child.on("error", (e) => { ended = e.message; });
+  child.on("exit", (code, signal) => { ended ??= `exited ${code ?? signal}`; });
+  child.stderr.on("data", (d) => { said = (said + d).slice(-600); });
+  for (let i = 0; i < 300 && !port && !ended; i++) { await sleep(100); try { port = readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0].trim(); } catch { /* not up yet */ } }
   const stop = async () => { child.kill(); await sleep(400); try { rmSync(profile, { recursive: true, force: true }); } catch { /* the browser may still hold it */ } };
-  if (!port) { await stop(); throw new Error(`the browser did not start: ${bin}`); }
+  if (!port) { await stop(); throw new Error(`the browser did not start (${ended ?? "no answer in 30 s"}): ${bin}${said.trim() ? `\n${said.trim()}` : ""}`); }
   let target;
   for (let i = 0; i < 50 && !target; i++) { try { target = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find((t) => t.type === "page"); } catch { /* not yet */ } if (!target) await sleep(100); }
   const ws = new WebSocket(target.webSocketDebuggerUrl);
@@ -309,6 +312,10 @@ export async function selftest() {
       if (r["WEB-2"] !== "✕" || r["45"] !== "✕") bad.push(`a site that takes everything should fail WEB-2 and 45: ${JSON.stringify(r)}`);
     } finally { open.close(); }
     try { await check("https://example.com", { out, bin: "x" }); bad.push("a site on the internet must be refused"); } catch (e) { if (!/not a local address/.test(e.message)) bad.push(`refusing a remote site: ${e.message}`); }
+    // A browser that dies at once must say so, with what it printed, not wait out the timeout: on CI "did not start" said nothing.
+    const t0 = Date.now();
+    try { await check(`${base}/good`, { out, bin: process.execPath }); bad.push("a program that is not a browser must fail to start"); }
+    catch (e) { if (!/did not start \(exited /.test(e.message) || !/bad option|--headless/.test(e.message) || Date.now() - t0 > 10000) bad.push(`a browser that exits at once should be reported as exited, with its output, quickly: ${e.message.slice(0, 200)}`); }
   } finally { server.close(); rmSync(out, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
