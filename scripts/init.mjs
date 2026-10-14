@@ -48,7 +48,7 @@ export function detect(project) {
   return { packages, language, dependencies: deps.size, intro, folders, about };
 }
 
-export function init(project, { packages = [], language, about = "" } = {}) {
+export function init(project, { packages = [], language, about = "", private: names = [] } = {}) {
   const created = [];
   const dir = path.join(project, ".ritual");
   mkdirSync(path.join(dir, "lessons"), { recursive: true });
@@ -57,6 +57,8 @@ export function init(project, { packages = [], language, about = "" } = {}) {
   const base = existsSync(config) ? JSON.parse(readFileSync(config, "utf8")) : JSON.parse(readFileSync(path.join(PLUGIN, "templates", "config.json"), "utf8"));
   // A later run that only adds packages or the about line keeps the language it had.
   const next = { ...base, ...(about.trim() ? { about: about.trim() } : {}), language: language ?? base.language ?? "en", packages: [...new Set([...(base.packages ?? []), ...packages])] };
+  // Names that identify the project (a sample company, a dataset, a person): /ritual share refuses a lesson that has them.
+  if (names.length) next.private = [...new Set([...(base.private ?? []), ...names.map((n) => n.trim()).filter(Boolean)])];
   const configText = JSON.stringify(next, null, 2) + "\n";
   if (configText !== (existsSync(config) ? readFileSync(config, "utf8") : "")) { writeFileSync(config, configText); created.push(".ritual/config.json"); }
   if (!existsSync(path.join(dir, "guard.json"))) { cpSync(path.join(PLUGIN, "templates", "guard.json"), path.join(dir, "guard.json")); created.push(".ritual/guard.json"); }
@@ -109,6 +111,12 @@ export function selftest() {
     writeFileSync(path.join(tmp, ".ritual", "lessons", "console-and-tools.md"), "# Console\n");
     const withLessons = init(tmp, { packages: ["education"] });
     if (existsSync(path.join(tmp, ".ritual", "lessons", ".gitkeep")) || withLessons.includes(".ritual/lessons/")) bad.push("a rerun recreated .ritual/lessons/.gitkeep although the folder already has lessons");
+    // Names that identify the project (a sample company, a dataset, a person): --private adds them, once each.
+    init(tmp, { private: ["Rueda Libre", "ventas_2024"] });
+    init(tmp, { private: ["ventas_2024", "Don Beto"] });
+    init(tmp, {});
+    const priv = JSON.parse(readFileSync(path.join(tmp, ".ritual", "config.json"), "utf8")).private;
+    if (priv.join("|") !== "Rueda Libre|ventas_2024|Don Beto") bad.push(`--private should add names once and keep them on reruns: gave ${priv}`);
     const empty = mkdtempSync(path.join(os.tmpdir(), "ritual-empty-"));
     try { if (detect(empty).packages.length) bad.push("an empty project should not detect packages"); init(empty); if (!existsSync(path.join(empty, "CLAUDE.md"))) bad.push("in a project without CLAUDE.md it should have created it"); } finally { rmSync(empty, { recursive: true, force: true }); }
   } finally { rmSync(tmp, { recursive: true, force: true }); }
@@ -123,7 +131,7 @@ if (isMain(import.meta.url)) {
     console.log(bad ? `${bad} case(s) failed` : "✓ init: detects, creates, and the second run changes nothing");
     process.exit(bad ? 1 : 0);
   }
-  const project = path.resolve(args.find((a) => !a.startsWith("--") && !args[args.indexOf(a) - 1]?.match(/^--(packages|language|about)$/)) ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
+  const project = path.resolve(args.find((a) => !a.startsWith("--") && !args[args.indexOf(a) - 1]?.match(/^--(packages|language|about|private)$/)) ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
   const value = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : undefined; };
   if (args.includes("--detect")) {
     const d = detect(project);
@@ -132,6 +140,7 @@ if (isMain(import.meta.url)) {
       `  README: ${d.intro || "(none)"}`,
       `  Folders: ${d.folders.join(", ") || "(none)"}`,
       `  Current about: ${d.about || "(none)"}`,
+      "Names that would identify the project in a shared lesson (a client, a product, a sample company, a dataset, a person): propose them for --private.",
       `Dependencies read: ${d.dependencies}, which turn on: ${d.packages.join(", ") || "nothing"}`,
       "Packages. Turn on each one whose covers fits, by dependencies or by what the project is: it adds the lessons for that kind of project, so its typical mistakes get caught, and a package left off costs no tokens.",
       ...Object.entries(TAXONOMY.packages).map(([p, def]) => `  ${p}${d.packages.includes(p) ? " [detected]" : ""} · ${def.covers}`),
@@ -139,6 +148,6 @@ if (isMain(import.meta.url)) {
     ].join("\n"));
     process.exit(0);
   }
-  const created = init(project, { packages: (value("--packages") ?? "").split(",").map((s) => s.trim()).filter(Boolean), language: value("--language"), about: value("--about") ?? "" });
+  const created = init(project, { packages: (value("--packages") ?? "").split(",").map((s) => s.trim()).filter(Boolean), language: value("--language"), about: value("--about") ?? "", private: (value("--private") ?? "").split(",") });
   console.log(created.length ? `✓ created or updated: ${created.join(", ")}` : "✓ nothing to do: Ritual was already set up");
 }
