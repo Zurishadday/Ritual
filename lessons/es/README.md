@@ -77,6 +77,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **27.** [Antes de dudar del sistema, duda del instrumento](console-and-tools.md#27-antes-de-dudar-del-sistema-duda-del-instrumento)
 - **29.** [Verifica el comando antes de pasárselo a otro](console-and-tools.md#29-verifica-el-comando-antes-de-pasárselo-a-otro)
 - **44.** [Lo que recortas de la salida puede ser el veredicto](console-and-tools.md#44-lo-que-recortas-de-la-salida-puede-ser-el-veredicto)
+- **53.** [El código pasa por el editor, no por el manejo de texto de la consola](console-and-tools.md#53-el-código-pasa-por-el-editor-no-por-el-manejo-de-texto-de-la-consola)
 
 ## Git y proceso
 

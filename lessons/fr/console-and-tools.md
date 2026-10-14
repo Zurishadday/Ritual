@@ -49,3 +49,17 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 **Signal d'alarme.** « Aucune erreur n'est apparue à l'écran » · « les dernières lignes suffisent ».
 
 **Que faire.** Trouvez la ligne du verdict avant de changer un statut. Si vous enchaînez des commandes, assurez-vous que l'échec de la première parvient jusqu'à la fin. Si la sortie n'a pas de verdict, cela signifie « je ne sais pas », pas « c'est passé » (voir la leçon 1). Et enregistrez la sortie complète dans un fichier et cherchez le verdict là : ainsi, vous n'avez pas à décider à l'avance combien lire.
+
+### 53. Le code passe par l'éditeur, pas par le traitement de texte du shell
+
+`from: 34503dce` · `by: ai`
+
+**L'idée.** Réécrire un fichier source avec les outils de chaînes du shell (le lire, remplacer, le réécrire) fait passer le code par des règles conçues pour autre chose : un encodage par défaut, la priorité des opérateurs, le guillemetage et l'échappement. La modification semble juste dans la commande, et le fichier qui en sort est différent de ce que la commande semble dire.
+
+**Exemple.** Deux modifications dans une même session, toutes deux dans Windows PowerShell 5.1. Une lecture-remplacement-écriture d'un script (`Get-Content`, `-replace`, `Set-Content -Encoding utf8`) a lu le fichier dans la page de codes ANSI du système et l'a réécrit en UTF-8 : chaque ✓ et · est devenu `âœ“` et `Â·`, et son auto-contrôle a affiché la marque déformée. Puis une liste de remplacements écrite comme ``@('old', 'new' + "`n" + 'more')`` a perdu des lignes : dans PowerShell, la virgule lie plus fort que `+`, donc chaque paire est devenue quatre éléments, et seul le premier morceau du nouveau texte a été écrit.
+
+**Question détectrice.** Cette modification de code passe-t-elle par l'éditeur, ou par la lecture, le remplacement et l'écriture du shell, avec ses règles d'encodage, de priorité et de guillemets ?
+
+**Signal d'alarme.** « C'est un simple remplacement, je le fais en une seule commande » · « plusieurs remplacements d'un coup, c'est plus rapide ».
+
+**Que faire.** Modifiez le code avec les outils d'édition et d'écriture de l'éditeur. Quand une modification doit être scriptée, écrivez le script dans un fichier et lancez-le avec un interpréteur qui lit et écrit en UTF-8 et dont les littéraux de chaînes sont simples (`node fix.mjs`, `python -I fix.py`). Puis regardez le diff : une modification qui a touché plus de lignes que prévu, ou des caractères que vous n'aviez pas touchés, vient du shell.

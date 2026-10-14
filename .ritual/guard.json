@@ -25,7 +25,7 @@
     {
       "name": "shell-writes-code",
       "pattern": "([Ss]et-[Cc]ontent|[Aa]dd-[Cc]ontent|[Oo]ut-[Ff]ile)\\b[^|;\\n]*\\.(mjs|cjs|js|ts|tsx|jsx|json|md|html|css|py|ya?ml)\\b|^(?=[\\s\\S]*WriteAllText)[\\s\\S]*\\.(mjs|cjs|js|ts|tsx|jsx|json|md|html|css|py|ya?ml)\\b",
-      "message": "Writing code through PowerShell's text handling changes it on the way: Get-Content reads in the ANSI code page, and in a list the comma binds tighter than + (P-2). Use Edit or Write, or a node script written to a file.",
+      "message": "Writing code through PowerShell's text handling changes it on the way: Get-Content reads in the ANSI code page, and in a list the comma binds tighter than + (lesson 53). Use Edit or Write, or a node script written to a file.",
       "blocks": ["(Get-Content scripts\\simulate.mjs) -replace 'a', 'b' | Set-Content scripts\\simulate.mjs -Encoding utf8", "$f = \"scripts\\web-check.mjs\"; $t = [IO.File]::ReadAllText($f); [IO.File]::WriteAllText($f, $t.Replace('a', 'b'))", "'{}' | Out-File .ritual\\config.json"],
       "allows": ["node scripts/test.mjs | Out-File out.txt", "\"done\" | Set-Content notes.txt", "Get-Content scripts\\simulate.mjs -TotalCount 5", "node scripts/simulate.mjs web *> log.txt"]
     }

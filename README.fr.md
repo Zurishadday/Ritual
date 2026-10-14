@@ -18,7 +18,7 @@ Un plugin pour Claude Code qui transforme chaque erreur en leçon, chaque leçon
 
 D'autres outils notent ce qui a été appris ; Ritual va plus loin et le vérifie, car une règle qui n'existe que sous forme de texte finit par être oubliée au milieu d'une longue session, alors qu'une règle qui se vérifie elle-même ne l'est pas.
 
-Il livre **52 leçons de terrain**, chacune née d'une vraie erreur ; des **paquets par type de projet**, dont les leçons viennent de l'observation d'un modèle en train de construire quelque chose puis de le casser ; et **une seule commande**, `/ritual`, qui transforme les erreurs de votre session en vos propres leçons, et vos leçons en règles qui s'appliquent d'elles-mêmes.
+Il livre **53 leçons de terrain**, chacune née d'une vraie erreur ; des **paquets par type de projet**, dont les leçons viennent de l'observation d'un modèle en train de construire quelque chose puis de le casser ; et **une seule commande**, `/ritual`, qui transforme les erreurs de votre session en vos propres leçons, et vos leçons en règles qui s'appliquent d'elles-mêmes.
 
 <a name="install"></a>
 

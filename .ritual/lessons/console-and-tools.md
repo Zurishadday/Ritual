@@ -20,12 +20,4 @@
 
 `origin: field · claude-opus-5-5 · 2026-10`
 
-**The idea.** Rewriting a source file with the shell's own string tools (read it, replace, write it back) passes the code through rules made for something else: a default encoding, operator precedence, escaping. The change looks right in the command and the file comes out different.
-
-**Example.** Two edits in one session, both in PowerShell 5.1. `(Get-Content f.mjs) -replace … | Set-Content f.mjs -Encoding utf8` read the file in the system's ANSI code page and wrote it back as UTF-8: every ✓ and · in it became `âœ“` and `Â·`, and the selftest printed the mangled check mark. And a list of replacements written as `@('old', 'new' + "`n" + 'more')` lost lines: in PowerShell the comma binds tighter than `+`, so the pair became four items and only `'new'` was written.
-
-**Detector question.** Is this code change going through the editor, or through the shell's read, replace and write, with its encoding and its precedence rules?
-
-**Warning sign.** "It's a quick replace, I'll do it in one command" · "several replacements at once is faster".
-
-**What to do.** Change code with the Edit or Write tools. When a change has to be scripted, write the script to a file and run it with node, which reads and writes UTF-8 and has no surprises in its string literals. In this repository the guard blocks PowerShell writes to code files (`shell-writes-code` in `.ritual/guard.json`).
+Merged into 53.

@@ -77,6 +77,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **27.** [Desconfie do instrumento antes de desconfiar do sistema](console-and-tools.md#27-desconfie-do-instrumento-antes-de-desconfiar-do-sistema)
 - **29.** [Confira o comando antes de entregá-lo a alguém](console-and-tools.md#29-confira-o-comando-antes-de-entregá-lo-a-alguém)
 - **44.** [O que você corta da saída pode ser o veredito](console-and-tools.md#44-o-que-você-corta-da-saída-pode-ser-o-veredito)
+- **53.** [O código passa pelo editor, não pelo tratamento de texto do shell](console-and-tools.md#53-o-código-passa-pelo-editor-não-pelo-tratamento-de-texto-do-shell)
 
 ## Git e processo
 

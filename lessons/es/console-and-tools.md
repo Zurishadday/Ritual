@@ -49,3 +49,17 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 **Señal de alarma.** «No salió ningún error en pantalla» · «con las últimas líneas basta».
 
 **Qué hacer.** Busca la línea del veredicto antes de cambiar un estado. Si encadenas comandos, haz que el fallo del primero llegue hasta el final. Si la salida no trae veredicto, eso es un «no sé», no un «pasó» (ver la 1). Y guarda la salida completa en un archivo y busca ahí el veredicto: así no tienes que decidir antes cuánto leer.
+
+### 53. El código pasa por el editor, no por el manejo de texto de la consola
+
+`from: 34503dce` · `by: ai`
+
+**La idea.** Reescribir un archivo de código con las herramientas de texto de la consola (leerlo, reemplazar y volver a escribirlo) pasa el código por reglas hechas para otra cosa: la codificación por defecto, la precedencia de operadores, las comillas y los escapes. El cambio se ve bien en el comando, y el archivo sale distinto de lo que el comando parece decir.
+
+**Ejemplo.** Dos ediciones en una misma sesión, las dos en Windows PowerShell 5.1. Una lectura, reemplazo y escritura de un script (`Get-Content`, `-replace`, `Set-Content -Encoding utf8`) leyó el archivo en la página de códigos ANSI del sistema y lo escribió de vuelta como UTF-8: cada ✓ y · del archivo se volvió `âœ“` y `Â·`, y su autoverificación imprimió la marca dañada. Luego, una lista de reemplazos escrita como ``@('old', 'new' + "`n" + 'more')`` perdió líneas: en PowerShell la coma liga más fuerte que `+`, así que cada par se volvió cuatro elementos y solo se escribió el primer pedazo del texto nuevo.
+
+**Pregunta detectora.** ¿Este cambio de código pasa por el editor, o por la lectura, el reemplazo y la escritura de la consola, con sus reglas de codificación, precedencia y comillas?
+
+**Señal de alarma.** «Es un reemplazo rápido, lo hago en un solo comando» · «varios reemplazos a la vez es más rápido».
+
+**Qué hacer.** Cambia el código con las herramientas de editar y escribir del propio editor. Cuando el cambio tenga que hacerse con un script, escribe el script en un archivo y córrelo con un intérprete que lea y escriba UTF-8 y tenga literales de cadena simples (`node fix.mjs`, `python -I fix.py`). Luego revisa el diff: un cambio que tocó más líneas de las que querías, o caracteres que no tocaste, es culpa de la consola.

@@ -77,6 +77,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **27.** [Douter de l'instrument avant de douter du système](console-and-tools.md#27-douter-de-linstrument-avant-de-douter-du-système)
 - **29.** [Vérifier la commande avant de la transmettre à quelqu'un d'autre](console-and-tools.md#29-vérifier-la-commande-avant-de-la-transmettre-à-quelquun-dautre)
 - **44.** [Ce que vous retirez de la sortie peut être le verdict](console-and-tools.md#44-ce-que-vous-retirez-de-la-sortie-peut-être-le-verdict)
+- **53.** [Le code passe par l'éditeur, pas par le traitement de texte du shell](console-and-tools.md#53-le-code-passe-par-léditeur-pas-par-le-traitement-de-texte-du-shell)
 
 ## Git et processus
 

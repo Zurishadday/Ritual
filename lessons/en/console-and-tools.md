@@ -49,3 +49,17 @@ What applies when you run commands, servers, tests, or captures, and when the to
 **Warning sign.** "No error showed up on screen" · "the last few lines are enough."
 
 **What to do.** Find the verdict line before changing a status. If you chain commands, make sure the first one's failure reaches the end. If the output has no verdict, that means "I don't know," not "it passed" (see lesson 1). And save the full output to a file and look for the verdict there: that way you don't have to decide in advance how much to read.
+
+### 53. Code goes through the editor, not through the shell's text handling
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** Rewriting a source file with the shell's own string tools (read it, replace, write it back) passes the code through rules made for something else: a default encoding, operator precedence, quoting and escaping. The change looks right in the command, and the file comes out different from what the command seems to say.
+
+**Example.** Two edits in one session, both in Windows PowerShell 5.1. A read-replace-write of a script (`Get-Content`, `-replace`, `Set-Content -Encoding utf8`) read the file in the system's ANSI code page and wrote it back as UTF-8: every ✓ and · in it turned into `âœ“` and `Â·`, and its self-check printed the mangled mark. Then a list of replacements written as ``@('old', 'new' + "`n" + 'more')`` dropped lines: in PowerShell the comma binds tighter than `+`, so each pair became four items and only the first piece of the new text was written.
+
+**Detector question.** Is this code change going through the editor, or through the shell's read, replace and write, with its encoding, precedence and quoting rules?
+
+**Warning sign.** "It's a quick replace, I'll do it in one command" · "several replacements at once is faster".
+
+**What to do.** Change code with the editor's own edit and write tools. When a change has to be scripted, write the script to a file and run it with an interpreter that reads and writes UTF-8 and has plain string literals (`node fix.mjs`, `python -I fix.py`). Then look at the diff: a change that touched more lines than you meant, or characters you didn't touch, is the shell's.

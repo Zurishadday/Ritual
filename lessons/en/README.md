@@ -75,6 +75,7 @@
 - **27.** [Doubt the instrument before you doubt the system](console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system)
 - **29.** [Check the command before handing it to someone else](console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else)
 - **44.** [What you cut from the output can be the verdict](console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict)
+- **53.** [Code goes through the editor, not through the shell's text handling](console-and-tools.md#53-code-goes-through-the-editor-not-through-the-shells-text-handling)
 
 ## Git and process
 

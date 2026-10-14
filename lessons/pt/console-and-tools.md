@@ -49,3 +49,17 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 **Sinal de alerta.** “Não apareceu erro na tela” · “as últimas linhas bastam”.
 
 **O que fazer.** Encontre a linha do veredito antes de mudar um status. Se você encadeia comandos, garanta que a falha do primeiro chegue até o fim. Se a saída não tem veredito, isso significa “não sei”, e não “passou” (ver a lição 1). E salve a saída completa num arquivo e procure o veredito ali: assim você não precisa decidir de antemão quanto ler.
+
+### 53. O código passa pelo editor, não pelo tratamento de texto do shell
+
+`from: 34503dce` · `by: ai`
+
+**A ideia.** Reescrever um arquivo de código com as ferramentas de texto do shell (ler, substituir, gravar de volta) faz o código passar por regras feitas para outra coisa: uma codificação padrão, precedência de operadores, aspas e escapes. A mudança parece certa no comando, e o arquivo sai diferente do que o comando parece dizer.
+
+**Exemplo.** Duas edições numa mesma sessão, ambas no Windows PowerShell 5.1. Um ler-substituir-gravar de um script (`Get-Content`, `-replace`, `Set-Content -Encoding utf8`) leu o arquivo na página de código ANSI do sistema e o gravou de volta em UTF-8: cada ✓ e · nele virou `âœ“` e `Â·`, e a autoverificação do script imprimiu a marca estragada. Depois, uma lista de substituições escrita como ``@('old', 'new' + "`n" + 'more')`` perdeu linhas: no PowerShell a vírgula tem precedência maior que `+`, então cada par virou quatro itens e só o primeiro pedaço do texto novo foi gravado.
+
+**Pergunta detectora.** Esta mudança no código está passando pelo editor, ou pelo ler, substituir e gravar do shell, com as regras de codificação, precedência e aspas dele?
+
+**Sinal de alerta.** “É só um replace rápido, faço num comando só” · “trocar vários de uma vez é mais rápido”.
+
+**O que fazer.** Mude o código com as ferramentas de editar e gravar do próprio editor. Quando a mudança precisar ser feita por script, escreva o script num arquivo e rode-o com um interpretador que lê e grava UTF-8 e tem literais de string simples (`node fix.mjs`, `python -I fix.py`). Depois, olhe o diff: uma mudança que tocou mais linhas do que você queria, ou caracteres que você não tocou, é culpa do shell.
