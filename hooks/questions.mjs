@@ -34,8 +34,14 @@ export function groupOf(input, config = DEFAULT_CONFIG, projectBase) {
   const relative = !rel || rel.startsWith("..") || path.isAbsolute(rel) ? filePath.replace(/\\/g, "/") : rel;
   // `**` in path.matchesGlob skips segments that start with a dot: .ritual/, .claude/, .github/ are matched without it.
   const visible = relative.replace(/(^|\/)\.(?=[^./])/g, "$1");
-  for (const [group, patterns] of Object.entries(config.groups ?? {}))
-    if (patterns.some((p) => path.matchesGlob(relative, p) || path.matchesGlob(visible, p))) return { group, target: relative };
+  const matches = (p) => path.matchesGlob(relative, p) || path.matchesGlob(visible, p);
+  // What a file is beats where it lives, in three tiers: tests first (a file under tests/ is a test, whatever its
+  // extension), then name and extension patterns (**/*.csv), then folder patterns (**/content/**). Within a tier, the
+  // order of the groups decides.
+  const tier = (group, p) => (group === "tests-and-checks" ? 0 : p.endsWith("/**") ? 2 : 1);
+  for (const t of [0, 1, 2])
+    for (const [group, patterns] of Object.entries(config.groups ?? {}))
+      if (patterns.some((p) => tier(group, p) === t && matches(p))) return { group, target: relative };
   return { group: null, target: relative };
 }
 
@@ -126,6 +132,13 @@ export function selftest() {
     [{ tool_name: "Write", tool_input: { file_path: "C:/p/content/datasets/ventas.csv" }, cwd: "C:/p" }, "numbers-and-data"],
     [{ tool_name: "Write", tool_input: { file_path: "C:/p/content/leccion-01.mdx" }, cwd: "C:/p" }, "writing-and-docs"],
     [{ tool_name: "Write", tool_input: { file_path: "C:/p/src/lib/util.ts" }, cwd: "C:/p" }, null],
+    // What the file is beats where it lives: an extension wins over a folder, whatever the order of the groups.
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/docs/analytics/guide.md" }, cwd: "C:/p" }, "writing-and-docs"],
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/notebooks/notes.md" }, cwd: "C:/p" }, "writing-and-docs"],
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/app/models/card.tsx" }, cwd: "C:/p" }, "interface-and-design"],
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/src/models/user.ts" }, cwd: "C:/p" }, "numbers-and-data"],
+    // Except tests: a file under tests/ is a test, whatever its extension.
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/tests/helper.mjs" }, cwd: "C:/p" }, "tests-and-checks"],
     // Dot folders count too: `**` in path.matchesGlob skips segments that start with a dot.
     [{ tool_name: "Edit", tool_input: { file_path: "C:/p/.ritual/lessons/console-and-tools.md" }, cwd: "C:/p" }, "writing-and-docs"],
     [{ tool_name: "Write", tool_input: { file_path: "C:/p/.claude/agents/reviewer.md" }, cwd: "C:/p" }, "writing-and-docs"],
