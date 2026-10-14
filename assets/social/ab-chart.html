@@ -4,7 +4,7 @@
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
 <style>
   html, body { width: 1080px; height: 1350px; }
-  .page { height: 1350px; padding: 44px 60px 40px; display: flex; flex-direction: column; gap: 30px; }
+  .page { height: 1350px; padding: 44px 60px 40px; display: flex; flex-direction: column; justify-content: space-between; }
   .head { display: flex; align-items: center; gap: 18px; }
   .head img { width: 64px; height: 64px; }
   .head b { font-size: 40px; letter-spacing: -1px; }
@@ -19,8 +19,6 @@
   .legend { display: flex; gap: 22px; font-size: 18px; color: #c9d1d9; margin-bottom: 4px; }
   .legend i { display: inline-block; width: 22px; height: 14px; border-radius: 3px; vertical-align: -1px; margin-right: 8px; }
   svg text { font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif; }
-  .foot { margin-top: auto; font-size: 18px; color: #7d8590; line-height: 1.45; border-top: 1px solid rgba(255,255,255,.10); padding-top: 14px; }
-  .foot b { color: #c9d1d9; font-weight: 600; }
 </style></head>
 <body><div class="page">
   <div class="head"><img src="../logo.svg" alt=""><b>Ritual</b><div class="pill">A/B test · October 2026</div></div>
@@ -35,7 +33,6 @@
   <div class="chart"><h2>Cost per project, build + fix</h2>
     <div class="legend"><span><i style="background:#c9d1d9"></i>Build</span><span><i style="background:repeating-linear-gradient(135deg,#c9d1d9 0 3px,transparent 3px 7px);border:1px solid #c9d1d9"></i>Fix what was left</span></div>
     <svg id="cost"></svg></div>
-  <div class="foot"><b>Method:</b> the Spanish web task of Ritual's simulations. claude-sonnet-5-5 builds and fixes, claude-opus-5-5 reviews; 2 runs without Ritual, 3 with. <b>Limits:</b> one task, few runs, one model, and the build and fix sessions couldn't run the site. Data per run: github.com/Zurishadday/Ritual → simulations</div>
 </div>
 <script>
   const ARMS = [
