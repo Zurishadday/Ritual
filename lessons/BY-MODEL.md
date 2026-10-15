@@ -13,7 +13,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | `~opus` | 46 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
-| `claude-opus-5-5` | 3 | 2 | 27, 41, 52, 53, EDU-5 |
+| `claude-opus-5-5` | 3 | 3 | 27, 36, 41, 52, 53, EDU-5 |
 
 ## Seen with more than one model
 
@@ -22,6 +22,7 @@ The most general mistakes: different models made them.
 - [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
+- [36. Measure before you write](en/numbers-and-data.md#36-measure-before-you-write) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
 - [45. Someone walks the error path too](en/interface-and-design.md#45-someone-walks-the-error-path-too) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
 - [46. What runs on every request can't grow with the content](en/interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
@@ -66,7 +67,7 @@ The most general mistakes: different models made them.
 | [33. The glyph is not the text](en/interface-and-design.md#33-the-glyph-is-not-the-text) | `~opus` 2026-08 |
 | [34. Trust the symptom in a QA finding and measure the cause](en/tests-and-checks.md#34-trust-the-symptom-in-a-qa-finding-and-measure-the-cause) | `~opus` 2026-08 |
 | [35. A to-do list written in passing goes stale](en/git-and-process.md#35-a-to-do-list-written-in-passing-goes-stale) | `~opus` 2026-08 |
-| [36. Measure before you write](en/numbers-and-data.md#36-measure-before-you-write) | `~opus` 2026-08 |
+| [36. Measure before you write](en/numbers-and-data.md#36-measure-before-you-write) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [37. Document what's there, not what you wish were there](en/writing-and-docs.md#37-document-whats-there-not-what-you-wish-were-there) | `~opus` 2026-08 |
 | [38. What you don't know gets marked, not invented](en/writing-and-docs.md#38-what-you-dont-know-gets-marked-not-invented) | `~opus` 2026-08 |
 | [39. Version it in plain sight](en/writing-and-docs.md#39-version-it-in-plain-sight) | `~opus` 2026-08 |
