@@ -112,7 +112,8 @@ async function launch(bin) {
   const child = spawn(bin, ["--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check", "--remote-debugging-port=0", `--user-data-dir=${profile}`, ...(process.platform === "linux" ? ["--no-sandbox", "--disable-dev-shm-usage"] : []), "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
   let port = null, ended = null, said = "";
   child.on("error", (e) => { ended = e.message; });
-  child.on("exit", (code, signal) => { ended ??= `exited ${code ?? signal}`; });
+  // Exit 0 is not the end: Edge with an update pending hands off to its new version and its launcher exits 0 at once.
+  child.on("exit", (code, signal) => { if (code !== 0) ended ??= `exited ${code ?? signal}`; });
   child.stderr.on("data", (d) => { said = (said + d).slice(-600); });
   for (let i = 0; i < 300 && !port && !ended; i++) { await sleep(100); try { port = readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0].trim(); } catch { /* not up yet */ } }
   const stop = async () => { child.kill(); await sleep(400); try { rmSync(profile, { recursive: true, force: true }); } catch { /* the browser may still hold it */ } };
@@ -142,7 +143,7 @@ async function launch(bin) {
   const click = async ({ x, y }) => { for (const type of ["mousePressed", "mouseReleased"]) await send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: 1 }); };
   const enter = async () => { for (const type of ["keyDown", "keyUp"]) await send("Input.dispatchKeyEvent", { type, key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, ...(type === "keyDown" ? { text: "\r" } : {}) }); };
   await send("Page.enable");
-  return { send, once, evaluate, goto, size, shot, click, enter, close: async () => { ws.close(); await stop(); } };
+  return { send, once, evaluate, goto, size, shot, click, enter, close: async () => { await Promise.race([send("Browser.close"), sleep(2000)]); ws.close(); await stop(); } };
 }
 
 const post = (form, body) => fetch(form.action, { method: "POST", body, redirect: "manual", headers: { "content-type": "application/x-www-form-urlencoded" } }).then((r) => r.status, () => 0);
