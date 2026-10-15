@@ -29,10 +29,14 @@ export function summary(project, { now = new Date() } = {}) {
   const read = readJsonl(path.join(local, "log.jsonl"));
   const log = read.filter(isRecent);
   const commands = log.filter((x) => x.type === "command"), corrections = log.filter((x) => x.type === "correction");
-  lines.push("", `Log: ${commands.length} failed command(s), ${corrections.length} correction(s)${read.unreadable ? ` · ${read.unreadable} unreadable line(s) skipped` : ""}`);
+  // The same agent can notify twice: one report per task.
+  const reviews = log.filter((x) => x.type === "review").filter((x, i, all) => !x.task || all.findIndex((y) => y.task === x.task) === i);
+  lines.push("", `Log: ${commands.length} failed command(s), ${corrections.length} correction(s), ${reviews.length} reviewer report(s)${read.unreadable ? ` · ${read.unreadable} unreadable line(s) skipped` : ""}`);
   for (const x of commands.slice(-15)) lines.push(`  ${x.date.slice(5, 16).replace("T", " ")} cmd  ${short(x.command, 80)}  →  ${short(x.error, 90)}`);
   for (const x of corrections.slice(-15)) lines.push(`  ${x.date.slice(5, 16).replace("T", " ")} fix  «${short(x.phrase, 90)}»${x.last ? `  while ${x.last.tool} ${short(x.last.target, 60)}` : ""}`);
-  if (log.length > 30) lines.push(`  … ${log.length - 30} more in .ritual/local/log.jsonl`);
+  for (const x of reviews.slice(-15)) lines.push(`  ${x.date.slice(5, 16).replace("T", " ")} rev  ${short(x.agent, 40)}: ${short(x.report, 160)}`);
+  if (reviews.length) lines.push("  (full reports: type \"review\" in .ritual/local/log.jsonl)");
+  if (log.length > 45) lines.push(`  … ${log.length - 45} more in .ritual/local/log.jsonl`);
 
   const blocks = readJsonl(path.join(local, "guard.jsonl")).filter(isRecent);
   const byRule = {};
@@ -72,6 +76,8 @@ export function selftest() {
       JSON.stringify({ date: "2026-10-01T10:00:00Z", type: "command", command: "npm test", error: "Exit code 1\nold" }),
       JSON.stringify({ date: "2026-10-12T10:00:00Z", type: "command", command: "npm run build", error: "Exit code 2\nType error" }),
       JSON.stringify({ date: "2026-10-12T10:05:00Z", type: "correction", phrase: "eso está mal", last: { tool: "Edit", target: "src/a.tsx" } }),
+      JSON.stringify({ date: "2026-10-12T10:07:00Z", type: "review", agent: "code-reviewer login", task: "a1", report: "Must fix: the form loses the message" }),
+      JSON.stringify({ date: "2026-10-12T10:08:00Z", type: "review", agent: "code-reviewer login", task: "a1", report: "Must fix: the form loses the message" }),
       "{\"date\":\"2026-10-12T10:06:00Z\",\"type\":\"comma", // cut-off write, no newline: what a crash leaves behind
     ].join("\n"));
     // WEB-1: what a hook writes after the cut-off line must not stick to it.
@@ -81,7 +87,7 @@ export function selftest() {
     writeFileSync(path.join(tmp, ".ritual", "candidates.md"), "# Candidates\n\n| # | What it would check | Lesson | Status | Date |\n|---|---|---|---|---|\n| 1 | check x | 13 | open | 2026-10-02 |\n| 2 | check y | 21 | done | 2026-10-03 |\n");
     writeFileSync(path.join(tmp, ".ritual", "local", "last-ritual.txt"), "2026-10-05T00:00:00Z");
     const r = summary(tmp);
-    for (const expected of ["2 failed command(s), 1 correction(s)", "after the cut", "1 unreadable line(s) skipped", "npm run build", "Type error", "«eso está mal»", "while Edit src/a.tsx", "1 block(s) · python-c ×1", "interface-and-design (1)", "1 open of 2", "check x"])
+    for (const expected of ["2 failed command(s), 1 correction(s), 1 reviewer report(s)", "rev  code-reviewer login: Must fix", "after the cut", "1 unreadable line(s) skipped", "npm run build", "Type error", "«eso está mal»", "while Edit src/a.tsx", "1 block(s) · python-c ×1", "interface-and-design (1)", "1 open of 2", "check x"])
       if (!r.includes(expected)) bad.push(`the summary does not say «${expected}»`);
     if (r.includes("old")) bad.push("the summary includes an error from before the last ritual");
     if (r.includes("check y")) bad.push("the summary lists a candidate that is already done");

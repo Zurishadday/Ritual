@@ -3,10 +3,13 @@
 // - PostToolUseFailure (Bash): a command that exited with an error, with its exit code and what it said.
 // - UserPromptSubmit: a correction from the user («eso está mal», «hazlo de nuevo»). The hook sees the phrase, not the
 //   cause: the ritual writes the cause when it reviews. The pattern is calibrated with phrases that should and should not trigger.
+// - UserPromptSubmit: the report of a reviewer agent that ran in the background (its task notification). In a project with
+//   review agents most errors are found by them, not by a failed command or the user, and the conversation that held the
+//   report may be compacted before the ritual. Which agents count is `reviewers` in .ritual/config.json (parts of their names).
 // Goes to .ritual/local/log.jsonl (outside git), one line per entry, with the last thing touched in the session.
 // Usage: node hooks/log.mjs --selftest
 import path from "node:path";
-import { appendLine, isMain, readInput, ritualDir, session } from "./common.mjs";
+import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 
 // Precision over coverage: a phrase that is not logged is lost; one logged in excess dirties the ritual.
 const CORRECTION = [
@@ -24,6 +27,26 @@ export function isCorrection(prompt) {
   return CORRECTION.some((r) => r.test(p));
 }
 
+export const REVIEWERS = ["review", "verif", "audit"];
+
+/** A finished background agent whose name contains one of `reviewers`: its name, task id and report. Otherwise null. */
+export function reviewerReport(prompt, reviewers = REVIEWERS) {
+  const p = String(prompt ?? "");
+  if (!/^\s*<task-notification>/.test(p) || !/<status>completed<\/status>/.test(p)) return null;
+  // Only agents: a background command's notification also says "completed".
+  const agent = p.match(/<summary>\s*Agent "([^"]+)"/)?.[1];
+  if (!agent || !reviewers.some((r) => agent.toLowerCase().includes(String(r).toLowerCase()))) return null;
+  return { agent, task: p.match(/<task-id>([^<]*)<\/task-id>/)?.[1] ?? null, report: (p.match(/<result>([\s\S]*?)<\/result>/)?.[1] ?? "").trim().slice(0, 2000) };
+}
+
+const REPORTS = [
+  ['<task-notification>\n<task-id>a1</task-id>\n<status>completed</status>\n<summary>Agent "code-reviewer login" finished</summary>\n<result>Must fix: the form loses the message on error.</result>\n</task-notification>', { agent: "code-reviewer login", task: "a1", report: "Must fix: the form loses the message on error." }],
+  ['<task-notification>\n<task-id>a2</task-id>\n<status>completed</status>\n<summary>Agent "Explore auth files" finished</summary>\n<result>Found 3 files.</result>\n</task-notification>', null],
+  ['<task-notification>\n<task-id>b1</task-id>\n<status>completed</status>\n<summary>Background command "Run review script" completed (exit code 0)</summary>\n</task-notification>', null],
+  ['<task-notification>\n<task-id>a3</task-id>\n<status>failed</status>\n<summary>Agent "verifier 2" failed</summary>\n</task-notification>', null],
+  ["the code reviewer said it's fine", null],
+];
+
 const CASES = [
   ["eso está mal, el total no cuadra", true], ["No, hazlo de nuevo", true], ["sigue igual", true], ["te equivocaste de archivo", true],
   ["that's wrong, the test still fails", true], ["redo the last step", true], ["still broken", true], ["that is wrong, the form still loses the message", true], ["it is broken again", true],
@@ -39,13 +62,18 @@ const CASES = [
 export function selftest() {
   const bad = CASES.filter(([phrase, expected]) => isCorrection(phrase) !== expected);
   for (const [phrase, expected] of bad) console.error(`✕ ${expected ? "should log" : "should not log"}: ${phrase}`);
-  return bad.length;
+  const wrong = REPORTS.filter(([prompt, expected]) => JSON.stringify(reviewerReport(prompt)) !== JSON.stringify(expected));
+  for (const [prompt] of wrong) console.error(`✕ reviewer report misread: ${prompt.slice(0, 120)}`);
+  // A project names its own reviewers: one called "revisor" is not caught by the defaults, and is with its config.
+  const own = REPORTS[0][0].replace("code-reviewer", "revisor");
+  if (reviewerReport(own) !== null || reviewerReport(own, ["revisor"])?.agent !== "revisor login") { console.error("✕ `reviewers` in the config is not used"); wrong.push(own); }
+  return bad.length + wrong.length;
 }
 
 if (isMain(import.meta.url)) {
   if (process.argv.includes("--selftest")) {
     const bad = selftest();
-    console.log(bad ? `${bad} case(s) failed` : `✓ ${CASES.length} calibrated phrases`);
+    console.log(bad ? `${bad} case(s) failed` : `✓ ${CASES.length} calibrated phrases, ${REPORTS.length} reviewer reports`);
     process.exit(bad ? 1 : 0);
   }
   const input = await readInput();
@@ -59,5 +87,8 @@ if (isMain(import.meta.url)) {
     appendLine(logFile, { type: "command", session: input.session_id, command: String(input.tool_input?.command ?? "").slice(0, 400), error: error.slice(0, 400) });
   } else if (input.hook_event_name === "UserPromptSubmit" && isCorrection(input.prompt)) {
     appendLine(logFile, { type: "correction", session: input.session_id, phrase: String(input.prompt).slice(0, 300), last: data.last ?? null });
+  } else if (input.hook_event_name === "UserPromptSubmit") {
+    const r = reviewerReport(input.prompt, readJson(path.join(ritual, "config.json"), {}).reviewers ?? REVIEWERS);
+    if (r) appendLine(logFile, { type: "review", session: input.session_id, ...r });
   }
 }

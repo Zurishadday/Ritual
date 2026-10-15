@@ -4,6 +4,7 @@
   "packages": [],
   "demoted": [],
   "private": [],
+  "reviewers": ["review", "verif", "audit"],
   "groups": {
     "tests-and-checks": ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/test/**", "**/__tests__/**", "**/e2e/**", "**/cypress/**"],
     "numbers-and-data": ["**/*.sql", "**/*.ipynb", "**/*.csv", "**/*.parquet", "**/queries/**", "**/consultas/**", "**/models/**", "**/analytics/**", "**/notebooks/**"],
