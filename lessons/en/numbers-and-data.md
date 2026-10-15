@@ -94,7 +94,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 36. Measure before you write
 
-`origin: field · ~opus · 2026-08` · `groups: writing-and-docs`
+`origin: field · ~opus · 2026-08` · `groups: writing-and-docs` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** Every figure in a document comes from a measurement with a date and a source, not from memory or from an earlier version of the document.
 
@@ -102,11 +102,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **Another example.** One text said a group of cohorts "was above 50 %"; five of the twelve were below. In another, the illustration showed a hand-done calculation that didn't add up: the percentage times the total didn't give the number drawn.
 
-**Detector question.** What data and what date did this number, or this comparison ("more than a thousand," "over half," "almost all"), come from?
+**A third example: the scope, not the figure.** In a course written from a research file with cited sources, every number was right and the sentences around them were not: "the documentation of two systems describes three mechanisms" when it documented one; "no article forbids it" after reading two; a survey that asked "what do you do to improve your chances when you apply?" retold as "adapts their resume to every job"; "nobody has measured it" and "there is no study" when the research only had not found one; "the guides agree" with no guide among the sources. Each was written next to its source; reviewers caught them one by one.
 
-**Warning sign.** "It's the figure we already had" · "it comes out about that" · "you can see they all pass."
+**Detector question.** What data and what date did this number, or this comparison ("more than a thousand," "over half," "almost all"), come from? Does the sentence around a sourced figure say more than the source: wider ("all", "none", "only", "the law"), more certain, or about evidence I didn't look for ("nobody has measured", "the guides agree")?
 
-**What to do.** Before writing a figure, measure it again and note next to it what data and what date it came from. Quantity words ("almost," "more than," "most") are numbers in disguise: measure them the same way. And if an image has calculations in it, have the same script that draws it do the math.
+**Warning sign.** "It's the figure we already had" · "it comes out about that" · "you can see they all pass" · "that's what the source says, more or less."
+
+**What to do.** Before writing a figure, measure it again and note next to it what data and what date it came from. Quantity words ("almost," "more than," "most") are numbers in disguise: measure them the same way. And if an image has calculations in it, have the same script that draws it do the math. Next to a sourced claim, copy the source's scope too: who measured it, over what population, when, and for a survey the question that was asked; an absolute word the source doesn't have goes. What you didn't find is said as yours ("we found no study"), and a recommendation with no source is signed ("we recommend").
 
 ### 50. If two explanations predict the same thing, your example doesn't choose between them
 
