@@ -94,7 +94,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 36. Mide antes de escribir
 
-`from: 91ed55e0` · `by: author`
+`from: 68fe8978` · `by: ai`
 
 **La idea.** Cada cifra de un documento viene de una medición con fecha y fuente, no de la memoria ni de una versión anterior del documento.
 
@@ -102,11 +102,13 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 **Otro ejemplo.** Un texto decía que un grupo de cohortes «andaba arriba del 50 %»; cinco de las doce quedaban abajo. En otro, la ilustración traía una cuenta hecha a mano que no cuadraba: el porcentaje por el total no daba el resultado dibujado.
 
-**Pregunta detectora.** Este número, o esta comparación («más de mil», «arriba de la mitad», «casi todas»), ¿de qué dato y de qué fecha salió?
+**Un tercer ejemplo: el alcance, no la cifra.** En un curso escrito a partir de un archivo de investigación con fuentes citadas, todos los números estaban bien y las frases alrededor de ellos no: «la documentación de dos sistemas describe tres mecanismos» cuando documentaba uno; «ningún artículo lo prohíbe» después de leer dos; una encuesta que preguntó «¿qué haces para mejorar tus probabilidades cuando aplicas?» se contó como «adapta su currículum a cada empleo»; «nadie lo ha medido» y «no hay ningún estudio» cuando la investigación solo no lo había encontrado; «las guías coinciden» sin que ninguna guía estuviera entre las fuentes. Cada una se escribió junto a su fuente; los revisores las atraparon una por una.
 
-**Señal de alarma.** «Es la cifra que ya teníamos» · «da más o menos eso» · «se ve que todas pasan».
+**Pregunta detectora.** Este número, o esta comparación («más de mil», «arriba de la mitad», «casi todas»), ¿de qué dato y de qué fecha salió? ¿La frase alrededor de una cifra con fuente dice más que la fuente: más amplia («todas», «ninguna», «solo», «la ley»), más segura, o sobre evidencia que no busqué («nadie lo ha medido», «las guías coinciden»)?
 
-**Qué hacer.** Antes de escribir una cifra, mídela otra vez y anota junto a ella de qué dato y de qué fecha salió. Las palabras de cantidad («casi», «más de», «la mayoría») son cifras con disfraz: se miden igual. Y si una imagen trae cuentas, que las haga el mismo script que la dibuja.
+**Señal de alarma.** «Es la cifra que ya teníamos» · «da más o menos eso» · «se ve que todas pasan» · «eso es lo que dice la fuente, más o menos».
+
+**Qué hacer.** Antes de escribir una cifra, mídela otra vez y anota junto a ella de qué dato y de qué fecha salió. Las palabras de cantidad («casi», «más de», «la mayoría») son cifras con disfraz: se miden igual. Y si una imagen trae cuentas, que las haga el mismo script que la dibuja. Junto a una afirmación con fuente, copia también el alcance de la fuente: quién lo midió, sobre qué población, cuándo y, en una encuesta, la pregunta que se hizo; una palabra absoluta que la fuente no tiene, se quita. Lo que no encontraste se dice como tuyo («no encontramos ningún estudio»), y una recomendación sin fuente va firmada («recomendamos»).
 
 ### 50. Si dos explicaciones predicen lo mismo, tu ejemplo no elige entre ellas
 
