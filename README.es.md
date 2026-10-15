@@ -65,7 +65,7 @@ are about to do. If one applies, act on it and say so in one line; if none appli
 **`/ritual` parte de lo que realmente pasó,** no de la memoria (fragmento):
 
 ```text
-Log: 1 failed command(s), 1 correction(s)
+Log: 1 failed command(s), 1 correction(s), 0 agent report(s)
   10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
   10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
 
@@ -82,7 +82,7 @@ Cinco hooks trabajan sin que hagas nada:
 |---|---|---|
 | 📚 **Lecciones del paquete** | Al empezar la sesión, antes de cualquier plan, le da a Claude las lecciones de los paquetes de tu proyecto (web, educación…): lo que suele salir mal en este tipo de proyecto, mientras el diseño todavía puede tenerlo en cuenta. | Una línea por lección del paquete (diez en web), solo con un paquete activo. |
 | 🛡️ **Guardia** | Bloquea los comandos que tu proyecto ya vio fallar y dice qué usar en su lugar. Sus reglas viven en `.ritual/guard.json`, cada una con un caso que bloquea y otro que deja pasar. | Nada, hasta que bloquea. |
-| 📝 **Bitácora** | Anota en el momento cada comando que falla y cada corrección tuya («eso está mal», «hazlo de nuevo»), con lo que Claude estaba tocando. | Nada. |
+| 📝 **Bitácora** | Anota en el momento cada comando que falla y cada corrección tuya («eso está mal», «hazlo de nuevo»), con lo que Claude estaba tocando, y el informe de cada agente que corrió en segundo plano. | Nada. |
 | ❓ **Preguntas** | La primera vez en la sesión que Claude va a editar una prueba, un componente, un script, un documento o una consulta, o a correr un comando o hacer un commit, le muestra las preguntas detectoras de ese grupo. Una vez por grupo y por sesión. | Una línea por lección del grupo, de tres a trece según el grupo y los paquetes. |
 | ✅ **Cierre** | La primera vez que Claude va a terminar después de cambiar archivos, lo devuelve una vez para comprobar el trabajo ejecutándolo: las lecciones de tus paquetes y sus verificaciones automáticas, una línea por verificación con lo que corrió. `"close": false` en `.ritual/config.json` lo apaga. | Una ronda extra por sesión que cambió archivos. |
 

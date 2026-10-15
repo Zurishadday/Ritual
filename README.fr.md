@@ -65,7 +65,7 @@ are about to do. If one applies, act on it and say so in one line; if none appli
 **`/ritual` part de ce qui s'est réellement passé,** et non de la mémoire (extrait) :
 
 ```text
-Log: 1 failed command(s), 1 correction(s)
+Log: 1 failed command(s), 1 correction(s), 0 agent report(s)
   10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
   10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
 
@@ -82,7 +82,7 @@ Cinq hooks fonctionnent sans que vous ayez rien à faire :
 |---|---|---|
 | 📚 **Leçons des paquets** | Au début d'une session, avant tout plan, il donne à Claude les leçons des paquets de votre projet (web, éducation…) : ce que ce type de projet a tendance à mal faire, pendant que la conception peut encore en tenir compte. | Une ligne par leçon de paquet (dix pour web), seulement si un paquet est activé. |
 | 🛡️ **Garde** | Bloque les commandes que votre projet a déjà vu échouer, et indique quoi utiliser à la place. Ses règles se trouvent dans `.ritual/guard.json`, chacune avec un cas qu'elle bloque et un cas qu'elle laisse passer. | Rien, tant qu'elle ne bloque pas. |
-| 📝 **Journal** | Enregistre, au fil de l'eau, chaque commande qui échoue et chaque correction de votre part (« c'est faux », « refais-le »), avec ce que Claude était en train de toucher. | Rien. |
+| 📝 **Journal** | Enregistre, au fil de l'eau, chaque commande qui échoue et chaque correction de votre part (« c'est faux », « refais-le »), avec ce que Claude était en train de toucher, ainsi que le rapport de chaque agent lancé en arrière-plan. | Rien. |
 | ❓ **Questions** | La première fois dans une session que Claude s'apprête à modifier un test, un composant, un script, un document ou une requête, ou à lancer une commande ou à faire un commit, il lui montre les questions détectrices de ce groupe. Une fois par groupe et par session. | Une ligne par leçon du groupe, de trois à treize selon le groupe et les paquets. |
 | ✅ **Clôture** | La première fois que Claude s'apprête à finir après avoir modifié des fichiers, il le renvoie une fois pour vérifier le travail en le faisant tourner : les leçons de vos paquets et leurs contrôles automatiques, une ligne par contrôle sur ce qu'il a lancé. `"close": false` dans `.ritual/config.json` le désactive. | Un tour de plus par session qui a modifié des fichiers. |
 

@@ -65,7 +65,7 @@ are about to do. If one applies, act on it and say so in one line; if none appli
 **`/ritual`은 기억이 아니라 실제로 일어난 일에서 시작합니다** (발췌):
 
 ```text
-Log: 1 failed command(s), 1 correction(s)
+Log: 1 failed command(s), 1 correction(s), 0 agent report(s)
   10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
   10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
 
@@ -82,7 +82,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 |---|---|---|
 | 📚 **패키지 교훈** | 세션을 시작할 때, 어떤 계획보다 먼저, 프로젝트 패키지(web, education…)의 교훈을 Claude에게 줍니다. 이 종류의 프로젝트가 보통 무엇을 잘못하는지, 설계가 아직 그것을 받아들일 수 있을 때 알려 줍니다. | 패키지 교훈 하나당 한 줄(web은 열 줄), 패키지가 켜져 있을 때만. |
 | 🛡️ **가드** | 프로젝트에서 이미 실패한 것을 확인한 명령을 막고, 대신 무엇을 써야 하는지 알려 줍니다. 규칙은 `.ritual/guard.json`에 있으며, 규칙마다 막는 사례 하나와 통과시키는 사례 하나가 붙어 있습니다. | 막기 전까지는 없음. |
-| 📝 **로그** | 실패한 모든 명령과 여러분의 모든 정정(“틀렸어”, “다시 해”)을 일어나는 순간 기록하고, 그때 Claude가 무엇을 건드리고 있었는지 함께 남깁니다. | 없음. |
+| 📝 **로그** | 실패한 모든 명령과 여러분의 모든 정정(“틀렸어”, “다시 해”)을 일어나는 순간 기록하고, 그때 Claude가 무엇을 건드리고 있었는지 함께 남깁니다. 백그라운드에서 실행된 모든 에이전트의 보고서도 기록합니다. | 없음. |
 | ❓ **질문** | 세션에서 처음으로 Claude가 테스트, 컴포넌트, 스크립트, 문서, 쿼리를 편집하려 하거나, 명령을 실행하거나 커밋을 만들려 할 때, 그 그룹의 감지 질문을 Claude에게 보여 줍니다. 그룹당, 세션당 한 번입니다. | 그룹의 교훈 하나당 한 줄. 그룹과 패키지에 따라 3줄에서 13줄. |
 | ✅ **닫기** | 파일을 바꾼 뒤 Claude가 처음으로 끝내려 할 때, 작업을 실행해 확인하도록 한 번 되돌려 보냅니다: 패키지의 교훈과 자동 점검, 점검마다 무엇을 실행했는지 한 줄씩. `.ritual/config.json`에서 `"close": false`로 끌 수 있습니다. | 파일을 바꾼 세션마다 추가로 한 번 더 돌아가기. |
 

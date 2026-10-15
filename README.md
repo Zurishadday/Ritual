@@ -63,7 +63,7 @@ are about to do. If one applies, act on it and say so in one line; if none appli
 **`/ritual` starts from what actually happened,** not from memory (excerpt):
 
 ```text
-Log: 1 failed command(s), 1 correction(s)
+Log: 1 failed command(s), 1 correction(s), 0 agent report(s)
   10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
   10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
 
@@ -80,7 +80,7 @@ Five hooks work without you doing anything:
 |---|---|---|
 | 📚 **Package lessons** | At the start of a session, before any plan, it gives Claude the lessons of your project's packages (web, education…): what this kind of project tends to get wrong, while the design can still take it in. | One line per package lesson (ten for web), only with a package on. |
 | 🛡️ **Guard** | Blocks the commands your project has already seen fail and says what to use instead. Its rules live in `.ritual/guard.json`, each with a case it blocks and one it lets through. | Nothing, until it blocks. |
-| 📝 **Log** | Records, as it happens, every command that fails and every correction of yours ("that's wrong", "do it again"), with what Claude was touching. | Nothing. |
+| 📝 **Log** | Records, as it happens, every command that fails and every correction of yours ("that's wrong", "do it again"), with what Claude was touching, and the report of every agent that ran in the background. | Nothing. |
 | ❓ **Questions** | The first time in a session that Claude is about to edit a test, a component, a script, a document or a query, or to run a command or make a commit, it shows Claude the detector questions of that group. Once per group and per session. | One line per lesson in the group, three to thirteen depending on the group and the packages. |
 | ✅ **Close** | The first time Claude is about to finish after changing files, it sends it back once to check the work by running it: your packages' lessons and their automatic checks, one line per check on what it ran. `"close": false` in `.ritual/config.json` turns it off. | One extra round per session that changed files. |
 

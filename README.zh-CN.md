@@ -65,7 +65,7 @@ are about to do. If one applies, act on it and say so in one line; if none appli
 **`/ritual` 从实际发生的事情出发，**而不是靠记忆（节选）：
 
 ```text
-Log: 1 failed command(s), 1 correction(s)
+Log: 1 failed command(s), 1 correction(s), 0 agent report(s)
   10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
   10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
 
@@ -82,7 +82,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 |---|---|---|
 | 📚 **课程包教训** | 会话开始时，在任何计划之前，它把你项目的课程包（web、education……）的教训交给 Claude：这类项目通常会在哪里出错，此时设计仍可以吸收。 | 每条课程包教训一行（web 为十条），仅在启用课程包时。 |
 | 🛡️ **守卫** | 阻止你的项目已经见过失败的命令，并告诉你该改用什么。规则保存在 `.ritual/guard.json` 中，每条规则都附有一个它会阻止的案例和一个它会放行的案例。 | 没有，直到它拦截为止。 |
-| 📝 **日志** | 即时记录每一条失败的命令，以及你的每一次纠正（“那是错的”、“再做一次”），并附上 Claude 当时正在处理的内容。 | 没有。 |
+| 📝 **日志** | 即时记录每一条失败的命令，以及你的每一次纠正（“那是错的”、“再做一次”），并附上 Claude 当时正在处理的内容；每个在后台运行的代理的报告也会记下。 | 没有。 |
 | ❓ **提问** | 会话中，Claude 第一次准备编辑测试、组件、脚本、文档或查询，或者准备运行命令或提交时，它会把该组的检测问题展示给 Claude。每个组、每个会话只显示一次。 | 组中每条教训占一行，三到十三行不等，取决于所在的组和课程包。 |
 | ✅ **收尾** | 会话中第一次在改动文件后准备结束时，它会把 Claude 送回一次，让它通过运行来检查工作：你的课程包的教训及其自动检查，每项检查一行，说明它运行了什么。在 `.ritual/config.json` 中设置 `"close": false` 即可关闭。 | 每个改动过文件的会话多一轮。 |
 

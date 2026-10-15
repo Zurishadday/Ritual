@@ -65,7 +65,7 @@ are about to do. If one applies, act on it and say so in one line; if none appli
 **`/ritual` は、記憶ではなく、実際に起きたことから始まります**（抜粋）：
 
 ```text
-Log: 1 failed command(s), 1 correction(s)
+Log: 1 failed command(s), 1 correction(s), 0 agent report(s)
   10-12 20:05 cmd  npm run build  →  Exit code 1 Type error: Property 'email' does not exist on type 'FormData'
   10-12 20:05 fix  «that is wrong, the form still loses the message»  while Edit src/components/ContactForm.tsx
 
@@ -82,7 +82,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 |---|---|---|
 | 📚 **パッケージのレッスン** | プロジェクトのパッケージ（web、education など）のレッスンを、セッションの開始時、どんな計画よりも前に Claude に渡します。このような種類のプロジェクトが何を間違えやすいかを、設計がまだ取り込める段階で示します。 | パッケージのレッスン一つにつき一行（web は十行）。パッケージが有効なときだけです。 |
 | 🛡️ **ガード** | プロジェクトがすでに失敗を見たコマンドをブロックし、代わりに何を使うべきかを示します。ルールは `.ritual/guard.json` にあり、それぞれにブロックするケースと、通すケースが一つずつ付いています。 | ブロックするまでは何もかかりません。 |
-| 📝 **ログ** | 失敗したすべてのコマンドと、あなたの訂正（「それは違う」「もう一度やって」）を、Claude が何に触れていたかとともに、その場で記録します。 | 何もかかりません。 |
+| 📝 **ログ** | 失敗したすべてのコマンドと、あなたの訂正（「それは違う」「もう一度やって」）を、Claude が何に触れていたかとともに、その場で記録します。バックグラウンドで動いたエージェントの報告もすべて記録します。 | 何もかかりません。 |
 | ❓ **質問** | セッションで初めて Claude がテスト、コンポーネント、スクリプト、ドキュメント、クエリを編集しようとするとき、またはコマンドを実行したりコミットしたりしようとするとき、そのグループの検出の問いを Claude に示します。グループごと、セッションごとに一度です。 | グループとパッケージによって、グループ内のレッスン一つにつき一行。三行から十三行です。 |
 | ✅ **クローズ** | ファイルを変えたあと、Claude が初めて完了しようとしたとき、一度だけ差し戻して、実際に動かして作業を確認させます。パッケージのレッスンと自動チェックを、確認したものごとに一行ずつ、何を実行したかとともに示します。`.ritual/config.json` の `"close": false` で無効になります。 | ファイルを変更したセッションごとに一回余分なやり取りがあります。 |
 
