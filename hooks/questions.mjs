@@ -12,7 +12,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync 
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { GROUPS, ORIGINAL, TAXONOMY, readLessons, readGroupFile } from "../scripts/lessons.mjs";
+import { GROUPS, ORIGINAL, TAXONOMY, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
@@ -45,6 +45,21 @@ export function groupOf(input, config = DEFAULT_CONFIG, projectBase) {
   return { group: null, target: relative };
 }
 
+// How many lessons a group's questions, or the start's package lessons, show at most. Every one is read in every
+// session, so a library that grows with everyone's rituals can't grow what each session reads. Above the budget the
+// project's own lessons and the ones it sharpened always go, then those confirmed with more models; the rest are named
+// as a count, with where to read them. The largest group today has 16 (tests-and-checks with every package on), so
+// nothing is left out yet.
+export const BUDGET = 20;
+/** Units to show within the budget, in their original order. A unit is {keep, models}: `keep` always goes. */
+export function withinBudget(units, config = {}) {
+  const budget = Number(config.budget) > 0 ? Number(config.budget) : BUDGET;
+  if (units.length <= budget) return { kept: units, hidden: 0 };
+  const chosen = new Set(units.map((u, i) => ({ u, i })).sort((a, b) => (b.u.keep - a.u.keep) || (b.u.models - a.u.models) || (a.i - b.i)).slice(0, budget).map((x) => x.u));
+  return { kept: units.filter((u) => chosen.has(u)), hidden: units.length - chosen.size };
+}
+const leftOut = (hidden, where) => `- (${hidden} more, confirmed with fewer models: ${where}. \`"budget"\` in .ritual/config.json shows more.)`;
+
 /** The lessons that apply to a group: from the plugin (core and active packages) and the project's own.
  * The plugin's lessons always go out in the original (English): they are for Claude, who replies in the user's
  * language anyway. Translations are for people reading them. */
@@ -53,7 +68,7 @@ export function lessonsFor(group, config, ritual) {
   const own = [];
   const projectDir = ritual && path.join(ritual, "lessons");
   if (projectDir && existsSync(projectDir))
-    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons);
+    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons.map((l) => ({ ...l, own: true })));
   const packages = new Set(config.packages ?? []);
   const demoted = new Set((config.demoted ?? []).map(String));
   const applies = (l) => {
@@ -76,12 +91,18 @@ function questionLines(group, config, ritual) {
   const refiners = new Map();
   for (const l of lessons) if (l.data.refines) refiners.set(l.data.refines, [...(refiners.get(l.data.refines) ?? []), l]);
   const line = (l) => `- ${l.id}${l.data.refines ? ` (refines ${l.data.refines})` : ""} · ${question(l)}`;
+  // One unit per line shown: a lesson, or the project's refinements in its place.
   const shown = new Set();
-  const lines = [];
+  const units = [];
   for (const l of lessons) {
     if (shown.has(l)) continue;
-    for (const x of refiners.get(l.id) ?? [l]) { lines.push(line(x)); shown.add(x); }
+    const members = refiners.get(l.id) ?? [l];
+    for (const x of members) shown.add(x);
+    units.push({ lines: members.map(line), keep: members.some((x) => x.own), models: modelsOf(l).length });
   }
+  const { kept, hidden } = withinBudget(units, config);
+  const lines = kept.flatMap((u) => u.lines);
+  if (hidden) lines.push(leftOut(hidden, `lessons/${ORIGINAL}/${group}.md in the Ritual plugin`));
   return { title, lines };
 }
 
@@ -104,7 +125,7 @@ export function packageLessons(config, ritual) {
   const own = [];
   const projectDir = ritual && path.join(ritual, "lessons");
   if (projectDir && existsSync(projectDir))
-    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons);
+    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons.map((l) => ({ ...l, own: true })));
   const inPackage = (l) => !l.merged && !demoted.has(l.id) && (l.data.packages ?? "").split(",").map((s) => s.trim()).some((p) => packages.has(p));
   return [...readLessons(ORIGINAL, PLUGIN).lessons.filter(inPackage), ...own.filter(inPackage)];
 }
@@ -116,9 +137,11 @@ const lessonLine = (l) => `- ${l.id} · ${l.title} · ${(l.parts["Detector quest
 export function packageBrief(config, ritual) {
   const lessons = packageLessons(config, ritual);
   if (!lessons.length) return null;
+  const { kept, hidden } = withinBudget(lessons.map((l) => ({ l, keep: !!l.own, models: modelsOf(l).length })), config);
   return [
     `Ritual · what ${config.about ? `this project (${config.about})` : "this kind of project"} tends to get wrong, from its packages (${config.packages.join(", ")}). When the user asks you to build or change something, design for these from the start, before the first file, and plan how you will check each one by running it, not by reading the code. Reply to the user in their language.`,
-    ...lessons.map(lessonLine),
+    ...kept.map((u) => lessonLine(u.l)),
+    ...(hidden ? [leftOut(hidden, "the package's lessons in the Ritual plugin")] : []),
   ].join("\n");
 }
 
@@ -233,6 +256,16 @@ export function selftest() {
     if ((packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], demoted: ["WEB-3"] }, null) ?? "").includes("- WEB-3 · ")) failures.push("a demoted lesson must not be in the brief");
     writeFileSync(path.join(own, "interface-and-design.md"), `# Interface\n\n${lesson("P-9", null, "A web question of this project?").replace("2026-10`", "2026-10` · `packages: web`")}`);
     if (!(packageBrief({ ...DEFAULT_CONFIG, packages: ["web"] }, path.join(project, ".ritual")) ?? "").includes("- P-9 · Own P-9 · A web question of this project?")) failures.push("a project lesson of a package that is on must be in the brief");
+    // The budget: above it, the project's own lessons stay, then the most confirmed; the rest are counted, not lost.
+    const u = (name, keep, models) => ({ name, keep, models });
+    const b = withinBudget([u("a", false, 1), u("b", true, 0), u("c", false, 3), u("d", false, 2)], { budget: 2 });
+    if (b.kept.map((x) => x.name).join() !== "b,c" || b.hidden !== 2) failures.push(`withinBudget should keep b (own) and c (most models), in order, and count 2: ${b.kept.map((x) => x.name).join()} +${b.hidden}`);
+    if (withinBudget([u("a", false, 1)], {}).hidden) failures.push("under the budget nothing is left out");
+    const tight = context("interface-and-design", { ...DEFAULT_CONFIG, packages: ["web"], budget: 3 }, path.join(project, ".ritual")) ?? "";
+    const shownLines = tight.split("\n").filter((l) => /^- (?!\()/.test(l));
+    if (shownLines.length !== 3 || !tight.includes("- P-9 · ") || !/more, confirmed with fewer models: lessons\/en\/interface-and-design\.md/.test(tight)) failures.push(`with budget 3 a group shows 3 questions, its own lesson among them, and says how many it left out:\n${tight}`);
+    const capped = packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], budget: 2 }, path.join(project, ".ritual")) ?? "";
+    if (capped.split("\n").filter((l) => /^- (?!\()/.test(l)).length !== 2 || !capped.includes("- P-9 · ") || !capped.includes("more, confirmed with fewer models")) failures.push(`the brief keeps the budget too, own lessons first:\n${capped}`);
   } finally { rmSync(project, { recursive: true, force: true }); }
   for (const failure of failures) console.error(`✕ ${failure}`);
   return failures.length;

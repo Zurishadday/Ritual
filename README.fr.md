@@ -83,7 +83,7 @@ Quatre hooks fonctionnent sans que vous ayez rien à faire, et un cinquième est
 | 📚 **Leçons des paquets** | Au début d'une session, avant tout plan, il donne à Claude les leçons des paquets de votre projet (web, éducation…) : ce que ce type de projet a tendance à mal faire, pendant que la conception peut encore en tenir compte. | Une ligne par leçon de paquet (dix pour web), seulement si un paquet est activé. |
 | 🛡️ **Garde** | Bloque les commandes que votre projet a déjà vu échouer, et indique quoi utiliser à la place. Ses règles se trouvent dans `.ritual/guard.json`, chacune avec un cas qu'elle bloque et un cas qu'elle laisse passer. | Rien, tant qu'elle ne bloque pas. |
 | 📝 **Journal** | Enregistre, au fil de l'eau, chaque commande qui échoue et chaque correction de votre part (« c'est faux », « refais-le »), avec ce que Claude était en train de toucher, ainsi que le rapport de chaque agent lancé en arrière-plan. | Rien. |
-| ❓ **Questions** | La première fois dans une session que Claude s'apprête à modifier un test, un composant, un script, un document ou une requête, ou à lancer une commande ou à faire un commit, il lui montre les questions détectrices de ce groupe. Une fois par groupe et par session. | Une ligne par leçon du groupe, de trois à treize selon le groupe et les paquets. |
+| ❓ **Questions** | La première fois dans une session que Claude s'apprête à modifier un test, un composant, un script, un document ou une requête, ou à lancer une commande ou à faire un commit, il lui montre les questions détectrices de ce groupe. Une fois par groupe et par session. | Une ligne par leçon du groupe : aujourd'hui de quatre à seize selon le groupe et les paquets, sans jamais dépasser vingt, les plus confirmées en premier (`"budget"` dans `.ritual/config.json` modifie cette limite). |
 | ✅ **Clôture** (facultative) | Avec `"close": true` dans `.ritual/config.json`, la première fois que Claude s'apprête à finir après avoir modifié des fichiers, il le renvoie une fois pour vérifier le travail en le faisant tourner : les leçons de vos paquets et leurs contrôles automatiques, une ligne par contrôle sur ce qu'il a lancé. Désactivée par défaut ; `/ritual close` la lance quand vous le demandez. | Un tour de plus par session ayant modifié des fichiers, quand elle est activée. |
 
 Les quatre premiers ne font que placer devant Claude, au bon moment, ce que votre projet a déjà appris.
@@ -105,7 +105,7 @@ Quand vous fermez une session, ou après une erreur qui a fait mal, tapez `/ritu
 4. Écrit une **nouvelle leçon** seulement si aucune ne couvre le cas, avec ses cinq parties.
 5. **Monte l'échelle** là où c'est possible : un motif de commande devient une règle de garde ; une propriété du code, ou un test qui porte le nom de la leçon, vu échouer face à la vraie erreur avant qu'on lui fasse confiance ; ce qui ne peut pas être automatisé et a déjà cassé deux fois, une ligne dans `CLAUDE.md`. Le reste reste un candidat daté.
 6. Enregistre tout ensemble, dans le même commit, et lance le vérificateur.
-7. Garde les exemples anonymes et, si une leçon vaut pour n'importe quel projet, vous propose le texte à partager ici. Il ne publie jamais rien de lui-même.
+7. Garde les exemples anonymes et, si une leçon vaut pour n'importe quel projet, vous propose le texte à partager ici. Il vous rappelle les leçons que vous n'avez pas encore partagées et, dès que la bibliothèque en accepte une, marque la vôtre pour qu'elle ne soit pas affichée deux fois. Il ne publie jamais rien de lui-même.
 
 </details>
 

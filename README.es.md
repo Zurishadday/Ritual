@@ -83,7 +83,7 @@ Cuatro hooks trabajan sin que hagas nada, y un quinto está ahí cuando lo quier
 | 📚 **Lecciones del paquete** | Al empezar la sesión, antes de cualquier plan, le da a Claude las lecciones de los paquetes de tu proyecto (web, educación…): lo que suele salir mal en este tipo de proyecto, mientras el diseño todavía puede tenerlo en cuenta. | Una línea por lección del paquete (diez en web), solo con un paquete activo. |
 | 🛡️ **Guardia** | Bloquea los comandos que tu proyecto ya vio fallar y dice qué usar en su lugar. Sus reglas viven en `.ritual/guard.json`, cada una con un caso que bloquea y otro que deja pasar. | Nada, hasta que bloquea. |
 | 📝 **Bitácora** | Anota en el momento cada comando que falla y cada corrección tuya («eso está mal», «hazlo de nuevo»), con lo que Claude estaba tocando, y el informe de cada agente que corrió en segundo plano. | Nada. |
-| ❓ **Preguntas** | La primera vez en la sesión que Claude va a editar una prueba, un componente, un script, un documento o una consulta, o a correr un comando o hacer un commit, le muestra las preguntas detectoras de ese grupo. Una vez por grupo y por sesión. | Una línea por lección del grupo, de tres a trece según el grupo y los paquetes. |
+| ❓ **Preguntas** | La primera vez en la sesión que Claude va a editar una prueba, un componente, un script, un documento o una consulta, o a correr un comando o hacer un commit, le muestra las preguntas detectoras de ese grupo. Una vez por grupo y por sesión. | Una línea por lección del grupo: hoy, de cuatro a dieciséis según el grupo y los paquetes, y nunca más de veinte, primero las más confirmadas (`"budget"` en `.ritual/config.json` cambia ese límite). |
 | ✅ **Cierre** (opcional) | Con `"close": true` en `.ritual/config.json`, la primera vez que Claude va a terminar después de cambiar archivos, lo devuelve una vez para comprobar el trabajo ejecutándolo: las lecciones de tus paquetes y sus verificaciones automáticas, una línea por verificación con lo que corrió. Desactivado por defecto; `/ritual close` lo hace cuando lo pidas. | Una ronda extra por sesión que cambió archivos, cuando está activado. |
 
 Los primeros cuatro solo le ponen enfrente a Claude, en el momento justo, lo que tu proyecto ya aprendió.
@@ -105,7 +105,7 @@ Al cerrar una sesión, o después de un error que dolió, escribe `/ritual`. Lee
 4. Escribe una **lección nueva** solo si ninguna lo cubre, con sus cinco partes.
 5. **Sube por la escalera** lo que se pueda: un patrón de comando se vuelve regla del guardia; una propiedad del código, una prueba con el nombre de la lección, vista fallar contra el error real antes de confiar en ella; lo que no se puede automatizar y ya se rompió dos veces, una línea en `CLAUDE.md`. Lo demás queda como candidato con su fecha.
 6. Guarda todo junto, en el mismo commit, y corre el verificador.
-7. Deja los ejemplos anónimos y, si una lección vale para cualquier proyecto, te ofrece el texto para compartirla aquí. Nunca publica nada por su cuenta.
+7. Deja los ejemplos anónimos y, si una lección vale para cualquier proyecto, te ofrece el texto para compartirla aquí. Te recuerda las lecciones que aún no has compartido y, cuando la biblioteca acepta una, marca la tuya para que no se muestre dos veces. Nunca publica nada por su cuenta.
 
 </details>
 
