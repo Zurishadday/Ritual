@@ -56,7 +56,8 @@ export function scrubRun(target, dir) {
 /** The claude executable: CLAUDE_BIN, then `claude` on the PATH, then the copy the Claude desktop app brings on Windows. */
 export function claudeBin(env = process.env) {
   if (env.CLAUDE_BIN) return env.CLAUDE_BIN;
-  const onPath = spawnSync(process.platform === "win32" ? "where" : "which", ["claude"], { encoding: "utf8", env });
+  // windowsHide: the picker calls this from a process with no console, where Windows would open a window for `where`.
+  const onPath = spawnSync(process.platform === "win32" ? "where" : "which", ["claude"], { encoding: "utf8", env, windowsHide: true });
   if (onPath.status === 0 && onPath.stdout.trim()) return onPath.stdout.trim().split(/\r?\n/)[0];
   const packages = env.LOCALAPPDATA && path.join(env.LOCALAPPDATA, "Packages");
   if (!packages || !existsSync(packages)) return null;
