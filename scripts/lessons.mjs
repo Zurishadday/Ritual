@@ -344,11 +344,13 @@ export function checkProject(project, language = ORIGINAL) {
     if (!GROUPS.includes(group)) { findings.push({ file: rel, line: 1, message: `the file must be named after a group: ${GROUPS.join(", ")}`, level: "error" }); continue; }
     for (const l of readGroupFile(path.join(dir, file), group).lessons) {
       const bad = (m) => findings.push({ file: rel, line: l.line, message: `${l.id}: ${m}`, level: "error" });
-      if (l.data.refines) refining.push({ target: l.data.refines, bad });
+      if (l.data.refines) refining.push({ target: l.data.refines, bad, what: "refines" });
       if (!/^[A-Z]+-\d+$/.test(l.id)) bad("a project lesson needs a prefix and number (P-1)");
       if (seen.has(l.id)) bad("duplicate id");
       seen.add(l.id);
-      if (l.merged) continue;
+      // Where it stands on its way to the library (share.mjs status): sent on a day or as an issue, or kept here.
+      if (l.data.shared && !/^(\d{4}-\d{2}-\d{2}|https:\/\/github\.com\/Zurishadday\/Ritual\/issues\/\d+)$/.test(l.data.shared)) bad("`shared:` is the day it was sent (YYYY-MM-DD) or its issue link");
+      if (l.merged) { refining.push({ target: l.merged, bad, what: "merged into" }); continue; }
       for (const p of parts) if (!l.parts[p]) bad(`missing part «${p}»`);
       for (const m of originProblems(l.data)) bad(m);
       for (const g of list(l.data.groups)) if (!GROUPS.includes(g)) bad(`group «${g}» does not exist`);
@@ -357,7 +359,7 @@ export function checkProject(project, language = ORIGINAL) {
   }
   // A refinement shows up in its lesson's place: a target that doesn't exist (in the library or the project) is lost.
   const known = new Set([...readLessons(ORIGINAL).lessons.map((l) => l.id), ...seen]);
-  for (const { target, bad } of refining) if (!known.has(target)) bad(`refines ${target}, which is not a lesson in Ritual's library or in this project`);
+  for (const { target, bad, what } of refining) if (!known.has(target)) bad(`${what} ${target}, which is not a lesson in Ritual's library or in this project`);
   return findings;
 }
 
@@ -492,6 +494,15 @@ export function selftest() {
       writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own", `\`origin: field · claude-opus-5-5 · 2026-10\` · \`refines: ${target}\``)}\n${LESSON("P-2", "Other")}`);
       const found = checkProject(project).some((x) => x.message.includes(`refines ${target}`));
       if (found === ok) failures.push(`refines ${target} should ${ok ? "pass" : "fail: no such lesson"}`);
+    }
+    // Its status: `shared:` is a day or the issue link; «Merged into N.» names a lesson that exists.
+    for (const [data, ok] of [["`shared: 2026-10-16`", true], ["`shared: https://github.com/Zurishadday/Ritual/issues/12`", true], ["`shared: yesterday`", false], ["`local: only this project's billing rules`", true]]) {
+      writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own", `\`origin: field · claude-opus-5-5 · 2026-10\` · ${data}`)}`);
+      if (checkProject(project).some((x) => x.message.includes("`shared:`")) === ok) failures.push(`${data} should ${ok ? "pass" : "fail"}`);
+    }
+    for (const [target, ok] of [["13", true], ["999", false]]) {
+      writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n### P-1. Own\n\n\`origin: field · claude-opus-5-5 · 2026-10\`\n\nMerged into ${target}.\n\n**The idea.** x\n`);
+      if (checkProject(project).some((x) => x.message.includes(`merged into ${target}`)) === ok) failures.push(`merged into ${target} should ${ok ? "pass" : "fail: no such lesson"}`);
     }
     writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Consola\n\n${LESSON("P-1", "Propia", "`origin: field · ~opus · unknown`", "es")}`);
     if (checkProject(project, "es").length) failures.push("a project lesson in the project's language (es) should pass");

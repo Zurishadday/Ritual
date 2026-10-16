@@ -9,6 +9,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import os from "node:os";
 import path from "node:path";
 import { appendLine, isMain } from "../hooks/common.mjs";
+import { localStatus, ownLessons, statusLine } from "./share.mjs";
 
 /** The readable records, and in `unreadable` how many lines could not be read: they are reported, not skipped silently (WEB-1). */
 const readJsonl = (file) => {
@@ -55,6 +56,9 @@ export function summary(project, { now = new Date() } = {}) {
   lines.push("", `Candidates: ${openRows.length} open of ${rows.length}`);
   for (const l of openRows.slice(0, 10)) lines.push(`  ${short(l, 140)}`);
   if (openRows.length > 10) lines.push(`  … ${openRows.length - 10} more in .ritual/candidates.md`);
+  // The project's own lessons on their way to the library: none should stay here by being forgotten.
+  const own = ownLessons(project);
+  if (own.length) lines.push("", `${statusLine(localStatus(own))} (shared ones checked with share.mjs status)`);
   return lines.join("\n");
 }
 
@@ -97,6 +101,11 @@ export function selftest() {
     writeFileSync(path.join(tmp, ".ritual", "candidates.md"), `# Candidates\n\n| # | What it would check | Lesson | Status | Date |\n|---|---|---|---|---|\n${many}\n`);
     const long = summary(tmp);
     if (!long.includes("12 open of 12") || !long.includes("2 more in .ritual/candidates.md")) bad.push("with 12 open candidates the summary must say it lists 10 and that 2 more are in candidates.md");
+    // Own lessons not shared yet are named, so none stays local by being forgotten.
+    if (long.includes("Lessons here")) bad.push("a project without own lessons gets no line about them");
+    mkdirSync(path.join(tmp, ".ritual", "lessons"), { recursive: true });
+    writeFileSync(path.join(tmp, ".ritual", "lessons", "console-and-tools.md"), "# C\n\n### P-1. One\n\n`origin: field · claude-opus-5-5 · 2026-10`\n\n**The idea.** x\n\n### P-2. Two\n\n`origin: field · claude-opus-5-5 · 2026-10` · `shared: 2026-10-16`\n\n**The idea.** y\n");
+    if (!summary(tmp).includes("Lessons here: 1 not shared yet (P-1) · 1 sent")) bad.push(`the summary must name the own lessons not shared yet: ${summary(tmp).split("\n").at(-1)}`);
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;

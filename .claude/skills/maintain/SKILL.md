@@ -41,6 +41,7 @@ The judgment is yours; the mechanics are in `node scripts/maintain.mjs`. Never e
 5. **Add it.** Run `node scripts/maintain.mjs add .ritual/local/maintain/<N>.md "<origin>"`. It picks the next id (core number or package prefix), drops the share-only parts, and inserts it in order in `lessons/en/<group>.md`.
 6. **Translate it.** See Translations. The lesson can go in English alone if needed: missing translations are warnings.
 7. `node scripts/lessons.mjs --index`, `npm test`, then one commit: `Lesson <id>: <title>` with `Closes #<N>` in the body. Push after `npm run check-publish`. If the lesson counts appear in the READMEs (core count, packages), update all seven.
+8. **Tell the contributor's Ritual.** Draft a closing comment whose last line is exactly `Ritual: merged into <id>.`: the id it was added as, or the existing lesson it confirmed or sharpened in step 1. The contributor's next `/ritual` reads that line (`share.mjs status`) and marks their local lesson merged, so it is not shown twice. It counts only when the maintainer posts it: show the draft and post it on "va". A lesson that was not taken gets no such line.
 
 ## Pull request
 

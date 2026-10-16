@@ -104,7 +104,7 @@ When you close a session, or after a mistake that hurt, type `/ritual`. It reads
 4. Writes a **new lesson** only if none covers it, with its five parts.
 5. **Climbs the ladder** wherever it can: a command pattern becomes a guard rule; a property of the code, a test named after the lesson, seen failing against the real mistake before it is trusted; what cannot be automated and has already broken twice, a line in `CLAUDE.md`. Everything else stays as a dated candidate.
 6. Saves everything together, in the same commit, and runs the checker.
-7. Keeps the examples anonymous and, if a lesson holds for any project, offers you the text to share it here. It never publishes anything on its own.
+7. Keeps the examples anonymous and, if a lesson holds for any project, offers you the text to share it here. It reminds you of the lessons you haven't shared yet, and once the library takes one, marks yours so it isn't shown twice. It never publishes anything on its own.
 
 </details>
 

@@ -6,16 +6,22 @@
 //                                                         lessons of a group, to compare against before writing
 //        node scripts/share.mjs check <file> [project]   checks a lesson ready to share and prints the form link
 //        node scripts/share.mjs confirm <id> <model> <YYYY-MM> <example-file>   link to confirm an existing lesson
+//        node scripts/share.mjs status [project] [--apply]   where each of the project's own lessons stands on its way
+//                                                         to the library; with --apply, marks the accepted ones merged
 //        node scripts/share.mjs --selftest
+// A project's own lesson says where it stands in its data line: nothing (not shared yet), `shared: <YYYY-MM-DD or issue
+// link>` (sent), `local: <why it only fits here>` (stays), or «Merged into N.» once the library took it, so it is not
+// shown twice. The maintainer closes an accepted issue with «Ritual: merged into N.»; status reads only the
+// maintainer's comments, so nobody else can mark someone's lesson merged.
 // The file for `check` is one lesson in English, with its data line, and three extra parts:
 //   **Where it goes.** core | package <slug> | new package <slug>: <covers> | new group <slug>: <covers> | refines <N>
 //   **Transfers to.** two other kinds of project, one line each
 //   **How to reproduce.** the task or prompt, short, with nothing from the project
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { GROUPS, PACKAGES, PARTS, TAXONOMY, originProblems, parseLessons, readLessons } from "./lessons.mjs";
+import { GROUPS, PACKAGES, PARTS, TAXONOMY, originProblems, parseLessons, readGroupFile, readLessons } from "./lessons.mjs";
 import { isMain } from "../hooks/common.mjs";
 
 const REPO = "https://github.com/Zurishadday/Ritual";
@@ -93,6 +99,61 @@ export function shareUrl(l, where, kind = "") {
 
 export function confirmUrl(id, model, month, example, kind = "") {
   return formLink("confirm-a-lesson.yml", { title: `Confirm lesson ${id}`, lesson: id, model, month, kind, example });
+}
+
+/** The project's own lessons, each with its file. */
+export function ownLessons(project) {
+  const dir = path.join(project, ".ritual", "lessons");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir).filter((f) => f.endsWith(".md")).sort().flatMap((f) => readGroupFile(path.join(dir, f), f.slice(0, -3)).lessons.map((l) => ({ ...l, file: path.join(dir, f) })));
+}
+
+/** Where each own lesson stands: not shared yet, sent, kept here on purpose, or merged into the library. */
+export function localStatus(lessons) {
+  const out = { unshared: [], sent: [], local: [], merged: [] };
+  for (const l of lessons) out[l.merged ? "merged" : l.data.local ? "local" : l.data.shared ? "sent" : "unshared"].push(l);
+  return out;
+}
+
+/** One line on the own lessons, for the ritual's summary: what is still waiting to be shared. */
+export function statusLine(s) {
+  const ids = (ls) => ls.map((l) => l.id).join(", ");
+  return `Lessons here: ${s.unshared.length} not shared yet${s.unshared.length ? ` (${ids(s.unshared)})` : ""} · ${s.sent.length} sent · ${s.local.length} only for this project · ${s.merged.length} merged into the library`;
+}
+
+const MAINTAINERS = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
+/** The library id an issue was merged into: the last «Ritual: merged into N.» written by a maintainer, or null. */
+export function acceptedAs(comments) {
+  let id = null;
+  for (const c of comments ?? []) {
+    const m = MAINTAINERS.has(c.author_association) && String(c.body ?? "").match(/^Ritual: merged into (\d+|[A-Z]+-\d+)\.?\s*$/m);
+    if (m) id = m[1];
+  }
+  return id;
+}
+
+/** Marks an own lesson merged: «Merged into N.» under its data line. Its parts stay, as history; the hooks skip it. */
+export function markMerged(text, id, target) {
+  const src = text.replace(/\r\n/g, "\n");
+  const lesson = parseLessons(src, "").lessons.find((l) => l.id === id);
+  if (!lesson) throw new Error(`lesson ${id} not found`);
+  if (lesson.merged) return src;
+  const head = src.match(new RegExp(`^### ${escape(id)}\\. .+\\n\\n(\`[^\\n]+\\n\\n)?`, "m"));
+  return src.replace(head[0], `${head[0]}Merged into ${target}.\n\n`);
+}
+
+const API = "https://api.github.com/repos/Zurishadday/Ritual";
+async function getJson(url) {
+  const r = await fetch(url, { headers: { Accept: "application/vnd.github+json", "User-Agent": "ritual-share-status" }, signal: AbortSignal.timeout(10000) });
+  if (!r.ok) throw new Error(`GitHub answered ${r.status}`);
+  return r.json();
+}
+/** The issue a sent lesson became: by its link in `shared:`, else by its title. */
+async function issueOf(l) {
+  const n = String(l.data.shared).match(/github\.com\/Zurishadday\/Ritual\/issues\/(\d+)/)?.[1];
+  const issue = n ? await getJson(`${API}/issues/${n}`) : (await getJson(`https://api.github.com/search/issues?q=${encodeURIComponent(`repo:Zurishadday/Ritual is:issue in:title "${l.title.replace(/"/g, "")}"`)}`)).items?.[0];
+  if (!issue) return null;
+  return { url: issue.html_url, state: issue.state, as: issue.comments ? acceptedAs(await getJson(issue.comments_url)) : null };
 }
 
 function context(group) {
@@ -177,6 +238,24 @@ export function selftest() {
   const c = new URL(confirmUrl("WEB-1", "claude-sonnet-5-5", "2026-11", "Same thing in a booking form.", "web")).searchParams;
   if (c.get("kind") !== "web") failures.push("the confirm link should carry the kind of project");
   if (c.get("template") !== "confirm-a-lesson.yml" || c.get("lesson") !== "WEB-1" || c.get("example") !== "Same thing in a booking form.") failures.push("the confirm link has wrong fields");
+  // Own lessons on their way to the library: each status, the maintainer's mark, and marking one merged once.
+  const own = parseLessons([
+    "### P-1. Sent", "", "`origin: field · claude-opus-5-5 · 2026-10` · `shared: 2026-10-16`", "", "**The idea.** a", "",
+    "### P-2. Kept", "", "`origin: field · claude-opus-5-5 · 2026-10` · `local: it names this project's billing rules`", "", "**The idea.** b", "",
+    "### P-3. Waiting", "", "`origin: field · claude-opus-5-5 · 2026-10`", "", "**The idea.** c", "",
+    "### P-4. Done", "", "`origin: field · claude-opus-5-5 · 2026-10`", "", "Merged into 30.", "", "**The idea.** d", "",
+  ].join("\n"), "g").lessons;
+  const st = localStatus(own);
+  if ([st.sent, st.local, st.unshared, st.merged].map((x) => x.map((l) => l.id).join()).join("|") !== "P-1|P-2|P-3|P-4") failures.push(`localStatus: ${JSON.stringify(st, (k, v) => (k === "text" || k === "parts" ? undefined : v)).slice(0, 200)}`);
+  if (statusLine(st) !== "Lessons here: 1 not shared yet (P-3) · 1 sent · 1 only for this project · 1 merged into the library") failures.push(`statusLine: ${statusLine(st)}`);
+  const said = (body, author_association) => ({ body, author_association });
+  if (acceptedAs([said("Thanks!", "OWNER"), said("Ritual: merged into 54.", "OWNER")]) !== "54") failures.push("the maintainer's mark gives the id");
+  if (acceptedAs([said("Ritual: merged into 1.", "NONE"), said("Ritual: merged into 2.", "CONTRIBUTOR")]) !== null) failures.push("only a maintainer's comment can mark a lesson merged");
+  if (acceptedAs([said("Looks good.\n\nRitual: merged into WEB-6.", "MEMBER")]) !== "WEB-6") failures.push("a package id is read too");
+  const src = "# G\n\n### P-1. Sent\n\n`origin: field · claude-opus-5-5 · 2026-10` · `shared: 2026-10-16`\n\n**The idea.** a\n\n### P-2. Next\n\n`origin: x`\n\n**The idea.** b\n";
+  const marked = markMerged(src, "P-1", "54");
+  const after = parseLessons(marked, "g").lessons;
+  if (after[0].merged !== "54" || after[0].parts["The idea"] !== "a" || after[1].merged || markMerged(marked, "P-1", "54") !== marked) failures.push(`markMerged: ${marked}`);
   for (const m of failures) console.error(`✕ ${m}`);
   return failures.length;
 }
@@ -206,6 +285,24 @@ if (isMain(import.meta.url)) {
     console.log(`✓ Open this link, read it, and submit it yourself:\n${confirmUrl(id, model, month, readFileSync(file, "utf8").trim(), kindOf(path.resolve(process.env.CLAUDE_PROJECT_DIR ?? process.cwd())))}`);
     process.exit(0);
   }
-  console.error("✕ usage: node scripts/share.mjs context [group] | check <file> [project] | confirm <id> <model> <YYYY-MM> <example-file> | --selftest");
+  if (cmd === "status") {
+    const project = path.resolve(args.find((a) => !a.startsWith("--")) ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
+    const apply = args.includes("--apply");
+    const s = localStatus(ownLessons(project));
+    console.log(statusLine(s));
+    for (const l of s.sent) {
+      let issue;
+      try { issue = await issueOf(l); } catch (e) { console.log(`! ${l.id}: could not reach GitHub (${e.message}); the next ritual tries again`); continue; }
+      if (!issue) console.log(`· ${l.id} sent, no issue found with its title yet: if it was submitted, put its link in \`shared:\``);
+      else if (issue.as) {
+        if (apply) { writeFileSync(l.file, markMerged(readFileSync(l.file, "utf8"), l.id, issue.as)); console.log(`✓ ${l.id} was accepted as ${issue.as} (${issue.url}): marked «Merged into ${issue.as}.»`); }
+        else console.log(`✓ ${l.id} was accepted as ${issue.as} (${issue.url}): run again with --apply to mark it merged`);
+      } else if (issue.state === "closed") console.log(`· ${l.id} closed without merging: ${issue.url}. Read why; if it only fits here, write \`local: <why>\` in its data line`);
+      else console.log(`· ${l.id} sent, still open: ${issue.url}`);
+    }
+    for (const l of s.unshared) console.log(`→ ${l.id} · ${l.title}: not shared yet (/ritual share ${l.id})`);
+    process.exit(0);
+  }
+  console.error("✕ usage: node scripts/share.mjs context [group] | check <file> [project] | confirm <id> <model> <YYYY-MM> <example-file> | status [project] [--apply] | --selftest");
   process.exit(1);
 }
