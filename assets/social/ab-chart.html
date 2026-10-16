@@ -1,6 +1,7 @@
 <!doctype html>
-<!-- Source of assets/ab-chart.png (1080×1350): the A/B in simulations/README.md, as a chart. Every number comes from the
-     runs' BUILDER.md, FIX.md and verdicts.json in simulations/web/runs/. Render with render() from render.mjs at that size. -->
+<!-- Source of assets/ab-chart.png (1080×1350): the blind A/B in simulations/clinic/RESULTS.md, as a chart. "With Ritual" is
+     arm C, Ritual as it ships (the close off). Every number comes from run.json and verdicts.json in
+     simulations/clinic/runs/. Render with render() from render.mjs at that size. -->
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
 <style>
   html, body { width: 1080px; height: 1350px; }
@@ -21,26 +22,31 @@
   svg text { font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif; }
 </style></head>
 <body><div class="page">
-  <div class="head"><img src="../logo.svg" alt=""><b>Ritual</b><div class="pill">A/B test · October 2026</div></div>
-  <h1>Same task, same model.<br><span class="green">With Ritual, far fewer mistakes left.</span></h1>
+  <div class="head"><img src="../logo.svg" alt=""><b>Ritual</b><div class="pill">Blind A/B · October 2026</div></div>
+  <h1>A task Ritual never learned from.<br><span class="green">Fewer mistakes, without a review.</span></h1>
   <div class="stats">
-    <div class="stat"><b class="green">7.5 → 1.7</b><span>known mistakes left<br>per build (of 9)</span></div>
-    <div class="stat"><b class="green">−53%</b><span>tokens to fix<br>what was left</span></div>
-    <div class="stat"><b>≈ same</b><span>total cost, build + fix<br>$0.77 vs $0.74</span></div>
+    <div class="stat"><b class="green">11 → 1</b><span>mistakes decided<br>while writing (of 16)</span></div>
+    <div class="stat"><b class="green">3.5 vs 4.5</b><span>mistakes left: Ritual alone<br>vs reviewed and fixed</span></div>
+    <div class="stat"><b class="green">¼ the cost</b><span>$0.61 vs $2.64<br>per build</span></div>
   </div>
-  <div class="chart"><h2>Known mistakes left per build</h2><p>Of the 9 web lessons, checked by a reviewer that runs the site. Bar: average · dots: each run</p><svg id="mistakes"></svg></div>
-  <div class="chart"><h2>Tokens to fix what the review found</h2><p>Output tokens of the same model, without Ritual, fixing every finding. Bar: average · dots: each run</p><svg id="tokens"></svg></div>
-  <div class="chart"><h2>Cost per project, build + fix</h2>
-    <div class="legend"><span><i style="background:#c9d1d9"></i>Build</span><span><i style="background:repeating-linear-gradient(135deg,#c9d1d9 0 3px,transparent 3px 7px);border:1px solid #c9d1d9"></i>Fix what was left</span></div>
+  <div class="chart"><h2>Package mistakes left per build</h2><p>Of the 10 web lessons, judged by a reviewer that runs the site and doesn't know the arm. Bar: average · dots: each build</p><svg id="mistakes"></svg></div>
+  <div class="chart"><h2>Cost per build</h2>
+    <div class="legend"><span><i style="background:#c9d1d9"></i>Build</span><span><i style="background:repeating-linear-gradient(135deg,#c9d1d9 0 3px,transparent 3px 7px);border:1px solid #c9d1d9"></i>Review</span><span><i style="background:rgba(201,209,217,.35)"></i>Fix</span></div>
     <svg id="cost"></svg></div>
 </div>
 <script>
-  const ARMS = [
-    { name: "Without Ritual", color: "#8B949E", mistakes: [7, 8], tokens: [23549, 25017], build: [0.2833, 0.2728], fix: [0.5346, 0.4468] },
-    { name: "With Ritual", color: "#3FB950", mistakes: [1, 2, 2], tokens: [12628, 6803, 14577], build: [0.3832, 0.5295, 0.6028], fix: [0.2425, 0.1714, 0.2923] },
+  // A: without Ritual, first review, then the review of the fixed build. C: Ritual as it ships.
+  const ROWS = [
+    { name: "Without Ritual", color: "#8B949E", mistakes: [9, 8, 5, 7] },
+    { name: "Without, reviewed + fixed", color: "#8B949E", mistakes: [4, 6, 6, 2] },
+    { name: "With Ritual", color: "#3FB950", mistakes: [3, 2, 4, 5] },
+  ];
+  const COST = [
+    { name: "Without, reviewed + fixed", color: "#8B949E", parts: [0.3282, 1.7573, 0.5547] },
+    { name: "With Ritual", color: "#3FB950", parts: [0.6087, 0, 0] },
   ];
   const avg = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
-  const W = 960, LABEL = 190, PLOT = W - LABEL - 110, ROW = 54, BAR = 30, NS = "http://www.w3.org/2000/svg";
+  const W = 960, LABEL = 290, PLOT = W - LABEL - 110, ROW = 58, BAR = 32, NS = "http://www.w3.org/2000/svg";
   const el = (svg, tag, attrs, text) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; svg.appendChild(e); return e; };
   function axis(svg, max, ticks, fmt, h) {
     for (const t of ticks) {
@@ -49,37 +55,36 @@
       el(svg, "text", { x, y: h - 4, fill: "#7d8590", "font-size": 16, "text-anchor": "middle" }, fmt(t));
     }
   }
-  function dots(id, key, max, ticks, fmt, label) {
-    const svg = document.getElementById(id), h = ARMS.length * ROW + 26;
+  {
+    const svg = document.getElementById("mistakes"), max = 10, h = ROWS.length * ROW + 26;
     svg.setAttribute("width", W); svg.setAttribute("height", h);
-    axis(svg, max, ticks, fmt, h);
-    ARMS.forEach((a, i) => {
-      const y = i * ROW + (ROW - BAR) / 2, v = avg(a[key]), w = (v / max) * PLOT;
+    axis(svg, max, [0, 2, 4, 6, 8, 10], String, h);
+    ROWS.forEach((a, i) => {
+      const y = i * ROW + (ROW - BAR) / 2, v = avg(a.mistakes);
       el(svg, "text", { x: 0, y: y + BAR / 2 + 7, fill: "#c9d1d9", "font-size": 21 }, a.name);
-      el(svg, "rect", { x: LABEL, y, width: w, height: BAR, rx: 4, fill: a.color, "fill-opacity": .85 });
-      for (const d of a[key]) el(svg, "circle", { cx: LABEL + (d / max) * PLOT, cy: y + BAR / 2, r: 6, fill: "#f0f6fc", stroke: "#161b22", "stroke-width": 2 });
+      el(svg, "rect", { x: LABEL, y, width: (v / max) * PLOT, height: BAR, rx: 4, fill: a.color, "fill-opacity": .85 });
+      for (const d of a.mistakes) el(svg, "circle", { cx: LABEL + (d / max) * PLOT, cy: y + BAR / 2, r: 6, fill: "#f0f6fc", stroke: "#161b22", "stroke-width": 2 });
       // The value sits past the bar and every dot, so neither covers it.
-      el(svg, "text", { x: LABEL + (Math.max(v, ...a[key]) / max) * PLOT + 34, y: y + BAR / 2 + 8, fill: "#f0f6fc", "font-size": 22, "font-weight": 600 }, label(v));
+      el(svg, "text", { x: LABEL + (Math.max(v, ...a.mistakes) / max) * PLOT + 34, y: y + BAR / 2 + 8, fill: "#f0f6fc", "font-size": 22, "font-weight": 600 }, v.toFixed(1));
     });
   }
-  dots("mistakes", "mistakes", 9, [0, 3, 6, 9], String, (v) => v.toFixed(1));
-  dots("tokens", "tokens", 30000, [0, 10000, 20000, 30000], (t) => t ? `${t / 1000}k` : "0", (v) => `${(v / 1000).toFixed(1)}k`);
-  // Cost: build solid, fix hatched in the arm's color, total at the end.
-  const svg = document.getElementById("cost"), max = 1, h = ARMS.length * ROW + 26;
-  svg.setAttribute("width", W); svg.setAttribute("height", h);
-  const defs = el(svg, "defs", {});
-  axis(svg, max, [0, 0.25, 0.5, 0.75, 1], (t) => `$${t.toFixed(2)}`, h);
-  ARMS.forEach((a, i) => {
-    const p = el(defs, "pattern", { id: `hatch${i}`, width: 7, height: 7, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" });
-    el(p, "rect", { width: 3, height: 7, fill: a.color });
-    const y = i * ROW + (ROW - BAR) / 2, b = avg(a.build), f = avg(a.fix), bw = (b / max) * PLOT, fw = (f / max) * PLOT;
-    el(svg, "text", { x: 0, y: y + BAR / 2 + 7, fill: "#c9d1d9", "font-size": 21 }, a.name);
-    el(svg, "rect", { x: LABEL, y, width: bw, height: BAR, rx: 4, fill: a.color, "fill-opacity": .85 });
-    el(svg, "rect", { x: LABEL + bw + 2, y, width: fw - 2, height: BAR, rx: 4, fill: `url(#hatch${i})`, stroke: a.color, "stroke-width": 1.5 });
-    el(svg, "text", { x: LABEL + bw / 2, y: y + BAR / 2 + 6, fill: "#0d1117", "font-size": 17, "font-weight": 700, "text-anchor": "middle" }, `$${b.toFixed(3)}`);
-    el(svg, "text", { x: LABEL + bw + fw + 14, y: y + BAR / 2 + 8, fill: "#f0f6fc", "font-size": 22, "font-weight": 600 }, `$${(b + f).toFixed(2)}`);
-    el(svg, "text", { x: LABEL + bw + fw + 84, y: y + BAR / 2 + 8, fill: "#7d8590", "font-size": 17 }, `fix $${f.toFixed(3)}`);
-  });
+  {
+    // Build solid, review hatched, fix faint, total at the end.
+    const svg = document.getElementById("cost"), max = 3, h = COST.length * ROW + 26;
+    svg.setAttribute("width", W); svg.setAttribute("height", h);
+    const defs = el(svg, "defs", {});
+    axis(svg, max, [0, 1, 2, 3], (t) => `$${t}`, h);
+    COST.forEach((a, i) => {
+      const p = el(defs, "pattern", { id: `hatch${i}`, width: 7, height: 7, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" });
+      el(p, "rect", { width: 3, height: 7, fill: a.color });
+      const y = i * ROW + (ROW - BAR) / 2, [b, r, f] = a.parts, px = (v) => (v / max) * PLOT;
+      el(svg, "text", { x: 0, y: y + BAR / 2 + 7, fill: "#c9d1d9", "font-size": 21 }, a.name);
+      el(svg, "rect", { x: LABEL, y, width: px(b), height: BAR, rx: 4, fill: a.color, "fill-opacity": .85 });
+      if (r) el(svg, "rect", { x: LABEL + px(b) + 2, y, width: px(r) - 2, height: BAR, rx: 4, fill: `url(#hatch${i})`, stroke: a.color, "stroke-width": 1.5 });
+      if (f) el(svg, "rect", { x: LABEL + px(b + r) + 2, y, width: px(f) - 2, height: BAR, rx: 4, fill: a.color, "fill-opacity": .35 });
+      el(svg, "text", { x: LABEL + px(b + r + f) + 14, y: y + BAR / 2 + 8, fill: "#f0f6fc", "font-size": 22, "font-weight": 600 }, `$${(b + r + f).toFixed(2)}`);
+    });
+  }
   window.fits = document.querySelector(".page").scrollHeight <= 1350;
 </script>
 </body></html>

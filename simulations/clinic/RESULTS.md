@@ -56,6 +56,10 @@ The split into the two kinds was written down before these runs, from the first 
   - in B, a site-wide security header that blocked the error page's own "go back" link (41, 49).
 - **WEB-1 broke in all four B builds and in one C build:** we have no explanation from these runs.
 
+## Ritual without a review, against a review without Ritual
+
+C is what Ritual does by default since these runs: the close is off unless a project turns it on. A C build, with no review at all, ended with 3.5 package lessons broken on average (2–5). An A build, after its review and its fix, ended with 4.5 (2–6). C cost $0.61 per build; A cost $0.33 to build, $1.76 for its review and $0.55 for its fix: $2.64.
+
 ## What else they show
 
 - **A fix round doesn't finish the job.** After one fix, every arm still had 2 to 5 lessons broken. Lessons the build had held broke after its fix: 6 times in A (2 of them unchecked in A3's first review), 4 in B and 9 in C.

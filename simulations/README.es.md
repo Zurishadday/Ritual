@@ -25,6 +25,8 @@ Para proponer una tarea nueva, abre un issue con el texto de la tarea y qué tip
 
 ## ¿Ritual ayuda? Una prueba A/B con la tarea web
 
+Una segunda prueba A/B, a ciegas y con una tarea nueva, usando Ritual tal como se distribuye hoy: [clinic/RESULTS.md](clinic/RESULTS.md). La primera sigue abajo.
+
 La misma tarea (la solicitud web en español), el mismo constructor (`claude-sonnet-5-5`) y el mismo revisor (`claude-opus-5-5`), 2026-10, con Claude Code 2.1.295–2.1.296. Primero sin Ritual, y luego con los hooks de Ritual cargados y el proyecto configurado con el paquete `web` (`--with-ritual`). Después, la reparación: el mismo constructor, sin Ritual, recibe los hallazgos del revisor sobre una construcción y los corrige (`--fix`), para que el costo de construir y el de arreglar lo que quedó se compare completo.
 
 | | Lecciones cuyo error apareció (de 9) | Errores nuevos | Construir | Corregir lo encontrado | Construir + corregir |

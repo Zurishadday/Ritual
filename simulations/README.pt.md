@@ -25,6 +25,8 @@ Para propor uma tarefa nova, abra uma issue com o texto da tarefa e o tipo de pr
 
 ## O Ritual ajuda? Um A/B na tarefa web
 
+Um segundo A/B, cego e em uma tarefa nova, com o Ritual como é distribuído hoje: [clinic/RESULTS.md](clinic/RESULTS.md). O primeiro vem a seguir.
+
 A mesma tarefa (o pedido web em espanhol), o mesmo construtor (`claude-sonnet-5-5`) e o mesmo revisor (`claude-opus-5-5`), 2026-10, com o Claude Code 2.1.295–2.1.296. Sem o Ritual, depois com os hooks do Ritual carregados e o projeto configurado com o pacote `web` (`--with-ritual`). Depois, o retrabalho: o mesmo construtor, sem o Ritual, recebe os achados do revisor sobre uma construção e os corrige (`--fix`), para que o custo de construir e o de corrigir o que ficou sejam comparados por inteiro.
 
 | | Lições cujo erro apareceu (de 9) | Erros novos | Construir | Corrigir o que foi encontrado | Construir + corrigir |

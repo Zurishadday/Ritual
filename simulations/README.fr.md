@@ -25,6 +25,8 @@ Pour proposer une nouvelle tâche, ouvrez une issue avec le texte de la tâche e
 
 ## Ritual aide-t-il ? Un A/B sur la tâche web
 
+Un second A/B, en aveugle et sur une nouvelle tâche, avec Ritual tel qu'il est distribué aujourd'hui : [clinic/RESULTS.md](clinic/RESULTS.md). Le premier suit.
+
 La même tâche (la demande web en espagnol), le même constructeur (`claude-sonnet-5-5`) et le même relecteur (`claude-opus-5-5`), 2026-10, avec Claude Code 2.1.295–2.1.296. Sans Ritual, puis avec les hooks de Ritual chargés et le projet configuré avec le paquet `web` (`--with-ritual`). Puis la reprise : le même constructeur, sans Ritual, reçoit les constats du relecteur pour une construction et les corrige (`--fix`), afin que le coût de construire et celui de corriger ce qui restait se comparent en totalité.
 
 | | Erreurs couvertes par les leçons, apparues (sur 9) | Nouvelles erreurs | Construction | Corriger ce qui a été trouvé | Construction + correction |

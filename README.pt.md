@@ -76,7 +76,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 ## Como funciona
 
-Cinco hooks funcionam sem que você faça nada:
+Quatro hooks funcionam sem que você faça nada, e um quinto fica disponível quando você quiser:
 
 | Hook | O que faz | O que custa |
 |---|---|---|
@@ -84,15 +84,14 @@ Cinco hooks funcionam sem que você faça nada:
 | 🛡️ **Guarda** | Bloqueia os comandos que o seu projeto já viu falhar e diz o que usar no lugar. Suas regras ficam em `.ritual/guard.json`, cada uma com um caso que ela bloqueia e outro que deixa passar. | Nada, até bloquear. |
 | 📝 **Registro** | Grava, enquanto acontece, cada comando que falha e cada correção sua (“isso está errado”, “faça de novo”), com aquilo que o Claude estava mexendo, e o relatório de cada agente que rodou em segundo plano. | Nada. |
 | ❓ **Perguntas** | Na primeira vez em uma sessão em que o Claude está prestes a editar um teste, um componente, um script, um documento ou uma consulta, ou a rodar um comando ou fazer um commit, mostra ao Claude as perguntas detectoras daquele grupo. Uma vez por grupo e por sessão. | Uma linha por lição do grupo, de três a treze, conforme o grupo e os pacotes. |
-| ✅ **Fechamento** | Na primeira vez em que o Claude está prestes a terminar depois de mudar arquivos, ele o manda de volta uma vez para conferir o trabalho rodando: as lições dos seus pacotes e as verificações automáticas delas, uma linha por verificação sobre o que rodou. `"close": false` em `.ritual/config.json` desliga. | Uma rodada extra por sessão que mudou arquivos. |
+| ✅ **Fechamento** (opcional) | Com `"close": true` em `.ritual/config.json`, na primeira vez em que o Claude está prestes a terminar depois de mudar arquivos, ele o manda de volta uma vez para conferir o trabalho rodando: as lições dos seus pacotes e as verificações automáticas delas, uma linha por verificação sobre o que rodou. Desligado por padrão; `/ritual close` faz isso sempre que você pedir. | Uma rodada extra por sessão que mudou arquivos, quando ligado. |
 
-Os quatro primeiros apenas colocam diante do Claude, no momento certo, o que o seu projeto já aprendeu. O fechamento o manda de volta para rodar as verificações, porque numa simulação as perguntas sozinhas foram lidas e os mesmos erros voltaram.
+Os quatro primeiros apenas colocam diante do Claude, no momento certo, o que o seu projeto já aprendeu.
+**Medido:** em uma tarefa web com a qual o Ritual nunca aprendeu, foram feitas quatro construções com o Ritual e quatro sem ele, e cada uma foi revisada às cegas. Os erros decididos durante a escrita (o caminho de erro, o foco do teclado, um arquivo de dados danificado) apareceram 11 vezes sem o Ritual e uma vez com ele. E uma construção com o Ritual e sem nenhuma revisão terminou com não mais erros do pacote do que uma construção sem o Ritual depois de revisão e correção (3,5 contra 4,5 em média), a cerca de um quarto do custo: $0.61 contra $2.64 para construir, revisar e corrigir. Os dados e o método estão em [simulações](simulations/clinic/RESULTS.md).
 
-**Medido:** na mesma tarefa web e com o mesmo modelo, os erros que as lições do pacote cobrem apareceram 7,5 vezes por build sem o Ritual e 1,7 com ele, e corrigir o que sobrou custou cerca da metade. Construir custa mais, então construir mais corrigir ficou praticamente empatado. Uma tarefa e algumas execuções: os dados, o método e os limites estão em [simulações](simulations/README.pt.md#ab).
+<p align="center"><a href="simulations/clinic/RESULTS.md"><img src="assets/ab-chart.png" alt="Com o Ritual, os erros decididos durante a escrita caíram de 11 para 1, e uma construção sem nenhuma revisão igualou uma construção sem o Ritual que foi revisada e corrigida, a um quarto do custo" width="540"></a></p>
 
-<p align="center"><a href="simulations/README.pt.md#ab"><img src="assets/ab-chart.png" alt="Com o Ritual, 1,7 erros conhecidos por build em vez de 7,5, 53% menos tokens para corrigi-los e quase o mesmo custo total" width="540"></a></p>
-
-Com o pacote **web**, o fechamento roda `scripts/web-check.mjs` contra o site que está rodando na sua máquina: envia o formulário com o JavaScript desligado e com o teclado, manda uma rajada e algumas tentativas recusadas, e salva capturas de tela do celular e do computador. Somente endereços locais; ele diz quantas mensagens de teste enviou.
+Com o pacote **web** e o fechamento ligado, ele roda `scripts/web-check.mjs` contra o site que está rodando na sua máquina: envia o formulário com o JavaScript desligado e com o teclado, manda uma rajada e algumas tentativas recusadas, e salva capturas de tela do celular e do computador. Somente endereços locais; ele diz quantas mensagens de teste enviou.
 
 Ao fechar uma sessão, ou depois de um erro que doeu, digite `/ritual`. Ele lê o registro, encontra qual lição deveria ter pegado cada erro e por que não pegou, e sobe a escada: uma lição vira regra da Guarda ou teste sempre que puder.
 

@@ -23,6 +23,8 @@ To propose a new task, open an issue with the text of the task and the kind of p
 
 ## Does Ritual help? An A/B on the web task
 
+A second A/B, blind and on a new task, with Ritual as it ships today: [clinic/RESULTS.md](clinic/RESULTS.md). The first one follows.
+
 The same task (the Spanish web request), the same builder (`claude-sonnet-5-5`) and the same reviewer (`claude-opus-5-5`), 2026-10, with Claude Code 2.1.295–2.1.296. Without Ritual, then with Ritual's hooks loaded and the project set up with the `web` package (`--with-ritual`). Then the rework: the same builder, without Ritual, gets the reviewer's findings for a build and fixes them (`--fix`), so the cost of building and of fixing what was left compares in full.
 
 | | Lessons that broke (of 9) | New mistakes | Build | Fix what was found | Build + fix |

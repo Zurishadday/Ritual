@@ -74,7 +74,7 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 ## How it works
 
-Five hooks work without you doing anything:
+Four hooks work without you doing anything, and a fifth is there when you want it:
 
 | Hook | What it does | What it costs |
 |---|---|---|
@@ -82,15 +82,15 @@ Five hooks work without you doing anything:
 | 🛡️ **Guard** | Blocks the commands your project has already seen fail and says what to use instead. Its rules live in `.ritual/guard.json`, each with a case it blocks and one it lets through. | Nothing, until it blocks. |
 | 📝 **Log** | Records, as it happens, every command that fails and every correction of yours ("that's wrong", "do it again"), with what Claude was touching, and the report of every agent that ran in the background. | Nothing. |
 | ❓ **Questions** | The first time in a session that Claude is about to edit a test, a component, a script, a document or a query, or to run a command or make a commit, it shows Claude the detector questions of that group. Once per group and per session. | One line per lesson in the group, three to thirteen depending on the group and the packages. |
-| ✅ **Close** | The first time Claude is about to finish after changing files, it sends it back once to check the work by running it: your packages' lessons and their automatic checks, one line per check on what it ran. `"close": false` in `.ritual/config.json` turns it off. | One extra round per session that changed files. |
+| ✅ **Close** (optional) | With `"close": true` in `.ritual/config.json`, the first time Claude is about to finish after changing files, it sends it back once to check the work by running it: your packages' lessons and their automatic checks, one line per check on what it ran. Off by default; `/ritual close` does it whenever you ask. | One extra round per session that changed files, when on. |
 
-The first four only put in front of Claude, at the right moment, what your project has already learned. The close sends it back to run the checks, because in a simulation the questions alone were read and the same mistakes came back.
+They only put in front of Claude, at the right moment, what your project has already learned.
 
-**Measured:** on the same web task and model, the package's lessons broke 7.5 times per build without Ritual and 1.7 with it, and fixing what was left cost about half. Building costs more, so build plus fix came out about even. One task and a few runs: the data, the method and the limits are in [simulations](simulations/README.md#does-ritual-help-an-ab-on-the-web-task).
+**Measured:** a web task Ritual never learned from, built four times with Ritual and four without, every build reviewed blind. The mistakes that get decided while writing (the error path, keyboard focus, a damaged data file) showed up 11 times without Ritual and once with it. And a build with Ritual and no review at all ended with no more of the package's mistakes than a build without Ritual after a review and a fix (3.5 against 4.5 on average), at about a quarter of the cost: $0.61 against $2.64 to build, review and fix. The data and the method are in [simulations](simulations/clinic/RESULTS.md).
 
-<p align="center"><a href="simulations/README.md#does-ritual-help-an-ab-on-the-web-task"><img src="assets/ab-chart.png" alt="With Ritual, 1.7 known mistakes left per build instead of 7.5, 53% fewer tokens to fix them, about the same total cost" width="540"></a></p>
+<p align="center"><a href="simulations/clinic/RESULTS.md"><img src="assets/ab-chart.png" alt="With Ritual, the mistakes decided while writing went from 11 to 1, and a build without any review matched a build without Ritual that was reviewed and fixed, at a quarter of the cost" width="540"></a></p>
 
-With the **web** package, the close runs `scripts/web-check.mjs` against the site running on your machine: it submits the form with JavaScript off and with the keyboard, sends a burst and a few rejected attempts, and saves phone and desktop screenshots. Local addresses only; it says how many test messages it sent.
+With the **web** package and the close on, it runs `scripts/web-check.mjs` against the site running on your machine: it submits the form with JavaScript off and with the keyboard, sends a burst and a few rejected attempts, and saves phone and desktop screenshots. Local addresses only; it says how many test messages it sent.
 
 When you close a session, or after a mistake that hurt, type `/ritual`. It reads the log, finds which lesson should have caught each mistake and why it didn't, and climbs the ladder: a lesson becomes a guard rule or a test whenever it can.
 
