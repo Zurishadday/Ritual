@@ -13,3 +13,17 @@
 **Warning sign.** "That must be why" · "it's obviously this" · writing the cause before looking at the evidence.
 
 **What to do.** Write what was seen as seen, and a guess as a guess ("likely", "not confirmed"). If the evidence can still be read (a log, a saved output), read it before committing. A wrong claim already pushed is corrected in the next commit's message, in so many words.
+
+### P-4. A decision asked for comes with what it could break, in the other person's words
+
+`origin: field · claude-opus-5-5 · 2026-10` · `refines: 30`
+
+**The idea.** Asking for a yes is not explaining. A person can only decide what they understand, and the part they need most is what they could lose, not what they gain.
+
+**Example.** After an A/B, the person was asked to choose between turning an automatic check off by default and keeping it on. The question gave the gains (cheaper, the best numbers) and called the check by the name it had in the code. They said yes, and it was done and pushed. Then they asked what it would hurt, since they had chosen without understanding it. It took four more explanations before they could say what had been turned off. Users who had the check would lose it with the next update, and it had only been measured on one kind of task.
+
+**Detector question.** Before asking for a decision: did I say, in words this person already uses, what changes for them and what could go wrong? Could they explain back what they are choosing?
+
+**Warning sign.** "Option 1 (recommended)" with only its upsides · a name for the thing that only exists in the code or in this session.
+
+**What to do.** For each option, give one line on what changes, one on what could go wrong, and how easy it is to undo. Name a thing by what it does ("the automatic second check when Claude says it's done"), not by its code name. If they answer with a question, the decision isn't made yet.
