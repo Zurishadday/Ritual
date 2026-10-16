@@ -7,6 +7,7 @@
 //      node scripts/summary.mjs --all             the summary of every session
 //      node scripts/summary.mjs --groups          only the groups touched (for /ritual close)
 //      node scripts/summary.mjs --mark            records the date of this ritual, for this session (with --all, for all)
+//      node scripts/summary.mjs --report <file>   draws the closing report from the ritual's decisions (run it before --mark)
 //      node scripts/summary.mjs --selftest
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
@@ -96,6 +97,59 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   return lines.join("\n");
 }
 
+// The closing report of a ritual, drawn from what Claude decided about each error (a small JSON file) plus what the
+// hooks already counted (this session's guard blocks since its last ritual, candidates). Claude classifies; the script counts and
+// draws, so the report reads in seconds and Claude doesn't spend tokens narrating it.
+// File: { "date": "2026-10-16", "errors": [{ "what": "…", "caught": "reviewer", "lesson": "12", "action": "sharpened",
+//         "check": "done" }], "cost": "$9.53 in reviews" }
+// caught: test, reviewer, validator, guard, user (it slipped to the person) or other · action: sharpened, new or none
+// · check: done, open or none.
+const CAUGHT = ["test", "reviewer", "validator", "guard", "other"];
+const bar = (n, max) => "█".repeat(max ? Math.max(n ? 1 : 0, Math.round((n / max) * 20)) : 0);
+const lessonIds = (list) => [...new Set(list.map((e) => e.lesson).filter(Boolean))].join(" ");
+
+export function report(project, data, { session = process.env.CLAUDE_CODE_SESSION_ID || null, all = false } = {}) {
+  const errors = Array.isArray(data?.errors) ? data.errors : [];
+  const caught = errors.filter((e) => e.caught !== "user");
+  const by = {};
+  for (const e of caught) { const k = CAUGHT.includes(e.caught) ? e.caught : "other"; by[k] = (by[k] ?? 0) + 1; }
+  const sharpened = errors.filter((e) => e.action === "sharpened"), created = errors.filter((e) => e.action === "new");
+  const uncovered = errors.filter((e) => e.action !== "sharpened" && e.action !== "new");
+  const done = errors.filter((e) => e.check === "done"), open = errors.filter((e) => e.check === "open");
+
+  // The same marks and the same session filter as the summary: another session's blocks are its own ritual's.
+  const local = path.join(project, ".ritual", "local");
+  const { since } = readMarks(local);
+  const mine = (s) => all || !session || !s || s === session;
+  const blocks = readJsonl(path.join(local, "guard.jsonl")).filter((x) => { const m = since(x.session); return (!m || x.date > m) && mine(x.session); });
+  const byRule = {};
+  for (const b of blocks) byRule[b.rule] = (byRule[b.rule] ?? 0) + 1;
+  const candidates = path.join(project, ".ritual", "candidates.md");
+  const statuses = existsSync(candidates) ? readFileSync(candidates, "utf8").split("\n").filter((l) => /^\|\s*\d/.test(l)).map((l) => (l.split("|")[4] ?? "").trim().split(/[\s:]/)[0].toLowerCase()) : [];
+
+  const max = Math.max(errors.length, 1);
+  const row = (label, n, note = "") => `${label.padEnd(22)}${String(n).padStart(3)}  ${bar(n, max).padEnd(21)}${note}`.trimEnd();
+  const rule = "─".repeat(64);
+  return [
+    `Ritual · ${data?.date ?? new Date().toISOString().slice(0, 10)}`,
+    rule,
+    row("Errors", errors.length),
+    row("  caught by a check", caught.length, Object.entries(by).map(([k, n]) => `${k} ${n}`).join(" · ")),
+    row("  slipped to the user", errors.length - caught.length, errors.length - caught.length ? "the person had to correct it" : ""),
+    "Lessons",
+    row("  existed, didn't fire", sharpened.length, sharpened.length ? `${lessonIds(sharpened)} → sharpened` : ""),
+    row("  new", created.length, lessonIds(created)),
+    row("  no lesson", uncovered.length),
+    "Becomes a check",
+    row("  done", done.length),
+    row("  open (candidate)", open.length),
+    `${"Guard".padEnd(22)}${String(blocks.length).padStart(3)}  block(s)  ${Object.entries(byRule).map(([r, n]) => `${r} ${n}`).join(" · ")}`.trimEnd(),
+    `${"Candidates".padEnd(22)}${String(statuses.filter((s) => s === "open").length).padStart(3)}  open · ${statuses.filter((s) => s === "done").length} done · ${statuses.filter((s) => s === "discarded").length} discarded`,
+    ...(data?.cost ? [`${"Cost".padEnd(22)}     ${data.cost}`] : []),
+    rule,
+  ].join("\n");
+}
+
 /** The groups touched by this session (or, if it is unknown, by the latest one). */
 export function groups(project, { session = process.env.CLAUDE_CODE_SESSION_ID || null } = {}) {
   const dir = path.join(project, ".ritual", "local", "sessions");
@@ -138,6 +192,24 @@ export function selftest() {
     writeFileSync(path.join(tmp, ".ritual", "candidates.md"), `# Candidates\n\n| # | What it would check | Lesson | Status | Date |\n|---|---|---|---|---|\n${many}\n`);
     const long = summary(tmp, { session: null });
     if (!long.includes("12 open of 12") || !long.includes("2 more in .ritual/candidates.md")) bad.push("with 12 open candidates the summary must say it lists 10 and that 2 more are in candidates.md");
+    // The closing report: counts what Claude decided, adds the guard and the candidates, and never loses an error.
+    const rep = report(tmp, { date: "2026-10-16", cost: "$9.53 in reviews", errors: [
+      { caught: "reviewer", lesson: "12", action: "sharpened", check: "done" },
+      { caught: "reviewer", lesson: "EDU-2", action: "sharpened", check: "open" },
+      { caught: "user", lesson: "", action: "none", check: "none" },
+      { caught: "a typo" },
+    ] }, { session: null });
+    const line = (label) => rep.split("\n").find((l) => l.startsWith(label)) ?? "";
+    if (!/\s4\s+█{20}/.test(line("Errors"))) bad.push(`the report should count 4 errors with a full bar: ${line("Errors")}`);
+    if (!/\s3\s.*reviewer 2 · other 1/.test(line("  caught by a check"))) bad.push(`an unknown «caught» must count as other, not vanish: ${line("  caught by a check")}`);
+    if (!/\s1\s/.test(line("  slipped to the user"))) bad.push("the error the person corrected must be counted as slipped");
+    if (!line("  existed, didn't fire").includes("12 EDU-2 → sharpened")) bad.push("the sharpened lessons must be named");
+    if (!/\s2\s/.test(line("  no lesson"))) bad.push("an error with no action counts as having no lesson");
+    if (!/\s1\s/.test(line("  done")) || !/\s1\s/.test(line("  open (candidate)"))) bad.push("checks done and open must be counted apart");
+    if (!line("Guard").includes("python-c 1")) bad.push("the report must add the guard blocks since the last ritual");
+    if (!line("Candidates").includes("12  open")) bad.push(`the report must count the open candidates: ${line("Candidates")}`);
+    if (!line("Cost").includes("$9.53")) bad.push("the cost line is missing");
+    if (!report(tmp, {}, { session: null }).includes("Errors")) bad.push("a report with no errors must still draw");
     // Own lessons not shared yet are named, so none stays local by being forgotten.
     if (long.includes("Lessons here")) bad.push("a project without own lessons gets no line about them");
     mkdirSync(path.join(tmp, ".ritual", "lessons"), { recursive: true });
@@ -162,6 +234,9 @@ export function selftest() {
     if (!b.includes("sed-i-code")) bad.push("after one session's ritual, the other session must still see its guard blocks");
     if (summary(tmp, { session: "aaaa1111-a" }).includes("mine to review")) bad.push("after its ritual, a session must not see its reviewed errors again");
     if (!summary(tmp, { session: "aaaa1111-a", all: true }).includes("theirs to review")) bad.push("--all must include every session's entries");
+    // The report counts guard blocks the way the summary does: this session's, since its own mark.
+    const guardOf = (session) => report(tmp, {}, { session }).split("\n").find((l) => l.startsWith("Guard")) ?? "";
+    if (guardOf("aaaa1111-a").includes("sed-i-code") || !guardOf("bbbb2222-b").includes("sed-i-code 1")) bad.push(`the report must count only this session's guard blocks: ${guardOf("aaaa1111-a")} | ${guardOf("bbbb2222-b")}`);
     mark(tmp, { all: true });
     if (summary(tmp, { session: "bbbb2222-b" }).includes("theirs to review")) bad.push("--mark --all must mark every session");
   } finally { rmSync(tmp, { recursive: true, force: true }); }
@@ -173,7 +248,7 @@ if (isMain(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--selftest")) {
     const bad = selftest();
-    console.log(bad ? `${bad} case(s) failed` : "✓ summary: filters by date and by session, counts unreadable lines without losing the next one, and lists only open items");
+    console.log(bad ? `${bad} case(s) failed` : "✓ summary: filters by date and by session, counts unreadable lines without losing the next one, lists only open items, and draws the closing report");
     process.exit(bad ? 1 : 0);
   }
   const project = path.resolve(args.find((a) => !a.startsWith("--")) ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
@@ -183,5 +258,12 @@ if (isMain(import.meta.url)) {
     process.exit(0);
   }
   if (args.includes("--groups")) { console.log(groups(project).join(", ") || "none recorded"); process.exit(0); }
+  if (args.includes("--report")) {
+    const file = args[args.indexOf("--report") + 1];
+    let data;
+    try { data = JSON.parse(readFileSync(file, "utf8")); } catch (e) { console.error(`✕ cannot read the report file ${file ?? "(none given)"}: ${e.message}`); process.exit(1); }
+    console.log(report(path.resolve(args.find((a, i) => !a.startsWith("--") && args[i - 1] !== "--report") ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd()), data, { all }));
+    process.exit(0);
+  }
   console.log(summary(project, { all }));
 }
