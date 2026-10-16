@@ -150,7 +150,8 @@ if (isMain(import.meta.url)) {
   if (!input || !ritual) process.exit(0);
   const hit = check(input.tool_input?.command, readConfig(ritual));
   if (hit) {
-    appendLine(path.join(ritual, "local", "guard.jsonl"), { rule: hit.name, command: String(input.tool_input?.command ?? "").slice(0, 400) });
+    // With its session, so each session's ritual counts its own blocks (scripts/summary.mjs).
+    appendLine(path.join(ritual, "local", "guard.jsonl"), { session: input.session_id, rule: hit.name, command: String(input.tool_input?.command ?? "").slice(0, 400) });
     console.error(`Ritual guard (${hit.name}): ${hit.message}`);
     process.exit(2);
   }
