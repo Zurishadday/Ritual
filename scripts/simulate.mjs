@@ -454,7 +454,8 @@ if (isMain(import.meta.url)) {
     const dir = workDir(`ritual-sim-${task}-`);
     // With Ritual: the project is set up as a user would, with the task's package, before the builder starts.
     const setup = withRitual ? init(dir, { packages: [pkg], language, about: TAXONOMY.packages[pkg].covers }) : [];
-    if (noClose) { const config = path.join(dir, ".ritual", "config.json"); writeFileSync(config, JSON.stringify({ ...readJson(config, {}), close: false }, null, 2) + "\n"); }
+    // The close is off by default, so the arm with it says so; the start-only arm says it is off.
+    if (withRitual) { const config = path.join(dir, ".ritual", "config.json"); writeFileSync(config, JSON.stringify({ ...readJson(config, {}), close: !noClose }, null, 2) + "\n"); }
     const setupText = Object.fromEntries(["CLAUDE.md", ".gitignore"].filter((f) => setup.includes(f)).map((f) => [f, readFileSync(path.join(dir, f), "utf8")]));
     console.log(`\nRun ${n}: building in ${dir}${withRitual ? " with Ritual" : ""} …`);
     const built = run(bin, builderSession({ prompt: request, model: builder, budget, plugin: withRitual ? ROOT : undefined }), dir);

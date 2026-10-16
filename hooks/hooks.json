@@ -1,5 +1,5 @@
 {
-  "description": "Ritual: blocks commands that already failed, logs errors, corrections and background agents' reports, gives the project's package lessons at session start, injects each group's detector questions once per session, sends Claude back once per session to check its work before it finishes, reminds weekly to update when auto-update is off, and asks once what the project is when its `about` is missing. All hooks do nothing until the project has a .ritual/ folder (created by /ritual).",
+  "description": "Ritual: blocks commands that already failed, logs errors, corrections and background agents' reports, gives the project's package lessons at session start, injects each group's detector questions once per session, when the config turns it on, sends Claude back once per session to check its work before it finishes, reminds weekly to update when auto-update is off, and asks once what the project is when its `about` is missing. All hooks do nothing until the project has a .ritual/ folder (created by /ritual).",
   "hooks": {
     "SessionStart": [
       {

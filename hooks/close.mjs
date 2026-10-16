@@ -2,8 +2,9 @@
 // Stop hook: Ritual's close, on its own. The first time Claude is about to finish after changing files in a session, it
 // is sent back once to check the work the way its user will meet it: run it, go through the lessons of the project's
 // packages, fix what fails, and say what it ran for each. Once per session, so a long session pays for it once; a
-// session that only talked never gets it. `"close": false` in .ritual/config.json turns it off.
-// In the A/B simulation the questions alone, shown while writing, changed nothing: the builder read them and went on.
+// session that only talked never gets it. Off unless `"close": true` in .ritual/config.json: in the blind A/B on a new
+// task (simulations/clinic/RESULTS.md) the package lessons at the start alone did as well, and the close added about
+// $0.41 per build. `/ritual close` still runs it by hand.
 // Usage: node hooks/close.mjs --selftest
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
@@ -33,7 +34,7 @@ export function closeReason(config, ritual, plugin = PLUGIN) {
 export function decide(input, ritual, plugin = PLUGIN) {
   if (!ritual || input?.stop_hook_active) return null;
   const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
-  if (config.close === false) return null;
+  if (config.close !== true) return null;
   const state = session(ritual, input?.session_id);
   if (!state.data.edited || state.data.closed) return null;
   state.data.closed = true;
@@ -49,7 +50,11 @@ export function selftest() {
   const config = (o) => writeFileSync(path.join(ritual, "config.json"), JSON.stringify(o));
   try {
     mkdirSync(ritual, { recursive: true });
+    // Off by default: a project that never turned it on finishes untouched, edits or not.
     config({ packages: ["web"] });
+    state("off", { sent: [], edited: true });
+    if (decide({ session_id: "off" }, ritual)) bad.push("without \"close\": true the close must stay off");
+    config({ packages: ["web"], close: true });
     if (decide({ session_id: "talk" }, ritual)) bad.push("a session that changed no file must finish untouched");
     state("talk", { sent: [] });
     if (decide({ session_id: "talk" }, ritual)) bad.push("a session state without edits must finish untouched");
@@ -64,7 +69,7 @@ export function selftest() {
     config({ packages: [], close: false });
     state("s4", { sent: [], edited: true });
     if (decide({ session_id: "s4" }, ritual)) bad.push("\"close\": false must turn it off");
-    config({ packages: [] });
+    config({ packages: [], close: true });
     const plain = decide({ session_id: "s4" }, ritual);
     if (!plain?.reason.includes("detector questions shown in this session") || plain.reason.includes("web-check")) bad.push(`without packages the close asks for the session's questions and no web check: ${plain?.reason.slice(0, 160)}`);
   } finally { rmSync(tmp, { recursive: true, force: true }); }
@@ -75,7 +80,7 @@ export function selftest() {
 if (isMain(import.meta.url)) {
   if (process.argv.includes("--selftest")) {
     const bad = selftest();
-    console.log(bad ? `${bad} case(s) wrong` : "✓ close: once per session after edits, never in a loop, never after only talking, off when asked");
+    console.log(bad ? `${bad} case(s) wrong` : "✓ close: off unless asked; then once per session after edits, never in a loop, never after only talking");
     process.exit(bad ? 1 : 0);
   }
   const input = await readInput();
