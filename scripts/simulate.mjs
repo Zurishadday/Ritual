@@ -7,10 +7,14 @@
 // login --bare can't authenticate, so it turns those off one by one; check it with --probe before trusting a run.
 // With --with-ritual the builder works in a project set up with Ritual (the task's package) and the plugin loaded: the
 // A/B half that measures what Ritual changes, in mistakes and in spend. Its runs and summary are named <month>-<model>-ritual-*.
+// --no-close (with --with-ritual) turns Ritual's close off: the package lessons at the start only (<month>-<model>-ritual-start-*).
+// --blind keeps the builder's last message from the reviewer (with Ritual it names the lessons), and the run records any
+// mention of Ritual or a lesson id left in the build's files.
 // Usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5]
-//                                  [--language en|es] [--budget 5] [--with-ritual] [--tag v2] [--dry-run]
+//                                  [--language en|es] [--budget 5] [--with-ritual [--no-close]] [--blind] [--tag v2] [--dry-run]
 //        node scripts/simulate.mjs <task> --rereview <saved run> [same flags]   the same build, reviewed again
-//        node scripts/simulate.mjs <task> --fix <saved run> [--language es]     what fixing its findings costs (FIX.md)
+//        node scripts/simulate.mjs <task> --fix <saved run> [same flags]        fixes its findings (FIX.md), then reviews
+//                                                                              the fixed build again (<run>/fixed/)
 //        node scripts/simulate.mjs --probe          what a builder session sees of your setup (cheap, haiku)
 //        node scripts/simulate.mjs --selftest
 import { spawnSync } from "node:child_process";
@@ -156,8 +160,25 @@ export function ritualTrace(local) {
 /** One line about what Ritual did in a build. */
 export const traceLine = (t) => `Ritual: ${t.brief ? "package lessons at the start, " : ""}questions for ${t.sent?.join(", ") || "no group"}, ${t.blocks?.length ?? 0} guard block(s)${t.blocks?.length ? ` (${t.blocks.join(", ")})` : ""}${t.closed ? ", sent back once to check before finishing" : ""}`;
 
-/** What the script writes into a saved run, next to the build. */
-const RUN_FILES = ["BUILDER.md", "REVIEWER.md", "FINDINGS.md", "verdicts.json", "run.json", "FIX.md"];
+/** What the script writes into a saved run, next to the build (`fixed/` holds the fixed build and its review). */
+const RUN_FILES = ["BUILDER.md", "REVIEWER.md", "FINDINGS.md", "verdicts.json", "run.json", "FIX.md", "fixed"];
+
+/** What a blind review gets instead of the builder's last message. */
+export const BLIND = "(not shown: this review is blind. Find how to start the build in its own files.)";
+
+/** Lines in a build that could tell a blind reviewer it was built with Ritual: the word Ritual, a package lesson id, or
+ * "lesson N". @returns {string[]} `file: line` for each. */
+export function mentions(dir, ids) {
+  const prefixed = ids.filter((id) => /^[A-Z]+-\d+$/.test(id));
+  const pattern = new RegExp(["\\bRitual\\b", "\\b(?:lesson|lección|leccion)\\s+\\d+", ...(prefixed.length ? [`\\b(?:${prefixed.join("|")})\\b`] : [])].join("|"), "i");
+  const out = [];
+  for (const entry of readdirSync(dir, { recursive: true, withFileTypes: true })) {
+    if (!entry.isFile() || !/\.(md|json|mjs|js|cjs|html|css|txt)$/.test(entry.name)) continue;
+    const file = path.join(entry.parentPath ?? entry.path, entry.name);
+    for (const line of readFileSync(file, "utf8").split("\n")) if (pattern.test(line)) out.push(`${path.relative(dir, file)}: ${line.trim().slice(0, 120)}`);
+  }
+  return out;
+}
 
 /** The client's request again, with what the review found broken: every lesson that broke and every new mistake. */
 export function fixPrompt(request, verdicts, lessons) {
@@ -180,8 +201,8 @@ export function collect(runsDir, prefix) {
 export function summary({ task, month, builder, reviewer, cli, isolation, runs, result, ritual = false, spends = [] }) {
   const line = (title, ids, note) => `- **${title}** (${ids.length})${ids.length ? `: ${ids.join(", ")}` : ""}${note && ids.length ? `. ${note}` : ""}`;
   return [
-    `# ${task} · ${month} · ${builder}${ritual ? " · with Ritual" : ""}`, "",
-    `Built by \`${builder}\`${ritual ? " with Ritual loaded (its hooks; CLAUDE.md stays off, as in every run)" : ""}, reviewed by \`${reviewer}\`, ${runs} run(s), Claude Code ${cli}, isolation: ${isolation}.`, "",
+    `# ${task} · ${month} · ${builder}${ritual === "start" ? " · Ritual without its close" : ritual ? " · with Ritual" : ""}`, "",
+    `Built by \`${builder}\`${ritual ? ` with Ritual loaded (its hooks${ritual === "start" ? ", with the close turned off" : ""}; CLAUDE.md stays off, as in every run)` : ""}, reviewed by \`${reviewer}\`, ${runs} run(s), Claude Code ${cli}, isolation: ${isolation}.`, "",
     ...(spends.length ? ["## Spend", "", ...spends.map((s, i) => `- Run ${s.run ?? i + 1} · builder ${s.built} · reviewer ${s.reviewed}${s.ritual ? ` · ${traceLine(s.ritual)}` : ""}`), ""] : []),
     "## Lessons of the package", "",
     line("The mistake happened in every run", result.confirmed, `Confirmed with this model: \`node scripts/maintain.mjs seen <id> ${builder} ${month}\` for each.`),
@@ -255,6 +276,19 @@ export function selftest() {
   if (built[built.indexOf("--append-system-prompt") + 1] !== SHELL_RULES || !built.includes("Bash(node:*)")) bad.push("a builder session must get the builder tools and the shell rules");
   if (/run\(bin, session\(\{[^\n]*BUILDER_TOOLS/.test(src)) bad.push("builders and fixers must start through builderSession(), so none misses the shell rules");
   if (!spend({ num_turns: 1, permission_denials: [{}, {}] }).endsWith("· 2 denied tool call(s)")) bad.push("spend must count the denied tool calls");
+  // Blind review: with Ritual the builder's last message named the lessons by id, so the reviewer knew the arm.
+  const blindPrompt = reviewPrompt({ task: "web", request, builderSummary: BLIND, lessons, month: "2026-11", builder: "b" });
+  if (!blindPrompt.includes(BLIND)) bad.push("a blind review prompt must say the builder's message is not shown");
+  const leak = mkdtempSync(path.join(os.tmpdir(), "ritual-sim-leak-"));
+  try {
+    writeFileSync(path.join(leak, "server.mjs"), "// WEB-4: keep focus on the form\nconst x = 1;\n// UTF-8 and WEB-40 are not lessons\n");
+    writeFileSync(path.join(leak, "README.md"), "Built following Ritual.\nSee lesson 41.\nNothing here.\n");
+    const said = mentions(leak, ["32", "WEB-4", "WEB-5"]).sort();
+    if (JSON.stringify(said) !== JSON.stringify(["README.md: Built following Ritual.", "README.md: See lesson 41.", "server.mjs: // WEB-4: keep focus on the form"])) bad.push(`mentions: ${JSON.stringify(said)}`);
+    if (mentions(leak, ["32"]).some((m) => m.includes("Nothing here") || m.includes("const x"))) bad.push("mentions without prefixed ids must not match every line");
+  } finally { rmSync(leak, { recursive: true, force: true }); }
+  if (!summary({ task: "web", month: "m", builder: "b", reviewer: "r", cli: "1", isolation: "x", runs: 1, result: r, ritual: "start" }).includes("· Ritual without its close")) bad.push("the start-only arm's summary must say the close was off");
+  if (!RUN_FILES.includes("fixed")) bad.push("a run's fixed/ folder must stay out of a build copied for review or fix");
   // A summary is rebuilt from the saved runs: a run reviewed again counts once, the summary and other modes don't count.
   const runsDir = mkdtempSync(path.join(os.tmpdir(), "ritual-sim-runs-"));
   try {
@@ -330,6 +364,8 @@ if (isMain(import.meta.url)) {
   if (!task || !existsSync(path.join(ROOT, "simulations", task, "TASK.md"))) { console.error("✕ usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5] [--language en|es] [--budget 5] [--with-ritual] [--tag v2] [--dry-run] [--rereview <saved run>] | --probe | --selftest"); process.exit(1); }
   const runs = Number(flag(args, "--runs", "2")), builder = flag(args, "--builder", "claude-sonnet-5-5"), reviewer = flag(args, "--reviewer", "claude-opus-5-5");
   const language = flag(args, "--language", ORIGINAL), budget = Number(flag(args, "--budget", "5")), withRitual = args.includes("--with-ritual"), tag = flag(args, "--tag", "");
+  const noClose = args.includes("--no-close"), blind = args.includes("--blind");
+  if (noClose && !withRitual) { console.error("✕ --no-close only makes sense with --with-ritual"); process.exit(1); }
   const month = new Date().toISOString().slice(0, 7);
   const pkg = taskPackage(task);
   const lessons = readLessons().lessons.filter((l) => !l.merged && (l.data.packages ?? "").split(",").map((s) => s.trim()).includes(pkg));
@@ -337,7 +373,7 @@ if (isMain(import.meta.url)) {
   const short = builder.replace(/^claude-/, "");
   if (tag && !/^[a-z0-9]+$/.test(tag)) { console.error("✕ --tag is one word of lowercase letters and digits, like v2"); process.exit(1); }
   // Runs and summary are named <month>-<model>-[ritual-][tag-]<n>: a tag starts a new set without touching the old one.
-  const prefix = `${month}-${short}-${withRitual ? "ritual-" : ""}${tag ? `${tag}-` : ""}`;
+  const prefix = `${month}-${short}-${withRitual ? (noClose ? "ritual-start-" : "ritual-") : ""}${tag ? `${tag}-` : ""}`;
   const isolation = session({ prompt: "", model: builder, tools: [], budget }).bare ? "--bare (API key)" : "subscription, flags (checked with --probe?)";
   console.log(`Simulation ${task} (package ${pkg}, ${lessons.length} lesson(s) to check) · builder ${builder}${withRitual ? " with Ritual" : ""} · reviewer ${reviewer} · ${runs} run(s) · up to $${budget} per session · ${isolation} · Claude Code ${cli}`);
   if (args.includes("--dry-run")) {
@@ -347,7 +383,7 @@ if (isMain(import.meta.url)) {
   const runsDir = path.join(ROOT, "simulations", task, "runs");
   /** The review of a build in `dir`; saves what it left in `target`. @returns {boolean} whether it left verdicts. */
   const review = (dir, target, builderSummary, n) => {
-    const reviewed = run(bin, session({ prompt: reviewPrompt({ task, request, builderSummary, lessons, month, builder }), model: reviewer, tools: REVIEWER_TOOLS, budget }), dir);
+    const reviewed = run(bin, session({ prompt: reviewPrompt({ task, request, builderSummary: blind ? BLIND : builderSummary, lessons, month, builder }), model: reviewer, tools: REVIEWER_TOOLS, budget }), dir);
     for (const f of ["FINDINGS.md", "verdicts.json"]) if (existsSync(path.join(dir, f))) cpSync(path.join(dir, f), path.join(target, f));
     writeFileSync(path.join(target, "REVIEWER.md"), `# What the reviewer said\n\n\`${reviewer}\` · ${reviewed.json?.subtype ?? `exit ${reviewed.status}`} · ${spend(reviewed.json)}\n\n${reviewed.json?.result ?? reviewed.stderr ?? "(no final message)"}\n`);
     const record = readJson(path.join(target, "run.json"), {});
@@ -366,7 +402,7 @@ if (isMain(import.meta.url)) {
   const writeSummary = () => {
 
     const saved = collect(runsDir, prefix);
-    const text = summary({ task, month, builder, reviewer, cli, isolation, runs: saved.length, result: compare(saved.map((s) => s.verdicts), lessons.map((l) => l.id)), ritual: withRitual, spends: saved.filter((s) => s.spend.built).map((s) => ({ run: s.n, ...s.spend })) });
+    const text = summary({ task, month, builder, reviewer, cli, isolation: `${isolation}${blind ? ", blind review" : ""}`, runs: saved.length, result: compare(saved.map((s) => s.verdicts), lessons.map((l) => l.id)), ritual: withRitual && (noClose ? "start" : true), spends: saved.filter((s) => s.spend.built).map((s) => ({ run: s.n, ...s.spend })) });
     const file = path.join(runsDir, `${prefix}summary.md`);
     writeFileSync(file, text);
     console.log(`\n${text}\nWritten to ${path.relative(ROOT, file)}. Nothing in lessons/ changed: apply what holds with /maintain.`);
@@ -401,16 +437,24 @@ if (isMain(import.meta.url)) {
     writeFileSync(path.join(target, "FIX.md"), `# Fixing what the review found\n\n\`${builder}\` · ${fixed.json?.subtype ?? `exit ${fixed.status}`} · ${spend(fixed.json)}\n\n${fixed.json?.result ?? fixed.stderr ?? "(no final message)"}\n`);
     writeFileSync(path.join(target, "run.json"), JSON.stringify({ ...readJson(path.join(target, "run.json"), {}), fixed: spend(fixed.json) }, null, 2) + "\n");
     scrubRun(target, dir);
-    try { rmSync(dir, { recursive: true, force: true }); } catch { /* a server may still hold it */ }
     console.log(`  fixed: ${fixed.json?.subtype ?? "?"}, ${spend(fixed.json)}. Saved in ${path.relative(ROOT, path.join(target, "FIX.md"))}`);
-    process.exit(fixed.json ? 0 : 1);
+    if (!fixed.json) process.exit(1);
+    // A fix nobody checked is a claim: the fixed build is saved in <run>/fixed/ and reviewed again, the same way.
+    const after = path.join(target, "fixed");
+    rmSync(after, { recursive: true, force: true });
+    cpSync(dir, after, { recursive: true });
+    console.log("  reviewing the fixed build …");
+    process.exit(review(dir, after, fixed.json.result, Number(toFix.match(/(\d+)$/)?.[1])) ? 0 : 1);
   }
-  for (let n = 1; n <= runs; n++) {
+  // Numbering goes on from the last saved run of this arm, so the arms of an A/B can be interleaved one run at a time.
+  const first = Math.max(0, ...collect(runsDir, prefix).map((s) => s.n)) + 1;
+  for (let n = first; n < first + runs; n++) {
     const target = path.join(ROOT, "simulations", task, "runs", `${prefix}${n}`);
     if (existsSync(target)) { console.error(`✕ ${path.relative(ROOT, target)} already exists: a run is never overwritten`); process.exit(1); }
     const dir = workDir(`ritual-sim-${task}-`);
     // With Ritual: the project is set up as a user would, with the task's package, before the builder starts.
     const setup = withRitual ? init(dir, { packages: [pkg], language, about: TAXONOMY.packages[pkg].covers }) : [];
+    if (noClose) { const config = path.join(dir, ".ritual", "config.json"); writeFileSync(config, JSON.stringify({ ...readJson(config, {}), close: false }, null, 2) + "\n"); }
     const setupText = Object.fromEntries(["CLAUDE.md", ".gitignore"].filter((f) => setup.includes(f)).map((f) => [f, readFileSync(path.join(dir, f), "utf8")]));
     console.log(`\nRun ${n}: building in ${dir}${withRitual ? " with Ritual" : ""} …`);
     const built = run(bin, builderSession({ prompt: request, model: builder, budget, plugin: withRitual ? ROOT : undefined }), dir);
@@ -423,13 +467,16 @@ if (isMain(import.meta.url)) {
       for (const [f, text] of Object.entries(setupText)) if (readFileSync(path.join(dir, f), "utf8") === text) rmSync(path.join(dir, f));
       // A hook that never fired measures nothing: don't pay for a review of a run without Ritual labeled as one with it.
       if (!trace.brief && !trace.sent.length && !trace.blocks.length && !trace.closed) { console.error(`✕ Ritual's hooks left no trace in the build: no lessons or questions went out, nothing was blocked, no close. Check --plugin-dir with this Claude Code (${cli}).`); process.exit(1); }
+      if (noClose && trace.closed) { console.error("✕ the close ran with \"close\": false: this run is not the start-only arm"); process.exit(1); }
     }
     // An empty folder is not a build: reviewing it would cost a session and measure nothing.
     if (!readdirSync(dir).length) { console.error(`✕ the builder left no files. Its last message:\n${built.json.result ?? ""}`); process.exit(1); }
     mkdirSync(target, { recursive: true });
     cpSync(dir, target, { recursive: true });
     writeFileSync(path.join(target, "BUILDER.md"), `# What the builder said\n\n\`${builder}\` · ${built.json.subtype ?? ""} · ${spend(built.json)}${trace ? ` · ${traceLine(trace)}` : ""}\n\n${built.json.result ?? "(no final message)"}\n`);
-    writeFileSync(path.join(target, "run.json"), JSON.stringify({ built: spend(built.json), ritual: trace }, null, 2) + "\n");
+    const said = mentions(dir, lessons.map((l) => l.id));
+    if (blind && said.length) console.error(`  ! the build mentions Ritual or a lesson ${said.length} time(s): the blind reviewer may tell the arm (run.json lists them)`);
+    writeFileSync(path.join(target, "run.json"), JSON.stringify({ built: spend(built.json), ritual: trace, mentions: said }, null, 2) + "\n");
     // Scrubbed now, not only after the review: for the ten minutes a review takes, a commit would find the local paths.
     scrubRun(target, dir);
     console.log(`  built: ${built.json.subtype ?? "?"}, ${spend(built.json)}${trace ? `, ${traceLine(trace)}` : ""}. Reviewing …`);
