@@ -14,6 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { GROUPS, ORIGINAL, TAXONOMY, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
+import { deliver, startPick, workOf } from "./pick.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
@@ -64,6 +65,14 @@ const leftOut = (hidden, where) => `- (${hidden} more, confirmed with fewer mode
  * The plugin's lessons always go out in the original (English): they are for Claude, who replies in the user's
  * language anyway. Translations are for people reading them. */
 export function lessonsFor(group, config, ritual) {
+  const { groups, lessons } = activeLessons(config, ritual);
+  const inGroup = (l) => [l.group, ...(l.data.groups ?? "").split(",").map((s) => s.trim()).filter(Boolean)].includes(group);
+  return { title: groups[group] ?? group, lessons: lessons.filter(inGroup) };
+}
+
+/** Every lesson active in this project, whatever its group: the plugin's core and active packages and the project's own
+ * (marked `own`), without merged or demoted ones. */
+export function activeLessons(config, ritual) {
   const { groups, lessons } = readLessons(ORIGINAL, PLUGIN);
   const own = [];
   const projectDir = ritual && path.join(ritual, "lessons");
@@ -73,12 +82,10 @@ export function lessonsFor(group, config, ritual) {
   const demoted = new Set((config.demoted ?? []).map(String));
   const applies = (l) => {
     if (l.merged || demoted.has(l.id)) return false;
-    const lessonGroups = [l.group, ...(l.data.groups ?? "").split(",").map((s) => s.trim()).filter(Boolean)];
-    if (!lessonGroups.includes(group)) return false;
     const fromPackage = (l.data.packages ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     return !fromPackage.length || fromPackage.some((p) => packages.has(p));
   };
-  return { title: groups[group] ?? group, lessons: [...lessons.filter(applies), ...own.filter(applies)] };
+  return { groups, lessons: [...lessons.filter(applies), ...own.filter(applies)] };
 }
 
 /** A group's question lines: one per active lesson, a project refinement in its original's place. */
@@ -98,13 +105,16 @@ function questionLines(group, config, ritual) {
     if (shown.has(l)) continue;
     const members = refiners.get(l.id) ?? [l];
     for (const x of members) shown.add(x);
-    units.push({ lines: members.map(line), keep: members.some((x) => x.own), models: modelsOf(l).length });
+    units.push({ lines: members.map(line), ids: [...new Set([l.id, ...members.map((x) => x.id)])], keep: members.some((x) => x.own), models: modelsOf(l).length });
   }
   const { kept, hidden } = withinBudget(units, config);
   const lines = kept.flatMap((u) => u.lines);
   if (hidden) lines.push(leftOut(hidden, `lessons/${ORIGINAL}/${group}.md in the Ritual plugin`));
-  return { title, lines };
+  return { title, lines, ids: kept.flatMap((u) => u.ids) };
 }
+
+/** The ids a group's questions show, so a pick doesn't show them again. */
+export const groupIds = (group, config, ritual) => questionLines(group, config, ritual)?.ids ?? [];
 
 export function context(group, config, ritual) {
   const q = questionLines(group, config, ritual);
@@ -290,12 +300,24 @@ if (isMain(import.meta.url)) {
   state.data.last = { tool: input.tool_name, target, date: new Date().toISOString() };
   // For the close (hooks/close.mjs): this session changed files, so it gets checked before it ends.
   if (/^(Edit|Write|MultiEdit|NotebookEdit)$/.test(input.tool_name)) state.data.edited = true;
+  const out = [];
   if (group && !state.data.sent.includes(group)) {
     const text = context(group, config, ritual);
     if (text) {
       state.data.sent.push(group);
-      console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: text } }));
+      state.data.shown = [...new Set([...(state.data.shown ?? []), ...groupIds(group, config, ritual)])];
+      out.push(text);
     }
   }
+  // The lessons picked in the background for this work, from every group (hooks/pick.mjs): the first write of a file
+  // queues a pick, and whatever picks have finished are shown now, without what this session has already seen.
+  if (config.picker !== false) {
+    const lessons = () => activeLessons(config, ritual).lessons;
+    const work = workOf(input, target);
+    if (work) startPick(ritual, input.session_id, work, lessons);
+    const picked = deliver(ritual, input.session_id, state.data, lessons);
+    if (picked) out.push(picked);
+  }
+  if (out.length) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: out.join("\n\n") } }));
   state.save();
 }

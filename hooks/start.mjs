@@ -43,8 +43,10 @@ export function status(config, plugin = PLUGIN) {
 export function resetQuestions(ritual, input) {
   if (!ritual || !["compact", "clear"].includes(input?.source)) return;
   const state = session(ritual, input.session_id);
-  if (!state.data.sent?.length) return;
+  if (!state.data.sent?.length && !state.data.shown?.length) return;
+  // The picked lessons go with the questions: after a compaction Claude no longer has either in view.
   state.data.sent = [];
+  state.data.shown = [];
   state.save();
 }
 
@@ -150,7 +152,7 @@ if (isMain(import.meta.url)) {
   }
   const input = await readInput();
   const ritual = ritualDir(input);
-  if (!ritual) process.exit(0);
+  if (!input || !ritual) process.exit(0);
   resetQuestions(ritual, input);
   writeDigest(ritual);
   const brief = packageBrief({ ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) }, ritual);

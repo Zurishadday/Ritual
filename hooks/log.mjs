@@ -8,9 +8,12 @@
 //   report may be compacted before the ritual. Every agent is logged: the notification carries only the description it was
 //   launched with, in any language, so no name list can tell a reviewer apart; the ritual reads each report and judges.
 // Goes to .ritual/local/log.jsonl (outside git), one line per entry, with the last thing touched in the session.
+// - UserPromptSubmit: a request also starts a background pick of the lessons that apply to it (hooks/pick.mjs).
 // Usage: node hooks/log.mjs --selftest
 import path from "node:path";
-import { appendLine, isMain, readInput, ritualDir, session } from "./common.mjs";
+import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
+import { startPick, workOfPrompt } from "./pick.mjs";
+import { DEFAULT_CONFIG, activeLessons } from "./questions.mjs";
 
 // Precision over coverage: a phrase that is not logged is lost; one logged in excess dirties the ritual.
 const CORRECTION = [
@@ -88,5 +91,11 @@ if (isMain(import.meta.url)) {
   } else if (input.hook_event_name === "UserPromptSubmit") {
     const r = agentReport(input.prompt);
     if (r) appendLine(logFile, { type: "agent", session: input.session_id, ...r });
+  }
+  // A request starts a pick in the background: the lessons for it reach Claude at its next tool call (hooks/pick.mjs).
+  if (input.hook_event_name === "UserPromptSubmit") {
+    const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
+    const work = config.picker !== false && workOfPrompt(input.prompt);
+    if (work) startPick(ritual, input.session_id, work, () => activeLessons(config, ritual).lessons);
   }
 }

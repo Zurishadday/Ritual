@@ -15,6 +15,7 @@ const STEPS = [
   "hooks/questions.mjs --selftest",
   "hooks/start.mjs --selftest",
   "hooks/close.mjs --selftest",
+  "hooks/pick.mjs --selftest",
   "scripts/web-check.mjs --selftest",
   "scripts/init.mjs --selftest",
   "scripts/summary.mjs --selftest",

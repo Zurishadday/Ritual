@@ -10,7 +10,10 @@ export function isMain(url) {
   try { return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(url)); } catch { return false; }
 }
 
+/** The hook's input, or null: then the hook does nothing. Also null inside the background session that picks lessons
+ * (hooks/pick.mjs sets RITUAL_PICKER), so Ritual never fires inside its own picker. */
 export async function readInput() {
+  if (process.env.RITUAL_PICKER) return null;
   let raw = "";
   for await (const chunk of process.stdin) raw += chunk;
   try { return JSON.parse(raw); } catch { return null; }
