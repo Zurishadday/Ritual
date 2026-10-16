@@ -50,16 +50,15 @@ Then follow the steps in order. Each step produces one or two lines for the user
 6. **Write everything together**, in the same commit: lessons, candidates, config and guard rules, the `CLAUDE.md` line. Then run `node "${CLAUDE_PLUGIN_ROOT}/scripts/lessons.mjs" --check --project .`; it must pass.
 7. **Anonymous and on its way.** Examples name no clients, products or people. A lesson caught here is meant for the library, so none should stay local by being forgotten. Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/share.mjs" status --apply`: it marks «Merged into N.» on the lessons the library accepted (so they are not shown twice) and lists the ones not shared yet. For each of those, and for any plugin lesson that fired because the mistake happened again, offer `/ritual share <id>` in one line. A lesson that only fits this project gets `` `local: <why>` `` in its data line instead, and is not offered again. Never publish anything yourself.
 
-Close with `node "${CLAUDE_PLUGIN_ROOT}/scripts/summary.mjs" --mark` (it stamps the date of this ritual for this session only; other sessions keep theirs, with `--all` if this ritual reviewed every session) and a report in this shape:
+Close with the report. Write `.ritual/local/ritual-<YYYY-MM-DD>.json` with one entry per error from step 1, in any language for `what`:
 
+```json
+{ "date": "<YYYY-MM-DD>", "cost": "<optional, measured, e.g. $9.53 in reviews>", "errors": [
+  { "what": "<one line>", "caught": "test|reviewer|validator|guard|user|other", "lesson": "<id or empty>", "action": "sharpened|new|none", "check": "done|open|none" }
+] }
 ```
-Ritual · <date>
-Errors: N (from log: n, from conversation: n)
-Lessons: sharpened N (ids) · new N (ids) · false positives fixed N
-Checks: guard rules N · tests N · CLAUDE.md lines N
-Candidates: open N · closed N · discarded N
-Cost this session: groups sent <list>
-```
+
+`caught` is what found it (`user` when the person had to correct it); `action` is what this ritual did to its lesson; `check` is whether it became a guard rule or a test (`done`) or a candidate (`open`). Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/summary.mjs" --report <that file>` and show its output as is: the script counts and draws, and adds the guard blocks and the candidates. Below it, at most three lines on what needs the user. Then `node "${CLAUDE_PLUGIN_ROOT}/scripts/summary.mjs" --mark` stamps the date of this ritual, after the report, which counts this session's guard blocks since its last one. The mark is for this session only: other sessions keep theirs (with `--all`, on both `--report` and `--mark`, if this ritual reviewed every session).
 
 ## Share (`/ritual share [lesson]`)
 
