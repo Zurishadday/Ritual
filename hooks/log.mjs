@@ -21,6 +21,9 @@ const CORRECTION = [
   /\bte equivocaste\b/i, /\b(sigue|siguen) (igual|roto|rota|fallando)\b/i, /\bno funciona\b/i, /\bno era lo que (pedí|pedi)\b/i, /\botra vez (lo mismo|mal)\b/i,
   /\b(that's|thats|that is|this is|it's|its|it is) (still )?(wrong|broken|not right)\b/i, /\b(redo|do it again|try again)\b/i, /\bnot what i asked\b/i,
   /\bstill (broken|failing|wrong|the same)\b/i, /\bdoesn't work\b/i, /\byou (broke|missed)\b/i, /\bwrong (file|answer|again)\b/i,
+  // The person couldn't follow the answer: the explanation needs correcting, and the ritual should see it.
+  /\bno entiendo\b/i, /\bsigo sin entender\b/i, /\bno (le )?entend[íi](?!\p{L})/iu, /\bexpl[íi]ca(me)? (otra vez|de nuevo|mejor)\b/i,
+  /\bi (don't|do not|still don't) (understand|get it)\b/i, /\bexplain (it )?again\b/i,
 ];
 
 // A correction comes first: only the opening of a prompt counts, so a long brief that quotes "doesn't work" inside is not one.
@@ -56,6 +59,10 @@ const CASES = [
   ["that's wrong, the test still fails", true], ["redo the last step", true], ["still broken", true], ["that is wrong, the form still loses the message", true], ["it is broken again", true],
   ["no está mal, sigue así", false], ["¿qué es un test?", false], ["crea el componente de login", false], ["the design is not bad", false],
   ["explain how hooks work", false], ["está bien, continúa", false],
+  // An answer the person couldn't follow is a correction of the explanation: three went unlogged in one session.
+  ["No entiendo tú lo que estás diciendo. ¿Me puedes explicar?", true], ["Sigo sin entender, perdóname.", true], ["no entendí lo del cierre", true],
+  ["I don't understand what you changed", true], ["explain it again, simpler", true],
+  ["Ya entendí.", false], ["entiendo, continúa", false], ["¿entiendes lo que quiero?", false],
   // A long brief pasted as a prompt is not a correction, even if it quotes one deep inside; a correction comes first.
   [`Necesito una página para el taller.\n\nRequisitos:\n- un formulario de contacto\n- una página de administración\n\nAntecedentes: la versión anterior no funciona en celular y hubo que hacerlo de nuevo varias veces.\n${"Detalle. ".repeat(40)}`, false],
   [`eso está mal: el total no cuadra.\n\n${"Aquí va el detalle de lo que vi. ".repeat(20)}`, true],
