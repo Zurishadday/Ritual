@@ -17,7 +17,7 @@ Each run is saved in `<task>/runs/<year-month>-<model>-<n>/` (`2026-10-sonnet-1`
 
 When a new model comes out, the task is run again. A lesson that no longer breaks is not deleted. It is demoted (`demoted` in the configuration of the project that uses it), and the run records it. This way the library shrinks on its own when the models improve, based on data.
 
-The script does it: `node scripts/simulate.mjs <task>` (for example `web`). Sonnet builds and Opus reviews, twice, each in its own isolated Claude Code session, and the script compares the runs: a lesson whose mistake happened in every run is confirmed with that model, and one whose mistake happened in none is a candidate to demote. Check the isolation first with `node scripts/simulate.mjs --probe`: the model that builds must not see your CLAUDE.md, memory or plugins. Nothing in the library changes until the maintainer applies it with `/maintain`.
+The script does it: `node scripts/simulate.mjs <task>` (for example `web`). Sonnet builds and Opus reviews, twice, each in its own isolated Claude Code session, and the script compares the runs: a lesson whose mistake happened in every run is confirmed with that model, and one whose mistake happened in none is a candidate to demote. Check the isolation first with `node scripts/simulate.mjs --probe`: the model that builds must not see your CLAUDE.md, memory or plugins, and it must be able to start a site and reach it. Nothing in the library changes until the maintainer applies it with `/maintain`.
 
 To propose a new task, open an issue with the text of the task and the kind of project it represents.
 

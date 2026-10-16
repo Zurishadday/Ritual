@@ -71,18 +71,25 @@ export function claudeBin(env = process.env) {
 
 /** Arguments and environment for an isolated headless session. `plugin`: a plugin folder to load into it (Ritual, for the
  * A/B runs), the only thing besides the request that the session gets. */
-export function session({ prompt, model, tools, budget, env = process.env, plugin }) {
+export function session({ prompt, model, tools, budget, env = process.env, plugin, system }) {
   const bare = !!env.ANTHROPIC_API_KEY;
   const args = [...(bare ? ["--bare"] : []), "-p", prompt, "--model", model, "--permission-mode", "dontAsk", ...(tools.length ? ["--allowedTools", ...tools] : []),
-    ...(plugin ? ["--plugin-dir", plugin] : []),
+    ...(plugin ? ["--plugin-dir", plugin] : []), ...(system ? ["--append-system-prompt", system] : []),
     "--output-format", "json", "--max-turns", "80", "--max-budget-usd", String(budget), "--no-session-persistence",
     "--strict-mcp-config", "--disable-slash-commands", "--setting-sources", "project,local"];
   const clean = Object.fromEntries(Object.entries(env).filter(([k]) => !/^(ANTHROPIC_MODEL|ANTHROPIC_SMALL_FAST_MODEL|CLAUDE_PROJECT_DIR|CLAUDECODE|CLAUDE_CODE_ENTRYPOINT|CLAUDE_CODE_SESSION_ID)$/.test(k)));
   return { args, env: { ...clean, CLAUDE_CODE_DISABLE_CLAUDE_MDS: "1", CLAUDE_CODE_DISABLE_AUTO_MEMORY: "1" }, bare };
 }
 
-const BUILDER_TOOLS = ["Read", "Write", "Edit", "Glob", "Grep", "Bash(node:*)", "Bash(curl:*)", "PowerShell(node:*)", "PowerShell(curl:*)"];
+const BUILDER_TOOLS = ["Read", "Write", "Edit", "Glob", "Grep", "Bash(node:*)", "Bash(curl:*)", "PowerShell(node:*)", "PowerShell(curl:*)", "PowerShell(Invoke-WebRequest:*)"];
 const REVIEWER_TOOLS = ["Read", "Write", "Glob", "Grep", "Bash(node:*)", "Bash(curl:*)", "PowerShell(node:*)", "PowerShell(curl:*)", "PowerShell(Invoke-WebRequest:*)"];
+
+/** What the shell of a simulation session allows, told to every session that runs commands: without it every builder in the
+ * A/B tried `cd … && node server.mjs & sleep 2; curl …`, was denied, and stopped, so no build was ever started or checked. */
+export const SHELL_RULES = "Your shell runs only commands that start with `node`, `curl` or `Invoke-WebRequest`, and each part of a `&&` or `;` chain is checked the same way: `cd`, `sleep`, `Start-Sleep`, `Start-Process`, `VAR=value` prefixes and `$env:` assignments are denied. Set a port or an env variable and wait from inside Node (a small .mjs script you write here, or node -e), and start a server with the shell tool's run-in-background option.";
+
+/** A builder's (or fixer's) session: the request, the builder tools, and the shell rules. */
+export const builderSession = (opts) => session({ ...opts, tools: BUILDER_TOOLS, system: SHELL_RULES });
 
 /** The client's request: TASK.md after its `---` line, exactly as written. */
 export function taskText(task, language = ORIGINAL) {
@@ -114,7 +121,7 @@ export function reviewPrompt({ task, request, builderSummary, lessons, month, bu
     `1. FINDINGS.md as the guide says, with \`origin: lab · ${builder} · ${month}\` and \`packages: ${lessons[0]?.data.packages ?? ""}\` on candidate lessons.`,
     "2. verdicts.json, exactly this shape:",
     '{ "lessons": { "<id>": { "verdict": "broke" | "held" | "not-checked", "evidence": "<command and output, one line>" } }, "new": [ { "title": "<a mistake no listed lesson covers>", "class": "<form|server|security|accessibility|mobile|data|false claim>", "evidence": "<one line>" } ] }',
-    "Your shell runs only commands that start with `node`, `curl` or `Invoke-WebRequest`, and each part of a `&&` or `;` chain is checked the same way: `cd`, `sleep`, `Start-Sleep`, `Start-Process`, `VAR=value` prefixes and `$env:` assignments are denied. Set a port or an env variable and wait from inside Node (a small .mjs script you write here, or node -e), and start a server with the shell tool's run-in-background option.",
+    SHELL_RULES,
     "Fix nothing in the build. If a port is already in use, a process left by the build may still be running: use another port and do not count it as a finding. Stop any server you start before you finish.",
   ].join("\n");
 }
@@ -133,7 +140,7 @@ export function compare(runs, ids) {
 }
 
 /** One line about a session's spend, from its --output-format json. */
-export const spend = (json) => `${json?.num_turns ?? "?"} turns · $${json?.total_cost_usd ?? "?"} · ${json?.usage?.output_tokens ?? "?"} output tokens`;
+export const spend = (json) => `${json?.num_turns ?? "?"} turns · $${json?.total_cost_usd ?? "?"} · ${json?.usage?.output_tokens ?? "?"} output tokens${json?.permission_denials?.length ? ` · ${json.permission_denials.length} denied tool call(s)` : ""}`;
 
 /** What Ritual did in a build, from the .ritual/local it left: whether the package lessons went out at the start, the
  * groups whose questions went out, the guard blocks, and whether the close sent the builder back to check. */
@@ -243,6 +250,11 @@ export function selftest() {
   if (sub.args.includes("--plugin-dir")) bad.push("without plugin, the session must load none");
   // Two of three reviews ran nothing: every command was denied for not starting with an allowed program.
   if (!prompt.includes("start with `node`, `curl` or `Invoke-WebRequest`")) bad.push("the review prompt must say which commands its shell allows");
+  // Every builder and fixer of the A/B had its shell denied and started nothing, so the close's web check never ran.
+  const built = builderSession({ prompt: "x", model: "m", budget: 1, env: {} }).args;
+  if (built[built.indexOf("--append-system-prompt") + 1] !== SHELL_RULES || !built.includes("Bash(node:*)")) bad.push("a builder session must get the builder tools and the shell rules");
+  if (/run\(bin, session\(\{[^\n]*BUILDER_TOOLS/.test(src)) bad.push("builders and fixers must start through builderSession(), so none misses the shell rules");
+  if (!spend({ num_turns: 1, permission_denials: [{}, {}] }).endsWith("· 2 denied tool call(s)")) bad.push("spend must count the denied tool calls");
   // A summary is rebuilt from the saved runs: a run reviewed again counts once, the summary and other modes don't count.
   const runsDir = mkdtempSync(path.join(os.tmpdir(), "ritual-sim-runs-"));
   try {
@@ -301,7 +313,18 @@ if (isMain(import.meta.url)) {
     console.log(`Claude Code ${cli} · isolation: ${s.bare ? "--bare (API key)" : "subscription, flags"}\n`);
     console.log(r.json?.result ?? `✕ exit ${r.status}\n${r.stderr}${r.stdout}`);
     console.log("\nA builder must see none of your CLAUDE.md, memory, plugins or MCP servers. If it names any, do not trust a run yet.");
-    process.exit(r.json?.result ? 0 : 1);
+    // The shell: a builder session gets a small site and must start it and reach it. The site leaves a file when it is
+    // reached, so the check is the file and the denied calls, not what the model says it did.
+    const site = workDir("ritual-probe-shell-");
+    const port = 40000 + Math.floor(Math.random() * 20000);
+    writeFileSync(path.join(site, "server.mjs"), `import http from "node:http";\nimport { writeFileSync } from "node:fs";\nhttp.createServer((req, res) => { writeFileSync("reached.txt", "yes"); res.end("hello"); }).listen(${port});\n`);
+    const shell = run(bin, builderSession({ prompt: `server.mjs in this folder is a small site. Check its syntax, start it, confirm it answers on http://localhost:${port}, then stop it. Say in one line what you ran.`, model: flag(args, "--builder", "haiku"), budget: 0.5 }), site, 5 * 60 * 1000);
+    const reached = existsSync(path.join(site, "reached.txt"));
+    const denied = (shell.json?.permission_denials ?? []).map((d) => d.tool_input?.command ?? d.tool_name);
+    try { rmSync(site, { recursive: true, force: true }); } catch { /* a server it left may still hold it */ }
+    console.log(`\nShell: ${reached ? "✓ the builder started a site and reached it" : "✕ the builder did not reach the site it was asked to start"}${denied.length ? `; denied: ${denied.join(" | ")}` : ""}`);
+    if (!reached) console.log(`Its last message: ${shell.json?.result ?? `exit ${shell.status} ${shell.stderr}`}\nWithout this, the close's web check never runs in a build: do not trust an A/B yet.`);
+    process.exit(r.json?.result && reached ? 0 : 1);
   }
   const task = taskArg(args);
   if (!task || !existsSync(path.join(ROOT, "simulations", task, "TASK.md"))) { console.error("✕ usage: node scripts/simulate.mjs <task> [--runs 2] [--builder claude-sonnet-5-5] [--reviewer claude-opus-5-5] [--language en|es] [--budget 5] [--with-ritual] [--tag v2] [--dry-run] [--rereview <saved run>] | --probe | --selftest"); process.exit(1); }
@@ -374,7 +397,7 @@ if (isMain(import.meta.url)) {
     const dir = workDir(`ritual-sim-${task}-`);
     cpSync(target, dir, { recursive: true, filter: (src) => path.dirname(src) !== target || !RUN_FILES.includes(path.basename(src)) });
     console.log(`\nFixing what the review of ${toFix} found …`);
-    const fixed = run(bin, session({ prompt: fixPrompt(request, v, lessons), model: builder, tools: BUILDER_TOOLS, budget }), dir);
+    const fixed = run(bin, builderSession({ prompt: fixPrompt(request, v, lessons), model: builder, budget }), dir);
     writeFileSync(path.join(target, "FIX.md"), `# Fixing what the review found\n\n\`${builder}\` · ${fixed.json?.subtype ?? `exit ${fixed.status}`} · ${spend(fixed.json)}\n\n${fixed.json?.result ?? fixed.stderr ?? "(no final message)"}\n`);
     writeFileSync(path.join(target, "run.json"), JSON.stringify({ ...readJson(path.join(target, "run.json"), {}), fixed: spend(fixed.json) }, null, 2) + "\n");
     scrubRun(target, dir);
@@ -390,7 +413,7 @@ if (isMain(import.meta.url)) {
     const setup = withRitual ? init(dir, { packages: [pkg], language, about: TAXONOMY.packages[pkg].covers }) : [];
     const setupText = Object.fromEntries(["CLAUDE.md", ".gitignore"].filter((f) => setup.includes(f)).map((f) => [f, readFileSync(path.join(dir, f), "utf8")]));
     console.log(`\nRun ${n}: building in ${dir}${withRitual ? " with Ritual" : ""} …`);
-    const built = run(bin, session({ prompt: request, model: builder, tools: BUILDER_TOOLS, budget, plugin: withRitual ? ROOT : undefined }), dir);
+    const built = run(bin, builderSession({ prompt: request, model: builder, budget, plugin: withRitual ? ROOT : undefined }), dir);
     if (!built.json) { console.error(`✕ the builder did not run (exit ${built.status}):\n${built.stderr}${built.stdout}`); process.exit(1); }
     // Ritual's own files leave before the review: the reviewer judges the build, not the setup.
     let trace = null;

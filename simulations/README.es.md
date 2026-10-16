@@ -17,7 +17,7 @@ Cada corrida se guarda en `<tarea>/runs/<año-mes>-<modelo>-<n>/` (`2026-10-sonn
 
 Cuando sale un modelo nuevo, se vuelve a correr la tarea. Una lección que ya no se rompe no se borra: se baja (`demoted` en la configuración del proyecto que la use) y la corrida lo deja escrito. Así la biblioteca se achica sola cuando los modelos mejoran, con datos.
 
-Lo hace el script: `node scripts/simulate.mjs <task>` (por ejemplo `web`). Sonnet construye y Opus revisa, dos veces, cada uno en su propia sesión aislada de Claude Code, y el script compara las corridas: una lección cuyo error se repitió en todas se confirma con ese modelo, y una cuyo error no apareció en ninguna es candidata a bajar. Primero comprueba el aislamiento con `node scripts/simulate.mjs --probe`: el modelo que construye no debe ver tu CLAUDE.md, tu memoria ni tus plugins. Nada de la biblioteca cambia hasta que quien mantiene el repositorio lo aplique con `/maintain`.
+Lo hace el script: `node scripts/simulate.mjs <task>` (por ejemplo `web`). Sonnet construye y Opus revisa, dos veces, cada uno en su propia sesión aislada de Claude Code, y el script compara las corridas: una lección cuyo error se repitió en todas se confirma con ese modelo, y una cuyo error no apareció en ninguna es candidata a bajar. Primero comprueba el aislamiento con `node scripts/simulate.mjs --probe`: el modelo que construye no debe ver tu CLAUDE.md, tu memoria ni tus plugins, y debe poder levantar un sitio y llegar a él. Nada de la biblioteca cambia hasta que quien mantiene el repositorio lo aplique con `/maintain`.
 
 Para proponer una tarea nueva, abre un issue con el texto de la tarea y qué tipo de proyecto representa.
 
