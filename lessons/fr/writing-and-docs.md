@@ -34,17 +34,21 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 38. Ce qu'on ne sait pas se marque, il ne s'invente pas
 
-`from: 052e301a` · `by: ai`
+`from: 93f49fe9` · `by: ai`
 
 **L'idée.** Un document officiel affirme tout avec la même autorité. Un détail inventé, comme un responsable, un calendrier ou un délai de réponse, se lit exactement comme un détail réel.
 
 **Exemple.** Une procédure prévoyait un délai de réponse de 24 heures que personne n'avait convenu. Il avait été écrit parce qu'il semblait raisonnable, et une fois publié, il est devenu un engagement.
 
-**Question détectrice.** Est-ce que je connais ce détail, ou est-ce que je le suppose parce qu'il semble raisonnable ?
+**Autre exemple.** Un message de commit expliquait pourquoi deux relectures n'avaient rien lancé : le relecteur avait tapé certaines commandes. Personne n'avait vu ces commandes ; le journal disait seulement « denied ». Le message était déjà public, et le commit suivant a dû le corriger.
 
-**Signal d'alarme.** « Forcément, c'est comme ça. »
+**Encore un exemple.** Quelqu'un a posé une question sur un outil dont le nom ne disait rien. On l'a pris pour un outil bien connu au nom voisin, qu'on a cherché et expliqué longuement. Il parlait d'un produit nouveau portant ce nom exact ; le chercher tel quel l'aurait trouvé tout de suite.
 
-**Que faire.** Marquez ce qui manque de façon visible, par exemple « En attente » en rouge, et demandez à qui le sait. Une formulation neutre vaut mieux qu'une formulation fausse.
+**Question détectrice.** Est-ce que je connais ce détail, ou est-ce que je le suppose parce qu'il semble raisonnable ? Une cause, un nom, un chiffre : est-ce que je l'ai vu, ou est-ce ma meilleure supposition ?
+
+**Signal d'alarme.** « Forcément, c'est comme ça. » · « C'est sûrement pour ça. » · « Ils doivent vouloir dire… »
+
+**Que faire.** Marquez ce qui manque de façon visible, par exemple « En attente » en rouge, et demandez à qui le sait. Une formulation neutre vaut mieux qu'une formulation fausse. Dans un message de commit, une cause que personne n'a vue dans une sortie s'écrit comme une supposition (« probablement »). Un nom que vous ne reconnaissez pas se cherche exactement tel quel ; si rien ne correspond, demandez de quel nom il s'agit.
 
 **À ne pas confondre avec.** La marque est destinée à la personne qui décide, pas au lecteur final. Un « confirmation en attente » dans un texte publié est une autre donnée qui ne devrait pas s'y trouver. Si le document sort avant d'être confirmé, utilisez une formulation neutre qui n'affirme pas ce qui manque, et gardez l'élément en attente dans le rapport ou le dossier du projet.
 
@@ -117,6 +121,20 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 **Signal d'alarme.** « C'est comme ça que ça marche » · « tout le monde fait comme ça ».
 
 **Que faire.** Avant d'écrire sur un outil qui évolue vite, cherchez la pratique actuelle avec des sources et des dates : ce que l'outil fait maintenant, ce qui est gratuit, ce que les gens utilisent réellement. Construisez le texte autour de la compétence qui survivra à la prochaine version (cadrer, superviser, vérifier), et gardez les étapes propres à l'outil à un seul endroit, facile à mettre à jour. Signalez ce que vous n'avez pas pu vérifier, et essayez vous-même avant de publier.
+
+### 54. « Le X au début et à la fin » : tous les traducteurs choisissent la même mauvaise lecture
+
+`from: f31b1607` · `by: ai`
+
+**L'idée.** Un qualificatif placé devant deux éléments reliés par « et » peut s'appliquer aux deux, ou au premier seulement. L'auteur sait laquelle des deux lectures il vise ; le lecteur doit deviner, et les traducteurs devinent tous de la même façon.
+
+**Exemple.** Une page de résultats disait « ce qui l'a changé, ce sont les leçons du début et de la clôture », en parlant de deux parties d'un outil : les leçons affichées au début, et une étape de vérification finale. Les six traductions ont lu la phrase comme une seule chose : les leçons affichées au début et à la fin. Deux jours plus tard, la même construction s'est retrouvée dans un nouveau paragraphe, et les traductions l'ont de nouveau mal lue.
+
+**Question détectrice.** Dans cette phrase, une construction « le X au A et B » a-t-elle deux lectures ? Traduite mot à mot, l'autre lecture ressortirait-elle ?
+
+**Signal d'alarme.** Une liste de deux éléments dont l'un est une chose et l'autre un moment ou un lieu.
+
+**Que faire.** Rendez la coupure visible. Comptez-la (« deux morceaux : … »), donnez à chaque élément son propre article (« les leçons du début, et la clôture »), ou placez d'abord l'élément court (« la clôture, et les leçons du début »). Relisez ensuite la traduction de cette phrase pour vérifier qu'elle porte la lecture voulue.
 
 ### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
 

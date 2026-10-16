@@ -36,17 +36,19 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 30. Explica antes de hacer y espera el sí
 
-`from: 78e8a4b8` · `by: author`
+`from: a2c8ffe9` · `by: ai`
 
 **La idea.** Avanzar rápido en la dirección equivocada no es avanzar.
 
 **Ejemplo.** Se reorganizó la estructura de carpetas de un proyecto entero sin avisar. El cambio era correcto en sí mismo y se deshizo completo, porque otra persona ya había decidido esa estructura por razones que no estaban en el código.
 
-**Pregunta detectora.** ¿Este bloque es grande, difícil de deshacer o cambia algo que otra persona ya decidió? Si sí, explica y espera. Si no, di qué harás y sigue: pedir permiso para cada paso también cuesta.
+**Otro ejemplo.** Se le pidió a una persona que eligiera entre apagar por defecto una revisión automática o dejarla encendida. La pregunta solo daba las ventajas, y llamaba a la revisión por su nombre en el código. Dijo que sí; se hizo y se publicó. Luego preguntó qué podía perjudicar, y pasaron cuatro explicaciones más antes de que pudiera decir qué se había apagado.
 
-**Señal de alarma.** «Ya sé lo que quiere».
+**Pregunta detectora.** ¿Este bloque es grande, difícil de deshacer o cambia algo que otra persona ya decidió? Si sí, explica y espera. Si no, di qué harás y sigue: pedir permiso para cada paso también cuesta. Cuando pido un sí: ¿dije, con sus palabras, qué podría salir mal?
 
-**Qué hacer.** Antes de cada bloque de trabajo grande, explica en lenguaje sencillo qué harás y por qué, y espera la confirmación.
+**Señal de alarma.** «Ya sé lo que quiere» · «Opción 1 (recomendada)» cuando solo se listan sus ventajas.
+
+**Qué hacer.** Antes de cada bloque de trabajo grande, explica en lenguaje sencillo qué harás y por qué, y espera la confirmación. Cuando ofrezcas opciones, da a cada una una línea sobre lo que podría salir mal y qué tan fácil es deshacerla, y nombra las cosas por lo que hacen, no por su nombre en el código. Si la respuesta es una pregunta, la decisión todavía no está tomada.
 
 ### 35. Una lista de pendientes escrita de paso envejece
 

@@ -4,6 +4,8 @@
 
 `origin: field · claude-opus-5-5 · 2026-10` · `refines: 38`
 
+Merged into 38.
+
 **The idea.** A commit message is read later as the record of what happened. A cause written there as a fact, when it was only the likeliest guess, becomes the history, and on a public repository it can't be quietly fixed.
 
 **Example.** Two of three simulation reviews ran nothing because every shell command was denied. The commit that fixed the review prompt said the reviewer had written `cd`, `sleep` and environment-variable prefixes. Nobody had seen those commands: the reviewers only said "denied". The message was already pushed; the next commit had to carry the correction.
@@ -17,6 +19,8 @@
 ### P-4. A decision asked for comes with what it could break, in the other person's words
 
 `origin: field · claude-opus-5-5 · 2026-10` · `refines: 30`
+
+Merged into 30.
 
 **The idea.** Asking for a yes is not explaining. A person can only decide what they understand, and the part they need most is what they could lose, not what they gain.
 

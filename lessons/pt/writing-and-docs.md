@@ -34,17 +34,21 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 ### 38. O que você não sabe fica marcado, não inventado
 
-`from: 052e301a` · `by: ai`
+`from: 93f49fe9` · `by: ai`
 
 **A ideia.** Um documento oficial afirma tudo com a mesma autoridade. Um detalhe inventado, como um responsável, um prazo ou um tempo de resposta, parece igual a um real.
 
 **Exemplo.** Um procedimento tinha um tempo de resposta de 24 horas que ninguém tinha combinado. Foi escrito porque soava razoável, e depois de publicado virou um compromisso.
 
-**Pergunta detectora.** Eu conheço este detalhe, ou estou assumindo porque soa razoável?
+**Outro exemplo.** Uma mensagem de commit explicava por que duas revisões não tinham executado nada: o revisor tinha digitado certos comandos. Ninguém tinha visto esses comandos; o registro só dizia “denied”. A mensagem já era pública, e o commit seguinte precisou corrigi-la.
 
-**Sinal de alerta.** “Certamente é assim.”
+**Mais um exemplo.** Alguém perguntou sobre uma ferramenta por um nome que não lhe era familiar. Esse nome foi confundido com outro, bem conhecido e parecido, que foi pesquisado e explicado longamente. A pessoa queria dizer um produto novo com aquele nome exato; pesquisá-lo como estava escrito teria achado de imediato.
 
-**O que fazer.** Marque o que falta de forma visível, como “Pendente” em vermelho, e pergunte a quem sabe. Redação neutra é melhor que redação falsa.
+**Pergunta detectora.** Eu conheço este detalhe, ou estou assumindo porque soa razoável? Uma causa, um nome, um número: eu vi, ou é o meu melhor palpite?
+
+**Sinal de alerta.** “Certamente é assim.” · “Deve ser por isso.” · “Devem querer dizer…”
+
+**O que fazer.** Marque o que falta de forma visível, como “Pendente” em vermelho, e pergunte a quem sabe. Redação neutra é melhor que redação falsa. Numa mensagem de commit, uma causa que ninguém viu numa saída é escrita como palpite (“provavelmente”). Um nome que você não reconhece é pesquisado exatamente como foi escrito; se nada aparecer, pergunte qual deles a pessoa quis dizer.
 
 **Não confundir com.** A marca serve para quem decide, não para o leitor final. Um “aguardando confirmação” dentro de um texto publicado é mais um dado que não deveria estar lá. Se o documento sair antes de ser confirmado, use uma redação neutra que não afirme o que falta, e deixe o item pendente no relatório ou no registro do projeto.
 
@@ -117,6 +121,20 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 **Sinal de alerta.** “É assim que funciona” · “todo mundo faz assim.”
 
 **O que fazer.** Antes de escrever sobre uma ferramenta que muda rápido, pesquise a prática atual com fontes e datas: o que a ferramenta faz agora, o que é gratuito, o que as pessoas de fato usam. Construa o texto em torno da habilidade que sobrevive à próxima versão (enquadrar, supervisionar, verificar) e mantenha os passos específicos da ferramenta em um só lugar, que possa ser atualizado. Marque o que você não conseguiu verificar e teste à mão antes de publicar.
+
+### 54. “O X no início e no fechamento”: todo tradutor escolhe a mesma leitura errada
+
+`from: f31b1607` · `by: ai`
+
+**A ideia.** Um qualificador antes de dois itens ligados por “e” pode se aplicar aos dois ou só ao primeiro. O autor sabe qual é o sentido pretendido; quem lê precisa adivinhar, e os tradutores adivinham igual.
+
+**Exemplo.** Uma página de resultados dizia “o que mudou isso são as lições do início e do fechamento”, referindo-se a duas partes de uma ferramenta: as lições mostradas no início, e uma etapa final de verificação. As seis traduções leram como uma coisa só, lições mostradas no início e no fim. Dois dias depois, a mesma construção entrou em um parágrafo novo, e as traduções a leram errado de novo.
+
+**Pergunta detectora.** Nesta frase, algum “o X no A e B” tem duas leituras? Traduzida palavra por palavra, a outra leitura aparece?
+
+**Sinal de alerta.** Uma lista de dois itens em que um é uma coisa e o outro é um momento ou um lugar.
+
+**O que fazer.** Deixe a divisão visível. Conte-a (“duas partes: …”), dê a cada item o seu próprio artigo (“as lições do início, e o fechamento”), ou ponha o item curto primeiro (“o fechamento, e as lições do início”). Depois, leia a tradução dessa frase e confira se ela tem o sentido que você pretendia.
 
 ### EDU-2. O que o estudante vê antes de responder não pode conter a resposta
 

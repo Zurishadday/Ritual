@@ -36,7 +36,7 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 ### 44. Lo que recortas de la salida puede ser el veredicto
 
-`from: ca6fa003` · `by: author`
+`from: a41e2cda` · `by: ai`
 
 **La idea.** Mirar solo las últimas líneas de un resultado, o pasarlo por otro comando, puede tirar justo la parte que decía «falló». Una salida recortada de una prueba que falló se ve igual que la de una que pasó.
 
@@ -44,11 +44,13 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 **Otro ejemplo.** Una suite de pruebas reintentaba sola cada prueba que fallaba. Las que pasaban al segundo intento no contaban como falla, solo como «inestables», y la causa quedó escondida: cada cambio de paso volvía a pedir la página al servidor. Sin reintentos, la falla apareció y se pudo medir.
 
-**Pregunta detectora.** ¿Estoy leyendo el veredicto (cuántas pasaron, cuántas fallaron, cómo terminó) o solo un pedazo de la salida?
+**Un ejemplo más.** `npm test 2>&1 | tail -4 && git commit …`: un script no se pudo cargar, la prueba terminó con error, y aun así el commit se hizo, porque el `&&` vio el código de salida de `tail`, que siempre es cero. En otro caso, `Select-Object -First 1` cortó un script en cuanto tuvo su primera línea, así que nunca llegó a su limpieza, y se quedó una copia modificada de un archivo.
 
-**Señal de alarma.** «No salió ningún error en pantalla» · «con las últimas líneas basta».
+**Pregunta detectora.** ¿Estoy leyendo el veredicto (cuántas pasaron, cuántas fallaron, cómo terminó) o solo un pedazo de la salida? ¿Y qué decide el siguiente paso: el código de salida de la prueba, o el del comando que la recorta?
 
-**Qué hacer.** Busca la línea del veredicto antes de cambiar un estado. Si encadenas comandos, haz que el fallo del primero llegue hasta el final. Si la salida no trae veredicto, eso es un «no sé», no un «pasó» (ver la 1). Y guarda la salida completa en un archivo y busca ahí el veredicto: así no tienes que decidir antes cuánto leer.
+**Señal de alarma.** «No salió ningún error en pantalla» · «con las últimas líneas basta» · «lo encadeno para que sea un solo comando».
+
+**Qué hacer.** Busca la línea del veredicto antes de cambiar un estado. Si encadenas comandos, haz que el fallo del primero llegue hasta el final. Si la salida no trae veredicto, eso es un «no sé», no un «pasó» (ver la 1). Y guarda la salida completa en un archivo y busca ahí el veredicto: así no tienes que decidir antes cuánto leer. En un shell, `set -o pipefail` hace que una tubería falle cuando falla la prueba; y nunca cortes a la mitad un script que limpia lo que deja tras de sí.
 
 ### 53. El código pasa por el editor, no por el manejo de texto de la consola
 

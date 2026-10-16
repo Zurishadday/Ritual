@@ -34,17 +34,21 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 38. What you don't know gets marked, not invented
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** An official document states everything with the same authority. An invented detail, like an owner, a schedule, or a response time, reads the same as a real one.
 
 **Example.** A procedure had a 24-hour response time that nobody had agreed to. It was written because it sounded reasonable, and once published it became a commitment.
 
-**Detector question.** Do I know this detail, or am I assuming it because it sounds reasonable?
+**Another example.** A commit message said why two reviews had run nothing: the reviewer had typed certain commands. Nobody had seen those commands; the log only said "denied". The message was already public, and the next commit had to correct it.
 
-**Warning sign.** "Surely it's like that."
+**One more example.** Someone asked about a tool by a name that wasn't familiar. It was taken for a well-known one with a similar name, which was looked up and explained at length. They meant a new product with that exact name; searching for it as written would have found it at once.
 
-**What to do.** Mark what's missing in a visible way, like "Pending" in red, and ask whoever does know. Neutral wording is better than false wording.
+**Detector question.** Do I know this detail, or am I assuming it because it sounds reasonable? A cause, a name, a figure: did I see it, or is it my best guess?
+
+**Warning sign.** "Surely it's like that." · "That must be why." · "They must mean…"
+
+**What to do.** Mark what's missing in a visible way, like "Pending" in red, and ask whoever does know. Neutral wording is better than false wording. In a commit message, a cause nobody saw in an output is written as a guess ("likely"). A name you don't recognize is searched for exactly as written; if nothing matches, ask which one they mean.
 
 **Not to be confused with.** The mark is for the person deciding, not for the final reader. A "pending confirmation" inside a published text is another piece of data that shouldn't be there. If the document goes out before it's confirmed, use neutral wording that doesn't claim what's missing, and leave the pending item in the report or the project record.
 
@@ -117,6 +121,20 @@ What applies when you write for others: documentation, manuals, screen text, con
 **Warning sign.** "That's how it works" · "everyone does it like this."
 
 **What to do.** Before writing about a fast-moving tool, look up current practice with sources and dates: what the tool does now, what is free, what people actually use. Build the text around the skill that survives the next version (framing, supervising, verifying), and keep tool-specific steps in one place that can be updated. Mark what you couldn't verify, and try it by hand before publishing.
+
+### 54. "The X at the start and the close": every translator picks the same wrong reading
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** A qualifier in front of two items joined by "and" can attach to both or to the first only. The writer knows which one is meant; a reader has to guess, and translators guess alike.
+
+**Example.** A results page said "what changed it is the lessons at the start and the close", meaning two pieces of a tool: the lessons shown at the start, and a final check step. All six translations read it as one thing, lessons shown at the start and at the end. Two days later the same shape went into a new paragraph, and the translations misread it again.
+
+**Detector question.** In this sentence, does any "the X at A and B" have two readings? Translated word by word, would the other reading come out?
+
+**Warning sign.** A list of two where one item is a thing and the other is a moment or a place.
+
+**What to do.** Make the split visible. Count it ("two pieces: …"), give each item its own article ("the lessons at the start, and the close"), or put the short item first ("the close, and the lessons at the start"). Then read the translation of that sentence for the reading you meant.
 
 ### EDU-2. What learners see before answering can't contain the answer
 

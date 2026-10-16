@@ -13,7 +13,8 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | `~opus` | 46 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
-| `claude-opus-5-5` | 3 | 3 | 27, 36, 41, 52, 53, EDU-5 |
+| `claude-opus-5-5` | 4 | 5 | 27, 30, 36, 38, 41, 52, 53, 54, EDU-5 |
+| `claude-fable-5-1` | 0 | 1 | 44 |
 
 ## Seen with more than one model
 
@@ -22,8 +23,11 @@ The most general mistakes: different models made them.
 - [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
+- [30. Explain before acting, and wait for the yes](en/git-and-process.md#30-explain-before-acting-and-wait-for-the-yes) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [36. Measure before you write](en/numbers-and-data.md#36-measure-before-you-write) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
+- [38. What you don't know gets marked, not invented](en/writing-and-docs.md#38-what-you-dont-know-gets-marked-not-invented) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
+- [44. What you cut from the output can be the verdict](en/console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict) · `~sonnet` 2026-09 · `claude-fable-5-1` 2026-10 (again)
 - [45. Someone walks the error path too](en/interface-and-design.md#45-someone-walks-the-error-path-too) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
 - [46. What runs on every request can't grow with the content](en/interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
 - [49. A general rule must not silently beat the specific ones](en/interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again)
@@ -61,7 +65,7 @@ The most general mistakes: different models made them.
 | [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [28. Whoever runs it and whoever verifies it are different people](en/tests-and-checks.md#28-whoever-runs-it-and-whoever-verifies-it-are-different-people) | `~opus` 2026-08 |
 | [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) | `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again) |
-| [30. Explain before acting, and wait for the yes](en/git-and-process.md#30-explain-before-acting-and-wait-for-the-yes) | `~opus` 2026-08 |
+| [30. Explain before acting, and wait for the yes](en/git-and-process.md#30-explain-before-acting-and-wait-for-the-yes) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [31. Nothing technical on screen unless it changes a decision](en/interface-and-design.md#31-nothing-technical-on-screen-unless-it-changes-a-decision) | `~opus` 2026-08 |
 | [32. Something that works but can't be seen gets reported as broken](en/interface-and-design.md#32-something-that-works-but-cant-be-seen-gets-reported-as-broken) | `~opus` 2026-08 |
 | [33. The glyph is not the text](en/interface-and-design.md#33-the-glyph-is-not-the-text) | `~opus` 2026-08 |
@@ -69,13 +73,13 @@ The most general mistakes: different models made them.
 | [35. A to-do list written in passing goes stale](en/git-and-process.md#35-a-to-do-list-written-in-passing-goes-stale) | `~opus` 2026-08 |
 | [36. Measure before you write](en/numbers-and-data.md#36-measure-before-you-write) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [37. Document what's there, not what you wish were there](en/writing-and-docs.md#37-document-whats-there-not-what-you-wish-were-there) | `~opus` 2026-08 |
-| [38. What you don't know gets marked, not invented](en/writing-and-docs.md#38-what-you-dont-know-gets-marked-not-invented) | `~opus` 2026-08 |
+| [38. What you don't know gets marked, not invented](en/writing-and-docs.md#38-what-you-dont-know-gets-marked-not-invented) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [39. Version it in plain sight](en/writing-and-docs.md#39-version-it-in-plain-sight) | `~opus` 2026-08 |
 | [40. The log says what was left and why, not a chronicle of missteps](en/git-and-process.md#40-the-log-says-what-was-left-and-why-not-a-chronicle-of-missteps) | `~opus` 2026-08 |
 | [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again) |
 | [42. Work on the current version](en/writing-and-docs.md#42-work-on-the-current-version) | `~sonnet` 2026-09 |
 | [43. Reread from start to finish after many corrections](en/writing-and-docs.md#43-reread-from-start-to-finish-after-many-corrections) | `~sonnet` 2026-09 |
-| [44. What you cut from the output can be the verdict](en/console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict) | `~sonnet` 2026-09 |
+| [44. What you cut from the output can be the verdict](en/console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict) | `~sonnet` 2026-09 · `claude-fable-5-1` 2026-10 (again) |
 | [45. Someone walks the error path too](en/interface-and-design.md#45-someone-walks-the-error-path-too) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
 | [46. What runs on every request can't grow with the content](en/interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content) | `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) |
 | [47. What's worked on in parallel collides in what's shared](en/git-and-process.md#47-whats-worked-on-in-parallel-collides-in-whats-shared) | `~sonnet` 2026-09 |
@@ -85,6 +89,7 @@ The most general mistakes: different models made them.
 | [51. What looks obvious to you is the first thing to teach](en/writing-and-docs.md#51-what-looks-obvious-to-you-is-the-first-thing-to-teach) | `~opus` 2026-10 |
 | [52. Write about a fast-moving tool from today's practice, not from memory](en/writing-and-docs.md#52-write-about-a-fast-moving-tool-from-todays-practice-not-from-memory) | `claude-opus-5-5` 2026-10 |
 | [53. Code goes through the editor, not through the shell's text handling](en/console-and-tools.md#53-code-goes-through-the-editor-not-through-the-shells-text-handling) | `claude-opus-5-5` 2026-10 |
+| [54. "The X at the start and the close": every translator picks the same wrong reading](en/writing-and-docs.md#54-the-x-at-the-start-and-the-close-every-translator-picks-the-same-wrong-reading) | `claude-opus-5-5` 2026-10 |
 | [EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it](en/tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it) | `~opus` 2026-10 |
 | [EDU-2. What learners see before answering can't contain the answer](en/writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer) | `~opus` 2026-10 |
 | [EDU-3. A question with two defensible answers measures nothing](en/writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing) | `~opus` 2026-10 |

@@ -14,6 +14,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **43.** [Relee de punta a punta después de muchas correcciones](writing-and-docs.md#43-relee-de-punta-a-punta-después-de-muchas-correcciones)
 - **51.** [Lo que a ti te parece obvio es lo primero que hay que enseñar](writing-and-docs.md#51-lo-que-a-ti-te-parece-obvio-es-lo-primero-que-hay-que-enseñar)
 - **52.** [Sobre una herramienta que cambia rápido se escribe desde la práctica de hoy, no de memoria](writing-and-docs.md#52-sobre-una-herramienta-que-cambia-rápido-se-escribe-desde-la-práctica-de-hoy-no-de-memoria)
+- **54.** [«El X al inicio y al cierre»: todo traductor elige la misma lectura equivocada](writing-and-docs.md#54-el-x-al-inicio-y-al-cierre-todo-traductor-elige-la-misma-lectura-equivocada)
 - **EDU-2.** [Lo que se ve antes de responder no puede traer la respuesta](writing-and-docs.md#edu-2-lo-que-se-ve-antes-de-responder-no-puede-traer-la-respuesta)
 - **EDU-3.** [Una pregunta con dos respuestas defendibles no mide nada](writing-and-docs.md#edu-3-una-pregunta-con-dos-respuestas-defendibles-no-mide-nada)
 - **EDU-5.** [Una pista apunta a la causa del error, no a la respuesta](writing-and-docs.md#edu-5-una-pista-apunta-a-la-causa-del-error-no-a-la-respuesta)

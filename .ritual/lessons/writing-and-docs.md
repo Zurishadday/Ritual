@@ -4,6 +4,8 @@
 
 `origin: field · claude-opus-5-5 · 2026-10`
 
+Merged into 54.
+
 **The idea.** A qualifier in front of two items joined by "and" can attach to both or to the first only. The writer knows which one is meant; a reader has to guess, and translators guess alike.
 
 **Example.** "What changed it is the package lessons at the start and the close" meant two pieces: the lessons given at the start, and the close step. All six translations read it as one thing, lessons given at the start and at the close. Two days later the same shape went into a new paragraph, and the translations misread it again.
@@ -17,6 +19,8 @@
 ### P-6. A name you don't recognize is searched as written
 
 `origin: field · claude-opus-5-5 · 2026-10` · `refines: 38`
+
+Merged into 38.
 
 **The idea.** When someone names a tool, a paper or a product I don't know, the closest name I do know is a guess. An answer about it sounds informed and is about something else.
 

@@ -36,17 +36,19 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 ### 30. Expliquer avant d'agir, et attendre le oui
 
-`from: 78e8a4b8` · `by: ai`
+`from: a2c8ffe9` · `by: ai`
 
 **L'idée.** Avancer vite dans la mauvaise direction n'est pas du progrès.
 
 **Exemple.** L'arborescence de dossiers d'un projet entier a été réorganisée sans prévenir. Le changement était correct en lui-même et a été entièrement annulé, parce qu'une autre personne avait déjà décidé de cette structure pour des raisons qui ne figuraient pas dans le code.
 
-**Question détectrice.** Ce bloc est-il volumineux, difficile à annuler, ou modifie-t-il quelque chose qu'une autre personne a déjà décidé ? Si oui, expliquez et attendez. Sinon, dites ce que vous allez faire et allez-y : demander la permission à chaque étape a aussi un coût.
+**Autre exemple.** Une personne devait choisir entre désactiver une vérification automatique par défaut et la laisser active. La question ne donnait que les gains et désignait la vérification par son nom dans le code. Elle a dit oui : c'était fait et publié. Puis on a demandé ce que cela pouvait abîmer, et quatre explications ont encore passé avant qu'on puisse dire ce qui avait été désactivé.
 
-**Signal d'alarme.** « Je sais déjà ce qu'ils veulent. »
+**Question détectrice.** Ce bloc est-il volumineux, difficile à annuler, ou modifie-t-il quelque chose qu'une autre personne a déjà décidé ? Si oui, expliquez et attendez. Sinon, dites ce que vous allez faire et allez-y : demander la permission à chaque étape a aussi un coût. Quand je demande un oui : ai-je dit, avec leurs mots, ce qui pourrait mal tourner ?
 
-**Que faire.** Avant chaque grand bloc de travail, expliquez en langage simple ce que vous allez faire et pourquoi, et attendez la confirmation.
+**Signal d'alarme.** « Je sais déjà ce qu'ils veulent. » · « Option 1 (recommandée) » avec seulement ses avantages.
+
+**Que faire.** Avant chaque grand bloc de travail, expliquez en langage simple ce que vous allez faire et pourquoi, et attendez la confirmation. Quand vous proposez des options, donnez à chacune une ligne sur ce qui pourrait mal tourner et sur la facilité à l'annuler, et nommez les choses par ce qu'elles font, pas par leur nom dans le code. Si la réponse est une question, la décision n'est pas encore prise.
 
 ### 35. Une liste de choses à faire notée en passant devient périmée
 

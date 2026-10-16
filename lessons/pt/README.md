@@ -14,6 +14,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **43.** [Releia do início ao fim depois de muitas correções](writing-and-docs.md#43-releia-do-início-ao-fim-depois-de-muitas-correções)
 - **51.** [O que parece óbvio para você é a primeira coisa a ensinar](writing-and-docs.md#51-o-que-parece-óbvio-para-você-é-a-primeira-coisa-a-ensinar)
 - **52.** [Escreva sobre uma ferramenta que muda rápido a partir da prática de hoje, não da memória](writing-and-docs.md#52-escreva-sobre-uma-ferramenta-que-muda-rápido-a-partir-da-prática-de-hoje-não-da-memória)
+- **54.** [“O X no início e no fechamento”: todo tradutor escolhe a mesma leitura errada](writing-and-docs.md#54-o-x-no-início-e-no-fechamento-todo-tradutor-escolhe-a-mesma-leitura-errada)
 - **EDU-2.** [O que o estudante vê antes de responder não pode conter a resposta](writing-and-docs.md#edu-2-o-que-o-estudante-vê-antes-de-responder-não-pode-conter-a-resposta)
 - **EDU-3.** [Uma pergunta com duas respostas defensáveis não mede nada](writing-and-docs.md#edu-3-uma-pergunta-com-duas-respostas-defensáveis-não-mede-nada)
 - **EDU-5.** [Uma dica aponta para a causa do erro, não para a resposta](writing-and-docs.md#edu-5-uma-dica-aponta-para-a-causa-do-erro-não-para-a-resposta)

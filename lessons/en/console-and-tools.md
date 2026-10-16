@@ -36,7 +36,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 44. What you cut from the output can be the verdict
 
-`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks`
+`origin: field · ~sonnet · 2026-09` · `groups: tests-and-checks` · `seen: claude-fable-5-1 2026-10`
 
 **The idea.** Looking only at the last lines of a result, or piping it through another command, can throw away exactly the part that said "failed." A trimmed output from a failing test looks just like one from a test that passed.
 
@@ -44,11 +44,13 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 **Another example.** A test suite automatically retried every test that failed. Tests that passed on the second try didn't count as failures, only as "flaky," and the cause stayed hidden: each step change asked the server for the page again. Without retries, the failure showed up and could be measured.
 
-**Detector question.** Am I reading the verdict (how many passed, how many failed, how it ended), or only a piece of the output?
+**One more example.** `npm test 2>&1 | tail -4 && git commit …`: a script failed to load, the test exited with an error, and the commit went through anyway, because the `&&` saw the exit code of `tail`, which is always zero. In another case, `Select-Object -First 1` cut a script off as soon as it had its first line, so it never reached its own cleanup, and a modified copy of a file stayed behind.
 
-**Warning sign.** "No error showed up on screen" · "the last few lines are enough."
+**Detector question.** Am I reading the verdict (how many passed, how many failed, how it ended), or only a piece of the output? And what decides the next step: the test's exit code, or the trimming command's?
 
-**What to do.** Find the verdict line before changing a status. If you chain commands, make sure the first one's failure reaches the end. If the output has no verdict, that means "I don't know," not "it passed" (see lesson 1). And save the full output to a file and look for the verdict there: that way you don't have to decide in advance how much to read.
+**Warning sign.** "No error showed up on screen" · "the last few lines are enough." · "I chain it so it is a single command."
+
+**What to do.** Find the verdict line before changing a status. If you chain commands, make sure the first one's failure reaches the end. If the output has no verdict, that means "I don't know," not "it passed" (see lesson 1). And save the full output to a file and look for the verdict there: that way you don't have to decide in advance how much to read. In a shell, `set -o pipefail` makes a pipe fail when the test does; never cut short a script that cleans up after itself.
 
 ### 53. Code goes through the editor, not through the shell's text handling
 

@@ -34,17 +34,21 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 38. Lo que no sabes se marca, no se inventa
 
-`from: 052e301a` · `by: author`
+`from: 93f49fe9` · `by: ai`
 
 **La idea.** Un documento oficial afirma todo con la misma autoridad. Un dato inventado, como un responsable, un horario o un tiempo de respuesta, se lee igual que uno real.
 
 **Ejemplo.** Un procedimiento traía un tiempo de respuesta de 24 horas que nadie había acordado: se escribió porque sonaba razonable, y al publicarse se volvió compromiso.
 
-**Pregunta detectora.** ¿Este dato lo sé, o lo supongo porque suena razonable?
+**Otro ejemplo.** Un mensaje de commit explicaba por qué dos revisiones no habían ejecutado nada: la persona revisora había escrito ciertos comandos. Nadie había visto esos comandos; el registro solo decía «denied». El mensaje ya era público, y el siguiente commit tuvo que corregirlo.
 
-**Señal de alarma.** «Seguro es así».
+**Un ejemplo más.** Alguien preguntó por una herramienta con un nombre que no le sonaba. Se tomó por una conocida con un nombre parecido, que se buscó y se explicó largamente. Se refería a un producto nuevo con ese nombre exacto; buscarlo tal como estaba escrito lo habría encontrado de inmediato.
 
-**Qué hacer.** Marca lo que falta de forma visible, como «Pendiente» en rojo, y pregunta a quien sí lo sabe. Una redacción neutra es mejor que una falsa.
+**Pregunta detectora.** ¿Este dato lo sé, o lo supongo porque suena razonable? Una causa, un nombre, una cifra: ¿lo vi, o es mi mejor suposición?
+
+**Señal de alarma.** «Seguro es así» · «ha de ser por eso» · «han de referirse a…».
+
+**Qué hacer.** Marca lo que falta de forma visible, como «Pendiente» en rojo, y pregunta a quien sí lo sabe. Una redacción neutra es mejor que una falsa. En un mensaje de commit, una causa que nadie vio en una salida se escribe como suposición («likely»). Un nombre que no reconoces se busca exactamente como está escrito; si no aparece nada, pregunta a cuál se refieren.
 
 **No la confundas con.** La marca es para quien decide, no para el lector final: un «pendiente de confirmar» dentro de un texto publicado es otro dato que no debía estar ahí. Si el documento sale antes de confirmarlo, usa una redacción neutra que no afirme lo que falta, y deja el pendiente en el informe o el registro del proyecto.
 
@@ -117,6 +121,20 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 **Señal de alarma.** «Así funciona» · «todo el mundo lo hace así».
 
 **Qué hacer.** Antes de escribir sobre una herramienta que cambia rápido, investiga la práctica actual con fuentes y fechas: qué hace hoy, qué es gratis, qué usa de verdad la gente. Arma el texto alrededor de la habilidad que sobrevive a la siguiente versión (plantear, supervisar, verificar) y deja los pasos de la herramienta en un solo lugar que se pueda actualizar. Marca lo que no pudiste comprobar y pruébalo a mano antes de publicar.
+
+### 54. «El X al inicio y al cierre»: todo traductor elige la misma lectura equivocada
+
+`from: f31b1607` · `by: ai`
+
+**La idea.** Un calificativo colocado antes de dos elementos unidos por «y» puede referirse a ambos o solo al primero. Quien escribe sabe a cuál se refiere; quien lee tiene que adivinar, y los traductores adivinan igual.
+
+**Ejemplo.** Una página de resultados decía «lo que lo cambió son las lecciones al inicio y al cierre», refiriéndose a dos piezas de una herramienta: las lecciones que se muestran al inicio, y un paso de verificación final. Las seis traducciones lo leyeron como una sola cosa: lecciones mostradas al inicio y al final. Dos días después, la misma forma entró en un párrafo nuevo, y las traducciones volvieron a leerla mal.
+
+**Pregunta detectora.** En esta frase, ¿alguna «el X en A y B» tiene dos lecturas? Traducida palabra por palabra, ¿saldría la otra lectura?
+
+**Señal de alarma.** Una lista de dos donde un elemento es una cosa y el otro es un momento o un lugar.
+
+**Qué hacer.** Haz visible la separación. Cuéntala («dos piezas: …»), dale a cada elemento su propio artículo («las lecciones al inicio, y el cierre»), o pon primero el elemento corto («el cierre, y las lecciones al inicio»). Luego lee la traducción de esa frase para ver si dice la lectura que querías.
 
 ### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
 

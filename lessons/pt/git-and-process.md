@@ -36,17 +36,19 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 ### 30. Explique antes de agir, e espere o sim
 
-`from: 78e8a4b8` · `by: ai`
+`from: a2c8ffe9` · `by: ai`
 
 **A ideia.** Andar rápido na direção errada não é progresso.
 
 **Exemplo.** A estrutura de pastas de um projeto inteiro foi reorganizada sem aviso. A mudança estava correta em si, e foi desfeita por completo, porque outra pessoa já tinha decidido aquela estrutura por motivos que não estavam no código.
 
-**Pergunta detectora.** Este bloco é grande, difícil de desfazer, ou muda algo que outra pessoa já decidiu? Se sim, explique e espere. Se não, diga o que vai fazer e siga em frente: pedir permissão para cada passo também tem custo.
+**Outro exemplo.** Pediram a uma pessoa que escolhesse entre desligar uma verificação automática por padrão ou mantê-la ligada. A pergunta mostrava só os ganhos e chamava a verificação pelo nome que ela tem no código. A pessoa disse sim; a mudança foi feita e publicada. Depois ela perguntou o que isso poderia prejudicar, e passaram mais quatro explicações até ela conseguir dizer o que tinha sido desligado.
 
-**Sinal de alerta.** “Já sei o que eles querem.”
+**Pergunta detectora.** Este bloco é grande, difícil de desfazer, ou muda algo que outra pessoa já decidiu? Se sim, explique e espere. Se não, diga o que vai fazer e siga em frente: pedir permissão para cada passo também tem custo. Ao pedir um sim: eu disse, com as palavras da pessoa, o que poderia dar errado?
 
-**O que fazer.** Antes de cada bloco grande de trabalho, explique em linguagem simples o que vai fazer e por quê, e espere a confirmação.
+**Sinal de alerta.** “Já sei o que eles querem.” · “Opção 1 (recomendada)” só com as vantagens.
+
+**O que fazer.** Antes de cada bloco grande de trabalho, explique em linguagem simples o que vai fazer e por quê, e espere a confirmação. Ao oferecer opções, dê a cada uma uma linha sobre o que pode dar errado e o quão fácil é desfazer, e nomeie as coisas pelo que fazem, e não pelo nome que têm no código. Se a resposta for uma pergunta, a decisão ainda não foi tomada.
 
 ### 35. Uma lista de pendências escrita de passagem fica velha
 

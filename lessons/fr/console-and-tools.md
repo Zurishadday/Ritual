@@ -36,7 +36,7 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 ### 44. Ce que vous retirez de la sortie peut être le verdict
 
-`from: ca6fa003` · `by: ai`
+`from: a41e2cda` · `by: ai`
 
 **L'idée.** Ne regarder que les dernières lignes d'un résultat, ou le faire passer par une autre commande, peut jeter justement la partie qui disait « échec ». Une sortie tronquée d'un test raté ressemble exactement à celle d'un test réussi.
 
@@ -44,11 +44,13 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 **Autre exemple.** Une suite de tests relançait automatiquement chaque test en échec. Les tests réussis au second essai ne comptaient pas comme échecs, seulement comme « instables », et la cause restait cachée : chaque changement d'étape demandait à nouveau la page au serveur. Sans relance, l'échec apparaissait et pouvait être mesuré.
 
-**Question détectrice.** Est-ce que je lis le verdict (combien ont réussi, combien ont échoué, comment cela s'est terminé), ou seulement un morceau de la sortie ?
+**Encore un exemple.** `npm test 2>&1 | tail -4 && git commit …` : un script n'a pas pu se charger, le test s'est terminé avec une erreur, et le commit est passé quand même, parce que le `&&` regardait le code de sortie de `tail`, qui vaut toujours zéro. Dans un autre cas, `Select-Object -First 1` a coupé un script dès qu'il avait sa première ligne : il n'a jamais atteint son propre nettoyage, et une copie modifiée d'un fichier est restée en place.
 
-**Signal d'alarme.** « Aucune erreur n'est apparue à l'écran » · « les dernières lignes suffisent ».
+**Question détectrice.** Est-ce que je lis le verdict (combien ont réussi, combien ont échoué, comment cela s'est terminé), ou seulement un morceau de la sortie ? Et qu'est-ce qui décide de l'étape suivante : le code de sortie du test, ou celui de la commande qui tronque ?
 
-**Que faire.** Trouvez la ligne du verdict avant de changer un statut. Si vous enchaînez des commandes, assurez-vous que l'échec de la première parvient jusqu'à la fin. Si la sortie n'a pas de verdict, cela signifie « je ne sais pas », pas « c'est passé » (voir la leçon 1). Et enregistrez la sortie complète dans un fichier et cherchez le verdict là : ainsi, vous n'avez pas à décider à l'avance combien lire.
+**Signal d'alarme.** « Aucune erreur n'est apparue à l'écran » · « les dernières lignes suffisent » · « je l'enchaîne pour que ce ne soit qu'une seule commande ».
+
+**Que faire.** Trouvez la ligne du verdict avant de changer un statut. Si vous enchaînez des commandes, assurez-vous que l'échec de la première parvient jusqu'à la fin. Si la sortie n'a pas de verdict, cela signifie « je ne sais pas », pas « c'est passé » (voir la leçon 1). Et enregistrez la sortie complète dans un fichier et cherchez le verdict là : ainsi, vous n'avez pas à décider à l'avance combien lire. Dans un shell, `set -o pipefail` fait échouer un tube lorsque le test échoue ; n'interrompez jamais un script qui nettoie après lui-même.
 
 ### 53. Le code passe par l'éditeur, pas par le traitement de texte du shell
 

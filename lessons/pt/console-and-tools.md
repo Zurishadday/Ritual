@@ -36,7 +36,7 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 
 ### 44. O que você corta da saída pode ser o veredito
 
-`from: ca6fa003` · `by: ai`
+`from: a41e2cda` · `by: ai`
 
 **A ideia.** Olhar só as últimas linhas de um resultado, ou passá-lo por outro comando, pode jogar fora justamente a parte que dizia “falhou”. Uma saída cortada de um teste que falhou parece igual à de um teste que passou.
 
@@ -44,11 +44,13 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 
 **Outro exemplo.** Uma suíte de testes repetia automaticamente cada teste que falhava. Os testes que passavam na segunda tentativa não contavam como falhas, só como “instáveis”, e a causa ficava escondida: cada mudança de etapa pedia ao servidor a página de novo. Sem as novas tentativas, a falha aparecia e podia ser medida.
 
-**Pergunta detectora.** Estou lendo o veredito (quantos passaram, quantos falharam, como terminou), ou só um pedaço da saída?
+**Mais um exemplo.** `npm test 2>&1 | tail -4 && git commit …`: um script falhou ao carregar, o teste terminou com erro, e mesmo assim o commit foi feito, porque o `&&` viu o código de saída do `tail`, que é sempre zero. Em outro caso, `Select-Object -First 1` cortou um script assim que ele tinha a primeira linha, então ele nunca chegou à própria limpeza, e uma cópia modificada de um arquivo ficou para trás.
 
-**Sinal de alerta.** “Não apareceu erro na tela” · “as últimas linhas bastam”.
+**Pergunta detectora.** Estou lendo o veredito (quantos passaram, quantos falharam, como terminou), ou só um pedaço da saída? E o que decide o próximo passo: o código de saída do teste, ou o do comando que corta a saída?
 
-**O que fazer.** Encontre a linha do veredito antes de mudar um status. Se você encadeia comandos, garanta que a falha do primeiro chegue até o fim. Se a saída não tem veredito, isso significa “não sei”, e não “passou” (ver a lição 1). E salve a saída completa num arquivo e procure o veredito ali: assim você não precisa decidir de antemão quanto ler.
+**Sinal de alerta.** “Não apareceu erro na tela” · “as últimas linhas bastam” · “eu encadeio tudo para ser um único comando”.
+
+**O que fazer.** Encontre a linha do veredito antes de mudar um status. Se você encadeia comandos, garanta que a falha do primeiro chegue até o fim. Se a saída não tem veredito, isso significa “não sei”, e não “passou” (ver a lição 1). E salve a saída completa num arquivo e procure o veredito ali: assim você não precisa decidir de antemão quanto ler. Em um shell, `set -o pipefail` faz o pipe falhar quando o teste falha; nunca corte antes do fim um script que faz a própria limpeza.
 
 ### 53. O código passa pelo editor, não pelo tratamento de texto do shell
 

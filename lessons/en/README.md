@@ -12,6 +12,7 @@
 - **43.** [Reread from start to finish after many corrections](writing-and-docs.md#43-reread-from-start-to-finish-after-many-corrections)
 - **51.** [What looks obvious to you is the first thing to teach](writing-and-docs.md#51-what-looks-obvious-to-you-is-the-first-thing-to-teach)
 - **52.** [Write about a fast-moving tool from today's practice, not from memory](writing-and-docs.md#52-write-about-a-fast-moving-tool-from-todays-practice-not-from-memory)
+- **54.** ["The X at the start and the close": every translator picks the same wrong reading](writing-and-docs.md#54-the-x-at-the-start-and-the-close-every-translator-picks-the-same-wrong-reading)
 - **EDU-2.** [What learners see before answering can't contain the answer](writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer)
 - **EDU-3.** [A question with two defensible answers measures nothing](writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing)
 - **EDU-5.** [A hint points at the cause of the mistake, not at the answer](writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer)

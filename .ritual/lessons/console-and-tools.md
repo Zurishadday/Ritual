@@ -4,6 +4,8 @@
 
 `origin: field · claude-fable-5-1 · 2026-10` · `refines: 44`
 
+Merged into 44.
+
 **The idea.** Piping a test into `| tail` or `| grep` to read less does not only trim the output: it changes the verdict. The exit status the next `&&` sees is `tail`'s, which is always zero. The test failed and the commit went through.
 
 **Example.** `npm test --silent 2>&1 | tail -4 && git commit …`: a script would not load because of a duplicated variable, Node printed the stack trace, `tail` showed it in full and returned zero, and the commit was made and pushed with the test broken. It was noticed only because the trace was visible in the output; had it been longer than four lines, not even that.

@@ -14,6 +14,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **43.** [Relire du début à la fin après de nombreuses corrections](writing-and-docs.md#43-relire-du-début-à-la-fin-après-de-nombreuses-corrections)
 - **51.** [Ce qui vous paraît évident est la première chose à enseigner](writing-and-docs.md#51-ce-qui-vous-paraît-évident-est-la-première-chose-à-enseigner)
 - **52.** [Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire](writing-and-docs.md#52-écrire-sur-un-outil-qui-évolue-vite-à-partir-de-la-pratique-daujourdhui-pas-de-mémoire)
+- **54.** [« Le X au début et à la fin » : tous les traducteurs choisissent la même mauvaise lecture](writing-and-docs.md#54--le-x-au-début-et-à-la-fin---tous-les-traducteurs-choisissent-la-même-mauvaise-lecture)
 - **EDU-2.** [Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse](writing-and-docs.md#edu-2-ce-que-lapprenant-voit-avant-de-répondre-ne-peut-pas-contenir-la-réponse)
 - **EDU-3.** [Une question à deux réponses défendables ne mesure rien](writing-and-docs.md#edu-3-une-question-à-deux-réponses-défendables-ne-mesure-rien)
 - **EDU-5.** [Un indice pointe vers la cause de l'erreur, pas vers la réponse](writing-and-docs.md#edu-5-un-indice-pointe-vers-la-cause-de-lerreur-pas-vers-la-réponse)
