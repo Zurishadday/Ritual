@@ -10,11 +10,13 @@
 // A missing, unstamped or outdated translation is a warning, not an error: nobody has to translate a new lesson into
 // every language before it goes in.
 // The index (README.md of each language) is generated from the files: do not edit it by hand.
-// Usage: node scripts/lessons.mjs --check                checks all languages and that each index is up to date
+// Usage: node scripts/lessons.mjs --check                checks all languages and that each index is up to date, and
+//                                                        compares the originals with main (a sharpened lesson keeps its examples)
 //        node scripts/lessons.mjs --index                regenerates the indexes
 //        node scripts/lessons.mjs --stamp <language>     writes `from:` · `by: ai` on the lessons of a translation
 //                                                        that have no stamp yet (run it right after translating)
 //        node scripts/lessons.mjs --selftest             calibrates the checker: cases that must fail and one that must pass
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
@@ -264,6 +266,49 @@ export function check(root = ROOT) {
   return findings;
 }
 
+export const DETECTOR_LIMIT = 300;
+const words = (text) => new Set((text.toLowerCase().match(/\p{L}{3,}/gu) ?? []));
+/** A sharpened lesson still covers the mistake it was born from: compared with the lessons in `main` (`base`), no lesson
+ * is gone (only «Merged into N.»), every example paragraph is still there (reworded is fine: half its words remain in some
+ * example), and a detector question that grows past DETECTOR_LIMIT characters is a warning, so the original question
+ * doesn't drown in what was added. */
+export function sharpeningProblems(base, current) {
+  const findings = [];
+  const now = new Map(current.map((l) => [l.id, l]));
+  const examples = (l) => Object.entries(l.parts).filter(([k]) => /example/i.test(k));
+  for (const old of base) {
+    if (old.merged) continue;
+    const l = now.get(old.id);
+    const at = (message, level = "error") => findings.push({ file: l?.file ?? old.file ?? "lessons/en", line: l?.line ?? 0, message: `${old.id}: ${message}`, level });
+    if (!l) { at("is in main and gone here: lessons are never deleted, only «Merged into N.»"); continue; }
+    if (l.merged) continue;
+    for (const [name, text] of examples(old)) {
+      const before = words(text);
+      const kept = examples(l).some(([, t]) => { const w = words(t); return [...before].filter((x) => w.has(x)).length >= before.size / 2; });
+      if (!kept) at(`the example «${name}» it had in main is gone: sharpening adds examples, it doesn't replace them`);
+    }
+    const q = (x) => (x.parts["Detector question"] ?? "").length;
+    if (q(l) > DETECTOR_LIMIT && q(l) > q(old)) at(`the detector question grew to ${q(l)} characters (over ${DETECTOR_LIMIT}): does the original question still stand out?`, "warning");
+  }
+  return findings;
+}
+
+/** The original lessons at a git commit (the base of the change), or null when there is no git or no such commit. */
+export function lessonsAt(ref, root = ROOT) {
+  const git = (...a) => spawnSync("git", a, { cwd: root, encoding: "utf8" });
+  const ls = git("ls-tree", "--name-only", `${ref}:lessons/${ORIGINAL}`);
+  if (ls.status !== 0) return null;
+  return ls.stdout.split("\n").filter((f) => f.endsWith(".md") && f !== "README.md")
+    .flatMap((f) => parseLessons(git("show", `${ref}:lessons/${ORIGINAL}/${f}`).stdout, f.slice(0, -3)).lessons.map((l) => ({ ...l, file: path.join("lessons", ORIGINAL, f) })));
+}
+
+/** What a change is compared with: in a pull request on CI, the merge commit's first parent (main); elsewhere, where the
+ * branch left origin/main (with uncommitted edits on an up-to-date main, that is HEAD). */
+function baseRef(root = ROOT) {
+  const git = (...a) => spawnSync("git", a, { cwd: root, encoding: "utf8" }).stdout?.trim() ?? "";
+  return (process.env.GITHUB_BASE_REF ? git("rev-parse", "--verify", "-q", "HEAD^1") : git("merge-base", "HEAD", "origin/main")) || null;
+}
+
 /** Writes `from: <fingerprint>` · `by: <by>` under the heading of every lesson of a translation that has no stamp. */
 export function stamp(language, root = ROOT, by = "ai") {
   if (language === ORIGINAL) throw new Error(`${ORIGINAL} is the original: only translations are stamped`);
@@ -400,6 +445,22 @@ export function selftest() {
   const broken = taxonomyProblems({ groups: [{ slug: "Cooking Time", covers: "" }], packages: { games: { covers: "Games." } } }).join(" | ");
   for (const expected of ["slug must be lowercase", "«Cooking Time» has no `covers`", "«games» needs a `detect` list"])
     if (!broken.includes(expected)) failures.push(`a broken taxonomy should report «${expected}» and gave: ${broken || "nothing"}`);
+  // Sharpening, against main: rewording an example and adding one passes; replacing one, deleting a lesson or drowning
+  // its detector question does not. Merging is how a lesson leaves.
+  const two = (example, more = "", question = "And if not?") => parseLessons(`### 1. One\n\n**The idea.** Something.\n\n**Example.** ${example}\n\n${more}**Detector question.** ${question}\n\n**Warning sign.** "Sure".\n\n**What to do.** Measure.\n\n### 2. Two\n\nMerged into 1.\n`, "g").lessons;
+  const was = two("The report said almost one in five tickets were lost; measured, it was more.");
+  const sharpen = [
+    ["reworded and added", two("The report said nearly one in five tickets were lost; measured, it was more than that.", "**Another example.** A chart summed by hand.\n\n"), null],
+    ["example replaced", two("A chart summed by hand did not add up."), "the example «Example» it had in main is gone"],
+    ["lesson deleted", two("The report said almost one in five tickets were lost; measured, it was more.").filter((l) => l.id !== "1"), "1: is in main and gone here"],
+    ["detector drowned", two("The report said almost one in five tickets were lost; measured, it was more.", "", "And if not? ".repeat(30)), "the detector question grew to"],
+  ];
+  for (const [name, now, expected] of sharpen) {
+    const got = sharpeningProblems(was, now).map((x) => `${x.level} ${x.message}`).join(" | ");
+    if (expected ? !got.includes(expected) : got) failures.push(`sharpening «${name}» should ${expected ? `give «${expected}»` : "pass"} and gave: ${got || "nothing"}`);
+  }
+  if (!sharpeningProblems(was, two("x", "", "And if not? ".repeat(30))).some((x) => x.level === "warning" && x.message.includes("detector"))) failures.push("a drowned detector question must be a warning, not an error");
+  if (sharpeningProblems(two("a", "", "And if not? ".repeat(30)), two("a", "", "And if not? ".repeat(30))).length) failures.push("a long detector question that did not grow must not warn again");
   // --stamp writes the right fingerprint on an unstamped translation, and leaves the stamped ones alone.
   const stamped = run({ ...BASE, [ES]: BASE[ES].replace(/`from: \w+` · `by: ai`\n\n/g, "") }, (tmp) => {
     const n = stamp("es", tmp);
@@ -479,13 +540,18 @@ if (isMain(import.meta.url)) {
     process.exit(h.length ? 1 : 0);
   }
   const h = check();
+  // Sharpened lessons, against main: only here, where the repository is a git checkout (doctor runs check() on an install).
+  const ref = baseRef();
+  const base = ref && lessonsAt(ref);
+  if (base) h.push(...sharpeningProblems(base, readLessons().lessons));
+  else console.log("! could not read the lessons in main (no git or no origin/main): sharpened lessons were not compared");
   const errors = h.filter((x) => x.level === "error"), warnings = h.filter((x) => x.level === "warning");
   for (const x of errors) console.log(`✕ ${x.file}:${x.line}  ${x.message}`);
   // Many warnings of the same kind are summed up per language, so a new lesson does not print one line per language.
   const perLanguage = {};
   for (const x of warnings) (perLanguage[x.file.split(/[\\/]/)[1]] ??= []).push(x);
   for (const [language, ws] of Object.entries(perLanguage)) {
-    console.log(`! lessons/${language}: ${ws.length} translation warning(s)`);
+    console.log(`! lessons/${language}: ${ws.length} ${language === ORIGINAL ? "" : "translation "}warning(s)`);
     for (const x of ws.slice(0, 5)) console.log(`    ${x.message}`);
     if (ws.length > 5) console.log(`    … ${ws.length - 5} more`);
   }

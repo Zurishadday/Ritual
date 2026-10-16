@@ -41,7 +41,7 @@ Extra parts such as **Another example.**, **Variant.** or **Not to be confused w
 
 Groups and packages are defined in one place, [`taxonomy.json`](taxonomy.json), each with what it `covers`. A lesson goes to the first step that holds:
 
-1. **It refines an existing lesson.** It does not get a number of its own: it sharpens that one (a better detector question, a missing case, a confirmation with another model).
+1. **It refines an existing lesson.** It does not get a number of its own: it sharpens that one (a better detector question, a missing case, a confirmation with another model). Sharpening adds, it doesn't replace: the checker compares with `main` and fails if an example the lesson had is gone, and warns if its detector question grows past 300 characters.
 2. **It holds in different kinds of project.** It goes to the core, in the group of what was being done. The test: write what the same mistake looks like in two other kinds of project. If you can't, it is a lesson for that project, not for the library.
 3. **It only holds for one kind of project, and a package covers it.** It goes to that package (`packages: web`).
 4. **No package covers that kind of project.** Propose a new package with its first lesson: a slug named after the kind of project (`mobile`, `data`, `games`), never after a framework an existing package covers (`nextjs` is `web`), what it covers, and one to three dependencies that detect it. New packages are welcome: they are how the library reaches new kinds of software.

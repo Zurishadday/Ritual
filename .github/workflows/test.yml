@@ -16,6 +16,9 @@ jobs:
     name: ${{ matrix.os }} · Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          # A pull request's merge commit plus its first parent (main): lessons.mjs --check compares sharpened lessons with it.
+          fetch-depth: 2
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node }}

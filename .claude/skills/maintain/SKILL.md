@@ -32,7 +32,7 @@ The judgment is yours; the mechanics are in `node scripts/maintain.mjs`. Never e
 
 `issue <N>` writes the lesson to `.ritual/local/maintain/<N>.md` in the share format and runs the share check. Then:
 
-1. **Covered?** Run `node scripts/share.mjs context <group>` and compare by meaning. If a lesson covers it, it is a confirmation (above) or a sharpening of that lesson: edit the existing lesson's parts by hand, keeping its number, and treat it as a change to the original (Translations).
+1. **Covered?** Run `node scripts/share.mjs context <group>` and compare by meaning. If a lesson covers it, it is a confirmation (above) or a sharpening of that lesson: edit the existing lesson's parts by hand, keeping its number, and treat it as a change to the original (Translations). Add, don't replace: `lessons.mjs --check` fails if an example the lesson had in `main` is gone, and a warning on a long detector question means checking that the original question still stands out.
 2. **Generic?** It must help someone building something else: the mechanism, not the domain. Fix wording in the file if needed. If it is really one project's lesson, draft a kind reply and stop.
 3. **Model.** The `issue` output says whether the model is Claude.
    - Claude, with a concrete example: origin `field · <model> · <month>`.
