@@ -15,6 +15,7 @@
 //        node scripts/lessons.mjs --index                regenerates the indexes
 //        node scripts/lessons.mjs --stamp <language>     writes `from:` · `by: ai` on the lessons of a translation
 //                                                        that have no stamp yet (run it right after translating)
+//        node scripts/lessons.mjs --next-id [project]    the next free id for a project lesson, in every branch and worktree
 //        node scripts/lessons.mjs --selftest             calibrates the checker: cases that must fail and one that must pass
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -351,6 +352,28 @@ export function stamp(language, root = ROOT, by = "ai") {
   return count;
 }
 
+/** The next free id for a project lesson, looked up in this folder, in every branch (local and remote) and in every other
+ * worktree. Two people, or two sessions on two branches, writing lessons at once would otherwise both take the next number
+ * of their own copy, and the ids would clash when the branches join. */
+export function nextId(project) {
+  const git = (...a) => spawnSync("git", ["-C", project, ...a], { encoding: "utf8" });
+  const found = [];
+  const collect = (text, where) => { for (const m of String(text).matchAll(/### ([A-Z]+)-(\d+)\b/g)) found.push({ prefix: m[1], n: Number(m[2]), where }); };
+  const folder = (dir) => (existsSync(dir) ? readdirSync(dir).filter((a) => a.endsWith(".md")).map((a) => readFileSync(path.join(dir, a), "utf8")).join("\n") : "");
+  collect(folder(path.join(project, ".ritual", "lessons")), "this folder");
+  const refs = git("for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes");
+  const branches = refs.status === 0 ? refs.stdout.split("\n").filter((r) => r && !r.endsWith("/HEAD")) : [];
+  for (const ref of branches) collect(git("grep", "-h", "-E", "^### [A-Z]+-[0-9]+", ref, "--", ".ritual/lessons").stdout ?? "", ref);
+  const list = git("worktree", "list", "--porcelain");
+  const others = list.status === 0 ? list.stdout.split("\n").filter((l) => l.startsWith("worktree ")).map((l) => l.slice(9)).filter((w) => path.resolve(w) !== path.resolve(project)) : [];
+  for (const w of others) collect(folder(path.join(w, ".ritual", "lessons")), w);
+  const counts = {};
+  for (const f of found) counts[f.prefix] = (counts[f.prefix] ?? 0) + 1;
+  const prefix = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "P";
+  const top = found.filter((f) => f.prefix === prefix).sort((a, b) => b.n - a.n)[0] ?? null;
+  return { id: `${prefix}-${(top?.n ?? 0) + 1}`, top, branches: branches.length, worktrees: others.length, git: refs.status === 0 };
+}
+
 /** The lessons of a project (.ritual/lessons/<group>.md): same format, prefixed ids, no index. */
 export function checkProject(project, language = ORIGINAL) {
   const findings = [];
@@ -537,6 +560,27 @@ export function selftest() {
     writeFileSync(path.join(project, ".ritual", "lessons", "git-and-process.md"), `# Git\n\n${LESSON("2", "No prefix")}`);
     if (!checkProject(project).some((x) => x.message.includes("prefix"))) failures.push("an id without prefix in a project lesson should fail");
   } finally { rmSync(project, { recursive: true, force: true }); }
+  // --next-id: the highest number in use in any branch or worktree, not only in this folder.
+  const repo = mkdtempSync(path.join(os.tmpdir(), "ritual-next-id-"));
+  const other = `${repo}-otra`;
+  try {
+    const git = (...a) => spawnSync("git", ["-C", repo, "-c", "user.name=t", "-c", "user.email=t@t", ...a], { encoding: "utf8" });
+    if (git("init", "-q", "-b", "main").status !== 0) failures.push("--next-id: git is needed for its calibration");
+    else {
+      const lessonsDir = path.join(repo, ".ritual", "lessons");
+      mkdirSync(lessonsDir, { recursive: true });
+      const write = (ids) => writeFileSync(path.join(lessonsDir, "git-and-process.md"), `# Git\n\n${ids.map((id) => LESSON(id, `Lesson ${id}`)).join("\n")}`);
+      write(["P-1", "P-2"]);
+      git("add", "."); git("commit", "-q", "-m", "two lessons");
+      if (nextId(repo).id !== "P-3") failures.push(`--next-id in a folder with P-1 and P-2 should give P-3 and gave ${nextId(repo).id}`);
+      git("switch", "-q", "-c", "other-branch"); write(["P-1", "P-2", "P-3"]); git("commit", "-q", "-am", "P-3 in a branch"); git("switch", "-q", "main");
+      if (nextId(repo).id !== "P-4") failures.push(`--next-id should see the P-3 of another branch and give P-4, and gave ${nextId(repo).id}`);
+      git("worktree", "add", "-q", other, "-b", "third");
+      writeFileSync(path.join(other, ".ritual", "lessons", "git-and-process.md"), `# Git\n\n${["P-1", "P-2", "P-7"].map((id) => LESSON(id, `Lesson ${id}`)).join("\n")}`);
+      if (nextId(repo).id !== "P-8") failures.push(`--next-id should see the P-7 not yet saved in another worktree and give P-8, and gave ${nextId(repo).id}`);
+      git("worktree", "remove", "--force", other);
+    }
+  } finally { rmSync(repo, { recursive: true, force: true }); rmSync(other, { recursive: true, force: true }); }
   for (const m of failures) console.error(`✕ ${m}`);
   return failures.length;
 }
@@ -563,6 +607,13 @@ if (isMain(import.meta.url)) {
     if (!language || !existsSync(path.join(ROOT, "lessons", language))) { console.error(`✕ no lessons/${language ?? "<language>"}/ folder`); process.exit(1); }
     const b = args.indexOf("--by");
     console.log(`✓ stamped ${stamp(language, ROOT, b >= 0 ? args[b + 1] : "ai")} lesson(s) in lessons/${language}/`);
+    process.exit(0);
+  }
+  const n = args.indexOf("--next-id");
+  if (n >= 0) {
+    const project = path.resolve(args[n + 1] && !args[n + 1].startsWith("--") ? args[n + 1] : process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
+    const r = nextId(project);
+    console.log(`✓ next free id: ${r.id}${r.top ? ` · highest in use: ${r.top.prefix}-${r.top.n} (${r.top.where})` : ""} · ${r.git ? `looked in ${r.branches} branch(es) and ${r.worktrees} other worktree(s)` : "no git here: looked only in this folder"}`);
     process.exit(0);
   }
   const i = args.indexOf("--project");
