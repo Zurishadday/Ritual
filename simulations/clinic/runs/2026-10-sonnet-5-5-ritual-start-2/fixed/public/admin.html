@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <main class="panel">
+    <section id="entrada" hidden>
+      <h1>Panel de Fisio Andares</h1>
+      <form id="form-login" class="contenedor-form" novalidate>
+        <div id="error-login" class="aviso aviso-error" role="alert" tabindex="-1" hidden></div>
+        <div class="campo">
+          <label for="clave">Contraseña</label>
+          <input id="clave" name="clave" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="boton" type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section id="lista" hidden>
+      <div class="panel-cabecera">
+        <h1>Solicitudes de cita</h1>
+        <button class="boton boton-claro" id="salir" type="button">Cerrar sesión</button>
+      </div>
+      <div id="alerta-datos" class="aviso aviso-error" hidden></div>
+      <div id="alerta-lleno" class="aviso aviso-error" role="alert" hidden></div>
+      <div class="herramientas">
+        <div class="campo">
+          <label for="filtro">Mostrar</label>
+          <select id="filtro">
+            <option value="activas">Pendientes y confirmadas</option>
+            <option value="pendiente">Solo pendientes</option>
+            <option value="confirmada">Solo confirmadas</option>
+            <option value="cancelada">Solo canceladas</option>
+            <option value="todas">Todas</option>
+          </select>
+        </div>
+        <button class="boton boton-claro" id="actualizar" type="button">Actualizar</button>
+        <button class="boton boton-claro" id="borrar-canceladas" type="button">Borrar canceladas</button>
+      </div>
+      <p id="conteo" role="status"></p>
+      <div id="anuncio" class="aviso aviso-ok" role="status" hidden></div>
+      <div id="solicitudes"></div>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

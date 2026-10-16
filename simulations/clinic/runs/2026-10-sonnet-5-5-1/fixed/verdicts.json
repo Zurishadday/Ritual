@@ -1,0 +1,23 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "browser2.mjs admin: Enter on 'Confirmar' -> panel-msg 'Solicitud de Sin JS Bueno: confirmada.', badge 'Confirmada', focus on same card; Sunday on date change -> visible error next to the field" },
+    "41": { "verdict": "broke", "evidence": "node prueba.mjs (API-only) -> 'Todo bien', but headless Edge valid form submit -> TypeError: Cannot set properties of null (setting 'textContent'), #mensaje '', server search total 0" },
+    "45": { "verdict": "broke", "evidence": "browser1.mjs empty submit / phone '55abc12345' / email 'ana.correo.com' / past date -> msg:'' errs:[] (submit throws on missing #err-comentario); no-JS error page -> 'Volver' gives nombre=''" },
+    "46": { "verdict": "held", "evidence": "probe3.mjs with 50,000 records: GET /api/admin/citas 14.2ms (25 per page), search 25.2ms, 50 concurrent loads 92ms; startup 192ms" },
+    "49": { "verdict": "held", "evidence": "node prueba.mjs: 12 posts with telefono 'abc' -> 400 campo telefono each (not 429), then valid -> 201 'Todo bien'; field errors checked before the rate limit" },
+    "WEB-2": { "verdict": "broke", "evidence": "probe3.mjs: 110 valid bot posts from 127.0.0.2-12 -> {201:100,429:10}; real patient from 127.0.0.200 -> 429, no-JS -> 'Hay demasiadas solicitudes... Llámanos'" },
+    "WEB-3": { "verdict": "held", "evidence": "browser2.mjs scripts disabled: valid form -> POST /cita 201 '¡Solicitud enviada!'; Sunday -> 'Atendemos de lunes a viernes.' (but typed data lost, see new finding)" },
+    "WEB-4": { "verdict": "held", "evidence": "browser1.mjs keyboard Tab+Enter on enviar -> focus stays on enviar (aria-disabled, not disabled); browser2.mjs admin Confirmar -> focus same card, next Tab -> 'Cancelar'" },
+    "WEB-5": { "verdict": "broke", "evidence": "probe2.mjs: 200 wrong logins in 1681ms -> {401:10,429:190}; correct password during 'lockout' -> 200 token; next wrong -> 401 (counter reset)" },
+    "WEB-1": { "verdict": "held", "evidence": "damage.mjs garbage mid-line + truncated last line -> restart: total 50100, danado-*.bak written, next POST 201 and found; only console warns the owner" }
+  },
+  "new": [
+    { "title": "Build's own test script deletes the live data folder", "class": "data", "evidence": "runprueba.mjs: before datos/ with 19,203,435-byte solicitudes.jsonl -> node prueba.mjs 'Todo bien' -> after 'datos/ DELETED' (requests, backup, admin password)" },
+    { "title": "A global hourly cap lets any bot lock all real users out of the form", "class": "security", "evidence": "probe3.mjs: 100 bot posts from rotating loopback IPs -> next real patient from a fresh IP gets 429" },
+    { "title": "Login lockout still accepts the correct password, so it never stops guessing", "class": "security", "evidence": "probe2.mjs: after 190 responses of 429, correct password -> 200 and counter reset" },
+    { "title": "Client form script references a missing element and throws on every submit, silently", "class": "form", "evidence": "debug2.mjs: err-comentario exists: false; every submit -> unhandled TypeError, #mensaje '', 0 saved" },
+    { "title": "No-JS error page discards all typed input and reports one error at a time", "class": "form", "evidence": "browser2.mjs no JS: Sunday -> error page; 'Volver al formulario' -> nombre ''" },
+    { "title": "README/test claim the main flow works while the browser form saves nothing", "class": "false claim", "evidence": "prueba.mjs prints 'Todo bien'; browser form submit saved before/after 10/10" },
+    { "title": "Admin search and status filter are unstyled ~20px tap targets on mobile", "class": "mobile", "evidence": "browser3.mjs 375px: buscar 21x177 13.3px, estado 19x98 13.3px" }
+  ]
+}

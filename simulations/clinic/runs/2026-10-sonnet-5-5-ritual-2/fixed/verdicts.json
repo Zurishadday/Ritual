@@ -1,0 +1,19 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "admin.mjs: clicked Confirmar on the last request at 375px -> {label:'Confirmada', labelInView:true, liCls:'cita confirmada', focus:'confirmada', focusPressed:'true'}" },
+    "41": { "verdict": "held", "evidence": "foco.mjs measured the rendered colours: white on #14503f 9.34:1 and on rgba(.94) 7.93:1, matching the CSS comments' 9:1 / 7:1; prueba-navegador.mjs also checks the rendered page, not the source" },
+    "45": { "verdict": "held", "evidence": "publico.mjs at 375px: empty/phone 'treinta y tres'/email without @/2026-10-01/Sunday -> error under the field, focus on the field (activeInView:true), values kept; double click -> 1 saved" },
+    "46": { "verdict": "held", "evidence": "datos.mjs N=100000: first panel page 5ms, search on last page 37ms, 50 parallel searches max 1456ms, POST 10ms (paged, append-only)" },
+    "49": { "verdict": "held", "evidence": "general input width:100% vs .filtros select width:auto: the specific rule wins (a-top.png, select at natural width, no overflow); the mirror clash (pressed outline beats :focus-visible) is logged as a new finding" },
+    "WEB-2": { "verdict": "held", "evidence": "datos.mjs: 300 POSTs from one IP -> {201:60, 429:240}; DELETE /api/admin/citas?estado=todas&q=bot -> {\"eliminadas\":60}; honeypot sitio_web -> 201, not saved" },
+    "WEB-3": { "verdict": "held", "evidence": "sinjs.mjs with script execution disabled: empty submit -> server page 'No pudimos guardar tu solicitud' with 6 errors and the form; fixed Sunday -> /gracias.html" },
+    "WEB-4": { "verdict": "held", "evidence": "publico.mjs: button never disabled; after success focus is on #mensaje (in view), next Tab -> nombre; after an error focus is on the first bad field" },
+    "WEB-5": { "verdict": "held", "evidence": "api.mjs: 8 wrong passwords -> 1:401 2:401 3:401 4:401 5:401 6:429 7:429 8:429; spoofed X-Forwarded-For still 429" },
+    "WEB-1": { "verdict": "broke", "evidence": "datos.mjs: appended 'GARBAGE\\0\\0{{{' (no newline) while running, POST 'Tras Basura' -> 201; after restart ?q=tras total:0, record only in solicitudes.danado-*.txt glued to the garbage; only a console.error" }
+  },
+  "new": [
+    { "title": "Admin password printed to stdout on every start and shipped inside the delivered folder (datos/clave.txt)", "class": "security", "evidence": "server output: 'Panel de la dueña: http://localhost:4710/admin (contraseña: 7c0c4af4f83a, desde archivo datos/clave.txt)'; datos/clave.txt in the build = 7c0c4af4f83a" },
+    { "title": "Specific state rule (aria-pressed outline) silently beats the :focus-visible ring, so focus on pressed buttons is almost invisible", "class": "accessibility", "evidence": "Tab onto pressed Confirmar: outline rgb(29,43,39) off 2px vs unfocused pressed rgb(29,43,39) off 0px vs normal focus rgb(242,169,0) 3px" },
+    { "title": "Non-text contrast below 3:1 for the focus ring and input borders", "class": "accessibility", "evidence": "focus ring #f2a900 vs white 2.01:1, vs #eef6f3 1.83:1; input border #b9c8c3 vs white 1.73:1" }
+  ]
+}

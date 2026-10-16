@@ -1,0 +1,99 @@
+:root {
+  --verde: #1f6f5c;
+  --verde-oscuro: #14503f;
+  --crema: #f6f3ec;
+  --texto: #1d2a27;
+  --rojo: #b3261e;
+  --borde: #c9d3cf;
+}
+* { box-sizing: border-box; }
+section[id] { scroll-margin-top: 4.5rem; } /* que la barra fija no tape el título al saltar */
+body { margin: 0; font: 1.0625rem/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--texto); background: #fff; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--verde-oscuro); }
+:focus-visible { outline: 3px solid #14503f; outline-offset: 2px; }
+.barra :focus-visible, .pie :focus-visible { outline-color: #fff; }
+h1, h2, h3 { line-height: 1.2; margin: 0 0 .5em; }
+
+.saltar { position: absolute; left: -999px; top: 0; background: #fff; padding: .5rem 1rem; z-index: 10; }
+.saltar:focus { left: 0; }
+
+.barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding: .75rem 1rem; background: var(--verde); position: sticky; top: 0; z-index: 5; }
+.barra a { color: #fff; text-decoration: none; }
+.marca { font-weight: 700; font-size: 1.25rem; }
+.barra nav { display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: center; }
+.barra nav a { padding: .35rem 0; }
+.barra .llamar { background: #fff; color: var(--verde-oscuro); padding: .35rem .9rem; border-radius: 999px; font-weight: 600; }
+
+.portada { position: relative; background: var(--crema); }
+.portada img { width: 100%; max-height: 70vh; object-fit: cover; aspect-ratio: 2 / 1; }
+.portada-texto { padding: 1.5rem 1rem 2rem; max-width: 40rem; }
+.portada-texto h1 { font-size: 1.75rem; }
+@media (min-width: 800px) {
+  .portada img { aspect-ratio: 5 / 2; }
+  .portada-texto { position: absolute; left: 4vw; bottom: 3rem; background: rgba(255,255,255,.93); border-radius: 12px; padding: 1.5rem 2rem; }
+  .portada-texto h1 { font-size: 2.2rem; }
+}
+
+.boton { display: inline-block; background: var(--verde); color: #fff; border: 0; border-radius: 8px; padding: .8rem 1.4rem; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; min-height: 44px; }
+.boton:hover { background: var(--verde-oscuro); }
+.boton[aria-disabled="true"] { opacity: .65; cursor: progress; }
+.boton.secundario { background: #fff; color: var(--verde-oscuro); border: 2px solid var(--verde); }
+
+.seccion { max-width: 64rem; margin: 0 auto; padding: 2.5rem 1rem; }
+.tarjetas { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.tarjeta { border: 1px solid var(--borde); border-radius: 12px; overflow: hidden; background: #fff; }
+.tarjeta img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: var(--crema); }
+.tarjeta .cuerpo { padding: 1rem 1.1rem 1.2rem; }
+.tarjeta h3 { font-size: 1.2rem; }
+.datos { display: flex; justify-content: space-between; align-items: baseline; font-size: 1.05rem; margin-bottom: 0; }
+.datos strong { font-size: 1.4rem; color: var(--verde-oscuro); }
+
+.cita { background: var(--crema); max-width: none; }
+.cita > * { max-width: 40rem; margin-left: auto; margin-right: auto; }
+.campo { margin-bottom: 1rem; flex: 1; }
+.fila { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .fila { grid-template-columns: 1fr 1fr; } }
+label { display: block; font-weight: 600; margin-bottom: .25rem; }
+.opcional { font-weight: 400; color: #4b5a56; }
+input, select, textarea { width: 100%; font: inherit; padding: .65rem .75rem; border: 1px solid #8a9a95; border-radius: 8px; background: #fff; color: inherit; min-height: 44px; }
+input[aria-invalid="true"], select[aria-invalid="true"] { border: 2px solid var(--rojo); }
+.error { color: var(--rojo); margin: .25rem 0 0; font-weight: 600; min-height: 0; }
+.error:empty { display: none; }
+.resumen { border: 2px solid var(--rojo); background: #fff; border-radius: 8px; padding: .75rem 1rem; margin-bottom: 1rem; color: var(--rojo); }
+.resumen ul { margin: .25rem 0 0; padding-left: 1.2rem; }
+.exito { background: #fff; border: 2px solid var(--verde); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+.estado { min-height: 1.5em; margin: .75rem 0 0; font-weight: 600; }
+.estado.mal { color: var(--rojo); }
+.trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+[hidden] { display: none !important; }
+
+.contacto address { font-style: normal; font-size: 1.1rem; }
+.pie { text-align: center; padding: 1.5rem 1rem; background: var(--verde-oscuro); color: #fff; }
+.pie p { margin: 0; }
+
+/* Páginas sencillas (gracias, errores, acceso) */
+.simple { background: var(--crema); }
+.caja { max-width: 28rem; margin: 3rem auto; background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--borde); }
+
+/* Panel */
+.panel { max-width: 56rem; margin: 0 auto; padding: 1rem; }
+.panel-cab { display: flex; flex-wrap: wrap; gap: .5rem 1rem; justify-content: space-between; align-items: center; }
+.filtros { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+.filtros button, .acciones button { font: inherit; padding: .5rem .9rem; min-height: 44px; border-radius: 8px; border: 2px solid var(--verde); background: #fff; color: var(--verde-oscuro); cursor: pointer; font-weight: 600; }
+.filtros button[aria-pressed="true"], .acciones button[aria-pressed="true"] { background: var(--verde); color: #fff; }
+.acciones .peligro { border-color: var(--rojo); color: var(--rojo); }
+.acciones { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.solicitud { background: #fff; border: 1px solid var(--borde); border-left: 6px solid #d9a400; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+.solicitud.confirmada { border-left-color: var(--verde); }
+.solicitud.cancelada { border-left-color: #8a8a8a; background: #f4f4f4; }
+.solicitud h3 { margin: 0 0 .25rem; overflow-wrap: anywhere; }
+.peligro-masivo { margin-top: 1rem; border-color: var(--rojo); color: var(--rojo); }
+#lista > .boton { margin-right: .5rem; }
+.insignia { display: inline-block; font-size: .9rem; font-weight: 700; padding: .1rem .6rem; border-radius: 999px; background: #fff2c2; color: #5c4400; margin-left: .5rem; }
+.confirmada .insignia { background: #d4efe4; color: var(--verde-oscuro); }
+.cancelada .insignia { background: #e3e3e3; color: #333; }
+.solicitud dl { margin: .5rem 0 0; display: grid; grid-template-columns: max-content 1fr; gap: .15rem .75rem; }
+.solicitud dt { font-weight: 600; }
+.solicitud dd { margin: 0; overflow-wrap: anywhere; }
+.nuevo { font-size: .85rem; color: #4b5a56; }

@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "node revision/formulario.mjs 3104 (Chrome 375px): good path -> #exito 'shown inView=true ¡Listo, Lucía! Recibimos tu solicitud', focus=#exito; every error path -> summary shown inView=true with focus on it" },
+    "41": { "verdict": "broke", "evidence": "node prueba.mjs -> 'OK el HTML del nombre se guarda como texto (se muestra con textContent)' / 'Todo bien', but node revision/depurar.mjs 3000 <clave> after 1 saved request -> 'items= 0', cargar() -> TypeError at pintarEstado (admin.js:56): the panel shows no request at all" },
+    "45": { "verdict": "held", "evidence": "node revision/formulario.mjs 3104: empty / phone '55 12ab 5678' / email without @ / past day / Sunday / hour gone today -> each shows 'Hay N datos por corregir' in view, focus on summary, next Tab -> link to the field; Back after no-JS error keeps typed data" },
+    "46": { "verdict": "held", "evidence": "node revision/datos-checks.mjs 3102 grande123 big (20,000 records, 6.5 MB) -> 'list 8-13ms 98311 bytes, shown 300 | one status change 21-52ms -> 200'" },
+    "49": { "verdict": "broke", "evidence": "node revision/admin-checks.mjs 3101 <clave> global -> '35 wrong passwords from 7 IPs -> {401:25,429:10}' then 'owner, from a different IP, correct password -> 429': the global '*' bucket silently overrides the per-IP decision for an IP with zero failures" },
+    "WEB-2": { "verdict": "broke", "evidence": "node revision/datos-checks.mjs 3101 <clave> race -> 150 requests from 150 IPs all 201 (honeypot/per-IP limit don't stop distributed bots), and the owner's panel renders 0 of them (TypeError in admin.js tarjeta/pintarEstado), so she cannot find the real one or delete the rest from the page" },
+    "WEB-3": { "verdict": "held", "evidence": "node revision/formulario.mjs 3104 with Network.setBlockedURLs ['*app.js*'] -> native POST to /api/citas shows '¡Solicitud recibida! | Rehabilitación de rodilla, 2026-10-19 a las 10:00'; invalid -> 'Revisa tu solicitud' page with reasons; history.back() keeps nombre 'Sin JS'" },
+    "WEB-4": { "verdict": "held", "evidence": "node revision/formulario.mjs 3104: after success focus=#exito, next Tab -> BUTTON 'Pedir otra cita'; after error focus=#resumen-errores, next Tab -> first error link; button never disabled (text back to 'Pedir cita')" },
+    "WEB-5": { "verdict": "held", "evidence": "node revision/admin-checks.mjs 3101 <clave> burst -> '60 parallel wrong passwords from one IP -> {401:5,429:55}', then 3 sequential -> 429,429,429 (but see new finding: global cap lets a stranger lock out the owner)" },
+    "WEB-1": { "verdict": "held", "evidence": "citas.jsonl with a truncated last line, node revision/concurrente.mjs 3103 crash123 -> 'post {201:20}', after 21; damaged line moved to citas.corruptas.log; only a console 'AVISO' tells anyone" }
+  },
+  "new": [
+    { "title": "Deduplication answers 'received' but silently drops a resend's new comment", "class": "data", "evidence": "node revision/servidor-checks.mjs 3101: resend same phone/treatment/slot with comentario 'tengo marcapasos' -> 200 '¡Solicitud recibida!'; admin list shows one 'Doble Clic' entry with comentario \"\"" },
+    { "title": "Global login lockout lets any stranger keep the owner out of her panel", "class": "security", "evidence": "node revision/admin-checks.mjs 3101 <clave> global -> owner's correct password from a fresh IP -> 429 'Demasiados intentos'" },
+    { "title": "Appointment rate limit counts rejected attempts, blocking a person who finally gets it right", "class": "server", "evidence": "node revision/servidor-checks.mjs 3101: 6x 422 (phone typo) then correct request -> 429 'Has enviado muchas solicitudes seguidas'" },
+    { "title": "Render error after login is written into the hidden login view, so the owner sees an empty panel and no message", "class": "accessibility", "evidence": "node revision/depurar.mjs 3000 <clave> -> 'panel hidden= false | error-login= \"Cannot set properties of null (setting textContent)\" | items= 0'" },
+    { "title": "Phone placeholder hardcoded in three files while the comment names two; no README / how-to-test", "class": "false claim", "evidence": "servidor.mjs:10 says change it also in publico/index.html; publico/app.js:12 TEL_TEXTO='55 0000 0000' is not mentioned; Glob **/* finds no README" }
+  ]
+}

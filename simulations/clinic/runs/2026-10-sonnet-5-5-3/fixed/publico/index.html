@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fisio Andares · Fisioterapia</title>
+  <meta name="description" content="Fisioterapia para volver a moverte sin dolor: rehabilitación de rodilla, dolor de espalda y masaje deportivo.">
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="#inicio">Fisio Andares</a>
+    <nav>
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#cita">Pedir cita</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="portada">
+      <img src="/img/portada.svg" alt="Fisioterapeuta ayudando a un paciente con sus ejercicios (imagen de ejemplo)">
+      <div class="portada-texto">
+        <h1>Te ayudamos a volver a moverte sin dolor</h1>
+        <p>Fisioterapia personalizada para rodilla, espalda y deporte, en consulta tranquila y con atención uno a uno.</p>
+        <a class="boton" href="#cita">Pedir cita</a>
+      </div>
+    </section>
+
+    <section id="tratamientos" class="seccion">
+      <h2>Nuestros tratamientos</h2>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <img src="/img/rodilla.svg" alt="Ejercicio de rehabilitación de rodilla (imagen de ejemplo)" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Rehabilitación de rodilla</h3>
+            <p>Recuperación después de lesiones, cirugía o desgaste, con ejercicio guiado y terapia manual.</p>
+            <p class="datos"><span>⏱ 60 minutos</span><strong>$600</strong></p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/espalda.svg" alt="Tratamiento para dolor de espalda (imagen de ejemplo)" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Dolor de espalda</h3>
+            <p>Alivio del dolor lumbar y cervical, y pautas para que no vuelva.</p>
+            <p class="datos"><span>⏱ 45 minutos</span><strong>$500</strong></p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/masaje.svg" alt="Masaje deportivo (imagen de ejemplo)" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Masaje deportivo</h3>
+            <p>Para preparar o recuperar el músculo antes y después del entrenamiento o la competencia.</p>
+            <p class="datos"><span>⏱ 45 minutos</span><strong>$450</strong></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="cita" class="seccion seccion-clara">
+      <h2>Pide tu cita</h2>
+      <p class="intro">Atendemos de lunes a viernes, de 9:00 a 18:00. Envíanos tu solicitud y te contactaremos para confirmarla.</p>
+      <form id="formulario" action="/api/citas" method="post" novalidate>
+        <label>Nombre
+          <input name="nombre" autocomplete="name" required maxlength="100">
+          <span class="error" data-error="nombre"></span>
+        </label>
+        <label>Teléfono
+          <input name="telefono" type="tel" autocomplete="tel" required maxlength="20">
+          <span class="error" data-error="telefono"></span>
+        </label>
+        <label>Correo electrónico
+          <input name="correo" type="email" autocomplete="email" required maxlength="120">
+          <span class="error" data-error="correo"></span>
+        </label>
+        <label>Tratamiento
+          <select name="tratamiento" required>
+            <option value="">Elige uno…</option>
+            <option value="rodilla">Rehabilitación de rodilla (60 min)</option>
+            <option value="espalda">Dolor de espalda (45 min)</option>
+            <option value="masaje">Masaje deportivo (45 min)</option>
+          </select>
+          <span class="error" data-error="tratamiento"></span>
+        </label>
+        <div class="fila">
+          <label>Día preferido
+            <input name="fecha" type="date" required>
+            <span class="error" data-error="fecha"></span>
+          </label>
+          <label>Hora preferida
+            <select name="hora" required>
+              <option value="">Elige…</option>
+              <option value="09:00">09:00</option>
+              <option value="09:30">09:30</option>
+              <option value="10:00">10:00</option>
+              <option value="10:30">10:30</option>
+              <option value="11:00">11:00</option>
+              <option value="11:30">11:30</option>
+              <option value="12:00">12:00</option>
+              <option value="12:30">12:30</option>
+              <option value="13:00">13:00</option>
+              <option value="13:30">13:30</option>
+              <option value="14:00">14:00</option>
+              <option value="14:30">14:30</option>
+              <option value="15:00">15:00</option>
+              <option value="15:30">15:30</option>
+              <option value="16:00">16:00</option>
+              <option value="16:30">16:30</option>
+              <option value="17:00">17:00</option>
+            </select>
+            <span class="error" data-error="hora"></span>
+          </label>
+        </div>
+        <label>Comentario (opcional)
+          <textarea name="comentario" rows="3" maxlength="500"></textarea>
+          <span class="error" data-error="comentario"></span>
+        </label>
+        <input class="trampa" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="boton" type="submit">Enviar solicitud</button>
+        <p id="resultado" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="contacto" class="seccion">
+      <h2>Dónde estamos</h2>
+      <address>
+        <p><strong>Fisio Andares</strong><br>
+        Calle de Ejemplo 123, Col. Centro<br>
+        Ciudad, CP 00000</p>
+        <p><a class="boton" href="tel:+520000000000">Llamar: 00 0000 0000</a></p>
+        <p>Lunes a viernes, de 9:00 a 18:00</p>
+      </address>
+    </section>
+  </main>
+
+  <footer>© Fisio Andares</footer>
+  <script src="/cita.js"></script>
+</body>
+</html>

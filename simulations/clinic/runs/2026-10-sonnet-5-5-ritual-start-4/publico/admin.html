@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes de cita · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <header class="barra">
+    <span class="marca">Fisio Andares · Solicitudes</span>
+    <button type="button" id="salir" class="enlace" hidden>Cerrar sesión</button>
+  </header>
+  <main class="seccion">
+    <section id="acceso" hidden>
+      <h1>Entrar</h1>
+      <form id="form-acceso" class="formulario">
+        <div class="campo">
+          <label for="clave">Contraseña</label>
+          <input id="clave" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="boton" type="submit">Entrar</button>
+        <p id="estado-acceso" class="estado" role="status" tabindex="-1"></p>
+      </form>
+    </section>
+
+    <section id="panel" hidden>
+      <h1 id="titulo" tabindex="-1">Solicitudes de cita</h1>
+      <div class="filtro">
+        <label for="filtro">Mostrar</label>
+        <select id="filtro">
+          <option value="todas">Todas</option>
+          <option value="pendiente">Pendientes</option>
+          <option value="confirmada">Confirmadas</option>
+          <option value="cancelada">Canceladas</option>
+        </select>
+      </div>
+      <p id="aviso" class="estado" role="status" tabindex="-1"></p>
+      <ul id="lista" class="citas"></ul>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

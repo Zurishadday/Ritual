@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+  <noscript><p class="aviso">Este panel necesita JavaScript activado.</p></noscript>
+
+  <main id="vista-login" class="login" hidden>
+    <h1>Panel de Fisio Andares</h1>
+    <form id="form-login" novalidate>
+      <div class="campo">
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" autocomplete="current-password" required>
+        <p class="error" id="error-login" role="alert"></p>
+      </div>
+      <button class="boton" type="submit">Entrar</button>
+    </form>
+  </main>
+
+  <main id="vista-panel" class="panel" hidden>
+    <div class="panel-cab">
+      <h1>Solicitudes de cita</h1>
+      <button class="boton secundario" id="salir" type="button">Salir</button>
+    </div>
+    <div class="filtros">
+      <label for="filtro">Mostrar:</label>
+      <select id="filtro">
+        <option value="todas">Todas</option>
+        <option value="pendiente">Pendientes</option>
+        <option value="confirmada">Confirmadas</option>
+        <option value="cancelada">Canceladas</option>
+      </select>
+      <label for="buscar">Buscar:</label>
+      <input id="buscar" type="search" placeholder="nombre, teléfono o correo" maxlength="80" autocomplete="off">
+    </div>
+    <p id="conteo"></p>
+    <div id="aviso" class="mensaje ok" role="status" tabindex="-1" hidden></div>
+    <ul id="lista" class="lista"></ul>
+    <nav class="paginas" aria-label="Páginas">
+      <button class="boton secundario" id="nuevas" type="button">← Más nuevas</button>
+      <span id="pagina"></span>
+      <button class="boton secundario" id="viejas" type="button">Más viejas →</button>
+    </nav>
+    <p><button class="boton peligro" id="eliminar-todas" type="button" hidden></button></p>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

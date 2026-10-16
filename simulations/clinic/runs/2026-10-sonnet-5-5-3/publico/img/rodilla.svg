@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#dcefe9"/>
+  <path d="M250 40h100l-15 150 25 40-20 170H260l-20-170 25-40z" fill="#2f7d6d" opacity=".75"/>
+  <circle cx="300" cy="215" r="34" fill="#fff" opacity=".85"/>
+  <text x="300" y="385" font-family="sans-serif" font-size="20" fill="#1f5a4e" text-anchor="middle">Foto de ejemplo</text>
+</svg>

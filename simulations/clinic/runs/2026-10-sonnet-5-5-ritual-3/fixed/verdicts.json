@@ -1,0 +1,17 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "navegador.mjs, panel at 375px: click Confirmar at bottom of a long card -> anuncioTop -313, card top -128 (viewport 800); 'Confirmada' badge and announcement off-screen, shots/07-panel-confirmar-viewport.png" },
+    "41": { "verdict": "held", "evidence": "Checked in rendered Chrome, not source: admin list with <b>/<img onerror> name -> 0 <b>, 0 <img>, 0 dialogs; hero button contrast computed 8.79:1 vs CSS claim >7:1" },
+    "45": { "verdict": "held", "evidence": "navegador.mjs: empty submit -> focus 'nombre' + 'Completa este campo'; phone '33 22ab 1111' -> focused summary 'Escribe un teléfono válido…' visible with field; Sunday -> red help + blocked; double click -> 1 fetch" },
+    "46": { "verdict": "broke", "evidence": "panel-grande.mjs: panel load 68ms@100, 1503ms@5000, 5610ms@20000 records; search keystroke 3258ms@20000; GET /api/admin/citas 6.7MB; each POST rewrites 7.2MB file" },
+    "49": { "verdict": "broke", "evidence": "formulario.mjs: POST correo corregido-MAL -> 201; resubmit same phone/slot with corregido-bien + comment -> 201; lista.mjs shows only corregido-MAL, empty comment (2-min de-dup rule overrides the newer submission)" },
+    "WEB-2": { "verdict": "broke", "evidence": "servidor-pruebas.mjs: 40 bot posts from one IP -> 201x30 429x10; DELETE /api/admin/citas?estado=pendiente -> 400 'Estado no válido.' (no bulk removal of pending junk)" },
+    "WEB-3": { "verdict": "held", "evidence": "sinjs.mjs, Chrome with scripts disabled: good submit -> /cita-enviada.html '¡Recibimos tu solicitud!'; Sunday -> /api/citas error page 'Atendemos de lunes a viernes… Usa el botón «Atrás»'" },
+    "WEB-4": { "verdict": "held", "evidence": "navegador.mjs: after successful submit active=estado-form (aria-disabled used, not disabled); next Tab -> 'nombre'; after server error active=estado-form" },
+    "WEB-5": { "verdict": "held", "evidence": "servidor-pruebas.mjs: 60 wrong passwords in 304ms -> 401x4 429x56; right password while locked -> 429 Retry-After 60; spoofed X-Forwarded-For -> still 429" },
+    "WEB-1": { "verdict": "held", "evidence": "servidor-pruebas.mjs: truncated solicitudes.json, restart, POST -> 201; panel aviso 'El archivo de solicitudes estaba dañado… Se guardó una copia en solicitudes.danado-….json'" }
+  },
+  "new": [
+    { "title": "A per-IP limit behind a proxy is a limit on everyone (rate limit and login lockout keyed by socket address; TRUST_PROXY not in README)", "class": "security", "evidence": "31st valid POST from one IP -> 429 for all; after 5 wrong passwords the right one -> 429 Retry-After 60; LEEME.md omits TRUST_PROXY" }
+  ]
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fisio Andares · Fisioterapia</title>
+  <meta name="description" content="Consultorio de fisioterapia: rehabilitación de rodilla, dolor de espalda y masaje deportivo.">
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="#inicio">Fisio Andares</a>
+    <nav>
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#cita">Pedir cita</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="portada" id="inicio">
+      <img src="/img/portada.svg" alt="Ilustración de ejemplo: persona caminando con confianza" class="portada-img">
+      <div class="portada-texto">
+        <h1>Recupera tu movimiento, vuelve a caminar sin dolor</h1>
+        <p>Fisioterapia personalizada para rodilla, espalda y deportistas.</p>
+        <a class="boton" href="#cita">Pedir cita</a>
+      </div>
+    </section>
+
+    <section id="tratamientos" class="seccion">
+      <h2>Nuestros tratamientos</h2>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <img src="/img/rodilla.svg" alt="Ilustración de ejemplo: rodilla" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Rehabilitación de rodilla</h3>
+            <p>Recuperación después de lesiones, cirugías o desgaste, con ejercicio guiado.</p>
+            <ul class="datos">
+              <li><span>Duración</span> 60 minutos</li>
+              <li><span>Precio</span> $600 por sesión</li>
+            </ul>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/espalda.svg" alt="Ilustración de ejemplo: espalda" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Dolor de espalda</h3>
+            <p>Alivio del dolor lumbar y cervical, y hábitos para que no regrese.</p>
+            <ul class="datos">
+              <li><span>Duración</span> 50 minutos</li>
+              <li><span>Precio</span> $550 por sesión</li>
+            </ul>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/masaje.svg" alt="Ilustración de ejemplo: masaje deportivo" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Masaje deportivo</h3>
+            <p>Descarga muscular y recuperación para antes o después de entrenar o competir.</p>
+            <ul class="datos">
+              <li><span>Duración</span> 45 minutos</li>
+              <li><span>Precio</span> $500 por sesión</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="cita" class="seccion seccion-alt">
+      <h2>Pide tu cita</h2>
+      <p class="nota">Atendemos de lunes a viernes, de 9:00 a 18:00. Te confirmaremos por teléfono o correo.</p>
+      <form id="form-cita" class="formulario" novalidate>
+        <label>Nombre
+          <input name="nombre" type="text" autocomplete="name" required maxlength="100">
+        </label>
+        <label>Teléfono
+          <input name="telefono" type="tel" autocomplete="tel" required maxlength="30">
+        </label>
+        <label>Correo electrónico
+          <input name="correo" type="email" autocomplete="email" required maxlength="150">
+        </label>
+        <label>Tratamiento
+          <select name="tratamiento" required>
+            <option value="">Elige uno…</option>
+            <option value="rodilla">Rehabilitación de rodilla (60 min)</option>
+            <option value="espalda">Dolor de espalda (50 min)</option>
+            <option value="masaje">Masaje deportivo (45 min)</option>
+          </select>
+        </label>
+        <div class="fila">
+          <label>Día preferido
+            <input name="fecha" id="fecha" type="date" required>
+          </label>
+          <label>Hora preferida
+            <select name="hora" id="hora" required>
+              <option value="">Elige…</option>
+            </select>
+          </label>
+        </div>
+        <label>Comentario (opcional)
+          <textarea name="comentario" rows="3" maxlength="500"></textarea>
+        </label>
+        <p id="mensaje" class="mensaje" role="status" aria-live="polite"></p>
+        <button class="boton" type="submit">Enviar solicitud</button>
+      </form>
+    </section>
+
+    <section id="contacto" class="seccion">
+      <h2>Dónde estamos</h2>
+      <div class="contacto">
+        <p><strong>Dirección</strong><br>Calle Ejemplo 123, Col. Centro<br>Ciudad de Ejemplo, CP 00000</p>
+        <p><strong>Teléfono</strong><br><a class="tel" href="tel:+520000000000">(000) 000 0000</a></p>
+        <p><strong>Horario</strong><br>Lunes a viernes, 9:00 a 18:00</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">© Fisio Andares</footer>
+  <script src="/app.js"></script>
+</body>
+</html>

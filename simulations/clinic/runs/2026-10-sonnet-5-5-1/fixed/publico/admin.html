@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <div class="admin">
+    <form id="login" class="formulario login" novalidate>
+      <h1>Fisio Andares · Administración</h1>
+      <label>Contraseña
+        <input type="password" id="clave" autocomplete="current-password" required>
+      </label>
+      <p id="login-msg" class="mensaje error" role="alert"></p>
+      <button class="boton" type="submit">Entrar</button>
+    </form>
+
+    <div id="panel" hidden>
+      <div class="admin-cabecera">
+        <h1>Solicitudes de cita</h1>
+        <div class="admin-acciones">
+          <button class="boton boton-chico boton-borde" id="recargar" type="button">Actualizar</button>
+          <button class="boton boton-chico boton-borde" id="salir" type="button">Salir</button>
+        </div>
+      </div>
+      <form id="filtros" class="filtros" novalidate>
+        <label>Buscar
+          <input type="search" id="buscar" placeholder="Nombre, teléfono o correo" maxlength="100">
+        </label>
+        <label>Estado
+          <select id="estado">
+            <option value="">Todas</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="confirmada">Confirmadas</option>
+            <option value="cancelada">Canceladas</option>
+          </select>
+        </label>
+        <button class="boton boton-chico" type="submit">Filtrar</button>
+      </form>
+      <p id="resumen" class="nota" role="status"></p>
+      <p id="panel-msg" class="mensaje" role="status" aria-live="polite"></p>
+      <div id="lista"></div>
+      <nav class="paginas" id="paginas" aria-label="Páginas">
+        <button class="boton boton-chico boton-borde" id="anterior" type="button">← Anterior</button>
+        <span id="pagina-info"></span>
+        <button class="boton boton-chico boton-borde" id="siguiente" type="button">Siguiente →</button>
+      </nav>
+      <p><button class="boton boton-chico boton-peligro" id="borrar-filtro" type="button" hidden></button></p>
+    </div>
+  </div>
+  <script src="/admin.js"></script>
+</body>
+</html>

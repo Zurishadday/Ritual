@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "CDP click 'Confirmar' on the last card: badge changed to 'Confirmada' in view, aria-pressed=true, focus stayed on the button (the top #msg was off-screen but the change was visible in place)" },
+    "41": { "verdict": "broke", "evidence": "admin.html source has <button id=mas hidden>, but in Chrome its computed display is block and it shows 'Mostrar más (0 restantes)'; the build's own test only checked the API" },
+    "45": { "verdict": "held", "evidence": "navegador.mjs: empty submit → 6 inline errors with focus on #nombre; phone 'cinco cinco' / email without @ → errors with focus on #telefono; Sunday/past date → error with focus on #fecha; double-click → 1 saved request" },
+    "46": { "verdict": "held", "evidence": "datos.mjs: 5000/50000 records → panel GET 7/10 ms, search 8/21 ms, PATCH 9/47 ms; 10 PATCH + 40 POST concurrent 96/371 ms, all 201/200" },
+    "49": { "verdict": "broke", "evidence": "admin.css '#mas { display:block }' beats the [hidden] rule: CDP getComputedStyle(#mas).display='block' while hidden=true, button visible" },
+    "WEB-2": { "verdict": "held", "evidence": "honeypot sitio_web → fake 201, not stored; 5 valid/10 min per IP then 429; panel search + bulk delete by filter work (prueba.mjs + API); but see new finding: the global cap locks out real users" },
+    "WEB-3": { "verdict": "held", "evidence": "cita.js blocked via CDP: good submit → 303 /gracias.html '¡Listo! Recibimos tu solicitud'; Sunday → server page listing 'Atendemos de lunes a viernes' (its 'Volver al formulario' link drops typed data)" },
+    "WEB-4": { "verdict": "held", "evidence": "Enter on #enviar → activeElement=#resultado (success message, in view), next Tab → #nombre; the button uses aria-disabled, not disabled" },
+    "WEB-5": { "verdict": "held", "evidence": "12 wrong logins from 127.0.0.1 in 104 ms → 401x5 then 429x7 (correct password also 429 for 60 s); every other source IP gets 5 tries per minute; the default password is 12 random base64url characters" },
+    "WEB-1": { "verdict": "held", "evidence": "truncated line appended to citas.jsonl → next POST 201 and saved on its own line; after restart danadas=1 shown in the panel; but a read-only store → 500 to the visitor and the owner sees nothing in the panel" }
+  },
+  "new": [
+    { "title": "A site-wide anti-bot cap lets bots switch off booking for real people, silently", "class": "security", "evidence": "9 loopback IPs x 5 valid posts → 37x201 then 429; a fresh IP 127.0.0.50 real request → 429; no count or log of refused requests" },
+    { "title": "Store write failures reach the visitor but never the owner", "class": "data", "evidence": "citas.jsonl chmod 444 → POST 500 'llámanos'; panel API afterwards total=3 danadas=0 with no error field; only console.error" },
+    { "title": "The no-JS error page's only button discards everything typed", "class": "form", "evidence": "cita.js blocked, Sunday submitted, clicked 'Volver al formulario' → /#cita with nombre='' telefono=''" },
+    { "title": "Hero text over light silhouettes at about 2.5:1 contrast", "class": "accessibility", "evidence": "desk-portada.png / mob-portada.png: white text over #f6f3ec at 0.55 on #14503f ≈ #90aa9e → ~2.5:1" },
+    { "title": "After login, focus lands on the 'Salir' (logout) button", "class": "accessibility", "evidence": "CDP after a correct password + Enter: document.activeElement.id = 'salir'" }
+  ]
+}

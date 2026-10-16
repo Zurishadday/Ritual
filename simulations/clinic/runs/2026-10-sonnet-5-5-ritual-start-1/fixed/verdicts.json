@@ -1,0 +1,18 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "node navegador3.mjs 4112 (1280px): clicked Confirmar on 'Éxito Móvil' -> 'badge: confirmada' and the button became pressed in the same card; form errors: 'summary visible: true' with focus on #resumen-errores" },
+    "41": { "verdict": "broke", "evidence": "prueba.mjs checks XSS and layout only through JSON strings (c.nombre.includes('<b>')); rendering the panel at 375px with one 80-char name: node navegador2.mjs -> 'admin overflow 375 {\"scrollW\":1014,\"clientW\":375}', shots/20-admin-largo.png buttons cut on every card" },
+    "45": { "verdict": "held", "evidence": "node navegador.mjs 4112: empty, phone '55abc12345678', 'rosa.correo.com', Sunday, past day, 120+ days -> each 'Hay 1 dato por corregir: ...' focused and in view, data kept; double click -> 'saved with that phone: 1'" },
+    "46": { "verdict": "held", "evidence": "node medir.mjs 4115 with 100000 records: 'list 200 22ms ... shown 300', 'new request 201 19ms', 'status change 200 109ms'; 100 concurrent new + 20 PATCH -> {\"201\":100,\"P200\":20} in 2471ms" },
+    "49": { "verdict": "broke", "evidence": "curl 3 posts same phone/slot (laura@corre.com, then corrected laura@correo.com, then 'Pablo Gomez' + 'Soy su hijo') all {\"ok\":true}; stored [[\"Laura Gomez\",\"laura@corre.com\",\"Soy su hijo\"]]: dedupe rule silently drops the correction" },
+    "WEB-2": { "verdict": "broke", "evidence": "node saturar.mjs 4111: bot from 127.0.0.2-9 -> {\"201\":31,\"429\":17}; then a real person from ::1 -> 429 'Ahora mismo no podemos recibir más solicitudes... Llámanos'; cleanup is one-by-one Eliminar with confirm() or cancel each then bulk delete" },
+    "WEB-3": { "verdict": "held", "evidence": "Chrome with scripts disabled, real form post -> '¡Solicitud recibida! Masaje deportivo, 2026-10-19 a las 10:00'; empty post -> 'Revisa tu solicitud ... Escribe tu nombre. ...' (admin page is blank without JS: finding 5)" },
+    "WEB-4": { "verdict": "held", "evidence": "node navegador.mjs: button never disabled; after success focus '#exito' in view, next Tab -> 'Pedir otra cita'; after error focus '#resumen-errores', next Tab -> link 'Nombre: Escribe tu nombre.'" },
+    "WEB-5": { "verdict": "held", "evidence": "node rafagas.mjs 4111 login: 'sequential 7 wrong: 401,401,401,401,401,429,429'; 'concurrent 201 guesses from ::1: {\"401\":5,\"429\":196} last (correct pw): 429'" },
+    "WEB-1": { "verdict": "broke", "evidence": "store with line {\"id\":\"rara\",\"estado\":\"pendiente\"}: node medir.mjs 4114 -> 'new request 500 Error interno del servidor' (TypeError at servidor.mjs:255) and panel 'cards shown: 0'; a truncated line was handled (4113: new request 201)" }
+  },
+  "new": [
+    { "title": "One long unbroken value from the public widens every row of the owner's list on mobile", "class": "mobile", "evidence": "node navegador2.mjs 4112 after an 80-char name + 117-char email: 'admin overflow 375 {\"scrollW\":1014,\"clientW\":375}', Cancelar/Eliminar cut off on all cards (shots/20-admin-largo.png)" },
+    { "title": "Current-status button styled as the primary action ('Dejar pendiente' solid dark on every new request)", "class": "accessibility", "evidence": "shots/12-antes-confirmar.png: on pending cards 'Dejar pendiente' is filled dark while 'Confirmar' is an outline" }
+  ]
+}

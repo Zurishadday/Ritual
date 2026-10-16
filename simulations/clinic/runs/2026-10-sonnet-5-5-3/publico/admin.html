@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <form id="acceso" class="acceso" hidden>
+    <h1>Fisio Andares</h1>
+    <label>Contraseña
+      <input type="password" name="clave" autocomplete="current-password" required autofocus>
+    </label>
+    <button class="boton" type="submit">Entrar</button>
+    <p id="acceso-error" class="error" role="alert"></p>
+  </form>
+
+  <div id="panel" class="panel" hidden>
+    <div class="panel-cabecera">
+      <h1>Solicitudes de cita</h1>
+      <div>
+        <button id="actualizar" class="boton boton-sec" type="button">Actualizar</button>
+        <button id="salir" class="boton boton-sec" type="button">Salir</button>
+      </div>
+    </div>
+    <div class="filtros" id="filtros">
+      <button type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+      <button type="button" data-filtro="pendiente" aria-pressed="false">Pendientes</button>
+      <button type="button" data-filtro="confirmada" aria-pressed="false">Confirmadas</button>
+      <button type="button" data-filtro="cancelada" aria-pressed="false">Canceladas</button>
+    </div>
+    <div id="lista"></div>
+  </div>
+  <script src="/admin.js"></script>
+</body>
+</html>

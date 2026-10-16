@@ -1,0 +1,19 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "navegador.mjs: good submit -> focus estado-form, estadoInViewport:true, '¡Listo, Ana Pérez! Recibimos tu solicitud…'; panel Confirmar -> focus on same card now showing 'Confirmada'" },
+    "41": { "verdict": "held", "evidence": "Checked rendered DOM/screenshots, not source: admin card innerText '<b>hola</b><img src=x onerror=\"alert(1)\">', 0 img/0 b elements, no dialog; m375-admin-long.png wraps (scrollWidth 375 vs 375). Note: builder's own test only checked the JSON for this claim" },
+    "45": { "verdict": "held", "evidence": "navegador.mjs: empty -> focus nombre, 6 invalid, 0 stored; phone '33 12ab 5678' -> 400 msg shown+focused, values kept; no-@ email, Sunday, past date each blocked with message and focus on the field; double click -> 1 saved" },
+    "46": { "verdict": "held", "evidence": "datos.mjs/volumen.mjs: 4990 records -> GET list 27 ms, POST 34 ms; panel render 878 ms @2500, 1911 ms @5000 (linear, bounded by 5000 cap)" },
+    "49": { "verdict": "held", "evidence": "Global [hidden]{display:none!important} and :focus-visible rules checked in browser: estado-form stays hidden until shown, then visible; every Tab stop showed amber outline, none overridden by component styles" },
+    "WEB-2": { "verdict": "broke", "evidence": "datos.mjs: with 5000 stored, real request -> 503 'Por ahora no podemos recibir más solicitudes en línea'; panel has only status filters and per-card Eliminar with confirm(), no search or bulk delete" },
+    "WEB-3": { "verdict": "held", "evidence": "navegador3.mjs with app.js blocked: invalid submit -> /api/citas error page listing errors, Back keeps all values; valid submit -> /cita-enviada.html, stored 1" },
+    "WEB-4": { "verdict": "held", "evidence": "navegador2.mjs: Enter on Solicitar cita -> focus estado-form [outline]; next Tab -> nombre; button uses aria-disabled not disabled" },
+    "WEB-5": { "verdict": "held", "evidence": "sondas.mjs: 8 wrong passwords -> 401 401 401 401 429(retry 60) 429 429 429 (5 attempts/min per IP)" },
+    "WEB-1": { "verdict": "broke", "evidence": "datos.mjs: solicitudes.json = '[null]' -> visitor POST 500 'No pudimos guardar tu solicitud', admin list 500, log TypeError reading 'tratamiento' (empty/truncated files were handled: 201 + panel warning)" }
+  },
+  "new": [
+    { "title": "A safety cap must not silently close the front door (5000-request cap returns 503 to patients, owner never warned, closed/cancelled count too)", "class": "data", "evidence": "datos.mjs: request #5001 -> 503 {\"error\":\"Por ahora no podemos recibir más solicitudes en línea. Llámanos por teléfono, por favor.\"}" },
+    { "title": "A per-IP limit is a per-everyone limit behind a shared address (submit limit and login lockout keyed on socket IP)", "class": "server", "evidence": "datos.mjs: 8 different people from 127.0.0.1 -> 201 201 201 201 201 429 429 429" },
+    { "title": "Main call-to-action button has 1.73:1 non-text contrast against the hero behind it", "class": "accessibility", "evidence": "node contrast calc: #0f766e vs #134e4a = 1.73 (needs 3:1); visible in desk-top.png" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "node _revisor/navegador.mjs publico/admin: success message shown inView=true with focus on it; Confirm via Enter keeps focus on the button, which turns dark (aria-pressed) and the card badge reads 'Confirmada' (shots/07)" },
+    "41": { "verdict": "broke", "evidence": "node herramientas/medir-ancho.mjs -> 'RESULT sw=512 iw=512' exit 0: the '375 px' check measures a hand-made copy (ancho.html) at 512 px, not admin.html (real page at 375: scrollWidth=375)" },
+    "45": { "verdict": "held", "evidence": "node _revisor/navegador.mjs publico: empty, phone with letters, email without @, Sunday, past day -> focus div#errores inView=true with the specific message; two quick clicks saved 1 request" },
+    "46": { "verdict": "held", "evidence": "GET /api/admin/citas 28 ms at 5000 and ~200 ms at 50000; browser renders 5000 cards in 901 ms, one Confirm 1299 ms (store capped at 5000, see new #2)" },
+    "49": { "verdict": "held", "evidence": "node _revisor/hover.mjs 3101: general .boton:hover does not override specific ones: hero stays white/#14503f, aria-pressed stays rgb(29,43,39) on hover" },
+    "WEB-2": { "verdict": "broke", "evidence": "200 posts from 200 IPs -> {\"200\":200} in 404 ms; at 5000 stored a real request gets 503; cleanup is one Cancel click per card (1.3 s each at 5000), with no bulk select or search" },
+    "WEB-3": { "verdict": "broke", "evidence": "node _revisor/sondas.mjs 3000 nojs-limite -> every urlencoded post '500 Error del servidor' (ReferenceError: Cannot access 'datos' before initialization, servidor.mjs:181)" },
+    "WEB-4": { "verdict": "held", "evidence": "node _revisor/teclado2.mjs 3101: button never disabled (aria-disabled); after error focus=div#errores, next Tab=first error link; after success focus=div#resultado, next Tab=phone link" },
+    "WEB-5": { "verdict": "broke", "evidence": "node _revisor/sondas.mjs 3000 login: 200 wrong passwords in 566 ms {\"401\":5,\"429\":195}, then correct password -> 200 {\"ok\":true}" },
+    "WEB-1": { "verdict": "broke", "evidence": "node _revisor/corte.mjs: after a cut append the next request got 200 but was glued to the fragment ('...Escritura cort{\"t\":\"cita\"...'); after restart present:false, lineasDanadas:2 (crash-then-restart case held)" }
+  },
+  "new": [
+    { "title": "A per-IP limit punishes everyone who shares the IP", "class": "server", "evidence": "node _revisor/sondas.mjs 3000 doble 30 -> 200,200 then 28x429 'Hiciste muchas solicitudes seguidas' after 5 valid requests from one IP in 10 min" },
+    { "title": "A hard cap on a public store is an off switch anyone can flip", "class": "data", "evidence": "store at 5000 -> public POST /api/citas 503 'Ahora mismo no podemos recibir solicitudes en línea'; 200 IPs filled 200 slots in 404 ms" }
+  ]
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7cc4b8"/><stop offset="1" stop-color="#2a8c7e"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <circle cx="1250" cy="250" r="260" fill="#ffffff22"/>
+  <circle cx="300" cy="800" r="320" fill="#ffffff18"/>
+  <rect x="900" y="560" width="600" height="60" rx="30" fill="#f4f1ea"/>
+  <rect x="940" y="620" width="30" height="200" fill="#d7d2c4"/><rect x="1430" y="620" width="30" height="200" fill="#d7d2c4"/>
+  <circle cx="1020" cy="470" r="48" fill="#e8b79a"/>
+  <rect x="1070" y="500" width="300" height="60" rx="30" fill="#f0f0f0"/>
+  <circle cx="1130" cy="330" r="52" fill="#d9a785"/>
+  <rect x="1090" y="385" width="90" height="170" rx="40" fill="#fff"/>
+  <path d="M1150 430 L1060 520" stroke="#d9a785" stroke-width="30" stroke-linecap="round"/>
+  <text x="800" y="870" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#ffffff99">Imagen de ejemplo</text>
+</svg>

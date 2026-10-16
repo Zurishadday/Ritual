@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "admin2.mjs at 1280px: click Confirmar on card 4 -> badge on the same card 'Confirmada' (in view), aria-pressed=true, focus stays on 'Confirmar'; Cancelar -> badge 'Cancelada'" },
+    "41": { "verdict": "broke", "evidence": "build's own prueba.mjs passes 30/30 checking only API JSON, but the rendered clinic page at 375px with an allowed 80-char name has scrollWidth 841 (h2 SPAN overflows the card, seen in a screenshot)" },
+    "45": { "verdict": "held", "evidence": "publico.mjs at 375px: empty submit -> 6 inline errors with focus on #nombre (in view); phone 'abcd' and email without @ -> inline errors with focus on #telefono; Sunday/yesterday/20:00 -> inline error with focus on the field; double click -> 1 request saved" },
+    "46": { "verdict": "broke", "evidence": "store.mjs: GET /api/admin/citas reads the whole file: 38ms/0.3MB at 1k, 165ms/13.4MB at 50k, 20 concurrent GETs 1839ms at 50k; in Chrome the list rendered 10k cards in ~1.7s and 50k in ~8.8s; no paging" },
+    "49": { "verdict": "held", "evidence": "the mobile rule '.boton{width:100%}' is overridden on the clinic page (screenshot: Salir is auto width, Confirmar/Cancelar side by side); the request limit counts only valid requests (6 rejected then a valid one -> 201 in prueba.mjs)" },
+    "WEB-2": { "verdict": "broke", "evidence": "30 bot-style POSTs from 30 loopback IPs -> 'accepted: 30/30'; the clinic page has no filter/search/bulk delete, only a per-card Eliminar with a confirm() dialog" },
+    "WEB-3": { "verdict": "held", "evidence": "Chrome with JS disabled: valid submit -> http://127.0.0.1:3202/gracias.html '¡Listo! Recibimos tu solicitud'; empty submit -> HTML page 'Revisa tus datos' listing every error" },
+    "WEB-4": { "verdict": "held", "evidence": "keyboard: Tab from #comentario -> #enviar, Enter -> success, focus on #resultado (in view), next Tab -> #nombre; the button uses aria-disabled, so it is never really disabled" },
+    "WEB-5": { "verdict": "held", "evidence": "7 wrong passwords then the correct one from the same IP -> 401,401,401,401,401,429,429,correct:429 (5/min/IP); default password is 12 random base64url chars. Caveat: 12 wrong passwords from 12 IPs -> all 401, no global limit" },
+    "WEB-1": { "verdict": "broke", "evidence": "torn/garbage lines are fine (POST after each -> 201, saved, banner shows 2 damaged lines), but appending {\"id\":\"weird\",\"creada\":null} -> clinic page renders 0 cards, TypeError reading 'split', no message to the owner" }
+  },
+  "new": [
+    { "title": "Read-modify-write with an await in the middle loses requests that arrive meanwhile", "class": "data", "evidence": "race2.mjs: PATCH with a slow body + POST B -> 201 {ok:true}; PATCH 200; list afterwards: B present = false, total unchanged at 3" },
+    { "title": "Visitor-typed text without wrapping breaks the owner's mobile layout", "class": "mobile", "evidence": "80-char name with no spaces, clinic page at 375px: documentElement.scrollWidth 841, widest element is the name SPAN in h2" },
+    { "title": "Booking accepts a time already past today and dates in the year 9999", "class": "form", "evidence": "at 10:57 on 2026-10-16, POST fecha 2026-10-16 hora 09:00 -> 201; POST fecha 9999-12-31 -> 201" },
+    { "title": "The test script moves the owner's live data folder; if interrupted, the real requests vanish from the panel", "class": "data", "evidence": "killed prueba.mjs after 500ms on a copy -> dir has datos + datos.respaldo, real record no longer in datos/citas.jsonl" },
+    { "title": "Server only listens on localhost and nothing outside the code says how to open it from a phone", "class": "false claim", "evidence": "node servidor.mjs running; fetch http://192.168.101.104:3000/ -> ECONNREFUSED; no README, HOST only in servidor.mjs:14" }
+  ]
+}

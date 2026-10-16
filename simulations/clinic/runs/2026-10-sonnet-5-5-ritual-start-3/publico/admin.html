@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <main>
+    <section id="login" class="login" hidden>
+      <h1>Panel del consultorio</h1>
+      <form id="form-login">
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input id="contrasena" name="contrasena" type="password" autocomplete="current-password" required aria-describedby="err-login">
+          <p class="error" id="err-login" role="alert"></p>
+        </div>
+        <button class="boton" type="submit" id="entrar">Entrar</button>
+      </form>
+      <noscript><p class="error">Este panel necesita JavaScript activado.</p></noscript>
+      <p><a href="/">Volver al sitio</a></p>
+    </section>
+
+    <section id="panel" class="panel" hidden>
+      <div class="panel-barra">
+        <h1>Solicitudes de cita</h1>
+        <span>
+          <a href="/" class="boton boton-sec boton-chico">Ver sitio</a>
+          <button type="button" class="boton boton-sec boton-chico" id="salir">Salir</button>
+        </span>
+      </div>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar por estado"></div>
+      <div id="aviso" class="aviso-panel" role="status" hidden></div>
+      <h2 id="titulo-lista" tabindex="-1">Solicitudes</h2>
+      <div id="lista" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

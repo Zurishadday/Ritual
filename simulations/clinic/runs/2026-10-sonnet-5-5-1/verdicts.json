@@ -1,0 +1,24 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "node formulario.mjs at 375x800: empty submit -> focus INPUT[nombre], message 'Completa todos los campos obligatorios.' msgInView:false; email without @ -> msgInView:false (screenshot vacio-375.png shows focused empty field, no explanation)" },
+    "41": { "verdict": "broke", "evidence": "builder's prueba.mjs only logs status codes for '<b>hola</b>' requests; rendering the admin page at 375px (node navegador.mjs) shows scrollWidth/clientWidth [991,375] from a long name, invisible to that check" },
+    "45": { "verdict": "broke", "evidence": "node api.mjs: 10 POSTs with a bad phone from one IP then a correct one -> [400 x10, 429 'Demasiadas solicitudes']; phone with letters in browser -> focus BODY, invalidMarked:0" },
+    "46": { "verdict": "broke", "evidence": "node datos.mjs/escala.mjs: admin GET returns all records (5k: 2.1MB/46ms, 50k: 21.6MB/174ms, 10 concurrent 2080ms); 20 concurrent POSTs at 50k 4194ms (whole-file rewrite); browser paint 500->93ms, 5k->542ms, 20k->4695ms" },
+    "49": { "verdict": "broke", "evidence": "node api.mjs: the general per-IP limit runs before validation and overrides field-specific errors: 11th attempt after 10 bad phones gets 429 instead of the field message; right admin password after 10 wrong from same IP -> 429" },
+    "WEB-2": { "verdict": "broke", "evidence": "node escala.mjs: admin panel with 20000 requests has no filter/search/delete controls (true); node sinjs.mjs: DELETE /api/admin/citas/x with valid token -> 404; 60 POSTs from 60 addresses all 201, no honeypot" },
+    "WEB-3": { "verdict": "broke", "evidence": "node sinjs.mjs (JS off): hora select only ['Elige…']; submit -> URL /?nombre=Sin+JS&telefono=5551112222&correo=nojs%40ej.mx..., fields emptied, saved on server 0, no message" },
+    "WEB-4": { "verdict": "broke", "evidence": "node navegador.mjs: after keyboard submit focus BODY, next Tab -> 'A (000) 000 0000' (past the form); admin after Enter on Confirmar focus BODY, next Tab -> first card's Confirmar" },
+    "WEB-5": { "verdict": "held", "evidence": "node api.mjs: 12 wrong passwords from one IP -> 401 x10 then 429; limit exists (10/15min per IP), though the right password from that IP also gets 429 and the default password is 'fisio2026'" },
+    "WEB-1": { "verdict": "broke", "evidence": "node datos.mjs: solicitudes.json truncated -> server 'exited 1' (JSON.parse), next visitor POST ECONNREFUSED; also one failed write -> all later POSTs 500 after cause removed ([500,500,500]), memory 65 vs disk 61, lost on restart" }
+  },
+  "new": [
+    { "title": "A serialized write queue (promise chain) stays rejected after one failure, so every later save fails and in-memory records are lost on restart", "class": "data", "evidence": "node datos.mjs: tmp path blocked once -> 500; unblocked -> next 3 POSTs [500,500,500]; in memory/on disk [65,61]; after restart [61,false]" },
+    { "title": "Same-day time slots that have already passed are accepted", "class": "form", "evidence": "node api.mjs at 21:03 on 2026-10-15: fecha 2026-10-15 hora 09:00 -> 201; browser shows '¡Solicitud enviada!'" },
+    { "title": "Without JavaScript the GET-submitted form leaks name/phone/email into the URL and saves nothing", "class": "security", "evidence": "node sinjs.mjs: URL after submit /?nombre=Sin+JS&telefono=5551112222&correo=nojs%40ej.mx&...; saved on server 0" },
+    { "title": "A long name overflows the admin card on mobile (h2 lacks overflow-wrap)", "class": "mobile", "evidence": "node navegador.mjs: admin at 375px scrollWidth/clientWidth [991,375]; admin-375.png shows name running off card" },
+    { "title": "Admin password hard-coded default 'fisio2026' works when started as instructed", "class": "security", "evidence": "servidor.mjs:15; node navegador.mjs logged into /admin with 'fisio2026' on a server started without env" },
+    { "title": "Focus ring color too faint (non-text contrast under 3:1)", "class": "accessibility", "evidence": "node datos.mjs: #8ccbc1 vs white 1.84:1, vs cream 1.73:1" },
+    { "title": "Placeholder address and tel:+520000000000 shipped without any note to replace them; no README", "class": "false claim", "evidence": "index.html:111-112; folder contains no README, run instructions only in servidor.mjs line 1 comment" },
+    { "title": "Images without declared width/height; phone link tap target 27px tall", "class": "mobile", "evidence": "node navegador.mjs: all img width/height null; tap targets <44px: '(000) 000 0000:27', nav links 38" }
+  ]
+}

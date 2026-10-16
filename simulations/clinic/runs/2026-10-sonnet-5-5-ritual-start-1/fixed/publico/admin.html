@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes de cita · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body class="pagina-simple">
+  <section id="vista-login" class="login" hidden>
+    <h1>Fisio Andares</h1>
+    <p>Entra para ver las solicitudes de cita.</p>
+    <form id="form-login" novalidate>
+      <div class="campo">
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" autocomplete="current-password" required aria-describedby="error-login">
+        <p class="error" id="error-login" role="alert"></p>
+      </div>
+      <button class="boton boton-grande" id="btn-login" type="submit">Entrar</button>
+    </form>
+    <p><a href="/">← Volver a la página</a></p>
+  </section>
+
+  <main id="vista-panel" class="panel" hidden>
+    <div class="panel-cab">
+      <h1>Solicitudes de cita</h1>
+      <div>
+        <a class="boton boton-claro" href="/">Ver la página</a>
+        <button class="boton boton-claro" id="btn-salir" type="button">Salir</button>
+      </div>
+    </div>
+
+    <div class="herramientas">
+      <div class="campo">
+        <label for="filtro">Mostrar</label>
+        <select id="filtro">
+          <option value="">Todas</option>
+          <option value="pendiente">Pendientes</option>
+          <option value="confirmada">Confirmadas</option>
+          <option value="cancelada">Canceladas</option>
+        </select>
+      </div>
+      <button class="boton boton-claro" id="btn-recargar" type="button">Actualizar</button>
+      <button class="boton boton-peligro" id="btn-borrar-canceladas" type="button">Borrar todas las canceladas</button>
+    </div>
+
+    <p id="estado-global" class="estado-global" role="status" tabindex="-1"></p>
+    <p id="contador" class="ayuda"></p>
+    <ul id="lista" class="citas"></ul>
+  </main>
+
+  <script src="/admin.js" defer></script>
+</body>
+</html>

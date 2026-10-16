@@ -1,0 +1,17 @@
+.admin { max-width: 46rem; margin: 0 auto; padding: 1rem; }
+.admin-barra { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.admin-barra .boton { width: auto; }
+.cita { border: 1px solid var(--borde); border-radius: .75rem; padding: 1rem; margin: 1rem 0; background: #fff; }
+.cita h2 { font-size: 1.2rem; display: flex; justify-content: space-between; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.cita dl { display: grid; grid-template-columns: max-content 1fr; gap: .2rem .8rem; margin: .5rem 0 1rem; }
+.cita dt { font-weight: 600; }
+.cita dd { margin: 0; overflow-wrap: anywhere; }
+.estado { font-size: .95rem; padding: .15rem .6rem; border-radius: 1rem; border: 2px solid; }
+.estado-pendiente { color: #7a5500; border-color: #e0a100; background: #fff6df; }
+.estado-confirmada { color: #14503f; border-color: var(--verde); background: #e4f2ed; }
+.estado-cancelada { color: var(--rojo); border-color: var(--rojo); background: #fbe9e7; }
+.acciones { display: flex; gap: .5rem; flex-wrap: wrap; }
+.acciones .boton { width: auto; flex: 1 1 8rem; }
+.acciones button[aria-pressed="true"] { background: var(--texto); border-color: var(--texto); color: #fff; }
+.boton-borrar { background: #fff; color: var(--rojo); border-color: var(--rojo); }
+.boton-borrar:hover { background: #fbe9e7; color: var(--rojo); border-color: var(--rojo); }

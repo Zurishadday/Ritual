@@ -1,0 +1,5 @@
+# Ritual: log and session state, local only
+.ritual/local/
+
+# Solicitudes de citas y contraseña del panel
+datos/

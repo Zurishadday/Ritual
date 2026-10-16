@@ -1,0 +1,32 @@
+.admin main { max-width: 52rem; }
+.admin #login { max-width: 22rem; }
+.enlace { background: none; border: 0; color: var(--verde); font: inherit; cursor: pointer; text-decoration: underline; }
+.herramientas { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; margin-bottom: 1.25rem; }
+.herramientas label { min-width: 12rem; }
+#lista { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
+#aviso { margin: 0 0 1rem; padding: .7rem .9rem; border-radius: 8px; font-weight: 600; background: #dff3ee; }
+#aviso.mal { background: #fbe4e2; color: #b3261e; }
+#aviso:empty { display: none; }
+#aviso:focus, .sol h3:focus { outline: 3px solid #1f7a6d66; outline-offset: 2px; }
+.admin .barra { flex-wrap: nowrap; }
+.admin .marca { overflow-wrap: anywhere; }
+.sol { min-width: 0; border: 1px solid #d5e3e0; border-left-width: 6px; border-radius: 10px; padding: .9rem 1rem; background: #fff; }
+.sol.pendiente { border-left-color: #d99a00; }
+.sol.confirmada { border-left-color: #1f7a6d; }
+.sol.cancelada { border-left-color: #b3261e; opacity: .75; }
+.sol h3 { margin: 0 0 .3rem; font-size: 1.1rem; overflow-wrap: anywhere; }
+.sol p { margin: .15rem 0; overflow-wrap: anywhere; }
+.sol .cuando { font-weight: 600; }
+.sol .recibida { font-size: .85rem; color: #56706b; }
+.insignia { display: inline-block; font-size: .8rem; font-weight: 700; padding: .1rem .6rem; border-radius: 99px; background: #eee; margin-left: .4rem; }
+.acciones { display: flex; gap: .5rem; margin-top: .7rem; flex-wrap: wrap; }
+.acciones button { border: 1px solid var(--verde); background: #fff; color: var(--oscuro); border-radius: 8px; font: inherit; padding: .45rem .9rem; cursor: pointer; }
+.acciones button.ok { background: var(--verde); color: #fff; }
+.acciones button.no { border-color: #b3261e; color: #b3261e; }
+.acciones button:disabled, .acciones button[aria-disabled="true"] { opacity: .5; cursor: default; }
+.acciones button.borrar { margin-left: auto; border-color: #6b7b78; color: #3d4f4b; }
+@media (max-width: 520px) {
+  .herramientas label { min-width: 0; flex: 1 1 100%; }
+  .acciones button { flex: 1 1 auto; }
+  .acciones button.borrar { margin-left: 0; }
+}

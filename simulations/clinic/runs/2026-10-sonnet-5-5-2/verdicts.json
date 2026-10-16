@@ -1,0 +1,22 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "headless Chrome 375px: after submit #mensaje '¡Listo! Recibimos tu solicitud…' inView:true next to the button; admin Confirmar → same top card label changes to 'confirmada'" },
+    "41": { "verdict": "broke", "evidence": "CSS says #fff on dark teal, but pixels under hero text (text hidden, screenshot sampled): 375px paragraph worst 2.43:1, 1280px h1 2.56:1, ~11% of boxes under 4.5:1" },
+    "45": { "verdict": "broke", "evidence": "node: 10 submissions with phone '55-12-ABC' → 400×10, then the corrected valid one → 429 'Demasiadas solicitudes'; empty submit says only 'Completa todos los campos obligatorios.' with 0 [aria-invalid]" },
+    "46": { "verdict": "broke", "evidence": "20,000 requests: admin cards shown after 2351 ms with 320,039 DOM nodes; each Confirmar refetches 5.6 MB and re-renders everything: 2642 ms per click" },
+    "49": { "verdict": "broke", "evidence": "the general per-IP limit (permitirCita runs before validarCita) overrides the form's own fix-and-resend path: 10×400 then valid → 429" },
+    "WEB-2": { "verdict": "broke", "evidence": "DELETE /api/citas/<id> → 404; admin per-card buttons 'Confirmar, Cancelar' only; 0 search/filter controls; with 20,001 rows each cancel takes ~2.6 s" },
+    "WEB-3": { "verdict": "broke", "evidence": "Chrome with JS disabled: hour select ['Elige…']; submit → GET /?nombre=Sin+JS&telefono=…&correo=s%40example.com…, no message, scrollY 0, 0 saved" },
+    "WEB-4": { "verdict": "broke", "evidence": "after server error and after success activeElement=<body>; next Tab → <a href=\"tel:+525500000000\"> in Contacto; admin after Confirmar focus=BODY" },
+    "WEB-5": { "verdict": "held", "evidence": "node login.mjs: 8 sequential wrong → 401×5,429×3; 200 parallel wrong → 401×5,429×195 (15 min block per IP)" },
+    "WEB-1": { "verdict": "broke", "evidence": "truncated citas.json → server exits 'SyntaxError: Unterminated string in JSON … servidor.mjs:85'; one failed write (citas.json.tmp made a dir, then removed) → every later POST/PATCH 500, disk ['Antes'], admin memory shows 4" }
+  },
+  "new": [
+    { "title": "Rate limit counts rejected validation attempts per shared IP, locking out the person who just fixed their typo", "class": "form", "evidence": "fresh IP: 10× 400 'Escribe un teléfono válido.' then valid request → 429 'Demasiadas solicitudes. Inténtalo más tarde.'" },
+    { "title": "Promise-chain write queue stays rejected after one failure; memory and disk diverge", "class": "data", "evidence": "after one EISDIR on citas.json.tmp and recovery: POSTs 3 and 4 → 500, disk ['Antes'], GET /api/citas shows ['Despues 2','Despues 1','Durante','Antes']" },
+    { "title": "Admin page scrolls horizontally on mobile with a long email/comment", "class": "mobile", "evidence": "Chrome 375px admin: scrollWidth 854 vs clientWidth 375" },
+    { "title": "Focus ring color too faint (≈2.0:1 on white)", "class": "accessibility", "evidence": "computed outline solid 3px rgb(124,196,187) on inputs/buttons over #fff/#f6f3ee" },
+    { "title": "Oversized body gets a connection reset instead of the intended 413", "class": "server", "evidence": "curl 100 KB POST → code=000, empty; fetch → ECONNRESET" },
+    { "title": "Per-IP login lockout also blocks the owner's correct password", "class": "security", "evidence": "8 wrong from 127.0.0.10 then the correct password from the same IP → 429" }
+  ]
+}

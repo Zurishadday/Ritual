@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <div class="admin">
+    <form id="login" class="entrada">
+      <h1>Fisio Andares · Administración</h1>
+      <label>Contraseña
+        <input name="clave" type="password" autocomplete="current-password" required>
+      </label>
+      <button class="boton" type="submit">Entrar</button>
+      <p id="error-login" class="error" role="alert"></p>
+    </form>
+
+    <div id="panel" class="oculto">
+      <div class="admin-cabecera">
+        <h1>Solicitudes de cita</h1>
+        <div class="acciones">
+          <button id="recargar" type="button">Actualizar</button>
+          <button id="salir" type="button">Salir</button>
+        </div>
+      </div>
+      <p id="resumen"></p>
+      <div id="lista"></div>
+    </div>
+  </div>
+  <script src="/admin.js"></script>
+</body>
+</html>

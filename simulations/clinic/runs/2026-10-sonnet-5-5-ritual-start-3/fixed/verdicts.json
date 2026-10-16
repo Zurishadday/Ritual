@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "headless Chrome, two clicks ~150 ms apart on #enviar: request saved (panel lists 'Lucía Gómez' once) but screen shows 'Revisa los campos marcados en rojo' and 6 field errors; success message erased" },
+    "41": { "verdict": "held", "evidence": "rendered the no-JS error page, the panel at 375 px and the hero in headless Chrome (shots/nojs-error.png, admin-375.png): error next to the date, values kept, long names wrap; README claims about no-JS and volume match what was seen" },
+    "45": { "verdict": "broke", "evidence": "double click with JS: success replaced by all-fields-red error; with cita.js blocked: 'saved records named \"Doble Sin JS\": 2'; empty/phone/email/Sunday/past-day paths themselves held (inline errors, focus on first bad field)" },
+    "46": { "verdict": "held", "evidence": "node data-checks.mjs with 100000 stored requests: startup 329 ms, first panel page 9 ms, 20 parallel full-scan searches 68 ms, new request 14 ms" },
+    "49": { "verdict": "held", "evidence": "screenshots: general .boton-sec does not override the pressed filter ('Todas (6)' filled green, admin-375.png) nor the white hero button (.portada .boton); global :focus-visible outline shows on every Tab stop (outline solid 3px)" },
+    "WEB-2": { "verdict": "broke", "evidence": "node flood.mjs 4810 20 -> bot statuses {201:95, 429:25} in 1376 ms; then a real patient from a new IP gets 429 with Retry-After: 3349, so the real request is never stored for the owner to find" },
+    "WEB-3": { "verdict": "held", "evidence": "cita.js blocked via Network.setBlockedURLs: empty submit stopped by native 'Completa este campo'; Sunday returns server page 'Revisa tu solicitud' with error by the date and values kept; fixed date -> 'Solicitud recibida'" },
+    "WEB-4": { "verdict": "broke", "evidence": "public form held (keyboard submit -> focus on #resultado, in view), but admin login success hides the form and leaves focus on BODY (browser-admin.mjs: focus: 'BODY')" },
+    "WEB-5": { "verdict": "broke", "evidence": "node login-checks.mjs: 300 parallel wrong passwords answered in 5196 ms (~3464 guesses/min), no lockout, correct password then 200 in 12 ms" },
+    "WEB-1": { "verdict": "held", "evidence": "appended a cut JSON line (restart and live): next request 201 and saved, cut line copied to lineas-danadas.txt, panel danadas=1; a read-only store fails every save with only a console log (see new)" }
+  },
+  "new": [
+    { "title": "A shared global rate limit lets bots lock real people out of the form", "class": "security", "evidence": "20 loopback IPs x 5 valid requests fill the 100/hour cap in 1.4 s; next real patient gets 429, Retry-After: 3349" },
+    { "title": "Rate-limit message promises 'unos minutos' while the server makes them wait about an hour", "class": "false claim", "evidence": "curl -i -> Retry-After: 3349 with body '...intenta de nuevo en unos minutos.'" },
+    { "title": "A store that cannot be written fails every booking silently for the owner", "class": "data", "evidence": "citas.jsonl read-only -> patient 500 'llámanos'; /api/admin/citas has no failure field, counts unchanged; only console.error" },
+    { "title": "Hero subtitle over the light illustration figure has ~2.5:1 contrast", "class": "accessibility", "evidence": "screenshots desktop-top.png/public-375-top.png show 'deporte.' over figure; white vs blended #85aaa6 = 2.53:1" }
+  ]
+}

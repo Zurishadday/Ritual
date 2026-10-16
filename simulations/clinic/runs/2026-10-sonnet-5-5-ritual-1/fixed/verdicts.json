@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "not-checked", "evidence": "No browser available; whether the success box and the panel's status message are visible without scrolling could not be seen on screen." },
+    "41": { "verdict": "not-checked", "evidence": "Pages were not seen rendered; the panel was run only in a Node vm DOM stub (node _revision/r2.mjs §1c), not as the reader sees it." },
+    "45": { "verdict": "held", "evidence": "node _revision/r1.mjs: empty/phone 'abc-defg-hij'/email without @/past day/Sunday/20:00 -> 400 with a specific per-field message; two simultaneous identical submits -> 201,201 but saved = 1 (r2 §1a)." },
+    "46": { "verdict": "held", "evidence": "node _revision/r2.mjs §5: 100000 records (42 MB) -> panel default view 6 ms, full-scan filter 38 ms, 50 parallel full scans 175 ms, POST 12 ms, startup 237 ms." },
+    "49": { "verdict": "broke", "evidence": "node _revision/r2.mjs §2: global 100/h cap filled by bots, then a first-time patient from new IP 127.0.0.50 -> 429 'Enviaste muchas solicitudes seguidas' (global rule overrides the per-person limit and reuses its message)." },
+    "WEB-2": { "verdict": "broke", "evidence": "node _revision/r2.mjs §2: 100 pending, real one not on first page of 50, ?q= search ignored; bulk delete -> eliminadas:100, real patient still there? false." },
+    "WEB-3": { "verdict": "held", "evidence": "curl-equivalent form-urlencoded POST (r1): valid -> 303 /gracias.html; invalid -> 400 readable HTML error list. Caveat: its only link /#cita reloads an empty form (finding 6)." },
+    "WEB-4": { "verdict": "not-checked", "evidence": "Focus after submit needs a browser; none available." },
+    "WEB-5": { "verdict": "held", "evidence": "node _revision/r1.mjs: wrong passwords 1-4 -> 401, 5th-8th -> 429 'Espera 5 minutos'; generated password is 12 random base64url chars. (Per-IP lockout also blocks the correct password: r2 §1e -> 429.)" },
+    "WEB-1": { "verdict": "broke", "evidence": "node _revision/r2.mjs §4c: one appended valid-JSON record without telefono/dia -> panel shows 0 articles, 'No se pudieron cargar las solicitudes: Cannot read properties of undefined (reading 'split')'; read-only store -> 500 to visitor, owner told only via console (§4d/e)." }
+  },
+  "new": [
+    { "title": "A global abuse cap shuts out real users and tells them they sent too many", "class": "security", "evidence": "r2 §2: after 99 bot saves from 11 IPs, new IP 127.0.0.50 -> 429 'Enviaste muchas solicitudes seguidas. Llámanos…'" },
+    { "title": "Per-IP login lockout also blocks the correct password, so behind the README's HTTPS proxy anyone can lock the owner out", "class": "security", "evidence": "r2 §1e: 5 wrong passwords from 127.0.0.1, then the correct one -> 429" },
+    { "title": "Without JS, the error page's only link reloads an empty form, so all input is lost", "class": "form", "evidence": "r3: no-JS Sunday POST -> 400 page with only <a href=\"/#cita\">Volver al formulario y corregir</a>" },
+    { "title": "README promises appointments until 17:30; server rejects 17:30 and the page states 9-18 and 9-17", "class": "false claim", "evidence": "r1: POST hora 17:30 -> 400 'Elige una hora entre las 9:00 y las 17:00.'" },
+    { "title": "GET /admin/login (URL left after a failed login) is a 405 dead end with no link", "class": "server", "evidence": "r1: GET /admin/login -> 405 'Método no permitido.'" }
+  ]
+}

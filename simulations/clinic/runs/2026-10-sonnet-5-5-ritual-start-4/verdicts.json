@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "headless Chrome /admin, filter=Pendientes, click Confirmar on last card: cards 8->7, activeElement=BODY, aviso 'La cita de Doble Enter quedó confirmada.' avisoInView=false (scrollY 1428)" },
+    "41": { "verdict": "broke", "evidence": "source has .cita p{overflow-wrap:anywhere}, but rendered /admin at 375px with an 80-char name: scrollWidth 904 vs clientWidth 375, LI.cita right=904 (computed .cita h2 overflowWrap=normal)" },
+    "45": { "verdict": "held", "evidence": "browser: empty submit / phone 'abc12345678' / email without @ / Sunday / past day -> error next to field, focus on first wrong field (in view), saved 0; double click -> saved 1" },
+    "46": { "verdict": "broke", "evidence": "10,000 saved requests: /admin login->render 6904 ms, one Cancelar click repaint 15437 ms; API list 35 ms@1k, 140 ms@10k, 285 ms@40k (15.2 MB)" },
+    "49": { "verdict": "held", "evidence": "computed styles: .cita h2 19.2px (beats .seccion h2 1.8rem), .filtro select width 140px (beats input,select width:100%), .boton color rgb(255,255,255) (beats a{color})" },
+    "WEB-2": { "verdict": "broke", "evidence": "510 bot POSTs with honeypot empty -> {201:500,503:10}; next real patient -> 503 'no podemos recibir más solicitudes… llámanos'; admin has only one-by-one Eliminar + confirm()" },
+    "WEB-3": { "verdict": "held", "evidence": "cita.js blocked: empty submit stopped by native 'Completa este campo'; valid submit -> 'Solicitud recibida' page, saved 1 (but see new finding: error page's back link empties the form)" },
+    "WEB-4": { "verdict": "held", "evidence": "public form: after Enter submit focus=estado with 'Recibimos tu solicitud…', next Tab -> phone link; button only aria-disabled; on error focus goes to first invalid field" },
+    "WEB-5": { "verdict": "held", "evidence": "8 sequential wrong passwords -> 401x5 then 429; 300 concurrent guesses incl. the real one -> {401:5,429:295}, real one -> 429" },
+    "WEB-1": { "verdict": "broke", "evidence": "datos/citas.json=[null] -> next valid POST 500 'Error del servidor', owner list 500; one record without fecha -> /admin shows 0 cards, no message, TypeError reading 'split' (truncated JSON case held: renamed, next POST 201)" }
+  },
+  "new": [
+    { "title": "The no-JS error page's only button throws away everything the person typed", "class": "form", "evidence": "cita.js blocked, Sunday submit -> server HTML error page; click 'Volver al formulario' -> nombre \"\" and comentario \"\"" },
+    { "title": "Server accepts prototype keys as treatments and objects as names", "class": "server", "evidence": "POST tratamiento '__proto__' -> 201, 'toString' -> 201; nombre {} -> 201 saved as '[object Object]'; nombre {toString:1} -> 500" },
+    { "title": "Hero subtitle text below 4.5:1 on a phone", "class": "accessibility", "evidence": "375px, lightest pixel behind 'Fisioterapia personalizada para' line -> 3.86:1 (19.2px regular text)" },
+    { "title": "Focus outline nearly invisible on the dark hero", "class": "accessibility", "evidence": "#1a5fd0 outline vs hero overlay background -> 1.84:1 (needs 3:1)" }
+  ]
+}

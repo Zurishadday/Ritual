@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fisio Andares · Fisioterapia en rodilla, espalda y deporte</title>
+  <meta name="description" content="Consultorio de fisioterapia: rehabilitación de rodilla, dolor de espalda y masaje deportivo. Pide tu cita en línea.">
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="#inicio">Fisio Andares</a>
+    <nav aria-label="Principal">
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#cita">Pedir cita</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="portada">
+      <img src="/img/portada.svg" alt="Ilustración de una persona caminando con tranquilidad por un parque (imagen de ejemplo)" width="1600" height="900">
+      <div class="portada-texto">
+        <h1>Volvemos a ponerte en movimiento, sin dolor</h1>
+        <p>Fisioterapia personalizada para rodilla, espalda y deporte.</p>
+        <a class="boton" href="#cita">Pedir cita</a>
+      </div>
+    </section>
+
+    <section id="tratamientos" class="seccion">
+      <h2>Nuestros tratamientos</h2>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <img src="/img/rodilla.svg" alt="Ilustración de una rodilla con una vendas (imagen de ejemplo)" width="800" height="500" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Rehabilitación de rodilla</h3>
+            <p>Recupera fuerza y movilidad después de una lesión u operación.</p>
+            <p class="datos"><span>Sesión de 60 min</span> <strong>$600</strong></p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/espalda.svg" alt="Ilustración de una espalda con la columna resaltada (imagen de ejemplo)" width="800" height="500" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Dolor de espalda</h3>
+            <p>Alivio del dolor de cuello y espalda con terapia manual y ejercicios.</p>
+            <p class="datos"><span>Sesión de 45 min</span> <strong>$500</strong></p>
+          </div>
+        </article>
+        <article class="tarjeta">
+          <img src="/img/masaje.svg" alt="Ilustración de unas manos dando un masaje (imagen de ejemplo)" width="800" height="500" loading="lazy">
+          <div class="tarjeta-cuerpo">
+            <h3>Masaje deportivo</h3>
+            <p>Prepara o recupera tus músculos antes y después de entrenar o competir.</p>
+            <p class="datos"><span>Sesión de 30 min</span> <strong>$400</strong></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="cita" class="seccion seccion-clara">
+      <h2>Pide tu cita</h2>
+      <p>Atendemos de lunes a viernes, de 9:00 a 18:00. Te llamaremos para confirmar tu cita.</p>
+      <form id="form-cita" class="formulario" action="/api/citas" method="post">
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" type="text" autocomplete="name" required maxlength="80" aria-describedby="err-nombre">
+          <p class="error" id="err-nombre"></p>
+        </div>
+        <div class="campo">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" aria-describedby="err-telefono">
+          <p class="error" id="err-telefono"></p>
+        </div>
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input id="correo" name="correo" type="email" autocomplete="email" required maxlength="120" aria-describedby="err-correo">
+          <p class="error" id="err-correo"></p>
+        </div>
+        <div class="campo">
+          <label for="tratamiento">Tratamiento</label>
+          <select id="tratamiento" name="tratamiento" required aria-describedby="err-tratamiento">
+            <option value="">Elige un tratamiento</option>
+            <option value="rodilla" data-duracion="60">Rehabilitación de rodilla (60 min)</option>
+            <option value="espalda" data-duracion="45">Dolor de espalda (45 min)</option>
+            <option value="masaje" data-duracion="30">Masaje deportivo (30 min)</option>
+          </select>
+          <p class="error" id="err-tratamiento"></p>
+        </div>
+        <div class="fila">
+          <div class="campo">
+            <label for="fecha">Día (lunes a viernes)</label>
+            <input id="fecha" name="fecha" type="date" required aria-describedby="err-fecha">
+            <p class="error" id="err-fecha"></p>
+          </div>
+          <div class="campo">
+            <label for="hora">Hora (9:00 a 18:00)</label>
+            <select id="hora" name="hora" required aria-describedby="err-hora">
+              <option value="">Elige una hora</option>
+              <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option>
+              <option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option>
+              <option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option>
+              <option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option>
+              <option>17:00</option><option>17:30</option>
+            </select>
+            <p class="error" id="err-hora"></p>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="comentario">Comentario (opcional)</label>
+          <textarea id="comentario" name="comentario" rows="3" maxlength="500" aria-describedby="err-comentario"></textarea>
+          <p class="error" id="err-comentario"></p>
+        </div>
+        <!-- Campo trampa para robots: las personas no lo ven. -->
+        <div class="trampa" aria-hidden="true">
+          <label for="sitio_web">No llenes este campo</label>
+          <input id="sitio_web" name="sitio_web" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <button class="boton" type="submit" id="enviar">Enviar solicitud</button>
+        <p id="estado" class="estado" role="status" tabindex="-1"></p>
+      </form>
+    </section>
+
+    <section id="contacto" class="seccion">
+      <h2>Dónde estamos</h2>
+      <address>
+        Calle Ejemplo 123, Col. Centro<br>
+        Ciudad de México, CP 00000
+      </address>
+      <p>Teléfono: <a class="telefono" href="tel:+525500000000">55 0000 0000</a></p>
+      <p>Horario: lunes a viernes, de 9:00 a 18:00.</p>
+    </section>
+  </main>
+
+  <footer class="pie">© Fisio Andares</footer>
+  <script src="/cita.js"></script>
+</body>
+</html>

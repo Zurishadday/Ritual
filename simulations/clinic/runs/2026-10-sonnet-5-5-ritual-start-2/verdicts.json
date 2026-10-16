@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "navegador.mjs C/G: empty submit -> erroresVisibleEnPantalla:true, focus DIV#errores; success -> resultadoVisible:true, focus DIV#resultado; panel status change shows #anuncio 'marcada como confirmada'" },
+    "41": { "verdict": "broke", "evidence": "builder's probar.mjs asserts 'se muestra como texto' only on API JSON and never renders the panel; rendered at 375px in Chrome the panel is scrollWidth 2953 vs innerWidth 1500 and a quoted name throws SyntaxError — defects only visible in the reader's format" },
+    "45": { "verdict": "held", "evidence": "navegador.mjs C/D/H: empty, phone '55 12ab 5678', email 'ana.correo.com', Sunday, past date all show field + summary errors on screen; JS double click saved 1; person can correct and resubmit (G saved:1)" },
+    "46": { "verdict": "held", "evidence": "rafagas.mjs muchas: GET /api/admin/citas 25-40ms at 5000, 37-52ms at 10000, 20 concurrent 127ms/197ms; panel5000.mjs Chrome render 951ms — bounded only by a 5000 cap that closes the form (finding 3)" },
+    "49": { "verdict": "held", "evidence": "global '[hidden]{display:none!important}' vs .aviso/.error display: in Chrome hidden alerts stay hidden and shown ones appear (erroresVisibleEnPantalla:true, resultadoVisible:true); global :focus-visible outline shows on every control in tab order" },
+    "WEB-2": { "verdict": "broke", "evidence": "rafagas.mjs muchas: with 5000 saved, new valid request -> 503 'Ahora mismo no podemos recibir solicitudes en línea'; panel offers only Confirmar/Cancelar/Dejar pendiente per card, no delete or bulk action, no warning to owner" },
+    "WEB-3": { "verdict": "held", "evidence": "navegador.mjs K with Emulation.setScriptExecutionDisabled: valid submit -> /gracias.html '¡Solicitud recibida!', saved:7; invalid -> readable error page (but 'Volver al formulario' empties the form, finding 6)" },
+    "WEB-4": { "verdict": "held", "evidence": "navegador.mjs G: button never disabled (aria-disabled only); after Enter focus DIV#resultado, next Tab -> A[tel:+525512345678]; on error focus DIV#errores (admin quote-name focus loss is a separate cause, finding 2)" },
+    "WEB-5": { "verdict": "held", "evidence": "rafagas.mjs: 300 parallel wrong logins from one IP -> {401:5, 429:295}; sequential: 401x5 then 429 'Espera 59 segundos'" },
+    "WEB-1": { "verdict": "held", "evidence": "rafagas.mjs dano: file with cut last line -> startup 'AVISO: 1 línea(s) dañada(s)', next post 200, after restart 'Despues,Antes | lineasDanadas 1' shown in panel (but read-only store: 500 to patient, no panel warning, finding 8)" }
+  },
+  "new": [
+    { "title": "User-typed text that doesn't wrap blows the mobile layout of the screen that shows it", "class": "mobile", "evidence": "navegador.mjs J: panel at 375px with a 100-char name/long email -> scrollWidth 2953, innerWidth 1500; screenshot m375-admin.png shows the page zoomed out to unreadable size" },
+    { "title": "CSS selector built from user data breaks on a quote and drops keyboard focus", "class": "accessibility", "evidence": "navegador.mjs J: Confirmar on name containing '\"' -> SyntaxError 'is not a valid selector' (admin.js:109), focus now BODY; normal name keeps focus on BUTTON«Confirmar»" },
+    { "title": "Allow-list lookup on a plain object accepts prototype keys", "class": "server", "evidence": "sondas.mjs: POST /api/citas tratamiento:'toString' -> 200 resumen without tratamiento; '__proto__' -> 200 tratamiento:{}; both saved" },
+    { "title": "No-JS error page throws away everything the person typed", "class": "form", "evidence": "navegador.mjs K (scripts off): one bad phone -> error page; 'Volver al formulario' -> /#cita with nombre value \"\"" },
+    { "title": "Login attempt limit also blocks the correct password, so anyone on the owner's IP can lock her out", "class": "security", "evidence": "navegador.mjs J: 5 wrong passwords, then correct password -> 'Demasiados intentos. Espera 58 segundos.'" }
+  ]
+}

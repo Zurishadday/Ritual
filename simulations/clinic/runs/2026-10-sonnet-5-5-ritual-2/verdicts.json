@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "CDP 375px: Enter on 'Confirmar' -> focus stays on button aria-pressed=true, card label turns 'Confirmada', aviso in view=true; form errors -> focused field in view with its message beside it" },
+    "41": { "verdict": "broke", "evidence": "builder's prueba.mjs checks the no-JS path only as fetch status 303/400; in Chrome with app.js blocked, the error page's 'Volver al formulario' is blocked by CSP and lands on /#cita with nombre:\"\" comentario:\"\"" },
+    "45": { "verdict": "held", "evidence": "CDP: empty submit -> summary + 6 field errors, focus #nombre; phone 'abc 1234 567' / email without @ / Sunday / past date -> focus on that field, values kept; double click -> 1 request sent" },
+    "46": { "verdict": "broke", "evidence": "admin page with 5,000 saved: drawn in 918 ms, Confirmar 1,744 ms, 1.6 MB; with 50,000: 16.6 MB list, drawn in 9,318 ms, each Confirmar ~9 s (re-renders all); POST rewrites whole file 13 ms -> 61 ms" },
+    "49": { "verdict": "broke", "evidence": "site-wide CSP default-src 'self' blocks the error page's own inline onclick=history.back(): Chrome logged 'Executing inline event handler violates the following Content Security Policy directive', and typed data was lost" },
+    "WEB-2": { "verdict": "broke", "evidence": "520 bot POSTs from 520 loopback addresses -> {201:501, 503:19}; real patient next -> 503 'no podemos recibir más solicitudes'; DELETE /api/admin/citas -> 404 (no bulk delete, one confirm() per record)" },
+    "WEB-3": { "verdict": "held", "evidence": "Chrome with app.js blocked / JS off: valid submit -> 303 /gracias.html '¡Solicitud recibida!'; Sunday -> error page listing 'Atendemos de lunes a viernes' (its back link is broken, see 49)" },
+    "WEB-4": { "verdict": "held", "evidence": "CDP keyboard: button never disabled; after Enter submit focus=#mensaje (in view), next Tab -> #nombre; on error focus -> first invalid field" },
+    "WEB-5": { "verdict": "held", "evidence": "12 wrong passwords from 127.0.0.1 -> 401,401,401,401,401,429x7 (right password also 429 for 60 s); caveat: from ::1 the next wrong try got 401 (per-address counter), and CLAVE_ADMIN=1 is accepted (login '1' -> 200)" },
+    "WEB-1": { "verdict": "broke", "evidence": "datos/solicitudes.json = '[null]' -> next visitor POST 500 'Algo salió mal', 2nd visitor 500; only a console TypeError (reading 'estado'); truncated/empty files were handled correctly" }
+  },
+  "new": [
+    { "title": "Per-socket-address submission quota throttles every patient behind one proxy or shared Wi-Fi", "class": "server", "evidence": "after 5 accepted from 127.0.0.1, 3 different new patients at once -> 201,429,429; ipDe() uses req.socket.remoteAddress" },
+    { "title": "Shipped test scripts reset the live data store", "class": "data", "evidence": "copy with 3 saved requests -> node prueba-danado.mjs prints 'Todo bien' -> solicitudes.json = []" },
+    { "title": "Invented address, phone, prices and durations shown as real facts without placeholder marking", "class": "false claim", "evidence": "index.html shows 'Av. Andares 1234…', tel:+523312345678, '$650 MXN', none given in the request; grep for ejemplo|placeholder|reemplaza in page files -> no match" },
+    { "title": "White hero text over the image fails contrast once composited", "class": "accessibility", "evidence": "canvas composite of hero at 375px: 16px paragraph worst 2.47:1, mean 3.30:1 (needs 4.5:1)" }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "b-public.mjs (Chrome 375px): after submit '#estado' text='Recibimos tu solicitud…' inView=true; admin Confirmar -> aviso 'La cita de Teclado Persona quedó confirmada.' inView=true, badge='Confirmada', aria-pressed=true" },
+    "41": { "verdict": "held", "evidence": "checked rendered DOM and screenshots in headless Chrome (pub-375.png, admin-375.png, nojs-error.png) rather than source; this is how the 'Ver más' bug (#mas hidden=true but computed display=inline-block) was found" },
+    "45": { "verdict": "held", "evidence": "b-public.mjs: empty submit -> focus=nombre, 6 field errors; phone '55abc12345678' -> focus=telefono err shown; 'pcorreo.com', Sunday, past, today 09:00, 91 days -> focus on that field, error shown, fieldInView=true" },
+    "46": { "verdict": "broke", "evidence": "t-data.mjs: every POST/PATCH rewrites the whole citas.json synchronously; 5k records one POST 10ms, GET / during 20 POSTs 118ms; 50k records (14.9MB) POST 56ms, PATCH 40ms, GET / during 20 POSTs 809ms (admin GET stays 20ms, paginated)" },
+    "49": { "verdict": "broke", "evidence": "b-nojs.mjs: '#mas: hidden attr = true | computed display = inline-block | cards = 4'; .boton{display:inline-block} beats [hidden], so 'Ver más solicitudes' always shows and does nothing" },
+    "WEB-2": { "verdict": "broke", "evidence": "t-flood2.mjs: 100 valid POSTs from 20 IPs in ~2s, then real patient on fresh IP -> 429 'Estamos recibiendo muchas solicitudes…'; admin has only status filter, 25/page, bulk delete by status (would delete real pending too)" },
+    "WEB-3": { "verdict": "held", "evidence": "b-nojs.mjs (scripts disabled): bad submit -> /api/citas 400 'Revisa tu solicitud' with values kept and per-field errors; fixed resubmit -> 'Solicitud recibida…' page; 'Volver al formulario' -> /#cita" },
+    "WEB-4": { "verdict": "held", "evidence": "b-public.mjs: button uses aria-disabled, not disabled; after success focus=estado (in view), next Tab -> '55 0000 0000'; after error focus goes to the invalid field; Enter on #enviar submitted and focus=estado" },
+    "WEB-5": { "verdict": "held", "evidence": "t-admin.mjs: 12 wrong passwords one IP -> 401x5 then 429x7 in 32ms; random 12-char password; caveat: per-IP only, 300 attempts over 60 IPs all evaluated (401)" },
+    "WEB-1": { "verdict": "held", "evidence": "t-data.mjs: truncated citas.json -> moved to citas.danado-….json, next POST 201; array with null/'basura'/bad fields -> next POST 201, bad record repaired; unwritable store -> 500 message, next POST after fix 201 (but owner is told only via server console)" }
+  },
+  "new": [
+    { "title": "Business rules about 'today' and 'already passed' use the server's time zone instead of the clinic's", "class": "server", "evidence": "t-tz.mjs: server TZ=UTC at 11:46 Mexico City time, booking today 15:00 -> 400 {\"hora\":\"Esa hora ya pasó. Elige una más tarde.\"}" },
+    { "title": "A damaged store is set aside silently; the owner's page shows an almost empty list with no notice", "class": "data", "evidence": "t-data.mjs: truncated 62-record store -> owner list total=1; old records only in datos/citas.danado-….json, announced only by console.error" },
+    { "title": "Error and fallback pages say 'llámanos' but show no phone number", "class": "form", "evidence": "t-flood.mjs: no-JS 429 page 'Demasiadas solicitudes … llámanos para agendar' -> has tel: link = false" },
+    { "title": "A site-wide hourly cap meant to stop bots turns the form off for every real patient", "class": "security", "evidence": "t-flood2.mjs: after 100 bot POSTs from 20 IPs, real patient on fresh IP -> 429 for the rest of the hour" }
+  ]
+}

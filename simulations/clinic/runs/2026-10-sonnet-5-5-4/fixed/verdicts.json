@@ -1,0 +1,22 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "Chrome 375px good submit: resultado='¡Solicitud enviada!…', focus=resultado, inViewport=true; admin Confirmar -> badge 'Confirmada' + aviso, focus on the card h3 (top=382)" },
+    "41": { "verdict": "broke", "evidence": "hero subtitle sampled as rendered (text hidden, canvas pixels): worst white-text contrast 2.86 and 3.19 at the end of two lines, over the beige figure where the overlay fades to #0c2e2933" },
+    "45": { "verdict": "held", "evidence": "Chrome: empty submit -> 6 field messages, focus nombre; phone 'cinco cinco 12' + 'lucia.correo.com' -> 2 messages, focus telefono; Sunday/past -> fecha message; double click -> saved delta 1" },
+    "46": { "verdict": "held", "evidence": "4997-record store: POST 24-59ms (dedupe scan), admin GET 61ms for 2.46MB, admin render 786ms for 5000 cards; growth is bounded by MAX_SOLICITUDES (see the new cap finding)" },
+    "49": { "verdict": "held", "evidence": "keyboard walk at 375px with the global sticky header + scroll-behavior:smooth: all 16 Tab stops 'visible', none under the sticky header; global [hidden]!important vs #aviso:empty: aviso shows/hides correctly" },
+    "WEB-2": { "verdict": "broke", "evidence": "node cap.mjs 3472 6 -> 201,201,201,503,503,503 at 5000 stored (cancelled included); admin: 5000 cards, page 2338186px tall, search box? false | bulk delete? false" },
+    "WEB-3": { "verdict": "held", "evidence": "Chrome scripts disabled: valid submit -> /api/solicitudes 'Solicitud enviada ¡Gracias!…'; error -> HTML list of reasons (but 'Volver al formulario' returns an empty form, see new finding)" },
+    "WEB-4": { "verdict": "held", "evidence": "Enter on 'Enviar solicitud' -> activeElement=#resultado; next Tab -> contact phone link; button uses aria-disabled, never disabled" },
+    "WEB-5": { "verdict": "held", "evidence": "8 wrong passwords: 401 401 401 401 401 429 429 429, then the right password -> 429 (5-minute lockout per IP)" },
+    "WEB-1": { "verdict": "held", "evidence": "damaged solicitudes.json -> console 'AVISO: … dañado … Se guardó una copia en …danado-2026-10-16T16-43-53-262Z.json'; next POST -> 201 (owner is warned only in the console)" }
+  },
+  "new": [
+    { "title": "A safety cap on stored records closes the public form for everyone and counts cancelled records, with no notice to the owner", "class": "data", "evidence": "4997 seeded (1/3 cancelada): POST x6 -> 201,201,201,503 'No podemos recibir solicitudes ahora. Llámanos por teléfono.' x3; nothing on the admin page" },
+    { "title": "No-JS error page's back link returns an empty form, and the static hour list offers slots the server rejects", "class": "form", "evidence": "JS off, rodilla 17:30 -> 'La sesión debe empezar desde las 9:00…'; 'Volver al formulario' -> nombre '(empty)', comentario '(empty)'" },
+    { "title": "Server silently truncates over-long fields, so an email can become a different valid address", "class": "server", "evidence": "POST correo of 121 chars '…@correo.com' -> 201; stored/shown as '…@correo.co'" },
+    { "title": "Input focus ring is about 1.7:1 against the form background", "class": "accessibility", "evidence": "computed outline 'solid 3px rgba(31,122,109,0.4)' on #eef6f4 ≈ 1.74:1; screenshot foco-nombre-375.png shows a faint halo" },
+    { "title": "Malformed percent-encoding in a URL returns 500 and logs a stack trace", "class": "server", "evidence": "curl /%E0%A4%A -> 500; log 'URIError: URI malformed at decodeURIComponent … servidor.mjs:218'" },
+    { "title": "No README; the printed password hint uses POSIX syntax that fails on Windows; the contact phone and address are placeholders", "class": "false claim", "evidence": "start output 'Para fijar una: ADMIN_PASSWORD=tuclave node servidor.mjs'; page has tel:+520000000000 and 'Calle Ejemplo 123'" }
+  ]
+}

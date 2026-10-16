@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+  <main>
+    <noscript>
+      <section class="login">
+        <h1>Panel del consultorio</h1>
+        <p class="error">Este panel necesita JavaScript activado.</p>
+        <p><a class="enlace" href="/">Volver al sitio</a></p>
+      </section>
+    </noscript>
+    <section id="login" class="login" hidden>
+      <h1>Panel del consultorio</h1>
+      <form id="form-login">
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input id="contrasena" name="contrasena" type="password" autocomplete="current-password" required aria-describedby="err-login">
+          <p class="error" id="err-login" role="alert"></p>
+        </div>
+        <button class="boton" type="submit" id="entrar">Entrar</button>
+      </form>
+      <p><a class="enlace" href="/">Volver al sitio</a></p>
+    </section>
+
+    <section id="panel" class="panel" hidden>
+      <div class="panel-barra">
+        <h1>Solicitudes de cita</h1>
+        <span>
+          <a href="/" class="boton boton-sec boton-chico">Ver sitio</a>
+          <button type="button" class="boton boton-sec boton-chico" id="salir">Salir</button>
+        </span>
+      </div>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar por estado"></div>
+      <form id="buscar" class="buscador" role="search">
+        <label for="q">Buscar por nombre, teléfono, correo o comentario</label>
+        <div class="buscador-fila">
+          <input id="q" type="search" maxlength="100" autocomplete="off">
+          <button type="submit" class="boton boton-sec boton-chico">Buscar</button>
+        </div>
+      </form>
+      <div id="aviso" class="aviso-panel" role="status" hidden></div>
+      <h2 id="titulo-lista" tabindex="-1">Solicitudes</h2>
+      <p id="resumen" class="recibida" role="status"></p>
+      <p><button type="button" id="borrar-lote" class="boton boton-peligro boton-chico" hidden></button></p>
+      <div id="lista"></div>
+      <p><button type="button" id="mas" class="boton boton-sec" hidden>Mostrar más</button></p>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

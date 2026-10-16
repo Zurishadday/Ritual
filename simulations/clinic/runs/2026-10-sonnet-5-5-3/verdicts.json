@@ -1,0 +1,18 @@
+{
+  "lessons": {
+    "32": { "verdict": "not-checked", "evidence": "No browser available; could not see whether the #resultado message or the status change is visible in place after use." },
+    "41": { "verdict": "not-checked", "evidence": "XSS payload stored raw via POST /api/citas (201) and admin.js uses only textContent, but the admin page was never seen rendered (no browser)." },
+    "45": { "verdict": "broke", "evidence": "h.mjs ratelimit: 10 submits with a bad/empty phone -> 400x10, then the correct submit -> 429 'Demasiadas solicitudes', nothing stored (limit consumed before validation; form is novalidate)." },
+    "46": { "verdict": "held", "evidence": "h.mjs many: 2500 records GET /api/solicitudes 70 ms (1.1 MB); 4999 records 34 ms (2.2 MB), 20 parallel GETs 136 ms, POST 15 ms; bounded by the 5000 cap." },
+    "49": { "verdict": "broke", "evidence": "General per-IP limit (10/h) is applied before the form's field validation: 11th attempt after 10 field errors -> 429 instead of field messages (h.mjs ratelimit: 400x10,429)." },
+    "WEB-2": { "verdict": "broke", "evidence": "h.mjs many 4999: next real POST -> 503 'No podemos recibir más solicitudes'; DELETE /api/solicitudes/<id> -> 404, estado 'borrada' -> 400; no way to remove junk." },
+    "WEB-3": { "verdict": "broke", "evidence": "h.mjs nojs: GET /?nombre=Ana&... (form has no action/method) -> 200 same page, solicitudes.json not created; static HTML has 0 hour options." },
+    "WEB-4": { "verdict": "not-checked", "evidence": "No browser available; button is disabled during submit (cita.js:38) but focus position after submit could not be observed." },
+    "WEB-5": { "verdict": "held", "evidence": "t2.mjs: 5 wrong passwords -> 401x5, 6th and 7th -> 429 'Espera 15 minutos', correct password also 429 during lockout." },
+    "WEB-1": { "verdict": "broke", "evidence": "h.mjs corrupt: truncated solicitudes.json with 3 records, no startup warning, next POST 201 -> file holds 1 record; h.mjs writefail: one failed write then POSTs -> 500,500,500 after cause removed, restart keeps 1 of 5." }
+  },
+  "new": [
+    { "title": "A 'not in the past' booking rule checked only by day accepts slots already over today", "class": "form", "evidence": "At 09:11 local, POST /api/citas fecha=2026-10-16 hora=09:00 -> 201." },
+    { "title": "Handlers assume input shape, so null body / Origin: null / bad %-escape give 500 with stack traces", "class": "server", "evidence": "POST body 'null' -> 500 TypeError reading 'web'; Origin: null -> 500; GET /%E0%A4%A -> 500." }
+  ]
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <main class="admin">
+    <h1>Solicitudes de cita</h1>
+    <noscript><p class="aviso mal">Esta página necesita JavaScript.</p></noscript>
+
+    <section id="vista-entrar" hidden>
+      <form id="form-entrar" novalidate>
+        <div class="campo">
+          <label for="clave">Contraseña</label>
+          <input id="clave" type="password" autocomplete="current-password" required aria-describedby="e-clave">
+          <p class="error" id="e-clave" role="alert"></p>
+        </div>
+        <button class="boton" type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section id="vista-lista" hidden>
+      <div class="admin-barra">
+        <p id="resumen" role="status"></p>
+        <button class="boton boton-claro" id="salir" type="button">Salir</button>
+      </div>
+      <p id="danadas" class="aviso mal" hidden></p>
+      <p id="msg" class="aviso" role="status" tabindex="-1" hidden></p>
+      <div id="lista"></div>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

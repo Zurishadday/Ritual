@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <script src="/admin.js" defer></script>
+</head>
+<body class="admin">
+  <header class="cabecera">
+    <a class="marca" href="/">Fisio Andares</a>
+    <span class="etiqueta-admin">Panel</span>
+    <button id="btn-salir" class="boton boton-claro" type="button" hidden>Salir</button>
+  </header>
+
+  <main class="contenedor-admin">
+    <noscript><p class="estado estado-error">Este panel necesita JavaScript activado.</p></noscript>
+
+    <section id="vista-login" hidden aria-labelledby="t-login">
+      <h1 id="t-login">Entrar al panel</h1>
+      <form id="form-login" class="formulario formulario-login">
+        <div class="campo">
+          <label for="clave">Contraseña</label>
+          <input id="clave" name="clave" type="password" autocomplete="current-password" required>
+        </div>
+        <p id="error-login" class="estado estado-error" role="alert" hidden></p>
+        <div class="campo-ancho"><button class="boton boton-grande" type="submit">Entrar</button></div>
+      </form>
+    </section>
+
+    <section id="vista-panel" hidden aria-labelledby="t-panel">
+      <div class="panel-cabecera">
+        <h1 id="t-panel" tabindex="-1">Solicitudes de cita</h1>
+        <div class="panel-acciones">
+          <span id="actualizado" class="ayuda"></span>
+          <button id="btn-actualizar" class="boton boton-borde" type="button">Actualizar</button>
+        </div>
+      </div>
+      <p id="aviso-almacen" class="estado estado-error" hidden></p>
+      <div id="filtros" class="filtros" role="group" aria-label="Filtrar solicitudes">
+        <button type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+        <button type="button" data-filtro="pendiente" aria-pressed="false">Pendientes</button>
+        <button type="button" data-filtro="confirmada" aria-pressed="false">Confirmadas</button>
+        <button type="button" data-filtro="cancelada" aria-pressed="false">Canceladas</button>
+      </div>
+      <div class="campo">
+        <label for="buscar">Buscar por nombre, teléfono o correo</label>
+        <input id="buscar" type="search" autocomplete="off">
+      </div>
+      <div class="cita-acciones">
+        <button id="borrar-canceladas" class="boton boton-peligro" type="button">Eliminar todas las canceladas</button>
+        <button id="borrar-confirmadas" class="boton boton-peligro" type="button">Eliminar todas las confirmadas</button>
+      </div>
+      <p id="anuncio" class="estado estado-ok" role="status" tabindex="-1" hidden></p>
+      <p class="ayuda">Las más nuevas aparecen primero.</p>
+      <div id="lista" class="lista-citas"></div>
+    </section>
+  </main>
+</body>
+</html>

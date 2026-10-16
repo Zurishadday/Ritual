@@ -1,0 +1,20 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "Chrome: phone 'abc-defg-hij' submitted -> server error text written at top -76px (off-screen), focus BODY, button area unchanged; also admin filter=Pendientes + Confirmar -> card vanishes 12->11 with no message" },
+    "41": { "verdict": "broke", "evidence": "build's prueba.mjs only checks API status codes; rendered admin page at 375px in Chrome: scrollWidth 994, ARTICLE.sol right=994, name/email/'Volver a pendiente' clipped (admin-movil.png)" },
+    "45": { "verdict": "broke", "evidence": "Chrome: phone with letters / phone '12' / forced 20:00 -> error shown only off-screen, focus BODY; JSON body 'null' -> 500; double click held (saved 1)" },
+    "46": { "verdict": "held", "evidence": "node _revisor/datos.mjs: admin GET 10 ms @51 recs, 36 ms @4990 recs (2.0 MB); one POST 18 ms; 9 POSTs at once 78 ms (store capped at 5000)" },
+    "49": { "verdict": "held", "evidence": "Chrome 375px: general scroll-padding-top 64px vs 89px-tall wrapped header; after tapping 'Pedir cita' h2 top 95.7 > header bottom 89.1, heading visible; site-wide CSP did not break page styling/scripts" },
+    "WEB-2": { "verdict": "broke", "evidence": "no honeypot/rate limit: text/plain cross-site POST -> 201, duplicate POSTs 201/201; no delete in admin; at 5000 stored the next real POST -> 503 'Servicio saturado'" },
+    "WEB-3": { "verdict": "broke", "evidence": "Chrome scripts disabled: submit -> GET /?nombre=Sin+JS&telefono=...&correo=sinjs%40ejemplo.com..., saved 0, no message, back at top; hour select has no options without JS" },
+    "WEB-4": { "verdict": "broke", "evidence": "Chrome: Enter on 'Enviar solicitud' -> success text, activeElement BODY; next Tab -> A '00 0000 0000' (footer contact); admin Confirmar/Cancelar -> focus BODY" },
+    "WEB-5": { "verdict": "held", "evidence": "8 wrong POST /api/admin/login -> 401,401,401,401,401,429,429,429; correct password right after -> 429 for 5 min (~60 tries/hour/IP)" },
+    "WEB-1": { "verdict": "broke", "evidence": "datos.mjs on copy: truncated solicitudes.json with 3 records -> server starts silently, next POST 201, file now 1 record (3 lost, no log)" }
+  },
+  "new": [
+    { "title": "Project's own test script deletes the live data folder", "class": "data", "evidence": "prueba.mjs run in a copy: before datos/=['solicitudes.json'], after datos/ ENOENT (rm('datos') at lines 5 and 32)" },
+    { "title": "One failed write poisons the write queue; requests shown in admin are lost on restart", "class": "data", "evidence": "datos.mjs: after one EISDIR write failure, next POSTs 500/500 with disk healthy, file stuck at 1, admin shows 4, after restart 1" },
+    { "title": "Inherited object keys accepted as treatment, bypassing the hour check", "class": "server", "evidence": "POST tratamiento='constructor' hora='23:00' -> 201; admin shows 'function Object() { [native code] } · 19/10/2026 a las 23:00'" },
+    { "title": "Server accepts past dates (yesterday, earlier today) and off-grid times", "class": "server", "evidence": "POST fecha=2026-10-15 (yesterday) -> 201; today 09:00 -> 201; hora 09:07 -> 201" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "Chrome 375px: empty submit -> resumen in view and focused ('Hay 6 datos por corregir'); success -> exitoInView:true; admin Confirmar -> aviso 'Solicitud de Persona 2: confirmada.' in view, counters 'Pendientes (4) Confirmadas (1)'" },
+    "41": { "verdict": "broke", "evidence": "prueba.mjs checks the no-JS error page by text ('Revisa tu solicitud' in body) and passes, but clicking its 'Volver y corregir' in Chrome -> navigated=false, CSP 'Running the JavaScript URL violates ... script-src 'self''" },
+    "45": { "verdict": "broke", "evidence": "No-JS error path: Sunday submit -> 'Revisa tu solicitud' page whose only button (javascript:history.back()) does nothing (navigated=false); and 10 invalid POSTs then a valid one from same IP -> 400x10,429,429" },
+    "46": { "verdict": "broke", "evidence": "browser3.mjs scale: 1000 records -> one Confirmar repaint 195ms; 10000 -> list 1643ms, one Confirmar 2802ms, 210001 DOM nodes; GET /api/admin/citas sends all (100k -> 33MB, 20 parallel loads delay a public POST to 1461ms)" },
+    "49": { "verdict": "broke", "evidence": "Site-wide CSP script-src 'self' silently kills the error page's own href=\"javascript:history.back()\": Chrome console 'Running the JavaScript URL violates the following Content Security Policy directive', click -> navigated=false" },
+    "WEB-2": { "verdict": "broke", "evidence": "data.mjs spam: 1000 honeypot-skipping bot POSTs from rotating IPs -> 1021 saved, real one at position 21; DELETE/PATCH /api/admin/citas -> 404 (no bulk delete); panel deletes one at a time with confirm()" },
+    "WEB-3": { "verdict": "broke", "evidence": "Network.setBlockedURLs app.js, Sunday submit -> /api/citas 'Revisa tu solicitud | Atendemos de lunes a viernes | Volver y corregir'; clicking it -> navigated=false (CSP blocks javascript: URL); same with JS disabled" },
+    "WEB-4": { "verdict": "held", "evidence": "Chrome: button uses aria-disabled not disabled; error submit -> focus DIV#resumen, next Tab -> 'A Escribe tu nombre.', Enter -> INPUT#nombre; success -> focus DIV#exito in view (admin variant: after Confirmar focus jumps to P#aviso at scrollY 0, see FINDINGS #7)" },
+    "WEB-5": { "verdict": "held", "evidence": "20 wrong passwords from one IP -> 401,401,401,401,429x16 in 298ms; correct password while locked -> 429; generated password is 12 base64url chars (lock is per IP and in memory: resets on restart)" },
+    "WEB-1": { "verdict": "broke", "evidence": "data.mjs crash: append '{\"nota\":...}' without newline while running -> POST Victima 201, in memory 'Victima,Despues,Antes'; after restart 'Despues,Antes' + 'AVISO: 2 línea(s) dañada(s)'; only a boot console warning tells anyone" }
+  },
+  "new": [
+    { "title": "Every place that prints a stranger's text needs the long-word rule (admin card h3 has no overflow-wrap)", "class": "mobile", "evidence": "Chrome 375px /admin with an 80-char name -> scrollWidth 917 vs clientWidth 375; dd wraps, .solicitud h3 does not" },
+    { "title": "A rate limit counted before validation spends a person's corrections and blocks the valid request", "class": "server", "evidence": "10 invalid POST /api/citas then 1 valid from same IP -> 400,400,400,400,400,400,400,400,400,400,429,429" },
+    { "title": "Focus ring colour checked against one background fails on the others", "class": "accessibility", "evidence": "computed in Chrome: #f2a900 ring vs white 2.01:1, vs cream #f6f3ec 1.81:1 (< 3:1)" },
+    { "title": "Wrong-typed JSON bodies crash the handler (500) or get coerced into stored junk", "class": "server", "evidence": "POST /api/citas body null -> 500; nombre {toString:1} -> 500 with stack; nombre ['a','b'] -> 201 stored as 'a,b'" },
+    { "title": "Request asked how to test it; build ships no README and the password appears only once in the console", "class": "false claim", "evidence": "Glob **/* -> no README; first boot prints 'Contraseña generada (guardada en datos/clave.txt)' only" }
+  ]
+}

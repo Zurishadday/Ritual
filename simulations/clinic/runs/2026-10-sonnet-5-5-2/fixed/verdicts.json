@@ -1,0 +1,21 @@
+{
+  "lessons": {
+    "32": { "verdict": "broke", "evidence": "node b1.mjs at 375x667, empty submit: {msg:'Escribe tu nombre. …', msgInView:false, msgTop:1083}; screenshot shows only red borders, no error text on screen" },
+    "41": { "verdict": "broke", "evidence": "node b1.mjs: the error text exists in #mensaje (textContent set, class 'error') but at 375px it renders at top=1083 in a 667px viewport; present in the DOM, not visible to the reader" },
+    "45": { "verdict": "broke", "evidence": "node b1.mjs: phone with letters -> msgInView:false msgTop:981 (only a red border visible); node b3.mjs no-JS Sunday -> 'Volver al formulario' -> all fields empty" },
+    "46": { "verdict": "held", "evidence": "node http4.mjs with 20,001 records: GET /api/citas 27 ms, full-scan search 19 ms, 50 concurrent searches 184 ms, POST (full rewrite) 25 ms" },
+    "49": { "verdict": "broke", "evidence": "node b2.mjs: hovering the hero button -> bg rgb(20,80,75); general .boton:hover beats .portada .boton, contrast vs veil 1.17:1" },
+    "WEB-2": { "verdict": "broke", "evidence": "node http3.mjs: 40 parallel POSTs from one IP -> {\"201\":40}, Rafaga saved: 40 despite the 10/hour cap; deleting is one at a time with confirm(), no bulk delete" },
+    "WEB-3": { "verdict": "held", "evidence": "node b2.mjs with */cita.js blocked, Sunday submit -> /api/citas server page 'No pudimos enviar tu solicitud Atendemos de lunes a viernes.'; good data -> /gracias.html (typed answers lost on error, see FINDINGS #4)" },
+    "WEB-4": { "verdict": "held", "evidence": "node b2.mjs keyboard: Enter on 'Enviar solicitud' -> focus on #mensaje 'Listo!…' (in view, outlined), next Tab -> '55 0000 0000' link" },
+    "WEB-5": { "verdict": "broke", "evidence": "node http2.mjs: 2902 wrong passwords in 20s (401x5, 429x2897, ~8706/min), then the correct password -> 200; the lock never blocks the right guess" },
+    "WEB-1": { "verdict": "held", "evidence": "node http4.mjs on a truncated citas.json: file moved to citas.danado-*.json, next visitor POST -> 201 and saved; but the owner sees 'Todavía no hay solicitudes.', only the console says so" }
+  },
+  "new": [
+    { "title": "A rate limit checked before an await and recorded after it lets a parallel burst through", "class": "security", "evidence": "node http3.mjs: 40 parallel POSTs from one IP -> 40 x 201, all saved; the next sequential POST -> 429" },
+    { "title": "The no-JS error page's 'back' link reloads the form empty, losing every answer", "class": "form", "evidence": "node b3.mjs scripts disabled: Sunday submit -> 'Volver al formulario' -> url /#cita, fields: nombre= telefono= correo= … all empty" },
+    { "title": "Input borders at 1.45:1 contrast, and errors shown only as a border colour change on mobile", "class": "accessibility", "evidence": "node b2.mjs: fieldBorderVsWhite '1.45' (#cfd8d6 on #fff); b1.mjs at 375px: error text off-screen, only red borders visible" },
+    { "title": "A past day is reported on the hour field", "class": "form", "evidence": "node b1.mjs: date 2026-10-12 -> msg 'Elige una fecha y hora futuras.', focus:'hora', invalid:['hora']" },
+    { "title": "A comment claims every failed login is slowed down; after 5 the answer is instant", "class": "false claim", "evidence": "servidor.mjs:299-300 vs node http2.mjs: 2897 instant 429s in 20 s" }
+  ]
+}

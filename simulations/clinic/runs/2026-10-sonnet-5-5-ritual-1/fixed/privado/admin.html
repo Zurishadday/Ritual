@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Solicitudes · Fisio Andares</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="panel">
+    <div class="panel-cab">
+      <h1>Solicitudes de cita</h1>
+      <form action="/admin/salir" method="post"><button class="boton secundario" type="submit">Salir</button></form>
+    </div>
+    <noscript><p class="error">Este panel necesita JavaScript activado.</p></noscript>
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar por estado"></div>
+    <p id="aviso" class="estado" role="status" tabindex="-1"></p>
+    <div id="lista"></div>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

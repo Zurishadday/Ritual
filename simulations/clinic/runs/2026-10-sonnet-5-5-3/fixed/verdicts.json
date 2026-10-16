@@ -1,0 +1,23 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "headless Chrome via CDP (nav2.mjs), submit at 375px and 1280px: #resultado shows 'Revisa los datos.' / '¡Gracias! Recibimos tu solicitud…' right under the button, inView=true in both cases" },
+    "41": { "verdict": "broke", "evidence": "nav.mjs after admin login: DOM says acceso hidden=true, but rendered acceso display=grid height=338px; screenshot admin-375-after-login.png shows the password form still on screen, so checking the hidden attribute in source would pass while the owner sees otherwise" },
+    "45": { "verdict": "broke", "evidence": "nav2.mjs, 375px empty submit: resultado=\"Revisa los datos.\" errors=nombre(OFFSCREEN),telefono(OFFSCREEN),correo(OFFSCREEN),tratamiento(OFFSCREEN) focus=BODY; the visible message names no field" },
+    "46": { "verdict": "broke", "evidence": "nav.mjs/nav2.mjs with 4999 seeded: GET /api/solicitudes 2.18MB, cargar()+paint 930ms, one Confirmar click 955ms (pintar() rebuilds all 4999 cards), page 2,246,764px tall; no paging" },
+    "49": { "verdict": "broke", "evidence": "nav.mjs: general rule 'form { display: grid }' (estilos.css:46) beats [hidden] on #acceso; after login getComputedStyle(acceso).display=grid while hidden=true" },
+    "WEB-2": { "verdict": "broke", "evidence": "http.mjs: one IP saves 10 valid requests/hour (429 on the 11th); 2 identical concurrent POSTs -> 201,201 saved 2; 4999 seeded -> next submit 201 then 503 for everyone; panel has only one-by-one delete with confirm(), no bulk delete or search" },
+    "WEB-3": { "verdict": "held", "evidence": "nav2.mjs with Network.setBlockedURLs ['*cita.js'], valid submit -> url /api/citas, page 'Solicitud enviada ¡Gracias! …'; JS disabled empty submit -> server HTML error list" },
+    "WEB-4": { "verdict": "broke", "evidence": "nav.mjs keyboard-only: after Enter on 'Enviar solicitud' activeElement=BODY, next Tab -> A[Llamar: 00 0000 0000]; in admin, Enter on Confirmar -> focus BODY" },
+    "WEB-5": { "verdict": "held", "evidence": "http.mjs: sequential wrong passwords 401,401,401,401,401,429,429,429; 1000 parallel -> {\"401\":5,\"429\":995} (caveat: correct password from same IP also gets 429 for 15 min)" },
+    "WEB-1": { "verdict": "held", "evidence": "http.mjs: truncated solicitudes.json seeded -> server copies it to solicitudes.danado-*.json, next submit 201 and saved (caveat: only a console warning; panel silently shows just the new request)" }
+  },
+  "new": [
+    { "title": "A hard cap on stored records silently turns the public form off for everyone", "class": "data", "evidence": "http.mjs: 4999 seeded -> submit 201, next submit 503 'No podemos recibir más solicitudes ahora. Llámanos.'; cap counts confirmed/cancelled too; panel shows no warning" },
+    { "title": "Per-IP rate limits block shared networks and let others lock the owner out", "class": "server", "evidence": "http.mjs: 11th valid request from one IP -> 429; after 5 wrong passwords the correct password -> 429 'Demasiados intentos. Espera 15 minutos.'" },
+    { "title": "User-supplied text is not wrapped in the owner's panel, causing horizontal scroll", "class": "mobile", "evidence": "nav.mjs: request with unbroken comment/email, admin at 375px scrollWidth=1137 clientWidth=375 (1280px: 1322 vs 1265)" },
+    { "title": "No-JS error page loses everything the person typed", "class": "form", "evidence": "nav2.mjs JS off, bad phone -> error page; 'Volver' -> /#cita with all fields empty" },
+    { "title": "Admin login form without method sends the password in the URL when JS is off", "class": "security", "evidence": "nav3.mjs JS off, password + Enter -> url http://127.0.0.1:3250/admin?clave=clave-prueba" },
+    { "title": "Custom focus outline below 3:1 contrast", "class": "accessibility", "evidence": "node contrast calc: outline #8cc9bb vs white 1.88:1, vs form background #eef6f3 1.71:1" },
+    { "title": "Damaged store empties the owner's panel with only a console warning", "class": "data", "evidence": "http.mjs: corrupted solicitudes.json -> log 'AVISO … dañado', panel lists only the new request, no UI notice" }
+  ]
+}

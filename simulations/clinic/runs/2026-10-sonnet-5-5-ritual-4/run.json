@@ -1,0 +1,18 @@
+{
+  "built": "45 turns · $0.8326867000000001 · 38432 output tokens · 1 denied tool call(s)",
+  "ritual": {
+    "brief": true,
+    "sent": [
+      "scripts-and-files",
+      "interface-and-design",
+      "console-and-tools"
+    ],
+    "blocks": [
+      "node-e-backslashes"
+    ],
+    "closed": true
+  },
+  "mentions": [],
+  "reviewed": "62 turns · $2.2345102000000003 · 44422 output tokens · 2 denied tool call(s)",
+  "fixed": "45 turns · $0.6145713000000002 · 27014 output tokens · 1 denied tool call(s)"
+}

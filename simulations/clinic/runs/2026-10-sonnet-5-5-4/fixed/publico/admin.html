@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Administración · Fisio Andares</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body class="admin">
+  <header class="barra">
+    <span class="marca">Fisio Andares · Solicitudes</span>
+    <button id="salir" class="enlace" hidden>Cerrar sesión</button>
+  </header>
+
+  <main class="seccion">
+    <form id="login" hidden>
+      <h2>Entrar</h2>
+      <label>Contraseña
+        <input type="password" name="clave" autocomplete="current-password" required>
+      </label>
+      <button class="boton" type="submit">Entrar</button>
+      <p id="login-error" class="error" role="alert"></p>
+    </form>
+
+    <section id="panel" hidden>
+      <div class="herramientas">
+        <label>Mostrar
+          <select id="filtro">
+            <option value="">Todas</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="confirmada">Confirmadas</option>
+            <option value="cancelada">Canceladas</option>
+          </select>
+        </label>
+        <button id="recargar" class="boton">Actualizar</button>
+      </div>
+      <p id="aviso" role="status" tabindex="-1"></p>
+      <p id="vacio" hidden>No hay solicitudes.</p>
+      <div id="lista"></div>
+    </section>
+  </main>
+  <script src="/admin.js"></script>
+</body>
+</html>

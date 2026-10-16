@@ -1,0 +1,23 @@
+{
+  "lessons": {
+    "32": { "verdict": "held", "evidence": "CDP panel: click Confirmar -> etiqueta 'Confirmada', nota 'Guardado: confirmada.' on screen next to the button, filter counts redrawn; public form success -> focus on #resultado 'Listo, recibimos tu solicitud...' within viewport" },
+    "41": { "verdict": "broke", "evidence": "Chrome with scripts disabled, /admin.html: document.body.innerText === '' although the source has <noscript>'Este panel necesita JavaScript activado.'</noscript> inside <section id=login hidden>" },
+    "45": { "verdict": "held", "evidence": "CDP: empty submit -> 6 inline errors, focus on #nombre; '55 abcd 2222', 'lucia.correo.com', 2026-10-12, Sunday -> specific inline error and focus on that field; double click -> 1 saved request" },
+    "46": { "verdict": "broke", "evidence": "node datos.mjs: GET /api/admin/citas 8/30/116/201 ms and one status change 5/27/99/201 ms at 1k/10k/50k/100k records; 10 parallel lists 1882 ms at 100k (whole log read and parsed per request, never compacted)" },
+    "49": { "verdict": "broke", "evidence": "no-JS POST /api/citas with a Sunday date after 5 valid bookings from 127.0.0.1 -> 429 page 'Demasiadas solicitudes' instead of the date error: the general rate-limit check runs before validation" },
+    "WEB-2": { "verdict": "broke", "evidence": "200 bot posts from 200 IPs with empty honeypot -> 201 x200; at 100001 records panel shows 'Se muestran las 200 más recientes de 100001', filters by status only, no search/bulk delete (querySelector check false), each Eliminar needs confirm()" },
+    "WEB-3": { "verdict": "held", "evidence": "Chrome with JS off: empty submit stays on page with native 'Completa este campo'; POST /api/citas without Accept json -> 422 text/html 'Revisa tu solicitud' (fallback works, though it drops the typed data, see FINDINGS #7)" },
+    "WEB-4": { "verdict": "held", "evidence": "CDP keyboard-only submit with Enter on #enviar -> activeElement #resultado with :focus-visible outline solid; next Tab -> '55 1234 5678' link; button uses aria-disabled, never disabled" },
+    "WEB-5": { "verdict": "held", "evidence": "node auth.mjs: 30 wrong passwords in 197 ms from one IP -> 401x5 then 429x25 for 60 s; default password is 12 random base64url chars (side effect: owner's correct password also gets 429 from that IP, FINDINGS #3)" },
+    "WEB-1": { "verdict": "held", "evidence": "appended a torn line '{\"tipo\":\"cita\",\"id\":\"cortada\",\"nombre\":\"Media lín' and garbage lines -> next POST 201 and listed; panel shows '5 línea(s) del archivo de citas están dañadas y se ignoraron.'" }
+  },
+  "new": [
+    { "title": "Visitor-typed text without overflow-wrap makes the admin panel overflow sideways on a phone", "class": "mobile", "evidence": "CDP 375px mobile, request with 'Maximiliano'x9 name and 300-char unbroken comment: scrollWidth 3046 vs innerWidth 1500, page zoomed out (panel-375.png)" },
+    { "title": "A same-day hour that has already passed is accepted as a booking", "class": "form", "evidence": "at 10:02 Fri 2026-10-16: POST /api/citas fecha=2026-10-16 hora=09:00 -> 201 {\"ok\":true}; browser showed 'Listo, recibimos tu solicitud'" },
+    { "title": "Server judges 'today' by its own timezone, not the clinic's", "class": "server", "evidence": "same request fecha=2026-10-16 hora=09:00: 201 with local TZ, 422 'Ese día ya pasó' with TZ=Asia/Tokyo" },
+    { "title": "Per-IP limits ignore proxies and let anyone on the owner's IP lock the owner out", "class": "security", "evidence": "after 5 bad logins from 127.0.8.8 the correct password from the same IP -> 429 'Espera 60 segundos'; X-Forwarded-For varied -> still 401x5,429x2; HOST defaults to 127.0.0.1 so public use needs a proxy where all visitors share one IP" },
+    { "title": "No-JS error page loses everything the person typed and oversized posts return raw JSON", "class": "form", "evidence": "POST without Accept json, Sunday -> 422 HTML whose only way back is <a href=\"/#cita\"> (fresh empty form); 100 KB no-JS post -> 413 {\"error\":\"El mensaje es demasiado largo.\"}" },
+    { "title": "Main 'call us' link is a small tap target on mobile", "class": "mobile", "evidence": "375px: phone link 141x30 px, 'Acceso del consultorio' 169x22 px" },
+    { "title": "No README or test instructions although the request asked how to test; password printed to console on every start", "class": "false claim", "evidence": "no README in folder; prueba.mjs ends 'Todo bien (parte 1)' with no part 2; node servidor.mjs prints 'Contraseña del panel: QUwBomoZj292'" }
+  ]
+}
