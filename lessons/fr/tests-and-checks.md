@@ -142,17 +142,19 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### EDU-1. Si la réponse est la même sans la compétence, l'exercice ne la mesure pas
 
-`from: 4a591edc` · `by: ai`
+`from: 9c298143` · `by: ai`
 
 **L'idée.** Un exercice ne vérifie une compétence que si quelqu'un qui saute cette compétence obtient un résultat différent. Si le point de départ, un exemple ou un raccourci produit déjà la bonne réponse, l'exercice valide tout le monde. C'est la leçon 13 appliquée aux exercices : un contrôle n'a de valeur qu'une fois que vous l'avez vu rejeter l'erreur.
 
 **Exemple.** Un exercice demandait le plus gros achat de l'été, avec un filtre de date. Le plus gros achat de toute la table était aussi un achat d'été : sans le filtre, le résultat était le même, et l'exercice l'a accepté. Un autre exercice exigeait que le code contienne un `=` ; il passait avec le résultat tapé à la main, `total = 1945`. Le contrôle regardait la lettre, pas la compétence.
 
+**Autre exemple.** Un exercice réalisé dans un tableur demandait aux apprenants de régler la région, d'importer un CSV et de retaper combien d'unités d'un produit il contenait. Le nombre était un entier stocké dans le fichier : un éditeur de texte brut l'affichait sans import ni réglage de la région. On l'a remplacé par des unités multipliées par un prix avec un séparateur décimal, qui ne donne le bon résultat que si le tableur lit correctement ce séparateur. Dans le même cours, un exercice de tri des fichiers par extension pouvait être résolu à partir des seuls noms de fichiers.
+
 **Question détectrice.** Quel résultat obtient quelqu'un qui saute exactement ce que j'enseigne, ou qui rend l'exercice sans y toucher ? Est-il différent du bon ? Ai-je choisi un cas où les deux calculs tombent juste par hasard (le premier groupe, la première étape, le total) ?
 
-**Signal d'alarme.** « Avec la bonne réponse, il donne le chiffre, donc ça marche. »
+**Signal d'alarme.** « Avec la bonne réponse, il donne le chiffre, donc ça marche. » · « De toute façon, ils feront le réglage. »
 
-**Que faire.** Résolvez chaque exercice trois fois : sans y toucher, avec l'erreur la plus probable, et correctement. Seule la troisième version doit passer. Puis appliquez la même liste de raccourcis à chaque exercice : le nombre tapé à la main, le code de départ avec la réponse ajoutée à la fin, le symptôme corrigé à la main au lieu de la cause, le mot exigé employé à vide, et une exécution avec la mémoire laissée par une tentative précédente. Gardez toute tolérance inférieure à l'écart entre la réponse et l'erreur la plus probable, et écrivez trois formes correctes qu'un apprenant utiliserait, pour que le contrôle ne rejette pas ce qui est juste.
+**Que faire.** Résolvez chaque exercice trois fois : sans y toucher, avec l'erreur la plus probable, et correctement. Seule la troisième version doit passer. Puis appliquez la même liste de raccourcis à chaque exercice : le nombre tapé à la main, le code de départ avec la réponse ajoutée à la fin, le symptôme corrigé à la main au lieu de la cause, le mot exigé employé à vide, et une exécution avec la mémoire laissée par une tentative précédente. Gardez toute tolérance inférieure à l'écart entre la réponse et l'erreur la plus probable, et écrivez trois formes correctes qu'un apprenant utiliserait, pour que le contrôle ne rejette pas ce qui est juste. Quand l'exercice se fait dans un autre outil et que seul un nombre tapé revient, demandez un nombre qui n'apparaît qu'après l'étape enseignée (un calcul que le réglage affecte), et non une valeur stockée dans le fichier ; ajoutez « le réglage sauté » aux raccourcis. Dans un exercice de tri, gardez tout identique, sauf la fonctionnalité enseignée.
 
 ### EDU-4. Si l'on peut deviner la bonne option à sa place ou à sa longueur, le quiz mesure la devinette
 

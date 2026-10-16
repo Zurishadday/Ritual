@@ -138,17 +138,19 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
 
-`from: a7bc9d8b` · `by: author`
+`from: 8262f769` · `by: ai`
 
 **La idea.** Una pregunta deja de medir si la respuesta ya apareció: en una imagen, en la idea clave, en la explicación de otro ejercicio, en el título de un paso o en una lección anterior. Quien contesta bien pudo haberla leído.
 
 **Ejemplo.** Una ilustración con la cifra correcta quedaba arriba de la práctica que pedía calcularla. Una lección preguntaba qué pasa al guardar otro valor en una variable, en un paso titulado «Guardar otra vez reemplaza». Un resumen debajo del quiz final se leía antes de contestarlo. Y un recuadro que aparece tras el primer intento, aunque falle, daba la dirección de la respuesta.
 
+**Otro ejemplo.** Un ejercicio pedía escribir una fórmula signo por signo, con la fórmula mostrada justo arriba del recuadro y con el pegado permitido: medía copiar y pegar.
+
 **Pregunta detectora.** Esta cifra, imagen o frase, ¿la ve el estudiante antes de contestar, aquí o en una lección anterior? No solo la cifra exacta: también una aproximación («unas 25»), la conclusión escrita al pie de una imagen, un título, un «acabas de ver que…», o lo que muestra en pantalla el error más probable de un ejercicio anterior.
 
 **Señal de alarma.** «Es solo contexto» · «es solo el título» · «es el pie de la imagen».
 
-**Qué hacer.** Busca cada respuesta en todo lo que se ve antes de su pregunta, también en lo que aparece tras un primer intento fallido, en lo que imprime el código de partida al correrlo, en los archivos que se descargan y en lo que se puede contar en un dibujo. Escribe el título del paso y los objetivos al final, y léelos junto al resultado de cada predicción. Una revisión automática encuentra las cifras exactas; las aproximaciones y las frases con otras palabras solo las encuentra quien lee con la respuesta en mente.
+**Qué hacer.** Busca cada respuesta en todo lo que se ve antes de su pregunta, también en lo que aparece tras un primer intento fallido, en lo que imprime el código de partida al correrlo, en los archivos que se descargan y en lo que se puede contar en un dibujo. Escribe el título del paso y los objetivos al final, y léelos junto al resultado de cada predicción. Una revisión automática encuentra las cifras exactas; las aproximaciones y las frases con otras palabras solo las encuentra quien lee con la respuesta en mente. Cuando un ejercicio pida escribir lo que aparece en pantalla, bloquea el pegado y explica por qué.
 
 ### EDU-3. Una pregunta con dos respuestas defendibles no mide nada
 

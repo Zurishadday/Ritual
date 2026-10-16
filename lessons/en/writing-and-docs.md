@@ -138,17 +138,19 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### EDU-2. What learners see before answering can't contain the answer
 
-`origin: field · ~opus · 2026-10` · `packages: education`
+`origin: field · ~opus · 2026-10` · `packages: education` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** A question stops measuring once its answer has already appeared: in an image, in the key idea, in another exercise's explanation, in a step title or in an earlier lesson. Whoever answers right may have just read it.
 
 **Example.** An illustration with the right figure sat above the practice that asked for it. A lesson asked what happens when you store a new value in a variable, in a step titled "Storing again replaces it". A summary placed under the final quiz was read before answering it. A feedback box that appears after the first attempt, even a failed one, gave the direction of the answer.
 
+**Another example.** An exercise asked learners to type a formula sign by sign, with the formula shown right above the box and pasting allowed: it measured copy and paste.
+
 **Detector question.** Does the learner see this figure, image or phrase before answering, here or in an earlier lesson? Not only the exact number: also an approximation ("about 25"), the conclusion written in a caption, a title, a "you just saw that…", or what the most likely wrong answer of an earlier exercise shows on screen.
 
 **Warning sign.** "It's just context" · "it's only the title" · "it's the caption."
 
-**What to do.** Look for each answer in everything shown before its question, including what appears after a first failed attempt, what starting code prints when run, downloadable files and what can be counted in a drawing. Write the step title and the learning goals last, and read them next to the result of each prediction. An automatic check finds exact figures; approximations and paraphrases are found only by someone reading with the answer in mind.
+**What to do.** Look for each answer in everything shown before its question, including what appears after a first failed attempt, what starting code prints when run, downloadable files and what can be counted in a drawing. Write the step title and the learning goals last, and read them next to the result of each prediction. An automatic check finds exact figures; approximations and paraphrases are found only by someone reading with the answer in mind. When an exercise asks learners to type what is on screen, block pasting and say why.
 
 ### EDU-3. A question with two defensible answers measures nothing
 

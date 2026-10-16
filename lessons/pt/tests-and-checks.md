@@ -142,17 +142,19 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### EDU-1. Se a resposta sai igual sem a habilidade, o exercício não a mede
 
-`from: 4a591edc` · `by: ai`
+`from: 9c298143` · `by: ai`
 
 **A ideia.** Um exercício só verifica uma habilidade se quem pula essa habilidade obtém um resultado diferente. Se o ponto de partida, um exemplo ou um atalho já produz a resposta certa, o exercício aprova todo mundo. É a lição 13 aplicada a exercícios: uma verificação só vale alguma coisa depois que você a viu rejeitar o erro.
 
 **Exemplo.** Um exercício pedia a maior compra do verão, usando um filtro de datas. A maior compra de toda a tabela também tinha sido no verão: sem o filtro, o número era o mesmo, e o exercício aceitou. Outro exigia que o código tivesse um `=`; passou com o resultado digitado à mão, `total = 1945`. A verificação olhava a letra, não a habilidade.
 
+**Outro exemplo.** Um exercício feito em uma planilha pedia que o estudante definisse a região, importasse um CSV e digitasse de volta quantas unidades de um produto havia. A contagem era um número inteiro guardado no arquivo: um editor de texto simples o mostrava sem nenhuma importação e sem região definida. Ele foi trocado por unidades vezes um preço com ponto decimal, que só dá o número esperado quando a planilha lê esse decimal corretamente. No mesmo curso, um exercício para ordenar arquivos pela extensão podia ser resolvido só pelos nomes dos arquivos.
+
 **Pergunta detectora.** Que resultado obtém quem pula exatamente o que eu ensino, ou quem entrega o exercício sem mexer? Ele é diferente do certo? Escolhi um caso em que os dois cálculos por acaso coincidem (o primeiro grupo, o primeiro passo, o total)?
 
-**Sinal de alerta.** “Com a resposta certa ele dá o número, então funciona.”
+**Sinal de alerta.** “Com a resposta certa ele dá o número, então funciona.” · “Eles vão fazer a configuração de qualquer forma.”
 
-**O que fazer.** Resolva cada exercício três vezes: sem mexer, com o erro mais provável, e corretamente. Só a terceira pode passar. Depois, rode a mesma lista de atalhos em todos os exercícios: o número digitado à mão, o código inicial com a resposta acrescentada no fim, o sintoma corrigido à mão em vez da causa, a palavra exigida usada vazia, e uma execução com estado deixado por uma tentativa anterior. Mantenha qualquer margem de tolerância menor que a distância entre a resposta e o erro mais provável, e escreva três formas corretas que um estudante usaria, para que a verificação não rejeite o que está certo.
+**O que fazer.** Resolva cada exercício três vezes: sem mexer, com o erro mais provável, e corretamente. Só a terceira pode passar. Depois, rode a mesma lista de atalhos em todos os exercícios: o número digitado à mão, o código inicial com a resposta acrescentada no fim, o sintoma corrigido à mão em vez da causa, a palavra exigida usada vazia, e uma execução com estado deixado por uma tentativa anterior. Mantenha qualquer margem de tolerância menor que a distância entre a resposta e o erro mais provável, e escreva três formas corretas que um estudante usaria, para que a verificação não rejeite o que está certo. Quando o exercício acontece em outra ferramenta e só volta um número digitado, peça um número que só apareça depois do passo ensinado (um cálculo que a configuração afeta), e não um valor guardado no arquivo, e acrescente “a configuração pulada” à lista de atalhos. Em um exercício de ordenação, mantenha tudo igual, exceto o recurso que está sendo ensinado.
 
 ### EDU-4. Se dá para adivinhar a opção certa pela posição ou pelo tamanho, o quiz mede adivinhação
 

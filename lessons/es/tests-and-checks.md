@@ -142,17 +142,19 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### EDU-1. Si la respuesta sale igual sin la habilidad, el ejercicio no la mide
 
-`from: 4a591edc` · `by: author`
+`from: 9c298143` · `by: ai`
 
 **La idea.** Un ejercicio comprueba una habilidad solo si quien se la salta obtiene otro resultado. Si el punto de partida, un ejemplo o un atajo ya dan la respuesta correcta, el ejercicio aprueba a todos. Es la lección 13 aplicada a ejercicios: una revisión vale algo solo después de verla rechazar el error.
 
 **Ejemplo.** Una práctica pedía la compra más grande del verano, con un filtro de fechas. La más grande de toda la tabla también era del verano: sin el filtro salía el mismo número, y el ejercicio la aceptaba. Otra exigía que el código tuviera un `=`, y pasaba con el resultado tecleado a mano, `total = 1945`. La revisión miraba la letra, no la habilidad.
 
+**Otro ejemplo.** Una práctica hecha en una hoja de cálculo pedía a los estudiantes configurar la región, importar un CSV y escribir cuántas unidades tenía de un producto. La cuenta era un número entero guardado en el archivo: un editor de texto plano lo mostraba sin importar nada ni configurar la región. Se reemplazó por unidades multiplicadas por un precio con punto decimal, que solo da el número esperado si la hoja interpreta bien ese decimal. En el mismo curso, un ejercicio para ordenar archivos por su extensión se podía resolver solo con los nombres de los archivos.
+
 **Pregunta detectora.** ¿Qué resultado obtiene quien omite justo lo que enseño, o quien entrega el ejercicio sin tocarlo? ¿Es distinto del correcto? ¿Elegí un caso donde los dos cálculos coinciden por casualidad (el primer grupo, el primer paso, el total)?
 
-**Señal de alarma.** «Con la respuesta correcta da el número, ya funciona».
+**Señal de alarma.** «Con la respuesta correcta da el número, ya funciona» · «De todos modos van a hacer la configuración».
 
-**Qué hacer.** Resuelve cada ejercicio tres veces: sin tocarlo, con el error más probable y bien. Solo la tercera debe pasar. Prueba en todos la misma lista de atajos: el número tecleado, el código de partida con la respuesta agregada al final, el síntoma corregido a mano en lugar de la causa, la palabra exigida usada vacía, y una corrida con la memoria de un intento anterior. Deja la tolerancia más chica que la distancia entre la respuesta y el error probable, y escribe tres formas correctas que usaría un estudiante, para no rechazar lo que está bien.
+**Qué hacer.** Resuelve cada ejercicio tres veces: sin tocarlo, con el error más probable y bien. Solo la tercera debe pasar. Prueba en todos la misma lista de atajos: el número tecleado, el código de partida con la respuesta agregada al final, el síntoma corregido a mano en lugar de la causa, la palabra exigida usada vacía, y una corrida con la memoria de un intento anterior. Deja la tolerancia más chica que la distancia entre la respuesta y el error probable, y escribe tres formas correctas que usaría un estudiante, para no rechazar lo que está bien. Cuando la práctica ocurre en otra herramienta y solo vuelve un número tecleado, pide uno que aparezca solo después del paso enseñado (un cálculo al que afecta la configuración), no un valor guardado en el archivo, y agrega «la configuración omitida» a los atajos. En un ejercicio de ordenar, mantén igual todo excepto la función que se enseña.
 
 ### EDU-4. Si adivinas la correcta por su lugar o su largo, el quiz mide la suerte
 

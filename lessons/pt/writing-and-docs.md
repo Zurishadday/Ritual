@@ -138,17 +138,19 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 ### EDU-2. O que o estudante vê antes de responder não pode conter a resposta
 
-`from: a7bc9d8b` · `by: ai`
+`from: 8262f769` · `by: ai`
 
 **A ideia.** Uma pergunta deixa de medir alguma coisa quando a resposta já apareceu: em uma imagem, na ideia principal, na explicação de outro exercício, no título de um passo ou em uma lição anterior. Quem acerta pode ter acabado de ler a resposta.
 
 **Exemplo.** Uma ilustração com a figura certa ficou acima da prática que pedia essa figura. Uma lição perguntava o que acontece quando você guarda um novo valor em uma variável, em um passo intitulado “Guardar de novo substitui”. Um resumo colocado abaixo do questionário final era lido antes de responder ao questionário. Uma caixa de feedback que aparece depois da primeira tentativa, mesmo quando errada, já dava a direção da resposta.
 
+**Outro exemplo.** Um exercício pedia que o estudante digitasse uma fórmula caractere por caractere, com a fórmula mostrada logo acima da caixa e com colagem permitida: ele media copiar e colar.
+
 **Pergunta detectora.** O estudante vê esta figura, imagem ou frase antes de responder, aqui ou em uma lição anterior? Não só o número exato: também uma aproximação (“cerca de 25”), a conclusão escrita em uma legenda, um título, um “você acabou de ver que…”, ou o que a resposta errada mais provável de um exercício anterior mostra na tela.
 
 **Sinal de alerta.** “É só contexto” · “é só o título” · “é a legenda.”
 
-**O que fazer.** Procure cada resposta em tudo que é mostrado antes da pergunta, inclusive o que aparece depois de uma primeira tentativa errada, o que o código inicial imprime ao rodar, os arquivos para baixar e o que pode ser contado em um desenho. Escreva por último o título do passo e os objetivos de aprendizagem, e leia-os ao lado do resultado de cada previsão. Uma verificação automática encontra números exatos; aproximações e paráfrases só são encontradas por alguém que leia com a resposta em mente.
+**O que fazer.** Procure cada resposta em tudo que é mostrado antes da pergunta, inclusive o que aparece depois de uma primeira tentativa errada, o que o código inicial imprime ao rodar, os arquivos para baixar e o que pode ser contado em um desenho. Escreva por último o título do passo e os objetivos de aprendizagem, e leia-os ao lado do resultado de cada previsão. Uma verificação automática encontra números exatos; aproximações e paráfrases só são encontradas por alguém que leia com a resposta em mente. Quando um exercício pedir que o estudante digite o que está na tela, bloqueie a colagem e explique o motivo.
 
 ### EDU-3. Uma pergunta com duas respostas defensáveis não mede nada
 

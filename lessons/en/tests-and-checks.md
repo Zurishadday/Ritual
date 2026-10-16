@@ -142,17 +142,19 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it
 
-`origin: field · ~opus · 2026-10` · `packages: education`
+`origin: field · ~opus · 2026-10` · `packages: education` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** An exercise checks a skill only if someone who skips that skill gets a different result. If the starting point, an example or a shortcut already produces the right answer, the exercise passes everyone. It is lesson 13 for exercises: a check is worth something only once you have seen it reject the mistake.
 
 **Example.** A practice asked for the largest purchase of the summer, using a date filter. The largest purchase of the whole table was also from the summer: without the filter the number was the same, and the exercise accepted it. Another practice required the code to contain an `=`; it passed with the result typed by hand, `total = 1945`. The check looked at the letter, not the skill.
 
+**Another example.** A practice done in a spreadsheet asked learners to set the region, import a CSV and type back how many units of one product it had. The count was a whole number stored in the file: a plain text editor showed it with no import and no region set. It was replaced by units times a price with a decimal point, which only gives the expected number when the sheet reads that decimal correctly. In the same course, an exercise to sort files by their extension could be solved from the file names alone.
+
 **Detector question.** What result does someone get who skips exactly what I teach, or who submits the exercise untouched? Is it different from the right one? Did I pick a case where both calculations happen to match (the first group, the first step, the total)?
 
-**Warning sign.** "With the right answer it gives the number, so it works."
+**Warning sign.** "With the right answer it gives the number, so it works." · "They'll do the setup anyway."
 
-**What to do.** Solve every exercise three times: untouched, with the most likely mistake, and correctly. Only the third may pass. Then run the same list of shortcuts on every exercise: the number typed by hand, the starting code with the answer added at the end, the symptom fixed by hand instead of the cause, the required word used empty, and a run with memory left over from an earlier attempt. Keep any tolerance smaller than the distance between the answer and the most likely mistake, and write three correct forms a learner would use, so the check doesn't reject what is right.
+**What to do.** Solve every exercise three times: untouched, with the most likely mistake, and correctly. Only the third may pass. Then run the same list of shortcuts on every exercise: the number typed by hand, the starting code with the answer added at the end, the symptom fixed by hand instead of the cause, the required word used empty, and a run with memory left over from an earlier attempt. Keep any tolerance smaller than the distance between the answer and the most likely mistake, and write three correct forms a learner would use, so the check doesn't reject what is right. When the practice happens in another tool and only a typed number comes back, ask for one that only appears after the taught step (a calculation the setup affects), not a value stored in the file, and add "the setup skipped" to the shortcuts. In a sorting exercise, keep everything equal except the feature being taught.
 
 ### EDU-4. If you can guess the right option by its place or its length, the quiz measures guessing
 

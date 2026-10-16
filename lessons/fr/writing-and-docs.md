@@ -138,17 +138,19 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
 
-`from: a7bc9d8b` · `by: ai`
+`from: 8262f769` · `by: ai`
 
 **L'idée.** Une question cesse de mesurer dès que sa réponse est déjà apparue : dans une image, dans l'idée clé, dans l'explication d'un autre exercice, dans le titre d'une étape ou dans une leçon précédente. Celui qui répond juste vient peut-être de la lire.
 
 **Exemple.** Une illustration avec le bon chiffre était placée au-dessus de l'exercice qui le demandait. Une leçon demandait ce qui se passe quand on stocke une nouvelle valeur dans une variable, dans une étape intitulée « Stocker à nouveau la remplace ». Un résumé placé sous le quiz final était lu avant d'y répondre. Une boîte de retour qui apparaît après la première tentative, même ratée, donnait la direction de la réponse.
 
+**Autre exemple.** Un exercice demandait aux apprenants de taper une formule signe par signe, avec la formule affichée juste au-dessus de la case et le collage autorisé : il mesurait le copier-coller.
+
 **Question détectrice.** L'apprenant voit-il ce chiffre, cette image ou cette formulation avant de répondre, ici ou dans une leçon précédente ? Pas seulement le nombre exact : aussi une approximation (« environ 25 »), la conclusion écrite dans une légende, un titre, un « vous venez de voir que… », ou ce que montre à l'écran la mauvaise réponse la plus probable d'un exercice précédent.
 
 **Signal d'alarme.** « C'est juste du contexte » · « ce n'est que le titre » · « c'est la légende ».
 
-**Que faire.** Cherchez chaque réponse dans tout ce qui est montré avant sa question, y compris ce qui apparaît après une première tentative ratée, ce que le code de départ affiche à l'exécution, les fichiers téléchargeables et ce qui peut être compté dans un dessin. Rédigez en dernier le titre de l'étape et les objectifs d'apprentissage, et relisez-les à côté du résultat de chaque prédiction. Une vérification automatique trouve les chiffres exacts ; les approximations et les paraphrases ne sont repérées que par quelqu'un qui lit en ayant la réponse à l'esprit.
+**Que faire.** Cherchez chaque réponse dans tout ce qui est montré avant sa question, y compris ce qui apparaît après une première tentative ratée, ce que le code de départ affiche à l'exécution, les fichiers téléchargeables et ce qui peut être compté dans un dessin. Rédigez en dernier le titre de l'étape et les objectifs d'apprentissage, et relisez-les à côté du résultat de chaque prédiction. Une vérification automatique trouve les chiffres exacts ; les approximations et les paraphrases ne sont repérées que par quelqu'un qui lit en ayant la réponse à l'esprit. Quand un exercice demande de taper ce qui est affiché à l'écran, bloquez le collage et dites pourquoi.
 
 ### EDU-3. Une question à deux réponses défendables ne mesure rien
 
