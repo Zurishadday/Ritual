@@ -75,3 +75,9 @@ body:
     attributes:
       label: How to reproduce it
       description: The task or prompt where it happened, short enough to run again in a clean session. No logs, paths or data from your project.
+  - type: input
+    id: measured
+    attributes:
+      label: Measured (optional)
+      description: "What was measured, or `unknown`, never an estimate. caught: test | reviewer | validator | guard | user | other · fired: no lesson | showed up | did not show up · recurred: how many times in the session · cost: the measured cost to fix, like $1.20 in reviews. `/ritual share` fills it in."
+      placeholder: "caught: reviewer · fired: did not show up · recurred: 5 · cost: $9.53 in reviews"

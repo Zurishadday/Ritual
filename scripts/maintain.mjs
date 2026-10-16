@@ -13,10 +13,10 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { isMain } from "../hooks/common.mjs";
 import { ROOT, TAXONOMY, compareIds, parseLessons, readLessons, safetyProblems } from "./lessons.mjs";
-import { checkShare } from "./share.mjs";
+import { checkShare, parseMeasured } from "./share.mjs";
 
 const FORMS = { lesson: "share-a-lesson.yml", confirmation: "confirm-a-lesson.yml" };
-const SHARE_ONLY = ["Where it goes", "Transfers to", "How to reproduce"];
+const SHARE_ONLY = ["Where it goes", "Transfers to", "How to reproduce", "Measured"];
 const list = (s) => String(s ?? "").split(",").map((x) => x.trim()).filter(Boolean);
 const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -44,7 +44,8 @@ export function shareText(f) {
   const pkg = where.match(/^(?:new )?package ([a-z0-9-]+)/)?.[1];
   const data = [`origin: field · ${f.model} · ${f.month}`, `groups: ${f.group}`, pkg && `packages: ${pkg}`].filter(Boolean).map((d) => `\`${d}\``).join(" · ");
   const [head, ...rest] = (f.lesson ?? "").trim().split("\n");
-  return [head, "", data, "", rest.join("\n").trim(), "", `**Where it goes.** ${where}`, "", `**Transfers to.**\n${(f.transfer ?? "").trim()}`, "", `**How to reproduce.** ${(f.reproduce ?? "").trim()}`, ""].join("\n");
+  return [head, "", data, "", rest.join("\n").trim(), "", `**Where it goes.** ${where}`, "", `**Transfers to.**\n${(f.transfer ?? "").trim()}`, "", `**How to reproduce.** ${(f.reproduce ?? "").trim()}`, "",
+    ...(f.measured?.trim() ? [`**Measured.** ${f.measured.trim()}`, ""] : [])].join("\n");
 }
 
 /** The next free id: core numbers never repeat across files, and a package counts with its prefix (WEB-5; a package
@@ -114,11 +115,14 @@ export function triage(issues, library) {
       const l = byId.get(f.lesson);
       const unsafe = safetyProblems({ title: "", parts: { example: f.example ?? "" } });
       const applied = !!l && list(l.data.seen).includes(`${f.model} ${f.month}`);
-      confirmations.set(f.lesson, [...(confirmations.get(f.lesson) ?? []), { n: issue.number, model: f.model, month: f.month, exists: !!l, applied, unsafe }]);
+      // A lesson whose question didn't show up before its mistake is a false negative: the form's answer or the measured line.
+      const m = parseMeasured(f.measured);
+      const missed = /didn't show up/i.test(f.fired ?? "") || m.values.fired === "did not show up";
+      confirmations.set(f.lesson, [...(confirmations.get(f.lesson) ?? []), { n: issue.number, model: f.model, month: f.month, exists: !!l, applied, unsafe: [...unsafe, ...m.problems], missed, measured: m.values }]);
       continue;
     }
-    const { problems, lesson } = checkShare(shareText(f));
-    lessons.push({ n: issue.number, title: issue.title.replace(/^Lesson:\s*/i, ""), group: f.group, problems, lesson });
+    const { problems, lesson, measured } = checkShare(shareText(f));
+    lessons.push({ n: issue.number, title: issue.title.replace(/^Lesson:\s*/i, ""), group: f.group, problems, lesson, measured });
   }
   for (const x of lessons) {
     if (!x.lesson) { x.close = []; continue; }
@@ -138,12 +142,18 @@ export function triageText({ confirmations, lessons, other }) {
   for (const [id, cs] of confirmations) {
     out.push(`  ${id}: ${cs.map((c) => `#${c.n} ${c.model} ${c.month}${c.applied ? " (already in seen)" : ""}${c.unsafe.length ? ` ✕ ${c.unsafe.join(", ")}` : ""}`).join(" · ")}`);
     if (!cs[0].exists) out.push(`     ✕ lesson «${id}» does not exist`);
+    const missed = cs.filter((c) => c.missed).length;
+    if (missed) out.push(`     ⚠ in ${missed} of ${cs.length} its question didn't show up before the mistake: a false negative, sharpen when the lesson fires`);
+    const costs = cs.map((c) => c.measured?.cost).filter((c) => c && c !== "unknown");
+    if (costs.length) out.push(`     measured cost to fix: ${costs.join(" · ")}`);
     for (const c of cs.filter((c) => c.exists && !c.applied && !c.unsafe.length)) out.push(`     node scripts/maintain.mjs seen ${id} ${c.model} ${c.month}`);
   }
   if (lessons.length) out.push("", "Lessons. Look first at what each one is close to: the same mistake is a confirmation or a sharpening, not a new lesson:");
   for (const x of lessons) {
     out.push(`  #${x.n} ${x.title} · ${x.group || "no group"}${x.problems.some((p) => p.startsWith("unsafe")) ? " · ✕ NEVER ADD AS IS" : ""}`);
     for (const p of x.problems) out.push(`     ✕ ${p}`);
+    const known = Object.entries(x.measured ?? {}).filter(([, v]) => v !== "unknown");
+    if (known.length) out.push(`     measured: ${known.map(([k, v]) => `${k} ${v}`).join(" · ")}${x.measured.fired === "did not show up" ? " · ⚠ a lesson existed and didn't show up: look at its closest ones first" : ""}`);
     if (x.close.length) out.push(`     closest: ${x.close.map((c) => `${c.to} (${c.score.toFixed(2)})`).join(" · ")}`);
   }
   return out.join("\n");
@@ -159,7 +169,7 @@ function readIssue(n) {
 export function selftest() {
   const bad = [];
   const fields = formFields(FORMS.lesson);
-  if (fields.map((f) => f.id).join() !== "model,month,kind,group,where,lesson,transfer,reproduce") bad.push(`share form fields: ${fields.map((f) => f.id).join()}`);
+  if (fields.map((f) => f.id).join() !== "model,month,kind,group,where,lesson,transfer,reproduce,measured") bad.push(`share form fields: ${fields.map((f) => f.id).join()}`);
   const body = "### Model\r\n\r\nclaude-sonnet-5-5\r\n\r\n### Month it happened\r\n\r\n2026-11\r\n\r\n### Group (what you were doing)\r\n\r\nscripts-and-files\r\n\r\n### Where it goes\r\n\r\ncore\r\n\r\n### The lesson\r\n\r\n### A reader that skips bad lines loses the next one too\r\n\r\n**The idea.** A cut-off write glues the next record to it.\r\n\r\n**Example.** A log dropped the record after a crash.\r\n\r\n**Detector question.** If the last write was cut, what happens to the next one?\r\n\r\n**Warning sign.** \"Damaged lines get skipped.\"\r\n\r\n**What to do.** Start with a line break if the file does not end in one.\r\n\r\n### Two other kinds of project it applies to\r\n\r\nA data pipeline that appends rows to a CSV.\r\nA chat app that stores messages one per line.\r\n\r\n### How to reproduce it\r\n\r\nAsk for a script that appends JSON lines, cut the last one by hand.";
   const f = parseForm(body, fields);
   if (f.model !== "claude-sonnet-5-5" || f.where !== "core" || !f.lesson?.startsWith("### A reader") || !f.lesson.includes("**What to do.**") || !f.transfer?.includes("chat app")) bad.push(`parseForm: ${JSON.stringify(f).slice(0, 300)}`);
@@ -206,6 +216,15 @@ export function selftest() {
     if (!tt.includes(x)) bad.push(`triage lacks «${x}»:\n${tt}`);
   if (tt.includes("seen 36 claude-sonnet-5-5")) bad.push("an unsafe confirmation must not get an apply command");
   if (!/#5 [^\n]*\n\s+closest: #6 \(1\.00\)/.test(tt)) bad.push(`two issues with the same lesson must point at each other:\n${tt}`);
+  // What was measured travels with a contribution: false negatives and costs show up, and never enter the library text.
+  const withMeasured = (n, measured, fired = "_No response_") => ({ ...confirm(n, "41", "claude-opus-5-5"), body: confirm(n, "41", "claude-opus-5-5").body.replace("### Did Ritual's question show up before the mistake?\n\n_No response_", `### Did Ritual's question show up before the mistake?\n\n${fired}\n\n### Measured (optional)\n\n${measured}`) });
+  const tm = triageText(triage([withMeasured(11, "caught: reviewer · cost: $1.20 in reviews", "No, the question didn't show up"), withMeasured(12, "caught: user"),
+    { ...shared(13, "A cut-off write glues the next record to it."), body: `${shared(13, "A cut-off write glues the next record to it.").body}\n\n### Measured (optional)\n\ncaught: reviewer · fired: did not show up · recurred: 5 · cost: $9.53 in reviews` }], lessons));
+  for (const x of ["⚠ in 1 of 2 its question didn't show up", "measured cost to fix: $1.20 in reviews", "measured: caught reviewer · fired did not show up · recurred 5 · cost $9.53 in reviews · ⚠ a lesson existed and didn't show up"])
+    if (!tm.includes(x)) bad.push(`triage with measured fields lacks «${x}»:\n${tm}`);
+  const lm = checkShare(shareText({ ...f, measured: "caught: reviewer · recurred: 2" }));
+  if (lm.measured?.recurred !== "2" || /Measured/.test(libraryEntry(lm.lesson, "55", "field · claude-opus-5-5 · 2026-10").text)) bad.push("a measured lesson keeps its values, and the library entry leaves the Measured part out");
+  if (!triageText(triage([withMeasured(14, "cost: $5 acme corp")], lessons)).includes("NEVER") && !triageText(triage([withMeasured(14, "cost: $5 acme corp")], lessons)).includes("is not allowed")) bad.push("a confirmation with free text in Measured must be flagged");
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
 }
