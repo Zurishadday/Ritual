@@ -37,9 +37,15 @@ Ce qu'il montre :
 
 - **Erreurs :** les erreurs couvertes par les neuf leçons sont apparues en moyenne 7,5 fois par construction sans Ritual, 1,7 avec : environ trois quarts de moins. Les nouvelles erreurs, hors des leçons, sont passées de 6,5 à 4,3.
 - **Coût :** construire avec Ritual coûte plus cher (environ $0.23 de plus par construction : il conçoit pour les leçons et revient une fois pour vérifier). Corriger ce qui reste coûte environ la moitié (−52 % en argent, −53 % en tokens de sortie : 24 300 contre 11 300 en moyenne). Construction plus correction reviennent à peu près au même prix : $0.77 contre $0.74 en moyenne, un écart plus petit que celui entre les exécutions. Le résultat final part de bien moins d'erreurs pour le même prix.
-- **Les questions seules n'ont rien changé.** La version qui n'affichait que les questions de chaque groupe pendant l'écriture a fini là où la construction sans Ritual avait fini. Ce qui a changé le résultat, ce sont les leçons de paquet au début et à la clôture, qui renvoient le constructeur une fois avant qu'il ne termine.
+- **Les questions seules n'ont rien changé.** La version qui n'affichait que les questions de chaque groupe pendant l'écriture a fini là où la construction sans Ritual avait fini. Ce qui a changé le résultat, ce sont deux pièces : les leçons de paquet au début, et la clôture, qui renvoie le constructeur une fois avant qu'il ne termine.
 
-Ce qu'il ne montre pas : il s'agit d'une seule tâche, de deux ou trois exécutions par bras et d'un seul modèle. Trouver les erreurs n'est pas compté : la relecture coûte $1.30–$2.40 par construction, le même pour les deux bras. Chaque construction et correction qui en parle indique que le shell a été refusé pour les commandes tentées, dans les deux bras ; aucune n'a donc fait tourner le site : la vérification web automatique de la clôture n'a jamais été exécutée, et les corrections n'ont pas été relues à nouveau.
+Ce qu'il ne montre pas : il s'agit d'une seule tâche, de deux ou trois exécutions par bras et d'un seul modèle. Trouver les erreurs n'est pas compté : la relecture coûte $1.30–$2.40 par construction, le même pour les deux bras. Chaque construction et correction qui en parle indique que le shell a été refusé pour les commandes tentées, dans les deux bras ; aucune n'a donc fait tourner le site : la vérification web automatique de la clôture n'a jamais été exécutée, et les corrections n'ont pas été relues à nouveau. Les constructeurs reçoivent désormais les mêmes règles de shell que le relecteur, et `--probe` vérifie qu'ils peuvent lancer un site.
+
+Ce n'est pas non plus un test en aveugle sur une nouvelle tâche :
+
+- **Le même examen.** Quatre des neuf leçons qu'il compte (WEB-1 à WEB-4) sont nées de la première simulation de cette même tâche, et deux pièces de Ritual, les leçons de paquet du début et la clôture, ont été ajoutées après que ces constructions ont été vues en échec. Il mesure Ritual sur la tâche dont il a tiré ses leçons.
+- **Le relecteur connaissait le bras.** Il reçoit le dernier message du constructeur, et avec Ritual ce message nomme les leçons par leur identifiant.
+- **Pas le même prompt de relecture.** Les deux constructions sans Ritual ont été relues le 2026-10-12, avant que le prompt de relecture ne précise les commandes que son shell exécute ; toutes les autres relectures l'avaient.
 
 ## Vérifier une leçon contribuée
 

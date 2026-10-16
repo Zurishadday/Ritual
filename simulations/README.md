@@ -35,9 +35,15 @@ What it says:
 
 - **Mistakes:** the nine lessons broke 7.5 times per build on average without Ritual, 1.7 with it: about three quarters fewer. New mistakes, outside the lessons, went from 6.5 to 4.3.
 - **Cost:** building with Ritual costs more (about $0.23 more per build: it designs for the lessons and goes back once to check). Fixing what is left costs about half (−52% in money, −53% in output tokens: 24,300 against 11,300 on average). Build plus fix comes out about the same: $0.77 against $0.74 on average, a difference smaller than the spread between runs. The end result starts from far fewer mistakes for the same money.
-- **The questions alone did nothing.** The version that only showed each group's questions while writing ended where the build without Ritual did. What changed it is the package lessons at the start and the close, which sends the builder back once before it finishes.
+- **The questions alone did nothing.** The version that only showed each group's questions while writing ended where the build without Ritual did. What changed it is two pieces: the package lessons at the start, and the close, which sends the builder back once before it finishes.
 
-What it does not say: it is one task, two or three runs per arm and one model. Finding the mistakes is not counted: the review cost $1.30–$2.40 per build, the same for both arms. Every build and fix that mentions it says the shell was denied for the commands it tried, in both arms, so none of them ran the site: the close's automatic web check never ran, and the fixes were not reviewed again.
+What it does not say: it is one task, two or three runs per arm and one model. Finding the mistakes is not counted: the review cost $1.30–$2.40 per build, the same for both arms. Every build and fix that mentions it says the shell was denied for the commands it tried, in both arms, so none of them ran the site: the close's automatic web check never ran, and the fixes were not reviewed again. Builders now get the shell rules the reviewer gets, and `--probe` checks that they can start a site.
+
+Nor is it a blind test on a new task:
+
+- **The same exam.** Four of the nine lessons it counts (WEB-1 to WEB-4) were born from the first simulation of this same task, and two of Ritual's pieces, the package lessons at the start and the close, were added after these builds were seen failing. It measures Ritual on the task it learned from.
+- **The reviewer knew the arm.** It gets the builder's last message, and with Ritual that message names the lessons by id.
+- **Not the same review prompt.** The two builds without Ritual were reviewed on 2026-10-12, before the review prompt said which commands its shell runs; every other review had it.
 
 ## Checking a contributed lesson
 

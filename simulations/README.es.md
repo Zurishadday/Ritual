@@ -37,9 +37,15 @@ Lo que dice:
 
 - **Errores:** las nueve lecciones se rompieron en promedio 7.5 veces por construcción sin Ritual, y 1.7 con él: alrededor de tres cuartos menos. Los errores nuevos, fuera de las lecciones, bajaron de 6.5 a 4.3.
 - **Costo:** construir con Ritual cuesta más (unos $0.23 más por construcción: diseña pensando en las lecciones y regresa una vez a revisar). Corregir lo que queda cuesta alrededor de la mitad (−52% en dinero, −53% en tokens de salida: 24,300 contra 11,300 en promedio). Construir más corregir sale casi igual: $0.77 contra $0.74 en promedio, una diferencia menor que la dispersión entre corridas. El resultado final parte de muchos menos errores por el mismo dinero.
-- **Solo las preguntas no hicieron nada.** La versión que solo mostraba las preguntas de cada grupo mientras escribía terminó donde la construcción sin Ritual. Lo que lo cambió fueron las lecciones de paquete al inicio y al cierre, que hacen que el constructor regrese una vez antes de terminar.
+- **Solo las preguntas no hicieron nada.** La versión que solo mostraba las preguntas de cada grupo mientras escribía terminó donde la construcción sin Ritual. Lo que lo cambió fueron dos piezas: las lecciones del paquete al inicio y el cierre, que hace que el constructor regrese una vez antes de terminar.
 
-Lo que no dice: es una sola tarea, dos o tres corridas por brazo y un solo modelo. No cuenta encontrar los errores: la revisión costó $1.30–$2.40 por construcción, lo mismo en los dos brazos. Cada construcción y cada corrección que lo menciona dice que el acceso al shell fue denegado para los comandos que intentó, en ambos brazos, así que ninguna corrió el sitio: la verificación web automática del cierre nunca corrió, y las correcciones no se volvieron a revisar.
+Lo que no dice: es una sola tarea, dos o tres corridas por brazo y un solo modelo. No cuenta encontrar los errores: la revisión costó $1.30–$2.40 por construcción, lo mismo en los dos brazos. Cada construcción y cada corrección que lo menciona dice que el acceso al shell fue denegado para los comandos que intentó, en ambos brazos, así que ninguna corrió el sitio: la verificación web automática del cierre nunca corrió, y las correcciones no se volvieron a revisar. Los constructores ahora reciben las mismas reglas de shell que el revisor, y `--probe` comprueba que pueden arrancar un sitio.
+
+Tampoco es una prueba a ciegas sobre una tarea nueva:
+
+- **El mismo examen.** Cuatro de las nueve lecciones que cuenta (WEB-1 a WEB-4) nacieron de la primera simulación de esta misma tarea, y dos piezas de Ritual, las lecciones del paquete al inicio y el cierre, se añadieron después de ver fallar estas construcciones. Mide a Ritual en la tarea de la que aprendió.
+- **El revisor conocía el brazo.** Recibe el último mensaje del constructor, y con Ritual ese mensaje nombra las lecciones por id.
+- **No es el mismo prompt de revisión.** Las dos construcciones sin Ritual se revisaron el 2026-10-12, antes de que el prompt de revisión dijera qué comandos ejecuta su shell; todas las demás revisiones lo tenían.
 
 ## Cómo se revisa una lección que alguien aporta
 

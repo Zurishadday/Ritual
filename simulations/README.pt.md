@@ -37,9 +37,15 @@ O que diz:
 
 - **Erros:** o erro dessas nove lições apareceu 7,5 vezes por construção, em média, sem o Ritual, e 1,7 vez com ele: cerca de três quartos a menos. Erros novos, fora das lições, passaram de 6,5 para 4,3.
 - **Custo:** construir com o Ritual custa mais (cerca de $0.23 a mais por construção: ele é desenhado para as lições e volta uma vez para conferir). Corrigir o que ficou custa cerca da metade (−52% em dinheiro, −53% em tokens de saída: 24.300 contra 11.300 em média). Construir mais corrigir sai praticamente igual: $0.77 contra $0.74 em média, uma diferença menor que a variação entre as rodadas. O resultado final parte de muito menos erros pelo mesmo dinheiro.
-- **As perguntas sozinhas não fizeram nada.** A versão que só mostrava as perguntas de cada grupo durante a escrita terminou onde a construção sem o Ritual terminou. O que mudou isso foram as lições de pacote no início e no fechamento, que faz o construtor voltar uma vez antes de terminar.
+- **As perguntas sozinhas não fizeram nada.** A versão que só mostrava as perguntas de cada grupo durante a escrita terminou onde a construção sem o Ritual terminou. O que mudou isso foram duas peças: as lições de pacote no início e o fechamento, que faz o construtor voltar uma vez antes de terminar.
 
-O que não diz: é uma tarefa, duas ou três rodadas por grupo e um só modelo. Achar os erros não entra na conta: a revisão custou $1.30–$2.40 por construção, igual nos dois grupos. Toda construção e correção que a menciona diz que o shell foi negado para os comandos que tentou, nos dois grupos, então nenhuma delas rodou o site: a verificação automática da web do fechamento nunca rodou, e as correções não foram revisadas de novo.
+O que não diz: é uma tarefa, duas ou três rodadas por grupo e um só modelo. Achar os erros não entra na conta: a revisão custou $1.30–$2.40 por construção, igual nos dois grupos. Toda construção e correção que a menciona diz que o shell foi negado para os comandos que tentou, nos dois grupos, então nenhuma delas rodou o site: a verificação automática da web do fechamento nunca rodou, e as correções não foram revisadas de novo. Os construtores agora recebem as mesmas regras de shell que o revisor, e `--probe` verifica que eles conseguem iniciar um site.
+
+Também não é um teste cego sobre uma tarefa nova:
+
+- **O mesmo exame.** Quatro das nove lições que ele conta (WEB-1 a WEB-4) nasceram da primeira simulação desta mesma tarefa, e duas peças do Ritual, as lições de pacote do início e o fechamento, foram acrescentadas depois que essas construções foram vistas falhando. Ele mede o Ritual na tarefa com que aprendeu.
+- **O revisor conhecia o grupo.** Ele recebe a última mensagem do construtor, e com o Ritual essa mensagem nomeia as lições pelos ids.
+- **Não é o mesmo prompt de revisão.** As duas construções sem o Ritual foram revisadas em 2026-10-12, antes de o prompt de revisão dizer quais comandos o seu shell executa; todas as outras revisões tinham isso.
 
 ## Como verificar uma lição contribuída
 
