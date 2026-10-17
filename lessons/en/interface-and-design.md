@@ -195,3 +195,17 @@ What applies when a person is going to see or use what you build: screens, compo
 **Warning sign.** "The default password is strong" · "it's only the admin page".
 
 **What to do.** Slow down or block repeated failures, per address and per account, with a wait that grows. Require a minimum length when the owner sets a password. Test it: send twenty wrong passwords in a row and check that the last ones are refused.
+
+### VIDEO-1. In a video, each action lands when the narration names it
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: writing-and-docs` · `packages: video`
+
+**The idea.** When the screen does something before or after the voice says it, the viewer looks at what they are not hearing and hears what they are not seeing. A click that comes before its word teaches the click without its name.
+
+**Example.** In a series of narrated spreadsheet videos built with code, each click was placed as a fraction of its scene. A pedagogical reviewer found clicks that landed before the voice named the option (a color in a side panel), and a sentence that opened with context while the cursor was already making its first click. The rule that came out: if a sentence opens with context, that stretch has no clicks, and each click sits on the word that names it.
+
+**Detector question.** For each click and key press in this scene, which word of the narration does it land on? Does that word name it?
+
+**Warning sign.** "It says it around there" · "it's a fraction of the scene, it lines up".
+
+**What to do.** If the voice gives no timestamp per word, place each action by where its word sits in the sentence (the characters before it), and check it in the full video at its real speed, not in still frames. If the voice engine gives word timestamps, place actions on them. Changing the voice or rewording a sentence moves every word: check the scene again.
