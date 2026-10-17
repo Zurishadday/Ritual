@@ -18,6 +18,10 @@ Other tools write down what was learned; Ritual goes as far as checking it, beca
 
 It ships **55 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from watching a model build something and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
 
+**Measured:** a web task Ritual never learned from, built four times with Ritual and four without, every build reviewed blind. The mistakes that get decided while writing (the error path, keyboard focus, a damaged data file) showed up 11 times without Ritual and once with it. And a build with Ritual and no review at all ended with no more of the package's mistakes than a build without Ritual after a review and a fix (3.5 against 4.5 on average), at about a quarter of the cost: $0.61 against $2.64 to build, review and fix. The data and the method are in [simulations](simulations/clinic/RESULTS.md).
+
+<p align="center"><a href="simulations/clinic/RESULTS.md"><img src="assets/ab-chart.png" alt="With Ritual, the mistakes decided while writing went from 11 to 1, and a build without any review matched a build without Ritual that was reviewed and fixed, at a quarter of the cost" width="540"></a></p>
+
 <a name="install"></a>
 
 ## Install
@@ -74,21 +78,18 @@ Groups touched in 1 session(s): interface-and-design (1)
 
 ## How it works
 
-Four hooks work without you doing anything, and a fifth is there when you want it:
+Five things work without you doing anything, through Claude Code's hooks, and a sixth is there when you want it:
 
 | Hook | What it does | What it costs |
 |---|---|---|
 | 📚 **Package lessons** | At the start of a session, before any plan, it gives Claude the lessons of your project's packages (web, education…): what this kind of project tends to get wrong, while the design can still take it in. | One line per package lesson (ten for web), only with a package on. |
 | 🛡️ **Guard** | Blocks the commands your project has already seen fail and says what to use instead. Its rules live in `.ritual/guard.json`, each with a case it blocks and one it lets through. | Nothing, until it blocks. |
 | 📝 **Log** | Records, as it happens, every command that fails and every correction of yours ("that's wrong", "do it again"), with what Claude was touching, and the report of every agent that ran in the background. | Nothing. |
-| ❓ **Questions** | The first time in a session that Claude is about to edit a test, a component, a script, a document or a query, or to run a command or make a commit, it shows Claude the detector questions of that group. Once per group and per session. And in the background, Haiku reads each request and the first write of each file and picks, from every group, the lessons that apply, without the ones Claude has already seen. Those for a request reach Claude before its first step: the step waits for them and, when they bring something new, Claude reads them and does it again with them. Those for a file reach it at its next step. Haiku never reads your `.env`, keys, certificates or credentials, nor files outside the project; anything that looks like a key or a password is covered before it goes out, and nothing of your requests or files is kept on disk. | One line per lesson in the group: four to sixteen today, depending on the group and the packages, and never more than twenty, the most confirmed first (`"budget"` in `.ritual/config.json` changes it). Each pick is a Haiku call through your own Claude Code, about $0.001. Only the first step after a request waits: 3 seconds at the median, nothing in 44% of requests, never more than 25 (`"picker": false` turns it off). |
+| ❓ **Questions** | The first time in a session that Claude is about to edit a test, a component, a script, a document or a query, or to run a command or make a commit, it shows Claude the detector questions of that group. Once per group and per session. | One line per lesson in the group: four to sixteen today, depending on the group and the packages, and never more than twenty, the most confirmed first (`"budget"` in `.ritual/config.json` changes it). |
+| 🔎 **Right lessons** | In the background, Haiku reads each request and the first write of each file and picks, from every group, the lessons that apply now, leaving out the ones Claude has already seen; when nothing changed, it doesn't pick. A request's lessons arrive before Claude's first step: that step waits for them and, when they bring something new, Claude reads them before taking it. A file's lessons arrive at its next step. Haiku never sees your `.env`, keys, certificates or credentials, nor files outside the project; anything that looks like a key or a password is redacted before it goes out, and your requests and file contents are not stored. And Ritual grades itself: `/ritual` tells you how often a lesson arrived late or a skipped pick missed one. | About $0.001 per pick, through your own Claude Code: no API key, no extra account. The first step after a request waits about 3 seconds at the median, often nothing (44% of requests), with a hard cap of 25 seconds. `"picker": false` turns it off. |
 | ✅ **Close** (optional) | With `"close": true` in `.ritual/config.json`, the first time Claude is about to finish after changing files, it sends it back once to check the work by running it: your packages' lessons and their automatic checks, one line per check on what it ran. Off by default; `/ritual close` does it whenever you ask. | One extra round per session that changed files, when on. |
 
 They only put in front of Claude, at the right moment, what your project has already learned.
-
-**Measured:** a web task Ritual never learned from, built four times with Ritual and four without, every build reviewed blind. The mistakes that get decided while writing (the error path, keyboard focus, a damaged data file) showed up 11 times without Ritual and once with it. And a build with Ritual and no review at all ended with no more of the package's mistakes than a build without Ritual after a review and a fix (3.5 against 4.5 on average), at about a quarter of the cost: $0.61 against $2.64 to build, review and fix. The data and the method are in [simulations](simulations/clinic/RESULTS.md).
-
-<p align="center"><a href="simulations/clinic/RESULTS.md"><img src="assets/ab-chart.png" alt="With Ritual, the mistakes decided while writing went from 11 to 1, and a build without any review matched a build without Ritual that was reviewed and fixed, at a quarter of the cost" width="540"></a></p>
 
 With the **web** package and the close on, it runs `scripts/web-check.mjs` against the site running on your machine: it submits the form with JavaScript off and with the keyboard, sends a burst and a few rejected attempts, and saves phone and desktop screenshots. Local addresses only; it says how many test messages it sent.
 
