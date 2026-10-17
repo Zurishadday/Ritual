@@ -17,6 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 import { DEFAULT_CONFIG, packageBrief, writeDigest } from "./questions.mjs";
+import { prunePicks } from "./pick.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 const DAY = 24 * 60 * 60 * 1000;
@@ -154,6 +155,7 @@ if (isMain(import.meta.url)) {
   const ritual = ritualDir(input);
   if (!input || !ritual) process.exit(0);
   resetQuestions(ritual, input);
+  prunePicks(ritual);
   writeDigest(ritual);
   const brief = packageBrief({ ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) }, ritual);
   if (brief) { const state = session(ritual, input?.session_id); state.data.brief = true; state.save(); }

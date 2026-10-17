@@ -10,7 +10,7 @@
 // `"picker": false` in .ritual/config.json turns it off. Usage: node hooks/pick.mjs --selftest
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, utimesSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { isMain, readJson } from "./common.mjs";
@@ -51,14 +51,24 @@ export function startPick(ritual, sessionId, { key, label, work }, lessons, { ru
   const dir = dirOf(ritual, sessionId);
   const job = path.join(dir, `${hash(key)}.job.json`);
   if (existsSync(job)) return null;
+  let list;
   try {
     mkdirSync(dir, { recursive: true });
     if (readdirSync(dir).filter((f) => f.endsWith(".job.json")).length >= MAX_PICKS) return null;
-    const list = typeof lessons === "function" ? lessons() : lessons; // read only when a pick is really queued
-    writeFileSync(job, JSON.stringify({ key, label, prompt: pickPrompt(list, work), ids: list.map((l) => l.id) }));
+    list = typeof lessons === "function" ? lessons() : lessons; // read only when a pick is really queued
+    // The job keeps no words of the work: the request and the file go to the worker through its stdin, never to disk,
+    // where a synced folder (OneDrive) would upload them.
+    writeFileSync(job, JSON.stringify({ key, label, ids: list.map((l) => l.id) }));
   } catch { return null; }
-  if (run) return run(job), job;
-  try { spawn(process.execPath, [import.meta.filename, "--run", job], { detached: true, stdio: "ignore", windowsHide: true }).unref(); } catch { /* no pick */ }
+  const prompt = pickPrompt(list, work);
+  if (run) return run(job, prompt), job;
+  try {
+    const worker = spawn(process.execPath, [import.meta.filename, "--run", job], { detached: true, stdio: ["pipe", "ignore", "ignore"], windowsHide: true });
+    worker.on("error", () => { /* no pick */ });
+    worker.stdin.on("error", () => { /* no pick */ });
+    worker.stdin.end(prompt);
+    worker.unref();
+  } catch { /* no pick */ }
   return job;
 }
 
@@ -89,10 +99,10 @@ export async function askHaiku(prompt) {
 }
 
 /** Runs one queued pick and writes what it found next to it, and why it found nothing when the model failed. */
-export async function runJob(job, ask = askHaiku) {
+export async function runJob(job, prompt, ask = askHaiku) {
   const j = readJson(job, null);
   if (!j) return;
-  const r = await ask(j.prompt);
+  const r = prompt ? await ask(prompt) : { text: "", error: "the worker got no work" };
   const text = typeof r === "string" ? r : r.text;
   const answered = /\[[^\[\]]*\]/.test(text ?? "");
   const error = answered ? undefined : r?.error ?? "Haiku answered without a list of ids";
@@ -156,19 +166,60 @@ export function firstStepEntry(first, stopped) {
 /** Why a first step is stopped: the lessons it should have before it runs, and to do it again. */
 export const stopReason = (text) => `Ritual · not yet: before this step, read the lessons picked for the request. Then do the step again, changed if one applies, and say so in one line.\n\n${text}`;
 
+// Files a pick never reads, so their content never leaves the machine for one: secrets and keys, Ritual's own notes,
+// and anything outside the project (`rel` is then an absolute path).
+const PRIVATE = [
+  /(^|\/)\.env(\.[^/]*)?$/i, /\.(pem|key|p12|pfx|jks|keystore|kdbx|tfvars|tfstate)$/i, /(^|\/)id_(rsa|dsa|ecdsa|ed25519)(\.pub)?$/i,
+  /(^|\/)\.(npmrc|pypirc|netrc|pgpass|git-credentials|htpasswd)$/i, /(^|\/)[^/]*(secret|credential)s?(\.[^/.]+)?$/i,
+  /(^|\/)secrets?\//i, /(^|\/)\.(ritual|ssh|aws|gnupg)\//i,
+];
+export const privateFile = (rel) => !rel || rel.startsWith("..") || path.isAbsolute(rel) || /^[A-Za-z]:/.test(rel) || PRIVATE.some((r) => r.test(rel));
+
+// What looks like a secret inside a request or a file is covered before it goes to the model. A pick needs what the
+// work does, never the value of a key.
+const SECRETS = [
+  [/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?(-----END [A-Z ]*PRIVATE KEY-----|$)/g, "[private key]"],
+  [/\b(sk|pk|rk)[-_](live|test|ant|proj)[-_][A-Za-z0-9_-]{12,}/g, "[key]"], [/\bsk-[A-Za-z0-9_-]{20,}/g, "[key]"],
+  [/\bAKIA[0-9A-Z]{16}\b/g, "[key]"], [/\bgh[pousr]_[A-Za-z0-9]{30,}/g, "[token]"], [/\bgithub_pat_[A-Za-z0-9_]{30,}/g, "[token]"],
+  [/\bxox[abprs]-[A-Za-z0-9-]{10,}/g, "[token]"], [/\bAIza[0-9A-Za-z_-]{35}/g, "[key]"],
+  [/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g, "[token]"],
+  [/\b(\w+:\/\/[^\s:/@]+:)[^\s@/]+@/g, "$1[password]@"],
+  [/((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|private[_-]?key|client[_-]?secret)["']?\s*[:=]\s*)(["'`])[^"'`\n]{4,}\2/gi, "$1$2[redacted]$2"],
+  [/^(\s*[A-Z][A-Z0-9_]*(?:PASSWORD|SECRET|TOKEN|API_KEY|ACCESS_KEY|PRIVATE_KEY)[A-Z0-9_]*\s*=\s*)\S.*$/gm, "$1[redacted]"],
+];
+export const redact = (text) => SECRETS.reduce((t, [re, to]) => t.replace(re, to), String(text ?? ""));
+
 /** The work a tool call is about to do, when it is a pick: writing a file for the first time. */
 export function workOf(input, rel) {
   const t = input?.tool_input ?? {};
   const text = t.content ?? t.new_string ?? (Array.isArray(t.edits) ? t.edits.map((e) => e.new_string).join("\n") : "");
-  if (!/^(Write|Edit|MultiEdit)$/.test(input?.tool_name ?? "") || !rel) return null;
-  return { key: `file:${rel}`, label: rel, work: `Writing the file ${rel}:\n\n${text}` };
+  if (!/^(Write|Edit|MultiEdit)$/.test(input?.tool_name ?? "") || privateFile(rel)) return null;
+  return { key: `file:${rel}`, label: rel, work: `Writing the file ${rel}:\n\n${redact(text)}` };
 }
 
 /** The work a user's prompt asks for, when it is a pick: a request, not a background agent's report or a one-word reply. */
 export function workOfPrompt(prompt) {
   const p = String(prompt ?? "").trim();
   if (p.length < 12 || p.startsWith("<task-notification>")) return null;
-  return { key: `request:${hash(p)}`, label: "your request", work: `The user's request:\n${p}` };
+  return { key: `request:${hash(p)}`, label: "your request", work: `The user's request:\n${redact(p)}` };
+}
+
+/** At session start: picks from other sessions older than a day are deleted, and a job written before jobs stopped
+ * keeping the work loses it (`prompt`), so nothing of a request or a file stays on disk. */
+export function prunePicks(ritual, { now = Date.now(), keep = 864e5 } = {}) {
+  const root = path.join(ritual, "local", "picks");
+  let removed = 0;
+  try {
+    for (const d of readdirSync(root)) {
+      const dir = path.join(root, d);
+      if (now - statSync(dir).mtimeMs > keep) { rmSync(dir, { recursive: true, force: true }); removed++; continue; }
+      for (const f of readdirSync(dir).filter((f) => f.endsWith(".job.json"))) {
+        const j = readJson(path.join(dir, f), null);
+        if (j && "prompt" in j) { delete j.prompt; writeFileSync(path.join(dir, f), JSON.stringify(j)); }
+      }
+    }
+  } catch { /* nothing to prune */ }
+  return removed;
 }
 
 export async function selftest() {
@@ -187,7 +238,7 @@ export async function selftest() {
   const ritual = mkdtempSync(path.join(os.tmpdir(), "ritual-pick-"));
   try {
     const answers = [];
-    const run = (job) => answers.push(runJob(job, async (p) => (p.includes("<button") ? '["WEB-4","41"]' : '["41","P-1"]')));
+    const run = (job, prompt) => answers.push(runJob(job, prompt, async (p) => (p.includes("<button") ? '["WEB-4","41"]' : '["41","P-1"]')));
     const state = { shown: ["41"] };
     if (!startPick(ritual, "s1", w, lessons, { run }) || startPick(ritual, "s1", w, lessons, { run })) bad.push("the same work is picked once per session");
     await Promise.all(answers);
@@ -218,11 +269,33 @@ export async function selftest() {
     // A failed model call is recorded as unanswered, with why; an answer with an empty list is an answer.
     const failed = path.join(ritual, "failed.job.json");
     writeFileSync(failed, JSON.stringify({ key: "k", label: "x", prompt: "p", ids: ["41"] }));
-    await runJob(failed, async () => ({ text: "", error: "Not logged in" }));
+    await runJob(failed, "p", async () => ({ text: "", error: "Not logged in" }));
     const f = readJson(failed.replace(".job.json", ".done.json"), {});
     if (f.answered !== false || f.error !== "Not logged in") bad.push(`a failed call is recorded with its reason: ${JSON.stringify(f)}`);
-    await runJob(failed, async () => "[]");
+    await runJob(failed, "p", async () => "[]");
     if (readJson(failed.replace(".job.json", ".done.json"), {}).answered !== true) bad.push("an empty list is an answer, not a failure");
+    // Privacy: no words of the work on disk, no secret files read, secrets covered, old picks pruned.
+    const saved = readFileSync(path.join(dirOf(ritual, "s1"), readdirSync(dirOf(ritual, "s1")).find((f) => f.endsWith(".job.json"))), "utf8");
+    if (saved.includes("prompt") || saved.includes("<button") || saved.includes("formulario")) bad.push(`a job keeps no words of the work: ${saved.slice(0, 160)}`);
+    for (const f of [".env", "config/.env.local", "certs/server.pem", "deploy/id_ed25519", "app/client_secret.json", "credentials.json", "secrets/db.yml", ".ritual/local/x.txt", "C:/Users/x/AppData/Local/Temp/a.js", "/home/x/a.js", "../other/a.js", ""])
+      if (!privateFile(f)) bad.push(`a pick must not read ${f || "a file with no path"}`);
+    for (const f of ["src/app.js", "docs/environment.md", "src/hotkeys.js", "lib/tokenizer.js", "src/PasswordReset.tsx", "src/secretManager.ts"])
+      if (privateFile(f)) bad.push(`a pick should read ${f}`);
+    const leaky = ["-----BEGIN RSA PRIVATE KEY-----\nMIIEow\n-----END RSA PRIVATE KEY-----", 'const apiKey = "sk-ant-api03-abcdefghijklmnopqrstuv"', "DATABASE_PASSWORD=hunter2", "postgres://app:s3cr3t@db:5432/x", "Authorization: Bearer eyJhbGciOiJIUzI1.eyJzdWIiOiIxMjM0.SflKxwRJSMeKKF2QT4f", 'password: "correct horse"', "aws AKIAIOSFODNN7EXAMPLE", "ghp_abcdefghijklmnopqrstuvwxyz0123456789"].join("\n");
+    const covered = redact(leaky);
+    for (const s of ["MIIEow", "sk-ant-api03-abcdef", "hunter2", "s3cr3t", "SflKxwRJ", "correct horse", "AKIAIOSFODNN7EXAMPLE", "ghp_abcdef"]) if (covered.includes(s)) bad.push(`redact leaves «${s}»`);
+    for (const s of ["const token = getToken();", "password: z.string().min(8)", "if (user.password !== input) return;"]) if (redact(s) !== s) bad.push(`redact changes code that holds no secret: ${s} → ${redact(s)}`);
+    if (workOfPrompt("mi clave es sk-proj-abcdefghijklmnopqrstuvwx, úsala")?.work.includes("abcdefghij")) bad.push("a secret pasted in a request is covered before the pick");
+    if (workOf({ tool_name: "Write", tool_input: { content: "A=1" } }, ".env")) bad.push("writing .env is never picked");
+    const picksRoot = path.join(ritual, "local", "picks");
+    mkdirSync(path.join(picksRoot, "old"), { recursive: true });
+    mkdirSync(path.join(picksRoot, "recent"), { recursive: true });
+    writeFileSync(path.join(picksRoot, "recent", "a.job.json"), JSON.stringify({ key: "k", prompt: "the user's request: secret plan", ids: [] }));
+    const later = Date.now() + 2 * 864e5;
+    utimesSync(path.join(picksRoot, "recent"), new Date(later), new Date(later));
+    prunePicks(ritual, { now: later + 1000 });
+    if (existsSync(path.join(picksRoot, "old")) || !existsSync(path.join(picksRoot, "recent"))) bad.push("pruning removes picks older than a day and keeps recent ones");
+    if (readFileSync(path.join(picksRoot, "recent", "a.job.json"), "utf8").includes("secret plan")) bad.push("pruning removes the work an old-format job kept");
     // A session can't queue picks without end.
     for (let i = 0; i < MAX_PICKS + 5; i++) startPick(ritual, "s2", { key: `k${i}`, label: "x", work: "y" }, lessons, { run: () => {} });
     if (readdirSync(dirOf(ritual, "s2")).filter((f) => f.endsWith(".job.json")).length !== MAX_PICKS) bad.push(`a session queues at most ${MAX_PICKS} picks`);
@@ -239,5 +312,9 @@ if (isMain(import.meta.url)) {
     process.exit(bad ? 1 : 0);
   }
   const i = args.indexOf("--run");
-  if (i >= 0 && args[i + 1]) await runJob(args[i + 1]);
+  if (i >= 0 && args[i + 1]) {
+    let prompt = "";
+    for await (const chunk of process.stdin) prompt += chunk;
+    await runJob(args[i + 1], prompt);
+  }
 }

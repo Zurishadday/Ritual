@@ -80,7 +80,7 @@ export function selftest() {
   const wrong = REPORTS.filter(([prompt, expected]) => JSON.stringify(agentReport(prompt)) !== JSON.stringify(expected));
   for (const [prompt] of wrong) console.error(`✕ agent report misread: ${prompt.slice(0, 120)}`);
   // A request queues its pick and leaves it pending, so Claude's first step waits for it. No model is called: the
-  // worker finds no `claude` at CLAUDE_BIN and records an empty pick.
+  // worker gets the prompt through its stdin (without it, it records that it got no work), then finds no `claude`.
   const project = mkdtempSync(path.join(os.tmpdir(), "ritual-log-"));
   let pending = 0;
   try {
@@ -89,6 +89,11 @@ export function selftest() {
       input: JSON.stringify({ session_id: "req", hook_event_name: "UserPromptSubmit", prompt: "hazme un formulario de citas", cwd: project }) });
     const awaiting = readJson(path.join(project, ".ritual", "local", "sessions", "req.json"), {}).awaiting;
     if (!awaiting?.job?.endsWith(".job.json") || !existsSync(awaiting.job)) { pending = 1; console.error(`✕ a request leaves its pick pending for the first step: ${JSON.stringify(awaiting)}`); }
+    // The worker gets the work through its stdin, runs, and records why it found nothing.
+    const done = String(awaiting?.job).replace(/\.job\.json$/, ".done.json");
+    for (let i = 0; i < 150 && !existsSync(done); i++) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100);
+    const result = readJson(done, null);
+    if (result?.answered !== false || !/claude did not start/.test(result?.error ?? "")) { pending++; console.error(`✕ the worker gets the prompt through its stdin and records why it failed: ${JSON.stringify(result)}`); }
   } finally { try { rmSync(project, { recursive: true, force: true }); } catch { /* the worker may still hold it */ } }
   return bad.length + wrong.length + pending;
 }
