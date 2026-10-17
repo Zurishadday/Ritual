@@ -45,6 +45,17 @@ export function mark(project, { session = process.env.CLAUDE_CODE_SESSION_ID || 
   return `session ${session.slice(0, 8)}`;
 }
 
+/** The first step after each request (hooks/pick.mjs): did its lessons come before Claude acted? Each miss with why. */
+export function firstSteps(entries) {
+  const n = (o) => entries.filter((x) => x.outcome === o).length;
+  const missed = entries.filter((x) => x.outcome === "missed");
+  const waits = entries.filter((x) => x.outcome !== "missed" && typeof x.ms === "number").map((x) => x.ms).sort((a, b) => a - b);
+  const lines = [`First step after a request: ${entries.length} · lessons before it ${entries.length - missed.length} (stopped with new ones ${n("stopped")}, nothing new ${n("nothing new")}) · missed ${missed.length}${waits.length ? ` · wait median ${(waits[waits.length >> 1] / 1000).toFixed(1)} s, longest ${(waits.at(-1) / 1000).toFixed(1)} s` : ""}`];
+  for (const x of missed.slice(-10)) lines.push(`  ${when(x.date)} missed  ${short(x.reason, 140)}`);
+  if (missed.length > 10) lines.push(`  … ${missed.length - 10} more misses in .ritual/local/log.jsonl (type "first-step")`);
+  return lines;
+}
+
 export function summary(project, { now = new Date(), session = process.env.CLAUDE_CODE_SESSION_ID || null, all = false } = {}) {
   const dir = path.join(project, ".ritual");
   if (!existsSync(dir)) return "No .ritual/ folder: run /ritual to set Ritual up first.";
@@ -59,6 +70,7 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   const read = readJsonl(path.join(local, "log.jsonl"));
   const pending = read.filter(isRecent);
   const log = pending.filter((x) => mine(x.session));
+  const firsts = log.filter((x) => x.type === "first-step");
   const commands = log.filter((x) => x.type === "command"), corrections = log.filter((x) => x.type === "correction");
   // The same agent can notify twice: one report per task.
   const agents = log.filter((x) => x.type === "agent").filter((x, i, all) => !x.task || all.findIndex((y) => y.task === x.task) === i);
@@ -73,6 +85,8 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   for (const x of pending.filter((x) => !mine(x.session))) (others[x.session] ??= []).push(x);
   const ids = Object.keys(others);
   if (ids.length) lines.push(`  Other sessions: ${ids.reduce((n, s) => n + others[s].length, 0)} entr${ids.reduce((n, s) => n + others[s].length, 0) === 1 ? "y" : "ies"} from ${ids.length} session(s) not reviewed yet (${ids.map((s) => `${s.slice(0, 8)}, last ${when(others[s].at(-1).date)}`).join("; ")}). They are left for their own ritual; --all includes them.`);
+
+  if (firsts.length) lines.push("", ...firstSteps(firsts));
 
   const blocks = readJsonl(path.join(local, "guard.jsonl")).filter(isRecent).filter((x) => mine(x.session));
   const byRule = {};
@@ -239,6 +253,12 @@ export function selftest() {
     if (guardOf("aaaa1111-a").includes("sed-i-code") || !guardOf("bbbb2222-b").includes("sed-i-code 1")) bad.push(`the report must count only this session's guard blocks: ${guardOf("aaaa1111-a")} | ${guardOf("bbbb2222-b")}`);
     mark(tmp, { all: true });
     if (summary(tmp, { session: "bbbb2222-b" }).includes("theirs to review")) bad.push("--mark --all must mark every session");
+    // The first steps since the last ritual: how many had their lessons first, and each miss with why.
+    const step = (outcome, extra) => appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type: "first-step", session: "aaaa1111-a", outcome, ...extra });
+    step("stopped", { ms: 3000 }); step("nothing new", { ms: 0 }); step("missed", { ms: 25000, reason: "the pick was not done after 25 s" });
+    const fs1 = summary(tmp, { session: "aaaa1111-a" }).split("\n");
+    const head = fs1.find((l) => l.startsWith("First step")) ?? "";
+    if (!head.includes(": 3 · lessons before it 2 (stopped with new ones 1, nothing new 1) · missed 1") || !head.includes("wait median 3.0 s") || !fs1.some((l) => l.includes("missed  the pick was not done after 25 s"))) bad.push(`the summary counts first steps and lists each miss with why:\n${fs1.filter((l) => /first step|missed/i.test(l)).join("\n")}`);
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
@@ -258,6 +278,12 @@ if (isMain(import.meta.url)) {
     process.exit(0);
   }
   if (args.includes("--groups")) { console.log(groups(project).join(", ") || "none recorded"); process.exit(0); }
+  // Every first step ever logged in this project, every session: the long-run check that the lessons come first.
+  if (args.includes("--first-steps")) {
+    const entries = readJsonl(path.join(project, ".ritual", "local", "log.jsonl")).filter((x) => x.type === "first-step");
+    console.log(entries.length ? [`Since ${entries[0].date.slice(0, 10)}:`, ...firstSteps(entries)].join("\n") : "No first steps logged yet.");
+    process.exit(0);
+  }
   if (args.includes("--report")) {
     const file = args[args.indexOf("--report") + 1];
     let data;

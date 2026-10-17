@@ -19,6 +19,7 @@ const MAX_PICKS = 40; // per session: a long session that touches many files can
 const MAX_WORK = 9000; // characters of the work a pick reads: the start of a file says what it does
 const WAIT_MS = 25000; // the longest a first step waits for its request's pick; a pick took 10 to 25 s on 2026-10-16
 const STALE_MS = 5 * 60000; // a request pick still pending after this belongs to an old turn
+const ASK_MS = 90000; // a Haiku call still running after this is stuck: it is stopped, not left holding memory
 
 const question = (l) => (l.parts["Detector question"] ?? Object.values(l.parts)[2] ?? "").replace(/\s+/g, " ");
 export const lessonLine = (l) => `- ${l.id} · ${l.title} · ${question(l)}`;
@@ -66,27 +67,43 @@ export function startPick(ritual, sessionId, { key, label, work }, lessons, { ru
 export async function askHaiku(prompt) {
   const { claudeBin, session } = await import("../scripts/simulate.mjs");
   const bin = claudeBin();
-  if (!bin) return "";
+  if (!bin) return { text: "", error: "claude was not found" };
   const cwd = mkdtempSync(path.join(os.tmpdir(), "ritual-pick-"));
   const s = session({ prompt, model: "haiku", tools: [], budget: 0.2 });
   try {
     return await new Promise((resolve) => {
       const p = spawn(bin, s.args, { cwd, env: { ...s.env, RITUAL_PICKER: "1" }, windowsHide: true });
-      let out = "";
+      let out = "", err = "";
+      const timer = setTimeout(() => { p.kill(); resolve({ text: "", error: `Haiku took over ${ASK_MS / 1000} s` }); }, ASK_MS);
       p.stdout.on("data", (d) => (out += d));
-      p.on("error", () => resolve(""));
-      p.on("close", () => { try { resolve(String(JSON.parse(out).result ?? "")); } catch { resolve(""); } });
+      p.stderr.on("data", (d) => (err += d));
+      p.on("error", (e) => { clearTimeout(timer); resolve({ text: "", error: `claude did not start: ${e.code ?? e.message}` }); });
+      p.on("close", (code) => {
+        clearTimeout(timer);
+        let j = null; try { j = JSON.parse(out); } catch { /* not JSON */ }
+        if (j && !j.is_error) resolve({ text: String(j.result ?? "") });
+        else resolve({ text: "", error: String(j?.result || err || `claude exited with ${code}`).replace(/\s+/g, " ").slice(0, 200) });
+      });
     });
   } finally { try { rmSync(cwd, { recursive: true, force: true }); } catch { /* left behind */ } }
 }
 
-/** Runs one queued pick and writes what it found next to it. */
+/** Runs one queued pick and writes what it found next to it, and why it found nothing when the model failed. */
 export async function runJob(job, ask = askHaiku) {
   const j = readJson(job, null);
   if (!j) return;
-  const ids = parseIds(await ask(j.prompt), j.ids);
-  try { writeFileSync(job.replace(/\.job\.json$/, ".done.json"), JSON.stringify({ key: j.key, label: j.label, ids })); } catch { /* lost pick */ }
+  const r = await ask(j.prompt);
+  const text = typeof r === "string" ? r : r.text;
+  const answered = /\[[^\[\]]*\]/.test(text ?? "");
+  const error = answered ? undefined : r?.error ?? "Haiku answered without a list of ids";
+  try { writeFileSync(job.replace(/\.job\.json$/, ".done.json"), JSON.stringify({ key: j.key, label: j.label, ids: parseIds(text, j.ids), answered, error })); } catch { /* lost pick */ }
 }
+
+/** Why a request got no pick, for the first-step log, or null when it needs none: the same request was picked before,
+ * and its lessons were shown then. */
+export const skipReason = (ritual, sessionId) => {
+  try { return readdirSync(dirOf(ritual, sessionId)).filter((f) => f.endsWith(".job.json")).length >= MAX_PICKS ? `the session reached ${MAX_PICKS} picks` : null; } catch { return "the pick could not be queued"; }
+};
 
 /** The lessons finished picks found that this session hasn't been shown yet, as context for Claude; marks them shown
  * and the picks delivered in `state` (the session state the caller saves). @returns {string | null} */
@@ -116,15 +133,24 @@ export function deliver(ritual, sessionId, state, lessons) {
 /** The first tool call after a request waits for that request's pick (`state.awaiting`, set when the request queued it),
  * so its lessons can stop the step instead of arriving with its result: context given in PreToolUse reaches Claude only
  * after the tool ran. Measured on 2026-10-16 over 1,171 requests that used a tool: the median wait is 3 s and 44% wait
- * nothing; a chat with no tool call never waits. @returns {Promise<boolean>} whether this call is that first step. */
+ * nothing; a chat with no tool call never waits. @returns {Promise<null | {ms: number, done: object | null}>} null
+ * when this call is not that first step; else how long it waited and the finished pick, or null if it never came. */
 export async function awaitRequest(state, { wait = WAIT_MS, poll = 200 } = {}) {
   const pending = state.awaiting;
-  if (!pending) return false;
+  if (!pending) return null;
   delete state.awaiting;
-  if (!(Date.now() - pending.at < STALE_MS)) return false;
+  if (!(Date.now() - pending.at < STALE_MS)) return null;
   const done = String(pending.job).replace(/\.job\.json$/, ".done.json");
-  for (const start = Date.now(); !existsSync(done) && Date.now() - start < wait;) await new Promise((r) => setTimeout(r, poll));
-  return true;
+  const start = Date.now();
+  while (!existsSync(done) && Date.now() - start < wait) await new Promise((r) => setTimeout(r, poll));
+  return { ms: Date.now() - start, done: existsSync(done) ? readJson(done, {}) : null };
+}
+
+/** What happened at a first step, for the log: the rule holds when the lessons were there before the step. */
+export function firstStepEntry(first, stopped) {
+  if (!first.done) return { outcome: "missed", ms: first.ms, reason: `the pick was not done after ${Math.round(first.ms / 1000)} s` };
+  if (first.done.answered === false) return { outcome: "missed", ms: first.ms, reason: first.done.error ?? "Haiku gave no answer" };
+  return { outcome: stopped ? "stopped" : "nothing new", ms: first.ms };
 }
 
 /** Why a first step is stopped: the lessons it should have before it runs, and to do it again. */
@@ -174,15 +200,29 @@ export async function selftest() {
     if (!second.includes("- P-1 · Own") || second.includes("- 41 · ") || second.includes("WEB-4")) bad.push(`the second delivery shows only what is new:\n${second}`);
     // The first step after a request waits for its pick, once; an old turn's pick or no request means no wait.
     const job = path.join(ritual, "wait.job.json");
-    if (await awaitRequest({}) !== false) bad.push("with no request pending, a step is not a first step");
+    if (await awaitRequest({}) !== null) bad.push("with no request pending, a step is not a first step");
     const state2 = { awaiting: { job, at: Date.now() } };
-    setTimeout(() => writeFileSync(job.replace(".job.json", ".done.json"), "{}"), 300);
+    setTimeout(() => writeFileSync(job.replace(".job.json", ".done.json"), JSON.stringify({ ids: ["41"], answered: true })), 300);
     let t = Date.now();
-    if (await awaitRequest(state2, { wait: 5000, poll: 20 }) !== true || Date.now() - t < 250 || Date.now() - t > 3000) bad.push(`the first step waits until the pick is done: ${Date.now() - t} ms`);
-    if (state2.awaiting || await awaitRequest(state2) !== false) bad.push("only the first step after a request waits");
+    const waited = await awaitRequest(state2, { wait: 5000, poll: 20 });
+    if (!waited?.done || Date.now() - t < 250 || Date.now() - t > 3000) bad.push(`the first step waits until the pick is done: ${Date.now() - t} ms`);
+    if (state2.awaiting || await awaitRequest(state2) !== null) bad.push("only the first step after a request waits");
     t = Date.now();
-    if (await awaitRequest({ awaiting: { job: path.join(ritual, "never.job.json"), at: Date.now() } }, { wait: 200, poll: 20 }) !== true || Date.now() - t > 2000) bad.push("a pick that never finishes stops the wait at its limit");
-    if (await awaitRequest({ awaiting: { job, at: Date.now() - 10 * 60000 } }) !== false) bad.push("a pick from an old turn is not waited for");
+    const never = await awaitRequest({ awaiting: { job: path.join(ritual, "never.job.json"), at: Date.now() } }, { wait: 200, poll: 20 });
+    if (!never || never.done !== null || Date.now() - t > 2000) bad.push("a pick that never finishes stops the wait at its limit");
+    if (await awaitRequest({ awaiting: { job, at: Date.now() - 10 * 60000 } }) !== null) bad.push("a pick from an old turn is not waited for");
+    // Every first step is logged; a missed one says why.
+    const outcomes = [firstStepEntry(waited, true), firstStepEntry(waited, false), firstStepEntry(never, false), firstStepEntry({ ms: 9000, done: { answered: false, error: "Not logged in" } }, false)];
+    const want = ["stopped", "nothing new", "missed: the pick was not done after", "missed: Not logged in"];
+    outcomes.forEach((o, i) => { if (!`${o.outcome}${o.reason ? `: ${o.reason}` : ""}`.startsWith(want[i])) bad.push(`firstStepEntry ${i}: ${JSON.stringify(o)}, want «${want[i]}»`); });
+    // A failed model call is recorded as unanswered, with why; an answer with an empty list is an answer.
+    const failed = path.join(ritual, "failed.job.json");
+    writeFileSync(failed, JSON.stringify({ key: "k", label: "x", prompt: "p", ids: ["41"] }));
+    await runJob(failed, async () => ({ text: "", error: "Not logged in" }));
+    const f = readJson(failed.replace(".job.json", ".done.json"), {});
+    if (f.answered !== false || f.error !== "Not logged in") bad.push(`a failed call is recorded with its reason: ${JSON.stringify(f)}`);
+    await runJob(failed, async () => "[]");
+    if (readJson(failed.replace(".job.json", ".done.json"), {}).answered !== true) bad.push("an empty list is an answer, not a failure");
     // A session can't queue picks without end.
     for (let i = 0; i < MAX_PICKS + 5; i++) startPick(ritual, "s2", { key: `k${i}`, label: "x", work: "y" }, lessons, { run: () => {} });
     if (readdirSync(dirOf(ritual, "s2")).filter((f) => f.endsWith(".job.json")).length !== MAX_PICKS) bad.push(`a session queues at most ${MAX_PICKS} picks`);

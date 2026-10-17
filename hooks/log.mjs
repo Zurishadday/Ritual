@@ -16,7 +16,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { startPick, workOfPrompt } from "./pick.mjs";
+import { skipReason, startPick, workOfPrompt } from "./pick.mjs";
 import { DEFAULT_CONFIG, activeLessons } from "./questions.mjs";
 
 // Precision over coverage: a phrase that is not logged is lost; one logged in excess dirties the ritual.
@@ -121,5 +121,6 @@ if (isMain(import.meta.url)) {
     const work = config.picker !== false && workOfPrompt(input.prompt);
     const job = work && startPick(ritual, input.session_id, work, () => activeLessons(config, ritual).lessons);
     if (job) { data.awaiting = { job, at: Date.now() }; state.save(); }
+    else if (work && skipReason(ritual, input.session_id)) appendLine(logFile, { type: "first-step", session: input.session_id, outcome: "missed", reason: `no pick: ${skipReason(ritual, input.session_id)}` });
   }
 }

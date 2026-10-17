@@ -8,13 +8,13 @@
 // (.ritual/lessons/<group>.md) are included; demoted ones (`demoted`) are skipped. It also records what was touched last.
 // Usage: node hooks/questions.mjs --selftest
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { GROUPS, ORIGINAL, TAXONOMY, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
-import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { awaitRequest, deliver, startPick, stopReason, workOf } from "./pick.mjs";
+import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
+import { awaitRequest, deliver, firstStepEntry, startPick, stopReason, workOf } from "./pick.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
@@ -273,6 +273,9 @@ export function selftest() {
     if (next.permissionDecision) failures.push("the step done again goes through");
     const [empty] = step("gate-empty", []);
     if (empty.permissionDecision) failures.push("a pick with nothing new lets the first step through, with no extra turn");
+    const logFile = path.join(project, "a", ".ritual", "local", "log.jsonl");
+    const logged = (existsSync(logFile) ? readFileSync(logFile, "utf8") : "").split("\n").filter(Boolean).map((l) => JSON.parse(l)).filter((x) => x.type === "first-step");
+    if (logged.map((x) => `${x.session}:${x.outcome}`).join() !== "gate:stopped,gate-empty:nothing new") failures.push(`each first step is logged once, with what happened: ${JSON.stringify(logged)}`);
     // The package lessons, before any plan: every lesson of the packages that are on, whatever its group.
     const brief = packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], about: "A bike shop's site" }, null) ?? "";
     for (const x of ["A bike shop's site", "- WEB-3 · A fallback nobody tested is not a fallback · If this JavaScript", "- WEB-1 · ", "- 46 · "]) if (!brief.includes(x)) failures.push(`the package brief lacks «${x}»`);
@@ -336,7 +339,9 @@ if (isMain(import.meta.url)) {
     if (work) startPick(ritual, input.session_id, work, lessons);
     const picked = deliver(ritual, input.session_id, state.data, lessons);
     if (picked) out.push(picked);
-    stop = first && !!picked;
+    stop = !!first && !!picked;
+    // Every first step after a request is logged, so each ritual sees whether the lessons came before Claude acted.
+    if (first) appendLine(path.join(ritual, "local", "log.jsonl"), { type: "first-step", session: input.session_id, tool: input.tool_name, ...firstStepEntry(first, stop) });
   }
   if (stop) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: stopReason(out.join("\n\n")) } }));
   else if (out.length) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: out.join("\n\n") } }));
