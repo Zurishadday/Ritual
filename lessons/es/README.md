@@ -41,6 +41,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **26.** [Lo que está en producción también se echa a perder](tests-and-checks.md#26-lo-que-está-en-producción-también-se-echa-a-perder)
 - **28.** [Quien ejecuta y quien verifica son personas distintas](tests-and-checks.md#28-quien-ejecuta-y-quien-verifica-son-personas-distintas)
 - **34.** [A un hallazgo de QA créele el síntoma y mide la causa](tests-and-checks.md#34-a-un-hallazgo-de-qa-créele-el-síntoma-y-mide-la-causa)
+- **55.** [El verde en tu máquina es el veredicto de una sola máquina](tests-and-checks.md#55-el-verde-en-tu-máquina-es-el-veredicto-de-una-sola-máquina)
 - **EDU-1.** [Si la respuesta sale igual sin la habilidad, el ejercicio no la mide](tests-and-checks.md#edu-1-si-la-respuesta-sale-igual-sin-la-habilidad-el-ejercicio-no-la-mide)
 - **EDU-4.** [Si adivinas la correcta por su lugar o su largo, el quiz mide la suerte](tests-and-checks.md#edu-4-si-adivinas-la-correcta-por-su-lugar-o-su-largo-el-quiz-mide-la-suerte)
 

@@ -140,6 +140,20 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Qué hacer.** Mide antes y después del arreglo. Un arreglo que mejora el síntoma a medias todavía no está cerrado.
 
+### 55. El verde en tu máquina es el veredicto de una sola máquina
+
+`from: 4bc0daad` · `by: ai`
+
+**La idea.** Una verificación que pasó donde la corriste dice que el trabajo sirve en esa máquina: su sistema, su velocidad, su reloj, su zona horaria, sus nombres de archivo. Donde el trabajo corre de verdad (otro sistema, un servidor, CI, la computadora del usuario), cualquiera de esas cosas puede ser distinta, y la misma verificación puede fallar allí aunque aquí pase.
+
+**Ejemplo.** Una prueba de un resumen pasó en la máquina Windows del desarrollador y se subió, seis commits seguidos. En los corredores de CI con Linux falló siempre: las máquinas eran tan rápidas que registraban una entrada en el mismo milisegundo que la marca que la prueba acababa de escribir, así que «después de la marca» la dejaba fuera. El veredicto local se leía cada vez; el de las otras máquinas estaba en un correo hasta que lo encontró el usuario.
+
+**Pregunta detectora.** ¿Dónde va a correr esto de verdad, y mi verificación corrió allí o solo aquí? Si existe un veredicto de allá (CI, un servidor de pruebas, el dispositivo del usuario), ¿lo leí antes de decir que funciona?
+
+**Señal de alarma.** «En mi máquina sí funciona», o un push seguido de la siguiente tarea mientras CI sigue corriendo o está en rojo. Todo lo que depende del tiempo, el orden, la velocidad, las mayúsculas de los nombres de archivo, los separadores de ruta, los finales de línea, el idioma o la zona horaria.
+
+**Qué hacer.** Nombra las máquinas donde corre el trabajo y consigue un veredicto de cada una: lee CI hasta el final después de cada push (cada job, no solo el primero en verde), corre en el servidor o en una copia de él, o pide el resultado del usuario. Una falla en una de ellas es real aunque aquí nunca aparezca: reprodúcela aquí forzando la diferencia (una fecha fija, un reloj rápido, una ruta sensible a mayúsculas) antes de arreglarla, y arregla el supuesto, no la máquina.
+
 ### EDU-1. Si la respuesta sale igual sin la habilidad, el ejercicio no la mide
 
 `from: 9c298143` · `by: ai`

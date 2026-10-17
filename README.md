@@ -16,7 +16,7 @@ A Claude Code plugin that turns every mistake into a lesson, every lesson into a
 
 Other tools write down what was learned; Ritual goes as far as checking it, because a rule that only lives in text gets forgotten in a long session, and one that checks itself does not.
 
-It ships **54 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from watching a model build something and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
+It ships **55 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from watching a model build something and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
 
 <a name="install"></a>
 

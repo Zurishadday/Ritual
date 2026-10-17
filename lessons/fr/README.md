@@ -41,6 +41,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **26.** [Ce qui est en production peut aussi se dégrader](tests-and-checks.md#26-ce-qui-est-en-production-peut-aussi-se-dégrader)
 - **28.** [Celui qui exécute et celui qui vérifie sont deux personnes différentes](tests-and-checks.md#28-celui-qui-exécute-et-celui-qui-vérifie-sont-deux-personnes-différentes)
 - **34.** [Croire le symptôme d'un constat QA et mesurer la cause](tests-and-checks.md#34-croire-le-symptôme-dun-constat-qa-et-mesurer-la-cause)
+- **55.** [Le vert sur votre machine n'est que le verdict d'une seule machine](tests-and-checks.md#55-le-vert-sur-votre-machine-nest-que-le-verdict-dune-seule-machine)
 - **EDU-1.** [Si la réponse est la même sans la compétence, l'exercice ne la mesure pas](tests-and-checks.md#edu-1-si-la-réponse-est-la-même-sans-la-compétence-lexercice-ne-la-mesure-pas)
 - **EDU-4.** [Si l'on peut deviner la bonne option à sa place ou à sa longueur, le quiz mesure la devinette](tests-and-checks.md#edu-4-si-lon-peut-deviner-la-bonne-option-à-sa-place-ou-à-sa-longueur-le-quiz-mesure-la-devinette)
 

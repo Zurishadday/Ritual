@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 46 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
-| `claude-opus-5-5` | 4 | 7 | 27, 30, 36, 38, 41, 52, 53, 54, EDU-1, EDU-2, EDU-5 |
+| `claude-opus-5-5` | 5 | 7 | 27, 30, 36, 38, 41, 52, 53, 54, 55, EDU-1, EDU-2, EDU-5 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-fable-5-1` | 0 | 1 | 44 |
@@ -92,6 +92,7 @@ The most general mistakes: different models made them.
 | [52. Write about a fast-moving tool from today's practice, not from memory](en/writing-and-docs.md#52-write-about-a-fast-moving-tool-from-todays-practice-not-from-memory) | `claude-opus-5-5` 2026-10 |
 | [53. Code goes through the editor, not through the shell's text handling](en/console-and-tools.md#53-code-goes-through-the-editor-not-through-the-shells-text-handling) | `claude-opus-5-5` 2026-10 |
 | [54. "The X at the start and the close": every translator picks the same wrong reading](en/writing-and-docs.md#54-the-x-at-the-start-and-the-close-every-translator-picks-the-same-wrong-reading) | `claude-opus-5-5` 2026-10 |
+| [55. Green on your machine is one machine's verdict](en/tests-and-checks.md#55-green-on-your-machine-is-one-machines-verdict) | `claude-opus-5-5` 2026-10 |
 | [EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it](en/tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-2. What learners see before answering can't contain the answer](en/writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-3. A question with two defensible answers measures nothing](en/writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing) | `~opus` 2026-10 |

@@ -140,6 +140,20 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **O que fazer.** Meça antes e depois da correção. Uma correção que melhora só em parte o sintoma ainda não está fechada.
 
+### 55. Verde na sua máquina é o veredito de uma máquina só
+
+`from: 4bc0daad` · `by: ai`
+
+**A ideia.** Uma verificação que passou onde eu a rodei diz que o trabalho se sustenta naquela máquina: o sistema, a velocidade, o relógio, o fuso horário, os nomes dos arquivos. Onde o trabalho vai rodar de verdade (outro sistema, um servidor, o CI, o computador do usuário), qualquer um desses pode ser diferente, e a mesma verificação pode falhar lá enquanto ainda passa aqui.
+
+**Exemplo.** O teste de um resumo passou na máquina Windows do desenvolvedor e foi enviado, seis commits seguidos. Nos runners Linux do CI falhou sempre: as máquinas eram rápidas o bastante para registrar uma entrada no mesmo milissegundo da marca que o teste acabara de escrever, então “depois da marca” a deixava de fora. O veredito local foi lido todas as vezes; o veredito das outras máquinas ficou num e-mail até o usuário encontrá-lo.
+
+**Pergunta detectora.** Onde isto vai rodar de verdade, e minha verificação rodou ali, ou só aqui? Se existe um veredito de lá (CI, um servidor de homologação, o dispositivo do usuário), eu o li antes de dizer que funciona?
+
+**Sinal de alerta.** “Funciona na minha máquina”, ou um push seguido da tarefa seguinte enquanto o CI ainda roda ou está vermelho. Qualquer coisa que dependa de tempo, ordem, velocidade, maiúsculas em nomes de arquivo, separadores de caminho, quebras de linha, idioma ou fuso horário.
+
+**O que fazer.** Nomeie as máquinas em que o trabalho roda e obtenha um veredito de cada uma: leia o CI até o fim depois de cada push (cada job, não só o primeiro verde), rode no servidor ou numa cópia dele, ou peça o resultado do usuário. Uma falha em uma dessas máquinas é real mesmo que nunca apareça aqui: reproduza-a aqui forçando a diferença (uma data fixa, um relógio rápido, um caminho sensível a maiúsculas) antes de corrigir, e corrija a suposição, não a máquina.
+
 ### EDU-1. Se a resposta sai igual sem a habilidade, o exercício não a mede
 
 `from: 9c298143` · `by: ai`

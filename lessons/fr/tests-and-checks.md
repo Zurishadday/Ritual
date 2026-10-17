@@ -140,6 +140,20 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Que faire.** Mesurez avant et après la correction. Une correction qui n'améliore qu'en partie le symptôme n'est pas encore close.
 
+### 55. Le vert sur votre machine n'est que le verdict d'une seule machine
+
+`from: 4bc0daad` · `by: ai`
+
+**L'idée.** Un contrôle qui a réussi là où vous l'avez lancé prouve seulement que le travail tient sur cette machine : son système, sa vitesse, son horloge, son fuseau horaire, ses noms de fichiers. Là où le travail tournera vraiment (un autre système, un serveur, la CI, l'ordinateur de l'utilisateur), l'un de ces éléments peut différer, et le même contrôle peut échouer là-bas alors qu'il réussit ici.
+
+**Exemple.** Le test d'un résumé a réussi sur la machine Windows du développeur et a été poussé, six commits d'affilée. Sur les runners Linux de la CI, il échouait à chaque fois : les machines étaient assez rapides pour écrire une entrée dans la même milliseconde que la marque que le test venait d'écrire, donc « après la marque » l'excluait. Le verdict local était lu à chaque fois ; celui des autres machines attendait dans un courriel jusqu'à ce que l'utilisateur le trouve.
+
+**Question détectrice.** Où cela tournera-t-il vraiment, et mon contrôle y a-t-il tourné, ou seulement ici ? Si un verdict venant de là-bas existe (CI, serveur de préproduction, appareil de l'utilisateur), l'ai-je lu avant de dire que ça fonctionne ?
+
+**Signal d'alarme.** « Ça marche chez moi », ou un push suivi de la tâche suivante alors que la CI tourne encore ou est en échec. Tout ce qui dépend du temps, de l'ordre, de la vitesse, de la casse des noms de fichiers, des séparateurs de chemins, des fins de ligne, de la locale ou du fuseau horaire.
+
+**Que faire.** Nommez les machines où le travail tourne et obtenez un verdict de chacune : lisez la CI jusqu'au bout après un push (chaque job, pas seulement le premier vert), lancez sur le serveur ou sur une copie de celui-ci, ou demandez le résultat à l'utilisateur. Un échec sur l'une d'elles est réel, même s'il n'apparaît jamais ici : reproduisez-le ici en forçant la différence (une date fixe, une horloge rapide, un chemin sensible à la casse) avant de le corriger, et corrigez l'hypothèse, pas la machine.
+
 ### EDU-1. Si la réponse est la même sans la compétence, l'exercice ne la mesure pas
 
 `from: 9c298143` · `by: ai`

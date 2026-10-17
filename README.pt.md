@@ -18,7 +18,7 @@ Um plugin do Claude Code que transforma cada erro em lição, cada lição em re
 
 Outras ferramentas anotam o que foi aprendido; esta vai até o fim e confere, porque uma regra que existe só em texto é esquecida numa sessão longa, e uma que se confere sozinha não.
 
-Ele traz **54 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
+Ele traz **55 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
 
 <a name="install"></a>
 

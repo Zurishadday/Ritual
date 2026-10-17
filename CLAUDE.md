@@ -12,6 +12,7 @@ A public Claude Code plugin: every mistake becomes a lesson, every lesson a rule
 - All hooks and scripts in Node, never bash: the project is developed on Windows.
 - Core lessons are numbered from 1 and are never renumbered or deleted: a redundant one is marked "Merged into N." Packages use a prefix (`WEB-1`).
 - Every lesson states its origin and the model and month it was born with: `field · claude-opus-5-5 · 2026-10` (a real mistake with its example), `lab · claude-sonnet-5-5 · 2026-10` (broke in a simulation) or `proposal` (only for security issues that do not visibly break, with a public source). `~model` marks an entry from memory; `unknown` is allowed, invention is not. `seen:` lists the models it was later confirmed with.
+- A lesson this repository's own ritual writes goes straight into the library (`node scripts/maintain.mjs add <file> "<origin>"`, translated, «Merged into N.» on the project lesson), never through the share form: the maintainer would be sending an issue to themselves. Everyone else's lessons come through the form.
 - Issues, pull requests, translations and releases are handled with `/maintain <number>` (`.claude/skills/maintain/`). Nothing is posted, closed or merged on GitHub without asking.
 - `.claude-plugin/plugin.json` has no `version`: each commit on `main` is a release, so `main` is pushed only with the tests green.
 - In simulations Sonnet builds; Opus reviews, runs and writes the lesson, in a separate session.
