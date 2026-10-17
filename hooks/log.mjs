@@ -126,6 +126,6 @@ if (isMain(import.meta.url)) {
     const work = config.picker !== false && workOfPrompt(input.prompt);
     const job = work && startPick(ritual, input.session_id, work, () => activeLessons(config, ritual).lessons);
     if (job) { data.awaiting = { job, at: Date.now() }; state.save(); }
-    else if (work && skipReason(ritual, input.session_id)) appendLine(logFile, { type: "first-step", session: input.session_id, outcome: "missed", reason: `no pick: ${skipReason(ritual, input.session_id)}` });
+    else if (work && skipReason(ritual, input.session_id, work)) appendLine(logFile, { type: "first-step", session: input.session_id, outcome: "missed", reason: `no pick: ${skipReason(ritual, input.session_id, work)}` });
   }
 }

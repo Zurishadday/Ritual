@@ -15,7 +15,9 @@ import os from "node:os";
 import path from "node:path";
 import { isMain, readJson } from "./common.mjs";
 
-const MAX_PICKS = 40; // per session: a long session that touches many files can't keep spending without end
+const MAX_PICKS = 40; // file picks per session: a long session that touches many files can't keep spending without end.
+// A request is always picked: it is what the first step waits for, and a long session reached 40 by 17:30 on
+// 2026-10-16, after which no request got its lessons.
 const MAX_WORK = 9000; // characters of the work a pick reads: the start of a file says what it does
 const WAIT_MS = 25000; // the longest a first step waits for its request's pick; a pick took 10 to 25 s on 2026-10-16
 const STALE_MS = 5 * 60000; // a request pick still pending after this belongs to an old turn
@@ -44,17 +46,19 @@ export function parseIds(answer, valid) {
 
 const dirOf = (ritual, sessionId) => path.join(ritual, "local", "picks", String(sessionId || "no-id").replace(/[^\w-]/g, "_"));
 const hash = (s) => createHash("sha256").update(s).digest("hex").slice(0, 12);
+// A job's name says its kind (file- or request-), so only file picks count against the cap.
+const jobOf = (ritual, sessionId, key) => path.join(dirOf(ritual, sessionId), `${key.split(":")[0]}-${hash(key)}.job.json`);
 
 /** Queues a pick for this work, once per key and session, and starts it in its own process unless `run` is given
  * (the selftest runs it in place). @returns {string | null} the job file, or null when skipped. */
 export function startPick(ritual, sessionId, { key, label, work }, lessons, { run } = {}) {
   const dir = dirOf(ritual, sessionId);
-  const job = path.join(dir, `${hash(key)}.job.json`);
+  const job = jobOf(ritual, sessionId, key);
   if (existsSync(job)) return null;
   let list;
   try {
     mkdirSync(dir, { recursive: true });
-    if (readdirSync(dir).filter((f) => f.endsWith(".job.json")).length >= MAX_PICKS) return null;
+    if (key.startsWith("file:") && readdirSync(dir).filter((f) => f.startsWith("file-") && f.endsWith(".job.json")).length >= MAX_PICKS) return null;
     list = typeof lessons === "function" ? lessons() : lessons; // read only when a pick is really queued
     // The job keeps no words of the work: the request and the file go to the worker through its stdin, never to disk,
     // where a synced folder (OneDrive) would upload them.
@@ -110,10 +114,8 @@ export async function runJob(job, prompt, ask = askHaiku) {
 }
 
 /** Why a request got no pick, for the first-step log, or null when it needs none: the same request was picked before,
- * and its lessons were shown then. */
-export const skipReason = (ritual, sessionId) => {
-  try { return readdirSync(dirOf(ritual, sessionId)).filter((f) => f.endsWith(".job.json")).length >= MAX_PICKS ? `the session reached ${MAX_PICKS} picks` : null; } catch { return "the pick could not be queued"; }
-};
+ * and its lessons were shown then. A request is never capped, so anything else is a failure to queue it. */
+export const skipReason = (ritual, sessionId, { key }) => (existsSync(jobOf(ritual, sessionId, key)) ? null : "the pick could not be queued");
 
 /** The lessons finished picks found that this session hasn't been shown yet, as context for Claude; marks them shown
  * and the picks delivered in `state` (the session state the caller saves). @returns {string | null} */
@@ -297,8 +299,11 @@ export async function selftest() {
     if (existsSync(path.join(picksRoot, "old")) || !existsSync(path.join(picksRoot, "recent"))) bad.push("pruning removes picks older than a day and keeps recent ones");
     if (readFileSync(path.join(picksRoot, "recent", "a.job.json"), "utf8").includes("secret plan")) bad.push("pruning removes the work an old-format job kept");
     // A session can't queue picks without end.
-    for (let i = 0; i < MAX_PICKS + 5; i++) startPick(ritual, "s2", { key: `k${i}`, label: "x", work: "y" }, lessons, { run: () => {} });
-    if (readdirSync(dirOf(ritual, "s2")).filter((f) => f.endsWith(".job.json")).length !== MAX_PICKS) bad.push(`a session queues at most ${MAX_PICKS} picks`);
+    for (let i = 0; i < MAX_PICKS + 5; i++) startPick(ritual, "s2", { key: `file:k${i}`, label: "x", work: "y" }, lessons, { run: () => {} });
+    if (readdirSync(dirOf(ritual, "s2")).filter((f) => f.endsWith(".job.json")).length !== MAX_PICKS) bad.push(`a session queues at most ${MAX_PICKS} file picks`);
+    // A request is always picked, even after the file cap: it is what the first step waits for.
+    if (!startPick(ritual, "s2", workOfPrompt("arregla el formulario de citas"), lessons, { run: () => {} })) bad.push("a request is picked even after the session's file picks reached the cap");
+    if (skipReason(ritual, "s2", workOfPrompt("arregla el formulario de citas")) !== null) bad.push("a request picked before needs no new pick, and is no miss");
   } finally { rmSync(ritual, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
