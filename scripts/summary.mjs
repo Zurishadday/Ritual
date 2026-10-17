@@ -56,6 +56,16 @@ export function firstSteps(entries) {
   return lines;
 }
 
+/** The picker's three rules (hooks/pick.mjs): how many file picks they saved, and each time a check found one wrong. */
+export function pickerRules(entries) {
+  const skips = entries.filter((x) => x.type === "pick-rule"), failed = entries.filter((x) => x.type === "pick-rule-failed"), batches = entries.filter((x) => x.type === "pick-batch");
+  const by = (rule) => skips.filter((x) => x.rule === rule).length;
+  const lines = [`Picker rules: skipped ${skips.filter((x) => !x.checked).length} file pick(s) (same change ${by("same change")}, nothing new ${by("nothing new")}) · checked anyway ${skips.filter((x) => x.checked).length} · failed ${failed.length}${batches.length ? ` · ${batches.length} batch(es), up to ${Math.max(...batches.map((x) => x.files))} files` : ""}`];
+  for (const x of failed.slice(-10)) lines.push(`  ${when(x.date)} failed  «${x.rule}» skipped ${short(x.file, 70)}, which had lessons ${x.ids?.join(", ")}`);
+  if (failed.length > 10) lines.push(`  … ${failed.length - 10} more in .ritual/local/log.jsonl (type "pick-rule-failed")`);
+  return lines;
+}
+
 export function summary(project, { now = new Date(), session = process.env.CLAUDE_CODE_SESSION_ID || null, all = false } = {}) {
   const dir = path.join(project, ".ritual");
   if (!existsSync(dir)) return "No .ritual/ folder: run /ritual to set Ritual up first.";
@@ -87,6 +97,8 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   if (ids.length) lines.push(`  Other sessions: ${ids.reduce((n, s) => n + others[s].length, 0)} entr${ids.reduce((n, s) => n + others[s].length, 0) === 1 ? "y" : "ies"} from ${ids.length} session(s) not reviewed yet (${ids.map((s) => `${s.slice(0, 8)}, last ${when(others[s].at(-1).date)}`).join("; ")}). They are left for their own ritual; --all includes them.`);
 
   if (firsts.length) lines.push("", ...firstSteps(firsts));
+  const ruled = log.filter((x) => /^pick-(rule|rule-failed|batch)$/.test(x.type));
+  if (ruled.length) lines.push(...(firsts.length ? [] : [""]), ...pickerRules(ruled));
 
   const blocks = readJsonl(path.join(local, "guard.jsonl")).filter(isRecent).filter((x) => mine(x.session));
   const byRule = {};
@@ -259,6 +271,13 @@ export function selftest() {
     const fs1 = summary(tmp, { session: "aaaa1111-a" }).split("\n");
     const head = fs1.find((l) => l.startsWith("First step")) ?? "";
     if (!head.includes(": 3 · lessons before it 2 (stopped with new ones 1, nothing new 1) · missed 1") || !head.includes("wait median 3.0 s") || !fs1.some((l) => l.includes("missed  the pick was not done after 25 s"))) bad.push(`the summary counts first steps and lists each miss with why:\n${fs1.filter((l) => /first step|missed/i.test(l)).join("\n")}`);
+    // The picker's rules: skips by rule, checks, and each failed check with the lessons it would have hidden.
+    const rule = (type, extra) => appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type, session: "aaaa1111-a", ...extra });
+    rule("pick-rule", { rule: "same change", file: "a.md", checked: false }); rule("pick-rule", { rule: "nothing new", file: "b.md", checked: false }); rule("pick-rule", { rule: "nothing new", file: "c.md", checked: true });
+    rule("pick-rule-failed", { rule: "nothing new", file: "c.md", ids: ["41", "46"] }); rule("pick-batch", { files: 4 });
+    const rl = summary(tmp, { session: "aaaa1111-a" }).split("\n");
+    const rh = rl.find((l) => l.startsWith("Picker rules")) ?? "";
+    if (!rh.includes("skipped 2 file pick(s) (same change 1, nothing new 2) · checked anyway 1 · failed 1 · 1 batch(es), up to 4 files") || !rl.some((l) => l.includes("failed  «nothing new» skipped c.md, which had lessons 41, 46"))) bad.push(`the summary counts the picker rules and lists each failure:\n${rl.filter((l) => /picker|failed/i.test(l)).join("\n")}`);
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
@@ -280,8 +299,10 @@ if (isMain(import.meta.url)) {
   if (args.includes("--groups")) { console.log(groups(project).join(", ") || "none recorded"); process.exit(0); }
   // Every first step ever logged in this project, every session: the long-run check that the lessons come first.
   if (args.includes("--first-steps")) {
-    const entries = readJsonl(path.join(project, ".ritual", "local", "log.jsonl")).filter((x) => x.type === "first-step");
-    console.log(entries.length ? [`Since ${entries[0].date.slice(0, 10)}:`, ...firstSteps(entries)].join("\n") : "No first steps logged yet.");
+    const all = readJsonl(path.join(project, ".ritual", "local", "log.jsonl"));
+    const entries = all.filter((x) => x.type === "first-step"), ruled = all.filter((x) => /^pick-(rule|rule-failed|batch)$/.test(x.type));
+    const since = [entries[0]?.date, ruled[0]?.date].filter(Boolean).sort()[0];
+    console.log(since ? [`Since ${since.slice(0, 10)}:`, ...(entries.length ? firstSteps(entries) : ["First step after a request: none logged yet"]), ...(ruled.length ? pickerRules(ruled) : ["Picker rules: nothing logged yet"])].join("\n") : "No first steps or picker rules logged yet.");
     process.exit(0);
   }
   if (args.includes("--report")) {

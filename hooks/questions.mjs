@@ -14,7 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { GROUPS, ORIGINAL, TAXONOMY, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { awaitRequest, deliver, firstStepEntry, startPick, stopReason, workOf } from "./pick.mjs";
+import { alreadyPicked, awaitRequest, deliver, fileRule, firstStepEntry, startPick, stopReason, workOf } from "./pick.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
@@ -250,13 +250,13 @@ export function selftest() {
     const lessonIn = (p, id, q) => { mkdirSync(path.join(project, p, ".ritual", "lessons"), { recursive: true }); writeFileSync(path.join(project, p, ".ritual", "lessons", "writing-and-docs.md"), `# Writing\n\n${lesson(id, null, q)}`); };
     lessonIn("a", "A-1", "A question from project a?");
     lessonIn("b", "B-1", "A question from project b?");
-    const run = spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") },
+    const run = spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_BIN: path.join(project, "no-claude"), CLAUDE_PROJECT_DIR: path.join(project, "a") },
       input: JSON.stringify({ session_id: "e2e", tool_name: "Write", tool_input: { file_path: path.join(project, "b", "docs", "guide.md") }, cwd: path.join(project, "a") }) });
     const out = run.stdout ?? "";
     if (!out.includes("B-1 · A question from project b?") || out.includes("A-1")) failures.push(`editing a file in project b from a session in a should bring b's lessons: ${out.slice(0, 160) || run.stderr.slice(0, 160)}`);
     // The close only follows a session that changed files: a Write marks it, a command does not.
     if (readJson(path.join(project, "b", ".ritual", "local", "sessions", "e2e.json"), {}).edited !== true) failures.push("a Write must mark the session as edited, for the close");
-    spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: "cmd", tool_name: "Bash", tool_input: { command: "npm test" }, cwd: path.join(project, "a") }) });
+    spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_BIN: path.join(project, "no-claude"), CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: "cmd", tool_name: "Bash", tool_input: { command: "npm test" }, cwd: path.join(project, "a") }) });
     if (readJson(path.join(project, "a", ".ritual", "local", "sessions", "cmd.json"), {}).edited) failures.push("a command must not mark the session as edited");
     // The first step after a request: stopped with the lessons its pick found; let through when the pick found nothing new.
     const step = (id, ids) => {
@@ -265,7 +265,7 @@ export function selftest() {
       writeFileSync(path.join(picks, "r.job.json"), "{}");
       writeFileSync(path.join(picks, "r.done.json"), JSON.stringify({ key: "request:x", label: "your request", ids }));
       writeFileSync(path.join(project, "a", ".ritual", "local", "sessions", `${id}.json`), JSON.stringify({ sent: [], awaiting: { job: path.join(picks, "r.job.json"), at: Date.now() } }));
-      const hook = () => JSON.parse(spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: id, tool_name: "Bash", tool_input: { command: "ls" }, cwd: path.join(project, "a") }) }).stdout || "{}").hookSpecificOutput ?? {};
+      const hook = () => JSON.parse(spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_BIN: path.join(project, "no-claude"), CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: id, tool_name: "Bash", tool_input: { command: "ls" }, cwd: path.join(project, "a") }) }).stdout || "{}").hookSpecificOutput ?? {};
       return [hook(), hook()];
     };
     const [stopped, next] = step("gate", ["13"]);
@@ -273,9 +273,21 @@ export function selftest() {
     if (next.permissionDecision) failures.push("the step done again goes through");
     const [empty] = step("gate-empty", []);
     if (empty.permissionDecision) failures.push("a pick with nothing new lets the first step through, with no extra turn");
+    // The three rules through the hook: a skipped file is logged and not picked; a failed check tells the user now.
+    const hookRun = (id, toolInput, tool = "Write") => JSON.parse(spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_BIN: path.join(project, "no-claude"), CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: id, tool_name: tool, tool_input: toolInput, cwd: path.join(project, "a") }) }).stdout || "{}");
+    writeFileSync(path.join(project, "a", ".ritual", "local", "sessions", "quiet.json"), JSON.stringify({ sent: [], rules: { changes: {}, quiet: { "content/*.mdx": 3 }, skipped: 0 } }));
+    hookRun("quiet", { file_path: path.join(project, "a", "content", "x.mdx"), content: "# A lesson" });
+    if (existsSync(path.join(project, "a", ".ritual", "local", "picks", "quiet"))) failures.push("a file a rule skips is not picked");
+    const failPicks = path.join(project, "a", ".ritual", "local", "picks", "fail");
+    mkdirSync(failPicks, { recursive: true });
+    writeFileSync(path.join(failPicks, "file-x.done.json"), JSON.stringify({ key: "file:content/y.mdx", label: "content/y.mdx", ids: ["13"], answered: true, check: "nothing new" }));
+    const told = hookRun("fail", { command: "ls" }, "Bash");
+    if (!/picker rule skipped files that had new lessons: «nothing new» on content\/y\.mdx \(lessons 13\)/.test(told.systemMessage ?? "")) failures.push(`a failed rule check is shown to the user: ${JSON.stringify(told).slice(0, 200)}`);
     const logFile = path.join(project, "a", ".ritual", "local", "log.jsonl");
     const logged = (existsSync(logFile) ? readFileSync(logFile, "utf8") : "").split("\n").filter(Boolean).map((l) => JSON.parse(l)).filter((x) => x.type === "first-step");
     if (logged.map((x) => `${x.session}:${x.outcome}`).join() !== "gate:stopped,gate-empty:nothing new") failures.push(`each first step is logged once, with what happened: ${JSON.stringify(logged)}`);
+    const ruleLog = (existsSync(logFile) ? readFileSync(logFile, "utf8") : "").split("\n").filter(Boolean).map((l) => JSON.parse(l)).filter((x) => x.type?.startsWith("pick-rule")).map((x) => `${x.type}:${x.rule}:${x.file}`);
+    if (ruleLog.join() !== "pick-rule:nothing new:content/x.mdx,pick-rule-failed:nothing new:content/y.mdx") failures.push(`each skip and each failed check is logged: ${ruleLog.join()}`);
     // The package lessons, before any plan: every lesson of the packages that are on, whatever its group.
     const brief = packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], about: "A bike shop's site" }, null) ?? "";
     for (const x of ["A bike shop's site", "- WEB-3 · A fallback nobody tested is not a fallback · If this JavaScript", "- WEB-1 · ", "- 46 · "]) if (!brief.includes(x)) failures.push(`the package brief lacks «${x}»`);
@@ -331,19 +343,34 @@ if (isMain(import.meta.url)) {
   // queues a pick, and whatever picks have finished are shown now, without what this session has already seen.
   // The first step after a request waits for that request's pick; when it brings new lessons, the step is stopped
   // with them, so Claude has them before it acts, not with the step's result.
-  let stop = false;
+  let stop = false, notice = null;
   if (config.picker !== false) {
     const first = await awaitRequest(state.data);
     const lessons = () => activeLessons(config, ritual).lessons;
+    const logFile = path.join(ritual, "local", "log.jsonl");
+    // A file's first write is picked unless a rule skips it (hooks/pick.mjs, the three rules); every skip is logged.
     const work = workOf(input, target);
-    if (work) startPick(ritual, input.session_id, work, lessons);
+    if (work && !alreadyPicked(ritual, input.session_id, work)) {
+      const plan = fileRule(state.data, target, work.change);
+      if (plan.rule) appendLine(logFile, { type: "pick-rule", session: input.session_id, rule: plan.rule, file: target, checked: plan.pick });
+      if (plan.pick) startPick(ritual, input.session_id, work, lessons, { check: plan.rule });
+    }
     const picked = deliver(ritual, input.session_id, state.data, lessons);
     if (picked) out.push(picked);
     stop = !!first && !!picked;
+    // A rule that skipped files with lessons still to show failed: logged, and the user is told now.
+    for (const f of state.data.ruleFailures ?? []) appendLine(logFile, { type: "pick-rule-failed", session: input.session_id, ...f });
+    if (state.data.ruleFailures?.length) {
+      const what = state.data.ruleFailures.map((f) => `«${f.rule}» on ${f.file} (lessons ${f.ids.join(", ")})`).join("; ");
+      notice = `Ritual: a picker rule skipped files that had new lessons: ${what}. Logged for review; picking there starts again.`;
+      out.push(`${notice} Tell the user in one line, in their language.`);
+    }
+    delete state.data.ruleFailures;
     // Every first step after a request is logged, so each ritual sees whether the lessons came before Claude acted.
     if (first) appendLine(path.join(ritual, "local", "log.jsonl"), { type: "first-step", session: input.session_id, tool: input.tool_name, ...firstStepEntry(first, stop) });
   }
-  if (stop) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: stopReason(out.join("\n\n")) } }));
-  else if (out.length) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: out.join("\n\n") } }));
+  const toUser = notice ? { systemMessage: notice } : {};
+  if (stop) console.log(JSON.stringify({ ...toUser, hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: stopReason(out.join("\n\n")) } }));
+  else if (out.length) console.log(JSON.stringify({ ...toUser, hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: out.join("\n\n") } }));
   state.save();
 }

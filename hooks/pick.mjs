@@ -13,11 +13,13 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, utimesSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { isMain, readJson } from "./common.mjs";
+import { appendLine, isMain, readJson } from "./common.mjs";
 
-const MAX_PICKS = 40; // file picks per session: a long session that touches many files can't keep spending without end.
-// A request is always picked: it is what the first step waits for, and a long session reached 40 by 17:30 on
-// 2026-10-16, after which no request got its lessons.
+const MAX_PICKS = 300; // file picks per session, a safety net only: the three rules below keep picks to what is new.
+// A request is always picked: it is what the first step waits for, and a long session reached the old cap of 40 by
+// 17:30 on 2026-10-16, after which no request got its lessons.
+const QUIET = 3; // rule 2: file picks in a row with nothing new, for one kind of file, before picking stops there
+const CHECK_EVERY = 5; // one in this many files a rule skips is picked anyway, to catch a rule that skips lessons
 const MAX_WORK = 9000; // characters of the work a pick reads: the start of a file says what it does
 const WAIT_MS = 25000; // the longest a first step waits for its request's pick; a pick took 10 to 25 s on 2026-10-16
 const STALE_MS = 5 * 60000; // a request pick still pending after this belongs to an old turn
@@ -48,10 +50,42 @@ const dirOf = (ritual, sessionId) => path.join(ritual, "local", "picks", String(
 const hash = (s) => createHash("sha256").update(s).digest("hex").slice(0, 12);
 // A job's name says its kind (file- or request-), so only file picks count against the cap.
 const jobOf = (ritual, sessionId, key) => path.join(dirOf(ritual, sessionId), `${key.split(":")[0]}-${hash(key)}.job.json`);
+// Rule 3's queue of a session's picks dir: in the system's temp folder, so a file's words never sit in the project.
+const queueOf = (dir) => path.join(os.tmpdir(), "ritual-queue", hash(path.resolve(dir)));
+/** Whether a file pick of this session is still in flight: a file job with no answer yet, younger than a stuck call. */
+export const filePickRunning = (dir, except) => {
+  try { return readdirSync(dir).some((f) => f.startsWith("file-") && f.endsWith(".job.json") && path.join(dir, f) !== except && !existsSync(path.join(dir, f.replace(".job.json", ".done.json"))) && Date.now() - statSync(path.join(dir, f)).mtimeMs < ASK_MS + 15000); } catch { return false; }
+};
+
+/** Rule 3, in the worker after its own pick: every file that waited in the queue goes in one pick together, until the
+ * queue stays empty. Each file's job gets the answer, and the batch is logged. */
+export async function drainQueue(job, prompt, ask = askHaiku, { settle = 2000 } = {}) {
+  const dir = path.dirname(job), queue = queueOf(dir);
+  const [head, rest] = String(prompt).split("\n\n## The work\n");
+  const catalog = String(rest ?? "").split("\n\n## Lessons\n")[1];
+  if (!catalog) return;
+  for (let empty = 0; empty < 2;) {
+    let entries = [];
+    try { entries = readdirSync(queue).map((f) => { const e = readJson(path.join(queue, f), null); rmSync(path.join(queue, f), { force: true }); return e; }).filter(Boolean); } catch { /* no queue */ }
+    if (!entries.length) { empty++; if (empty < 2) await new Promise((r) => setTimeout(r, settle)); continue; }
+    empty = 0;
+    const share = Math.max(1500, Math.floor(MAX_WORK / entries.length));
+    const works = entries.map((e) => String(e.work).slice(0, share)).join("\n\n---\n\n");
+    const r = await ask(`${head}\n\n## The work\nSeveral files, each its own work:\n\n${works}\n\n## Lessons\n${catalog}`);
+    const text = typeof r === "string" ? r : r.text;
+    const answered = /\[[^\[\]]*\]/.test(text ?? "");
+    for (const e of entries) {
+      const j = readJson(e.job, null);
+      if (!j) continue;
+      try { writeFileSync(e.job.replace(/\.job\.json$/, ".done.json"), JSON.stringify({ key: j.key, label: j.label, ids: parseIds(text, j.ids), answered, error: answered ? undefined : r?.error ?? "Haiku answered without a list of ids", check: j.check, batch: entries.length })); } catch { /* lost pick */ }
+    }
+    appendLine(path.join(dir, "..", "..", "log.jsonl"), { type: "pick-batch", session: path.basename(dir), files: entries.length, waited: Math.max(...entries.map((e) => Date.now() - (e.at ?? Date.now()))) });
+  }
+}
 
 /** Queues a pick for this work, once per key and session, and starts it in its own process unless `run` is given
  * (the selftest runs it in place). @returns {string | null} the job file, or null when skipped. */
-export function startPick(ritual, sessionId, { key, label, work }, lessons, { run } = {}) {
+export function startPick(ritual, sessionId, { key, label, work }, lessons, { run, check } = {}) {
   const dir = dirOf(ritual, sessionId);
   const job = jobOf(ritual, sessionId, key);
   if (existsSync(job)) return null;
@@ -62,10 +96,15 @@ export function startPick(ritual, sessionId, { key, label, work }, lessons, { ru
     list = typeof lessons === "function" ? lessons() : lessons; // read only when a pick is really queued
     // The job keeps no words of the work: the request and the file go to the worker through its stdin, never to disk,
     // where a synced folder (OneDrive) would upload them.
-    writeFileSync(job, JSON.stringify({ key, label, ids: list.map((l) => l.id) }));
+    writeFileSync(job, JSON.stringify({ key, label, ids: list.map((l) => l.id), check }));
   } catch { return null; }
   const prompt = pickPrompt(list, work);
   if (run) return run(job, prompt), job;
+  // Rule 3: while a file pick runs, a new file waits in the queue, outside the project (nothing synced), until the
+  // running worker takes it in its next pick.
+  if (key.startsWith("file:") && filePickRunning(dir, job)) {
+    try { mkdirSync(queueOf(dir), { recursive: true }); writeFileSync(path.join(queueOf(dir), `${path.basename(job)}`), JSON.stringify({ job, work, at: Date.now() })); return job; } catch { /* picks it alone */ }
+  }
   try {
     const worker = spawn(process.execPath, [import.meta.filename, "--run", job], { detached: true, stdio: ["pipe", "ignore", "ignore"], windowsHide: true });
     worker.on("error", () => { /* no pick */ });
@@ -110,8 +149,33 @@ export async function runJob(job, prompt, ask = askHaiku) {
   const text = typeof r === "string" ? r : r.text;
   const answered = /\[[^\[\]]*\]/.test(text ?? "");
   const error = answered ? undefined : r?.error ?? "Haiku answered without a list of ids";
-  try { writeFileSync(job.replace(/\.job\.json$/, ".done.json"), JSON.stringify({ key: j.key, label: j.label, ids: parseIds(text, j.ids), answered, error })); } catch { /* lost pick */ }
+  try { writeFileSync(job.replace(/\.job\.json$/, ".done.json"), JSON.stringify({ key: j.key, label: j.label, ids: parseIds(text, j.ids), answered, error, check: j.check })); } catch { /* lost pick */ }
 }
+
+// The three rules, so Haiku picks only when there is something new to pick (two cases: sixty different files of a new
+// app each bring their own lessons; one word changed in five hundred files brings the same lessons five hundred times):
+//   1. The same change is not picked twice: an edit already picked in this session, in another file, is skipped.
+//   2. When picks stop bringing anything new, picking stops: after QUIET file picks in a row with no new lesson for one
+//      kind of file (folder and extension), that kind is skipped until the user's next request.
+//   3. One pick at a time: while a file pick runs, new files wait in a queue and go together in the next pick.
+// A rule can be wrong. One in CHECK_EVERY files a rule skips is picked anyway; if that check brings new lessons, the
+// rule failed: it is logged with the file and the lessons it would have hidden, the user is told, and rule 2 starts
+// picking that kind again.
+export const kindOf = (rel) => `${path.posix.dirname(rel)}/*${path.posix.extname(rel)}`;
+
+/** Whether this file write is picked, under rules 1 and 2, and which rule skips it. Updates `state.rules`.
+ * @returns {{pick: boolean, rule?: string}} `rule` with `pick` true is a check of that rule. */
+export function fileRule(state, rel, change) {
+  const r = (state.rules ??= { changes: {}, quiet: {}, skipped: 0 });
+  const sig = hash(String(change));
+  const rule = r.changes[sig] ? "same change" : (r.quiet[kindOf(rel)] ?? 0) >= QUIET ? "nothing new" : null;
+  if (!rule) { r.changes[sig] = rel; return { pick: true }; }
+  r.skipped += 1;
+  return { pick: r.skipped % CHECK_EVERY === 0, rule };
+}
+
+/** After a request, rule 2 starts over: the request may make a quiet kind of file worth picking again. */
+export const resetQuiet = (state) => { if (state.rules) state.rules.quiet = {}; };
 
 /** Why a request got no pick, for the first-step log, or null when it needs none: the same request was picked before,
  * and its lessons were shown then. A request is never capped, so anything else is a failure to queue it. */
@@ -128,11 +192,16 @@ export function deliver(ritual, sessionId, state, lessons) {
   if (!pending.length) return null;
   const byId = new Map((typeof lessons === "function" ? lessons() : lessons).map((l) => [l.id, l]));
   const fresh = [], labels = [];
+  const rules = (state.rules ??= { changes: {}, quiet: {}, skipped: 0 });
   for (const f of pending) {
     state.delivered.push(f);
     const done = readJson(path.join(dir, f), null);
     const ids = (done?.ids ?? []).filter((id) => byId.has(id) && !state.shown.includes(id) && !fresh.includes(id));
     if (ids.length) { fresh.push(...ids); labels.push(done.label); }
+    // Rule 2 counts, per kind of file, the picks in a row that brought nothing new; a pick that brings something resets it.
+    if (String(done?.key).startsWith("file:") && done.answered !== false) rules.quiet[kindOf(done.label)] = ids.length ? 0 : (rules.quiet[kindOf(done.label)] ?? 0) + 1;
+    // A check of a rule that brings new lessons is that rule's failure.
+    if (done?.check && ids.length) (state.ruleFailures ??= []).push({ rule: done.check, file: done.label, ids });
   }
   if (!fresh.length) return null;
   state.shown.push(...fresh);
@@ -196,8 +265,13 @@ export function workOf(input, rel) {
   const t = input?.tool_input ?? {};
   const text = t.content ?? t.new_string ?? (Array.isArray(t.edits) ? t.edits.map((e) => e.new_string).join("\n") : "");
   if (!/^(Write|Edit|MultiEdit)$/.test(input?.tool_name ?? "") || privateFile(rel)) return null;
-  return { key: `file:${rel}`, label: rel, work: `Writing the file ${rel}:\n\n${redact(text)}` };
+  // The change itself, without the file's name, so rule 1 knows the same edit made in another file.
+  const change = t.content ?? (Array.isArray(t.edits) ? t.edits.map((e) => `${e.old_string}→${e.new_string}`).join("\n") : `${t.old_string}→${t.new_string}`);
+  return { key: `file:${rel}`, label: rel, work: `Writing the file ${rel}:\n\n${redact(text)}`, change };
 }
+
+/** Whether this work was already picked in this session (a later edit of a file picked on its first write). */
+export const alreadyPicked = (ritual, sessionId, { key }) => existsSync(jobOf(ritual, sessionId, key));
 
 /** The work a user's prompt asks for, when it is a pick: a request, not a background agent's report or a one-word reply. */
 export function workOfPrompt(prompt) {
@@ -214,7 +288,7 @@ export function prunePicks(ritual, { now = Date.now(), keep = 864e5 } = {}) {
   try {
     for (const d of readdirSync(root)) {
       const dir = path.join(root, d);
-      if (now - statSync(dir).mtimeMs > keep) { rmSync(dir, { recursive: true, force: true }); removed++; continue; }
+      if (now - statSync(dir).mtimeMs > keep) { rmSync(dir, { recursive: true, force: true }); rmSync(queueOf(dir), { recursive: true, force: true }); removed++; continue; }
       for (const f of readdirSync(dir).filter((f) => f.endsWith(".job.json"))) {
         const j = readJson(path.join(dir, f), null);
         if (j && "prompt" in j) { delete j.prompt; writeFileSync(path.join(dir, f), JSON.stringify(j)); }
@@ -226,6 +300,8 @@ export function prunePicks(ritual, { now = Date.now(), keep = 864e5 } = {}) {
 
 export async function selftest() {
   const bad = [];
+  // Any worker a broken case starts must find no model to call: a selftest never spends a real pick.
+  process.env.CLAUDE_BIN = path.join(os.tmpdir(), "ritual-no-claude");
   const L = (id, title, q) => ({ id, title, parts: { "The idea": "x", "Detector question": q } });
   const lessons = [L("41", "Check in the format the reader sees", "Did I look at it as they will?"), L("WEB-4", "If you disable the button, focus goes with it", "Where is the focus after submit?"), L("P-1", "Own", "Own question?")];
   if (!pickPrompt(lessons, "Writing x").includes("WEB-4 · If you disable the button") || !pickPrompt(lessons, "Writing x").includes("## The work\nWriting x")) bad.push("pickPrompt lacks the catalog or the work");
@@ -298,6 +374,47 @@ export async function selftest() {
     prunePicks(ritual, { now: later + 1000 });
     if (existsSync(path.join(picksRoot, "old")) || !existsSync(path.join(picksRoot, "recent"))) bad.push("pruning removes picks older than a day and keeps recent ones");
     if (readFileSync(path.join(picksRoot, "recent", "a.job.json"), "utf8").includes("secret plan")) bad.push("pruning removes the work an old-format job kept");
+    // Rule 1: the same change in another file is not picked again.
+    const s = {};
+    if (!fileRule(s, "src/a.js", "colour→color").pick || fileRule(s, "src/b.js", "colour→color").rule !== "same change") bad.push("rule 1: the same change in another file is skipped");
+    if (fileRule(s, "src/c.js", "something else").rule) bad.push("rule 1: a different change is picked");
+    // Rule 2: a kind of file whose picks bring nothing new is skipped, until the next request.
+    s.rules.quiet[kindOf("content/l1.mdx")] = 3;
+    if (fileRule(s, "content/l9.mdx", "new text").rule !== "nothing new" || fileRule(s, "content/sub/x.mdx", "other").rule) bad.push(`rule 2: a quiet kind is skipped, another folder is not (${kindOf("content/l1.mdx")})`);
+    resetQuiet(s);
+    if (fileRule(s, "content/l10.mdx", "newer text").rule) bad.push("rule 2: a request starts the count over");
+    // One in CHECK_EVERY skips is picked anyway, as a check of the rule that skipped it.
+    const c = { rules: { changes: {}, quiet: {}, skipped: 0 } };
+    fileRule(c, "x/a.md", "same");
+    const plans = Array.from({ length: CHECK_EVERY }, (_, k) => fileRule(c, `x/b${k}.md`, "same"));
+    if (plans.filter((p) => p.pick).length !== 1 || !plans.at(-1).pick || plans.at(-1).rule !== "same change") bad.push(`one in ${CHECK_EVERY} skipped files is checked: ${JSON.stringify(plans)}`);
+    // Delivery counts the quiet picks per kind, and a check that brings new lessons is its rule's failure.
+    const q = path.join(dirOf(ritual, "q"));
+    mkdirSync(q, { recursive: true });
+    const doneFile = (name, o) => writeFileSync(path.join(q, `${name}.done.json`), JSON.stringify({ answered: true, ...o }));
+    const st = { shown: ["41"] };
+    doneFile("file-1", { key: "file:content/a.mdx", label: "content/a.mdx", ids: ["41"] });
+    doneFile("file-2", { key: "file:content/b.mdx", label: "content/b.mdx", ids: [] });
+    deliver(ritual, "q", st, lessons);
+    if (st.rules.quiet["content/*.mdx"] !== 2) bad.push(`picks with nothing new count toward rule 2: ${JSON.stringify(st.rules.quiet)}`);
+    doneFile("file-3", { key: "file:content/c.mdx", label: "content/c.mdx", ids: ["WEB-4"], check: "nothing new" });
+    deliver(ritual, "q", st, lessons);
+    if (st.rules.quiet["content/*.mdx"] !== 0 || st.ruleFailures?.[0]?.rule !== "nothing new" || st.ruleFailures[0].ids.join() !== "WEB-4" || st.ruleFailures[0].file !== "content/c.mdx") bad.push(`a check that brings new lessons is its rule's failure, and picking resumes: ${JSON.stringify(st)}`);
+    // Rule 3: while a file pick runs, the next file waits in the queue; the worker then picks the queued files together.
+    const r3 = dirOf(ritual, "r3");
+    mkdirSync(r3, { recursive: true });
+    writeFileSync(path.join(r3, "file-running.job.json"), JSON.stringify({ key: "file:a.js", label: "a.js", ids: ["41", "WEB-4"] }));
+    if (!filePickRunning(r3)) bad.push("rule 3: a file job with no answer yet is a pick in flight");
+    const queued = startPick(ritual, "r3", { key: "file:b.js", label: "b.js", work: "Writing the file b.js:\n\n<button disabled>" }, lessons);
+    const queued2 = startPick(ritual, "r3", { key: "file:c.js", label: "c.js", work: "Writing the file c.js:\n\nfetch(url)" }, lessons);
+    if ((existsSync(queueOf(r3)) ? readdirSync(queueOf(r3)).length : 0) !== 2) bad.push("rule 3: files written while a pick runs wait in the queue");
+    let asked = "";
+    await drainQueue(path.join(r3, "file-running.job.json"), pickPrompt(lessons, "Writing the file a.js"), async (p) => { asked = p; return '["WEB-4"]'; }, { settle: 10 });
+    const b = readJson(queued.replace(".job.json", ".done.json"), {}), c2 = readJson(queued2.replace(".job.json", ".done.json"), {});
+    if (!asked.includes("<button disabled>") || !asked.includes("fetch(url)") || !asked.includes("## Lessons\n41 · ") || !asked.includes("\nWEB-4 · ")) bad.push(`rule 3: one pick reads every queued file and the catalog:\n${asked.slice(0, 300)}`);
+    if (b.ids?.join() !== "WEB-4" || c2.ids?.join() !== "WEB-4" || b.batch !== 2 || readdirSync(queueOf(r3)).length) bad.push(`rule 3: every queued file gets the answer and the queue is emptied: ${JSON.stringify(b)}`);
+    writeFileSync(path.join(r3, "file-running.done.json"), "{}");
+    if (filePickRunning(r3)) bad.push("rule 3: with every job answered, no pick is in flight");
     // A session can't queue picks without end.
     for (let i = 0; i < MAX_PICKS + 5; i++) startPick(ritual, "s2", { key: `file:k${i}`, label: "x", work: "y" }, lessons, { run: () => {} });
     if (readdirSync(dirOf(ritual, "s2")).filter((f) => f.endsWith(".job.json")).length !== MAX_PICKS) bad.push(`a session queues at most ${MAX_PICKS} file picks`);
@@ -321,5 +438,6 @@ if (isMain(import.meta.url)) {
     let prompt = "";
     for await (const chunk of process.stdin) prompt += chunk;
     await runJob(args[i + 1], prompt);
+    if (path.basename(args[i + 1]).startsWith("file-")) await drainQueue(args[i + 1], prompt);
   }
 }
