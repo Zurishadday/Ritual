@@ -69,6 +69,8 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **45.** [Alguém também percorre o caminho do erro](interface-and-design.md#45-alguém-também-percorre-o-caminho-do-erro)
 - **46.** [O que roda a cada requisição não pode crescer com o conteúdo](interface-and-design.md#46-o-que-roda-a-cada-requisição-não-pode-crescer-com-o-conteúdo)
 - **49.** [Uma regra geral não pode vencer em silêncio as específicas](interface-and-design.md#49-uma-regra-geral-não-pode-vencer-em-silêncio-as-específicas)
+- **VIDEO-1.** [Em um vídeo, cada ação cai quando a narração a nomeia](interface-and-design.md#video-1-em-um-vídeo-cada-ação-cai-quando-a-narração-a-nomeia)
+- **VIDEO-2.** [Em um vídeo, o que muda sem aparecer é marcado](interface-and-design.md#video-2-em-um-vídeo-o-que-muda-sem-aparecer-é-marcado)
 - **WEB-2.** [Um formulário público recebe robôs desde o primeiro dia](interface-and-design.md#web-2-um-formulário-público-recebe-robôs-desde-o-primeiro-dia)
 - **WEB-3.** [Um fallback que ninguém testou não é fallback](interface-and-design.md#web-3-um-fallback-que-ninguém-testou-não-é-fallback)
 - **WEB-4.** [Se você desabilita o botão, o foco vai junto](interface-and-design.md#web-4-se-você-desabilita-o-botão-o-foco-vai-junto)

@@ -114,14 +114,16 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 50. Se duas explicações preveem a mesma coisa, seu exemplo não escolhe entre elas
 
-`from: 0b385079` · `by: ai`
+`from: 9148c81d` · `by: ai`
 
 **A ideia.** Um exemplo só confirma a sua explicação se a explicação rival daria um resultado diferente. Se as duas preveem o mesmo, o exemplo faz você acreditar na que lhe ocorreu primeiro.
 
 **Exemplo.** Uma lição comparou subir em cinco pontos o primeiro passo de um funil com subir o último. O primeiro venceu, e o texto dizia: “eles valem mais onde há mais visitas”. Mas o primeiro passo também era o que menos convertia, e essa era a causa: em um funil em que o primeiro passo converte melhor, o último vence apesar de ter menos visitas. Em outro projeto, uma página foi culpada por carregar em 2.7 s; um teste que requisitava as páginas uma por uma passava mesmo sem a correção, porque a causa real eram quarenta requisições ao mesmo tempo.
 
-**Pergunta detectora.** Que outra explicação daria este mesmo resultado? Meu exemplo a descarta?
+**Outro exemplo.** Um vídeo de demonstração gerado dizia “funcionou porque você removeu os espaços antes”, mas nenhuma das células da sua planilha de exemplo tinha espaços extras: sem remover, a substituição dava o mesmo resultado. Um revisor apontou isso. Uma célula com espaço no fim, que só bate depois de remover os espaços, fez os dados mostrarem a causa, e um assert no script que monta a demonstração agora falha se ela deixar de mostrá-la.
+
+**Pergunta detectora.** Que outra explicação daria este mesmo resultado? Meu exemplo a descarta? Se o passo que considero responsável for pulado, o resultado muda?
 
 **Sinal de alerta.** “Os números confirmam.”
 
-**O que fazer.** Antes de ensinar ou reportar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se você não consegue separá-las, diga que o exemplo é compatível com as duas.
+**O que fazer.** Antes de ensinar ou reportar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se você não consegue separá-las, diga que o exemplo é compatível com as duas. Quando o código monta o exemplo (uma demonstração, um conjunto de dados de amostra), deixe nele um assert que falhe se a explicação rival der o mesmo resultado.

@@ -114,14 +114,16 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 50. If two explanations predict the same thing, your example doesn't choose between them
 
-`origin: field · ~opus · 2026-10` · `groups: writing-and-docs, tests-and-checks`
+`origin: field · ~opus · 2026-10` · `groups: writing-and-docs, tests-and-checks` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** An example confirms your explanation only if the rival explanation would give a different result. If both predict the same, the example lets you believe whichever came to mind first.
 
 **Example.** A lesson compared raising a funnel's first step by five points against raising its last step. The first won, and the text said: "they're worth more where there are more visits". But the first step was also the one that converted least, and that was the cause; in a funnel where the first step converts better, the last one wins despite having fewer visits. In another project, a page was blamed for loading in 2.7 s; a test that requested pages one by one passed even without the fix, because the real cause was forty requests at once.
 
-**Detector question.** What other explanation would give this same result? Does my example rule it out?
+**Another example.** A generated demo video said "it worked because you trimmed first", but none of the cells in its sample sheet had extra spaces: without trimming, the replace gave the same result. A reviewer flagged it. A cell with a trailing space, which only matches after trimming, made the data show the cause, and an assert in the script that builds the demo now fails if it stops showing it.
+
+**Detector question.** What other explanation would give this same result? Does my example rule it out? If the step I credit is skipped, does the result change?
 
 **Warning sign.** "The numbers confirm it."
 
-**What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both.
+**What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both. When code builds the example (a demo, a sample dataset), leave an assert in it that fails if the rival would give the same result.

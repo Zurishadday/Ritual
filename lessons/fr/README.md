@@ -69,6 +69,8 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **45.** [Quelqu'un parcourt aussi le chemin d'erreur](interface-and-design.md#45-quelquun-parcourt-aussi-le-chemin-derreur)
 - **46.** [Ce qui s'exécute à chaque requête ne peut pas grandir avec le contenu](interface-and-design.md#46-ce-qui-sexécute-à-chaque-requête-ne-peut-pas-grandir-avec-le-contenu)
 - **49.** [Une règle générale ne doit pas écraser en silence les règles spécifiques](interface-and-design.md#49-une-règle-générale-ne-doit-pas-écraser-en-silence-les-règles-spécifiques)
+- **VIDEO-1.** [Dans une vidéo, chaque action tombe au moment où la narration la nomme](interface-and-design.md#video-1-dans-une-vidéo-chaque-action-tombe-au-moment-où-la-narration-la-nomme)
+- **VIDEO-2.** [Dans une vidéo, ce qui change sans être montré est signalé](interface-and-design.md#video-2-dans-une-vidéo-ce-qui-change-sans-être-montré-est-signalé)
 - **WEB-2.** [Un formulaire public reçoit des robots dès le premier jour](interface-and-design.md#web-2-un-formulaire-public-reçoit-des-robots-dès-le-premier-jour)
 - **WEB-3.** [Un repli que personne n'a testé n'est pas un repli](interface-and-design.md#web-3-un-repli-que-personne-na-testé-nest-pas-un-repli)
 - **WEB-4.** [Si vous désactivez le bouton, le focus part avec lui](interface-and-design.md#web-4-si-vous-désactivez-le-bouton-le-focus-part-avec-lui)

@@ -132,6 +132,7 @@ Au-dessus des groupes se trouvent les **paquets** par type de projet : des leço
 |---|---|
 | `web` | 5 : perte des données sauvegardées en cas d'altération, les robots sur un formulaire public, le repli sans JavaScript, le focus sur l'envoi et une connexion sans limite de tentatives. |
 | `education` | 5 : un exercice réussi sans la compétence, la réponse visible avant la question, deux réponses défendables, deviner par la position ou la longueur, et un indice qui donne la réponse. |
+| `video` | 2 : chaque action tombe au moment où la narration la nomme, et ce qui change sans être montré est signalé. |
 | `apps`, `crm`, `ai` | En préparation, avec la même méthode. |
 | Le vôtre | Un type de projet qui manque (mobile, données, jeux…) commence par sa première leçon : voir [où va une leçon](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

@@ -69,6 +69,8 @@
 - **45.** [也会有人走进错误的路径](interface-and-design.md#45-也会有人走进错误的路径)
 - **46.** [每次请求都要运行的东西，不能随内容一起增长](interface-and-design.md#46-每次请求都要运行的东西不能随内容一起增长)
 - **49.** [通用规则不能悄悄压过具体规则](interface-and-design.md#49-通用规则不能悄悄压过具体规则)
+- **VIDEO-1.** [视频中，每个操作都在旁白点名它时落下](interface-and-design.md#video-1-视频中每个操作都在旁白点名它时落下)
+- **VIDEO-2.** [视频中，看不见的变化要加以标记](interface-and-design.md#video-2-视频中看不见的变化要加以标记)
 - **WEB-2.** [公开的表单从第一天起就会遇到机器人](interface-and-design.md#web-2-公开的表单从第一天起就会遇到机器人)
 - **WEB-3.** [没有人测试过的备用方案，不算备用方案](interface-and-design.md#web-3-没有人测试过的备用方案不算备用方案)
 - **WEB-4.** [禁用按钮时，焦点也会跟着消失](interface-and-design.md#web-4-禁用按钮时焦点也会跟着消失)

@@ -140,6 +140,36 @@ What applies when a person is going to see or use what you build: screens, compo
 
 **What to do.** Let the general rule touch only what's its own (the focus outline, not the shape). If it should win on purpose, write that down next to it. And test it on the most different piece, not only the common one.
 
+### VIDEO-1. In a video, each action lands when the narration names it
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: writing-and-docs` · `packages: video`
+
+**The idea.** When the screen does something before or after the voice says it, the viewer looks at what they are not hearing and hears what they are not seeing. A click that comes before its word teaches the click without its name.
+
+**Example.** In a series of narrated spreadsheet videos built with code, each click was placed as a fraction of its scene. A pedagogical reviewer found clicks that landed before the voice named the option (a color in a side panel), and a sentence that opened with context while the cursor was already making its first click. The rule that came out: if a sentence opens with context, that stretch has no clicks, and each click sits on the word that names it.
+
+**Another example.** In the same series, the course owner said a video jumped from one idea to the next too fast. A still pause of 1 to 1.5 seconds at the end of each new idea fixed it.
+
+**Detector question.** For each click and key press in this scene, which word of the narration does it land on? Does that word name it? Does each new idea end with a still moment before the next one starts?
+
+**Warning sign.** "It says it around there" · "it's a fraction of the scene, it lines up".
+
+**What to do.** If the voice gives no timestamp per word, place each action by where its word sits in the sentence (the characters before it), and check it in the full video at its real speed, not in still frames. If the voice engine gives word timestamps, place actions on them. Changing the voice or rewording a sentence moves every word: check the scene again. Close each new idea with a short still pause, about a second, and judge it at real speed too.
+
+### VIDEO-2. In a video, what changes without showing gets marked
+
+`origin: field · claude-opus-5-5 · 2026-10` · `packages: video`
+
+**The idea.** When a step's effect is invisible on screen (removing a trailing space, turning a formula into its value), a video that shows that step looks like it does nothing. The viewer cannot click around to find out, so the video has to mark what changed and hold still long enough to see the mark.
+
+**Example.** A generated video taught how to trim extra spaces in a spreadsheet column and then paste the result as values only. The cleaned column looked exactly like the dirty one, and pasting values changed nothing visible. The course owner watched it and said the change was not noticeable and that it was unclear why values-only mattered. It was fixed with an orange dot on every extra space, a side-by-side scene of both columns, and an arrow from the source cell to the formula that reads it, each held still for a moment.
+
+**Detector question.** With the sound off, does the screen show what this step changed, and does it stay on it long enough to be seen?
+
+**Warning sign.** "The narration explains it" · "the change is subtle, but it's there".
+
+**What to do.** For each step in the script, write down what changes on screen. If nothing visible changes, add a mark (a dot, the formula bar, an arrow, a before and after side by side), hold the frame on it for a moment, and say in the narration that it is the video's mark, not the program's.
+
 ### WEB-2. A public form gets bots from day one
 
 `origin: lab · claude-sonnet-5-5 · 2026-10` · `groups: scripts-and-files` · `packages: web`
@@ -195,17 +225,3 @@ What applies when a person is going to see or use what you build: screens, compo
 **Warning sign.** "The default password is strong" · "it's only the admin page".
 
 **What to do.** Slow down or block repeated failures, per address and per account, with a wait that grows. Require a minimum length when the owner sets a password. Test it: send twenty wrong passwords in a row and check that the last ones are refused.
-
-### VIDEO-1. In a video, each action lands when the narration names it
-
-`origin: field · claude-opus-5-5 · 2026-10` · `groups: writing-and-docs` · `packages: video`
-
-**The idea.** When the screen does something before or after the voice says it, the viewer looks at what they are not hearing and hears what they are not seeing. A click that comes before its word teaches the click without its name.
-
-**Example.** In a series of narrated spreadsheet videos built with code, each click was placed as a fraction of its scene. A pedagogical reviewer found clicks that landed before the voice named the option (a color in a side panel), and a sentence that opened with context while the cursor was already making its first click. The rule that came out: if a sentence opens with context, that stretch has no clicks, and each click sits on the word that names it.
-
-**Detector question.** For each click and key press in this scene, which word of the narration does it land on? Does that word name it?
-
-**Warning sign.** "It says it around there" · "it's a fraction of the scene, it lines up".
-
-**What to do.** If the voice gives no timestamp per word, place each action by where its word sits in the sentence (the characters before it), and check it in the full video at its real speed, not in still frames. If the voice engine gives word timestamps, place actions on them. Changing the voice or rewording a sentence moves every word: check the scene again.

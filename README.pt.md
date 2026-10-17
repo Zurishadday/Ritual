@@ -132,6 +132,7 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 |---|---|
 | `web` | 5: perda de dados salvos quando são danificados, robôs num formulário público, o recurso de contingência sem JavaScript, o foco no envio e login sem limite de tentativas. |
 | `education` | 5: exercício aprovado sem a habilidade, resposta visível antes da pergunta, duas respostas defensáveis, adivinhar pela posição ou pelo tamanho, e dica que entrega a resposta. |
+| `video` | 2: cada ação cai quando a narração a nomeia, e o que muda sem aparecer é marcado. |
 | `apps`, `crm`, `ai` | A caminho, com o mesmo método. |
 | O seu | Um tipo de projeto que ainda não tem (móvel, dados, jogos…) começa com a sua primeira lição: veja [onde vai uma lição](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

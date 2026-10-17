@@ -131,7 +131,7 @@ On top of the groups sit the **packages** per kind of project: lessons that only
 |---|---|
 | `web` | 5: what gets lost when the saved data gets damaged, bots on a public form, the fallback without JavaScript, focus on submit, and a login with no limit on attempts. |
 | `education` | 5: an exercise that passes without the skill, the answer visible before the question, two defensible answers, guessing by position or length, and a hint that gives the answer away. |
-| `video` | 1: each action lands when the narration names it. |
+| `video` | 2: each action lands when the narration names it, and what changes without showing gets marked. |
 | `apps`, `crm`, `ai` | On the way, with the same method. |
 | Yours | A kind of project that's missing (mobile, data, games…) starts with its first lesson: see [where a lesson goes](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

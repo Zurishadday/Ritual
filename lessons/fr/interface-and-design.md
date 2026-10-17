@@ -141,6 +141,36 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 **Que faire.** Laissez la règle générale ne toucher que ce qui lui appartient (le contour de focus, pas la forme). Si elle doit l'emporter volontairement, écrivez-le à côté. Et testez-la sur l'élément le plus différent, pas seulement sur le plus courant.
 
+### VIDEO-1. Dans une vidéo, chaque action tombe au moment où la narration la nomme
+
+`from: 93ac042f` · `by: ai`
+
+**L'idée.** Quand l'écran fait quelque chose avant ou après que la voix le dit, le spectateur regarde ce qu'il n'entend pas et entend ce qu'il ne voit pas. Un clic qui précède son mot enseigne le clic sans son nom.
+
+**Exemple.** Dans une série de vidéos de tableur commentées, construites avec du code, chaque clic était placé à une fraction de sa scène. Un relecteur pédagogique a trouvé des clics tombés avant que la voix ne nomme l'option (une couleur dans un panneau latéral), et une phrase qui commençait par le contexte alors que le curseur faisait déjà son premier clic. La règle qui en est sortie : si une phrase commence par le contexte, ce passage ne contient aucun clic, et chaque clic tombe sur le mot qui le nomme.
+
+**Autre exemple.** Dans la même série, le responsable du cours a dit qu'une vidéo passait d'une idée à la suivante beaucoup trop vite. Une pause sur image fixe de 1 à 1,5 seconde à la fin de chaque nouvelle idée a réglé le problème.
+
+**Question détectrice.** Pour chaque clic et chaque frappe de touche dans cette scène, sur quel mot de la narration tombe-t-il ? Ce mot le nomme-t-il ? Chaque nouvelle idée se termine-t-elle par un moment immobile avant que la suivante ne commence ?
+
+**Signal d'alarme.** « Ça le dit à peu près là » · « c'est une fraction de la scène, ça tombe juste ».
+
+**Que faire.** Si la voix ne donne aucun horodatage par mot, placez chaque action selon la position de son mot dans la phrase (les caractères qui le précèdent), et vérifiez-la dans la vidéo entière à sa vitesse réelle, pas sur des images fixes. Si le moteur de voix fournit des horodatages par mot, placez les actions dessus. Changer de voix ou reformuler une phrase déplace chaque mot : revérifiez la scène. Terminez chaque nouvelle idée par une courte pause sur image fixe, d'environ une seconde, et jugez-la aussi à vitesse réelle.
+
+### VIDEO-2. Dans une vidéo, ce qui change sans être montré est signalé
+
+`from: c7d1a08d` · `by: ai`
+
+**L'idée.** Quand l'effet d'une étape est invisible à l'écran (supprimer un espace final, transformer une formule en sa valeur), une vidéo qui montre cette étape a l'air de ne rien faire. Le spectateur ne peut pas cliquer partout pour le découvrir : la vidéo doit donc signaler ce qui a changé et rester assez longtemps immobile pour qu'on voie la marque.
+
+**Exemple.** Une vidéo générée enseignait comment supprimer les espaces superflus dans une colonne de tableur, puis coller le résultat en valeurs uniquement. La colonne nettoyée avait exactement l'air de la colonne sale, et coller les valeurs ne changeait rien de visible. Le responsable du cours l'a regardée et a dit que le changement ne se remarquait pas, et qu'on ne comprenait pas pourquoi coller uniquement les valeurs comptait. Elle a été corrigée avec un point orange sur chaque espace superflu, une scène côte à côte des deux colonnes, et une flèche allant de la cellule source à la formule qui la lit, chacun maintenu immobile un instant.
+
+**Question détectrice.** Son coupé, l'écran montre-t-il ce que cette étape a changé, et y reste-t-il assez longtemps pour être vu ?
+
+**Signal d'alarme.** « La narration l'explique » · « le changement est discret, mais il est là ».
+
+**Que faire.** Pour chaque étape du script, notez ce qui change à l'écran. Si rien de visible ne change, ajoutez une marque (un point, la barre de formule, une flèche, un avant et après côte à côte), maintenez l'image dessus un instant, et dites dans la narration que c'est la marque de la vidéo, et non celle du logiciel.
+
 ### WEB-2. Un formulaire public reçoit des robots dès le premier jour
 
 `from: 6a05ed7d` · `by: ai`

@@ -141,6 +141,36 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 **O que fazer.** Deixe a regra geral mexer só no que é dela (o contorno do foco, e não a forma). Se ela deve vencer de propósito, escreva isso ao lado. E teste na peça mais diferente, e não só na comum.
 
+### VIDEO-1. Em um vídeo, cada ação cai quando a narração a nomeia
+
+`from: 93ac042f` · `by: ai`
+
+**A ideia.** Quando a tela faz algo antes ou depois de a voz dizer, o espectador olha para o que não está ouvindo e ouve o que não está vendo. Um clique que acontece antes da palavra que o nomeia ensina o clique sem o nome.
+
+**Exemplo.** Em uma série de vídeos narrados de planilhas, feitos com código, cada clique era posicionado como uma fração da sua cena. Um revisor pedagógico encontrou cliques que aconteciam antes de a voz nomear a opção (uma cor no painel lateral), e uma frase que abria com contexto enquanto o cursor já fazia o primeiro clique. A regra que saiu disso: se uma frase abre com contexto, esse trecho não tem cliques, e cada clique cai sobre a palavra que o nomeia.
+
+**Outro exemplo.** Na mesma série, o dono do curso disse que um vídeo passava de uma ideia para a outra depressa demais. Uma pausa parada de 1 a 1,5 segundos no fim de cada ideia nova resolveu.
+
+**Pergunta detectora.** Para cada clique e cada tecla pressionada nesta cena, em qual palavra da narração ele cai? Essa palavra o nomeia? Cada ideia nova termina com um momento parado antes de começar a próxima?
+
+**Sinal de alerta.** “Diz isso mais ou menos aí” · “é uma fração da cena, encaixa”.
+
+**O que fazer.** Se a voz não dá a marcação de tempo de cada palavra, posicione cada ação pelo lugar que a palavra dela ocupa na frase (os caracteres antes dela), e confira no vídeo completo, na velocidade real, e não em quadros parados. Se o motor de voz dá marcações de tempo por palavra, posicione as ações nelas. Trocar a voz ou reescrever uma frase desloca todas as palavras: confira a cena de novo. Feche cada ideia nova com uma pausa parada curta, de cerca de um segundo, e julgue também na velocidade real.
+
+### VIDEO-2. Em um vídeo, o que muda sem aparecer é marcado
+
+`from: c7d1a08d` · `by: ai`
+
+**A ideia.** Quando o efeito de um passo não aparece na tela (tirar um espaço extra no fim do texto, transformar uma fórmula no seu valor), um vídeo que mostra esse passo parece não fazer nada. O espectador não pode clicar à vontade para descobrir, então o vídeo precisa marcar o que mudou e ficar parado tempo suficiente para a marca ser vista.
+
+**Exemplo.** Um vídeo gerado ensinava a remover espaços extras de uma coluna de planilha e depois colar o resultado só como valores. A coluna limpa parecia exatamente igual à suja, e colar valores não mudava nada visível. O dono do curso assistiu e disse que a mudança não era perceptível e que não ficava claro por que colar só valores importava. Foi corrigido com um ponto laranja em cada espaço extra, uma cena lado a lado com as duas colunas e uma seta da célula de origem até a fórmula que a lê, cada uma mantida parada por um momento.
+
+**Pergunta detectora.** Com o som desligado, a tela mostra o que este passo mudou, e fica nisso tempo suficiente para ser visto?
+
+**Sinal de alerta.** “A narração explica” · “a mudança é sutil, mas está lá”.
+
+**O que fazer.** Para cada passo do roteiro, anote o que muda na tela. Se nada visível muda, acrescente uma marca (um ponto, a barra de fórmulas, uma seta, um antes e depois lado a lado), mantenha o quadro nela por um momento e diga na narração que aquela é a marca do vídeo, e não a do programa.
+
 ### WEB-2. Um formulário público recebe robôs desde o primeiro dia
 
 `from: 6a05ed7d` · `by: ai`

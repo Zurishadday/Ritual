@@ -114,14 +114,16 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 50. Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles
 
-`from: 0b385079` · `by: ai`
+`from: 9148c81d` · `by: ai`
 
 **L'idée.** Un exemple ne confirme votre explication que si l'explication rivale donnerait un résultat différent. Si les deux prédisent la même chose, l'exemple vous laisse croire celle qui vous est venue en premier à l'esprit.
 
 **Exemple.** Une leçon comparait l'effet d'une hausse de cinq points sur la première étape d'un tunnel de conversion et sur sa dernière étape. La première l'emportait, et le texte disait : « elles valent plus là où il y a plus de visites ». Mais la première étape était aussi celle qui convertissait le moins, et c'était la vraie cause ; dans un tunnel où la première étape convertit mieux, c'est la dernière qui l'emporte, malgré moins de visites. Dans un autre projet, une page était accusée de mettre 2.7 s à se charger ; un test qui demandait les pages une à une passait même sans le correctif, parce que la vraie cause était quarante requêtes lancées en même temps.
 
-**Question détectrice.** Quelle autre explication donnerait ce même résultat ? Mon exemple l'écarte-t-il ?
+**Autre exemple.** Une vidéo de démonstration générée disait « ça a marché parce que vous avez d'abord supprimé les espaces », mais aucune cellule de sa feuille d'exemple ne contenait d'espaces superflus : sans suppression, le remplacement donnait le même résultat. Un relecteur l'a signalé. Une cellule avec un espace final, qui ne correspond qu'après suppression des espaces, a fait apparaître la cause dans les données, et une assertion dans le script qui construit la démo échoue désormais si elle cesse de la montrer.
+
+**Question détectrice.** Quelle autre explication donnerait ce même résultat ? Mon exemple l'écarte-t-il ? Si l'étape à laquelle j'attribue ce résultat est sautée, celui-ci change-t-il ?
 
 **Signal d'alarme.** « Les chiffres le confirment. »
 
-**Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux.
+**Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux. Quand du code construit l'exemple (une démo, un jeu de données d'exemple), laissez-y une assertion qui échoue si l'explication rivale donnerait le même résultat.

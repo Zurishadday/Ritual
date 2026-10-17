@@ -132,6 +132,7 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 |---|---|
 | `web` | 5: lo que se pierde cuando se dañan los datos guardados, los robots en un formulario público, el respaldo sin JavaScript, el foco al enviar y un inicio de sesión sin límite de intentos. |
 | `education` | 5: un ejercicio que se aprueba sin la habilidad, la respuesta visible antes de la pregunta, dos respuestas defendibles, adivinar por el lugar o el largo, y una pista que regala la respuesta. |
+| `video` | 2: cada acción cae cuando la narración la nombra, y lo que cambia sin mostrarse se marca. |
 | `apps`, `crm`, `ai` | En camino, con el mismo método. |
 | El tuyo | Un tipo de proyecto que falte (móvil, datos, juegos…) empieza con su primera lección: mira [dónde va una lección](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

@@ -69,6 +69,8 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **45.** [El camino del error también lo recorre alguien](interface-and-design.md#45-el-camino-del-error-también-lo-recorre-alguien)
 - **46.** [Lo que corre en cada petición no puede crecer con el contenido](interface-and-design.md#46-lo-que-corre-en-cada-petición-no-puede-crecer-con-el-contenido)
 - **49.** [Una regla general no debe ganarle en silencio a las particulares](interface-and-design.md#49-una-regla-general-no-debe-ganarle-en-silencio-a-las-particulares)
+- **VIDEO-1.** [En un video, cada acción cae cuando la narración la nombra](interface-and-design.md#video-1-en-un-video-cada-acción-cae-cuando-la-narración-la-nombra)
+- **VIDEO-2.** [En un video, lo que cambia sin mostrarse se marca](interface-and-design.md#video-2-en-un-video-lo-que-cambia-sin-mostrarse-se-marca)
 - **WEB-2.** [Un formulario público recibe robots desde el primer día](interface-and-design.md#web-2-un-formulario-público-recibe-robots-desde-el-primer-día)
 - **WEB-3.** [Un respaldo que nadie probó no es respaldo](interface-and-design.md#web-3-un-respaldo-que-nadie-probó-no-es-respaldo)
 - **WEB-4.** [Si deshabilitas el botón, el foco se va con él](interface-and-design.md#web-4-si-deshabilitas-el-botón-el-foco-se-va-con-él)

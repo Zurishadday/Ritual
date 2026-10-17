@@ -68,6 +68,7 @@
 - **46.** [What runs on every request can't grow with the content](interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content)
 - **49.** [A general rule must not silently beat the specific ones](interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones)
 - **VIDEO-1.** [In a video, each action lands when the narration names it](interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it)
+- **VIDEO-2.** [In a video, what changes without showing gets marked](interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked)
 - **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)
 - **WEB-3.** [A fallback nobody tested is not a fallback](interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback)
 - **WEB-4.** [If you disable the button, focus goes with it](interface-and-design.md#web-4-if-you-disable-the-button-focus-goes-with-it)
