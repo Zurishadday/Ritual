@@ -2,6 +2,13 @@
   "builtin": ["python-c", "python-no-file", "node-e-backslashes", "heredoc-backslashes", "sed-i-code"],
   "rules": [
     {
+      "name": "wait-without-limit",
+      "pattern": "^(?![\\s\\S]*(SECONDS|\\btimeout\\b|-gt\\b|-ge\\b))[\\s\\S]*\\buntil\\b[\\s\\S]*\\bdo\\b[\\s\\S]*\\bdone\\b",
+      "message": "A wait loop with no limit runs forever when what it waits for never comes: one was left running in the background for hours on 2026-10-16. Give it a limit (`SECONDS=0; until …; do sleep 2; [ $SECONDS -gt 90 ] && break; done`, or `timeout 90 …`).",
+      "blocks": ["D=$(ls -d picks/s1); until [ -f $D/a.done.json ] && [ -f $D/b.done.json ]; do sleep 2; done; cat $D/a.done.json", "until curl -s localhost:3000; do sleep 1; done"],
+      "allows": ["SECONDS=0; until [ -f x ]; do sleep 2; [ $SECONDS -gt 90 ] && break; done", "timeout 60 bash -c 'until [ -f x ]; do sleep 1; done'", "for i in 1 2 3; do echo $i; done", "git log --until=yesterday --oneline"]
+    },
+    {
       "name": "force-push-to-main",
       "pattern": "git\\s+push\\b[^\\n]*(--force|-f\\b)[^\\n]*\\b(main|master)\\b",
       "message": "A forced push to main rewrites shared history. Push to a branch and open a pull request.",

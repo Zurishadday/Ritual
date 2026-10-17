@@ -28,6 +28,7 @@ const CORRECTION = [
   // The person couldn't follow the answer: the explanation needs correcting, and the ritual should see it.
   /\bno entiendo\b/i, /\bsigo sin entender\b/i, /\bno (le )?entend[íi](?!\p{L})/iu, /\bexpl[íi]ca(me)? (otra vez|de nuevo|mejor)\b/i,
   /\bi (don't|do not|still don't) (understand|get it)\b/i, /\bexplain (it )?again\b/i,
+  /\bme confundiste\b/i, /\bno s[ée] qu[ée] est[áa] pasando\b/i, /\byou (confused|lost) me\b/i, /\bi (don't|do not) know what'?s going on\b/i,
 ];
 
 // A correction comes first: only the opening of a prompt counts, so a long brief that quotes "doesn't work" inside is not one.
@@ -66,6 +67,9 @@ const CASES = [
   // An answer the person couldn't follow is a correction of the explanation: three went unlogged in one session.
   ["No entiendo tú lo que estás diciendo. ¿Me puedes explicar?", true], ["Sigo sin entender, perdóname.", true], ["no entendí lo del cierre", true],
   ["I don't understand what you changed", true], ["explain it again, simpler", true],
+  ["Entonces, ¿sí lo tienes o no? Me confundiste.", true], ["No sé qué está pasando, me estás hablando de un contexto que ya se me olvidó", true],
+  ["you lost me there", true], ["I don't know what's going on with the build", true],
+  ["no me confundas con eso", false], ["¿sabes qué está pasando en el servidor?", false],
   ["Ya entendí.", false], ["entiendo, continúa", false], ["¿entiendes lo que quiero?", false],
   // A long brief pasted as a prompt is not a correction, even if it quotes one deep inside; a correction comes first.
   [`Necesito una página para el taller.\n\nRequisitos:\n- un formulario de contacto\n- una página de administración\n\nAntecedentes: la versión anterior no funciona en celular y hubo que hacerlo de nuevo varias veces.\n${"Detalle. ".repeat(40)}`, false],

@@ -24,5 +24,6 @@ This project's lessons live in `.ritual/lessons/`; the core ones, in the Ritual 
 
 Rules this project broke more than once and could not automate:
 
+- What a running tool is doing now (which Ritual copy a session runs, what is installed, what runs in the background) is looked at before it is said: on 2026-10-16 the user was told three times that the session ran the old copy while its hooks already ran from the updated one (plugins update mid-session; the guard's message names its path), and a background wait left running was found by the user, not by a check.
 - A number said in a reply that wasn't measured today (a cost, a size, a count) is given as an estimate with where it came from, or measured first: twice a figure from memory ($20–25 for an A/B that cost $40–70; "25 MB" for a model whose library took 379 MB) was off by half or more, and hooks don't fire on replies.
 <!-- ritual:end -->
