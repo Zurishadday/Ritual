@@ -258,6 +258,10 @@ export function selftest() {
     if (readJson(path.join(project, "b", ".ritual", "local", "sessions", "e2e.json"), {}).edited !== true) failures.push("a Write must mark the session as edited, for the close");
     spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_BIN: path.join(project, "no-claude"), CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: "cmd", tool_name: "Bash", tool_input: { command: "npm test" }, cwd: path.join(project, "a") }) });
     if (readJson(path.join(project, "a", ".ritual", "local", "sessions", "cmd.json"), {}).edited) failures.push("a command must not mark the session as edited");
+    // A file no group covers gets no questions: it is recorded, so the ritual sees the work Ritual does not know yet.
+    spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_BIN: path.join(project, "no-claude"), CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: "e2e", tool_name: "Write", tool_input: { file_path: path.join(project, "b", "videos", "scene.py") }, cwd: path.join(project, "a") }) });
+    const outside = readJson(path.join(project, "b", ".ritual", "local", "sessions", "e2e.json"), {}).ungrouped ?? [];
+    if (outside.join() !== "videos/scene.py") failures.push(`a file outside every group is recorded, and one inside a group is not: ${JSON.stringify(outside)}`);
     // The first step after a request: stopped with the lessons its pick found; let through when the pick found nothing new.
     const step = (id, ids) => {
       const picks = path.join(project, "a", ".ritual", "local", "picks", id);
@@ -330,6 +334,10 @@ if (isMain(import.meta.url)) {
   state.data.last = { tool: input.tool_name, target, date: new Date().toISOString() };
   // For the close (hooks/close.mjs): this session changed files, so it gets checked before it ends.
   if (/^(Edit|Write|MultiEdit|NotebookEdit)$/.test(input.tool_name)) state.data.edited = true;
+  // A file no group covers gets no questions. It is recorded so the ritual can tell a missing pattern from a kind of
+  // work no package covers yet (summary.mjs, "Files outside every group"). The last 50 are enough to see the pattern.
+  if (!group && target && /^(Edit|Write|MultiEdit|NotebookEdit)$/.test(input.tool_name))
+    state.data.ungrouped = [...new Set([...(state.data.ungrouped ?? []), target])].slice(-50);
   const out = [];
   if (group && !state.data.sent.includes(group)) {
     const text = context(group, config, ritual);

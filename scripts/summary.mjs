@@ -110,6 +110,10 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   const byGroup = {};
   for (const s of recent) for (const g of s.sent ?? []) byGroup[g] = (byGroup[g] ?? 0) + 1;
   lines.push("", `Groups touched in ${recent.length} session(s): ${Object.entries(byGroup).sort((a, b) => b[1] - a[1]).map(([g, n]) => `${g} (${n})`).join(", ") || "none recorded"}`);
+  // Files edited with no group got no questions: either a pattern is missing in .ritual/config.json, or this is a kind
+  // of work no group or package covers yet (step "New segment?" of the ritual decides which, with its reason).
+  const outside = [...new Set(recent.flatMap((s) => s.ungrouped ?? []))];
+  if (outside.length) lines.push(`Files outside every group: ${outside.length} (${outside.slice(0, 5).join(", ")}${outside.length > 5 ? ", …" : ""}). They got no questions.`);
 
   const candidates = path.join(dir, "candidates.md");
   const rows = existsSync(candidates) ? readFileSync(candidates, "utf8").split("\n").filter((l) => /^\|\s*\S/.test(l) && !/^\|\s*#\s*\||^\|\s*-+/.test(l)) : [];
@@ -204,11 +208,11 @@ export function selftest() {
     // WEB-1: what a hook writes after the cut-off line must not stick to it.
     appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type: "command", command: "npm run lint", error: "Exit code 1\nafter the cut" });
     writeFileSync(path.join(tmp, ".ritual", "local", "guard.jsonl"), JSON.stringify({ date: "2026-10-12T10:01:00Z", rule: "python-c", command: "python -c 1" }) + "\n");
-    writeFileSync(path.join(local, "a.json"), JSON.stringify({ sent: ["interface-and-design", "console-and-tools"], last: { date: "2026-10-12T10:05:00Z" } }));
+    writeFileSync(path.join(local, "a.json"), JSON.stringify({ sent: ["interface-and-design", "console-and-tools"], ungrouped: ["videos/scene.py", "videos/voice.py"], last: { date: "2026-10-12T10:05:00Z" } }));
     writeFileSync(path.join(tmp, ".ritual", "candidates.md"), "# Candidates\n\n| # | What it would check | Lesson | Status | Date |\n|---|---|---|---|---|\n| 1 | check x | 13 | open | 2026-10-02 |\n| 2 | check y | 21 | done | 2026-10-03 |\n");
     writeFileSync(path.join(tmp, ".ritual", "local", "last-ritual.txt"), "2026-10-05T00:00:00Z");
     const r = summary(tmp, { session: null });
-    for (const expected of ["2 failed command(s), 1 correction(s), 1 agent report(s)", "agt  code-reviewer login: Must fix", "after the cut", "1 unreadable line(s) skipped", "npm run build", "Type error", "«eso está mal»", "while Edit src/a.tsx", "1 block(s) · python-c ×1", "interface-and-design (1)", "1 open of 2", "check x"])
+    for (const expected of ["2 failed command(s), 1 correction(s), 1 agent report(s)", "agt  code-reviewer login: Must fix", "after the cut", "1 unreadable line(s) skipped", "npm run build", "Type error", "«eso está mal»", "while Edit src/a.tsx", "1 block(s) · python-c ×1", "interface-and-design (1)", "Files outside every group: 2 (videos/scene.py, videos/voice.py)", "1 open of 2", "check x"])
       if (!r.includes(expected)) bad.push(`the summary does not say «${expected}»`);
     if (r.includes("old")) bad.push("the summary includes an error from before the last ritual");
     if (r.includes("check y")) bad.push("the summary lists a candidate that is already done");

@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 46 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
-| `claude-opus-5-5` | 5 | 7 | 27, 30, 36, 38, 41, 52, 53, 54, 55, EDU-1, EDU-2, EDU-5 |
+| `claude-opus-5-5` | 6 | 7 | 27, 30, 36, 38, 41, 52, 53, 54, 55, EDU-1, EDU-2, EDU-5, VIDEO-1 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-fable-5-1` | 0 | 1 | 44 |
@@ -98,6 +98,7 @@ The most general mistakes: different models made them.
 | [EDU-3. A question with two defensible answers measures nothing](en/writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing) | `~opus` 2026-10 |
 | [EDU-4. If you can guess the right option by its place or its length, the quiz measures guessing](en/tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-or-its-length-the-quiz-measures-guessing) | `~opus` 2026-10 |
 | [EDU-5. A hint points at the cause of the mistake, not at the answer](en/writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer) | `claude-opus-5-5` 2026-10 |
+| [VIDEO-1. In a video, each action lands when the narration names it](en/interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it) | `claude-opus-5-5` 2026-10 |
 | [WEB-1. A damaged store must not take the next record down with it](en/scripts-and-files.md#web-1-a-damaged-store-must-not-take-the-next-record-down-with-it) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-2. A public form gets bots from day one](en/interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-3. A fallback nobody tested is not a fallback](en/interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback) | `claude-sonnet-5-5` 2026-10 |

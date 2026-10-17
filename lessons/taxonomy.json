@@ -34,6 +34,14 @@
       "covers": "Projects that teach: courses, lessons, exercises, quizzes, tutorials and the platforms that deliver and grade them.",
       "detect": [],
       "prefix": "EDU"
+    },
+    "video": {
+      "covers": "Videos, screencasts and animations built with code: scenes, narration, subtitles, timing and render.",
+      "detect": [
+        "moviepy",
+        "manim",
+        "remotion"
+      ]
     }
   }
 }
