@@ -14,7 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { GROUPS, ORIGINAL, TAXONOMY, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { deliver, startPick, workOf } from "./pick.mjs";
+import { awaitRequest, deliver, startPick, stopReason, workOf } from "./pick.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
@@ -258,6 +258,21 @@ export function selftest() {
     if (readJson(path.join(project, "b", ".ritual", "local", "sessions", "e2e.json"), {}).edited !== true) failures.push("a Write must mark the session as edited, for the close");
     spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: "cmd", tool_name: "Bash", tool_input: { command: "npm test" }, cwd: path.join(project, "a") }) });
     if (readJson(path.join(project, "a", ".ritual", "local", "sessions", "cmd.json"), {}).edited) failures.push("a command must not mark the session as edited");
+    // The first step after a request: stopped with the lessons its pick found; let through when the pick found nothing new.
+    const step = (id, ids) => {
+      const picks = path.join(project, "a", ".ritual", "local", "picks", id);
+      mkdirSync(picks, { recursive: true });
+      writeFileSync(path.join(picks, "r.job.json"), "{}");
+      writeFileSync(path.join(picks, "r.done.json"), JSON.stringify({ key: "request:x", label: "your request", ids }));
+      writeFileSync(path.join(project, "a", ".ritual", "local", "sessions", `${id}.json`), JSON.stringify({ sent: [], awaiting: { job: path.join(picks, "r.job.json"), at: Date.now() } }));
+      const hook = () => JSON.parse(spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: path.join(project, "a") }, input: JSON.stringify({ session_id: id, tool_name: "Bash", tool_input: { command: "ls" }, cwd: path.join(project, "a") }) }).stdout || "{}").hookSpecificOutput ?? {};
+      return [hook(), hook()];
+    };
+    const [stopped, next] = step("gate", ["13"]);
+    if (stopped.permissionDecision !== "deny" || !String(stopped.permissionDecisionReason).includes("- 13 · ")) failures.push(`the first step after a request is stopped with the lessons its pick found: ${JSON.stringify(stopped).slice(0, 200)}`);
+    if (next.permissionDecision) failures.push("the step done again goes through");
+    const [empty] = step("gate-empty", []);
+    if (empty.permissionDecision) failures.push("a pick with nothing new lets the first step through, with no extra turn");
     // The package lessons, before any plan: every lesson of the packages that are on, whatever its group.
     const brief = packageBrief({ ...DEFAULT_CONFIG, packages: ["web"], about: "A bike shop's site" }, null) ?? "";
     for (const x of ["A bike shop's site", "- WEB-3 · A fallback nobody tested is not a fallback · If this JavaScript", "- WEB-1 · ", "- 46 · "]) if (!brief.includes(x)) failures.push(`the package brief lacks «${x}»`);
@@ -311,13 +326,19 @@ if (isMain(import.meta.url)) {
   }
   // The lessons picked in the background for this work, from every group (hooks/pick.mjs): the first write of a file
   // queues a pick, and whatever picks have finished are shown now, without what this session has already seen.
+  // The first step after a request waits for that request's pick; when it brings new lessons, the step is stopped
+  // with them, so Claude has them before it acts, not with the step's result.
+  let stop = false;
   if (config.picker !== false) {
+    const first = await awaitRequest(state.data);
     const lessons = () => activeLessons(config, ritual).lessons;
     const work = workOf(input, target);
     if (work) startPick(ritual, input.session_id, work, lessons);
     const picked = deliver(ritual, input.session_id, state.data, lessons);
     if (picked) out.push(picked);
+    stop = first && !!picked;
   }
-  if (out.length) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: out.join("\n\n") } }));
+  if (stop) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: stopReason(out.join("\n\n")) } }));
+  else if (out.length) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PreToolUse", additionalContext: out.join("\n\n") } }));
   state.save();
 }

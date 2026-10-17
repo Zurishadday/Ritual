@@ -10,7 +10,11 @@
 // Goes to .ritual/local/log.jsonl (outside git), one line per entry, with the last thing touched in the session.
 // - UserPromptSubmit: a request also starts a background pick of the lessons that apply to it (hooks/pick.mjs).
 // Usage: node hooks/log.mjs --selftest
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 import { startPick, workOfPrompt } from "./pick.mjs";
 import { DEFAULT_CONFIG, activeLessons } from "./questions.mjs";
@@ -75,7 +79,18 @@ export function selftest() {
   for (const [phrase, expected] of bad) console.error(`✕ ${expected ? "should log" : "should not log"}: ${phrase}`);
   const wrong = REPORTS.filter(([prompt, expected]) => JSON.stringify(agentReport(prompt)) !== JSON.stringify(expected));
   for (const [prompt] of wrong) console.error(`✕ agent report misread: ${prompt.slice(0, 120)}`);
-  return bad.length + wrong.length;
+  // A request queues its pick and leaves it pending, so Claude's first step waits for it. No model is called: the
+  // worker finds no `claude` at CLAUDE_BIN and records an empty pick.
+  const project = mkdtempSync(path.join(os.tmpdir(), "ritual-log-"));
+  let pending = 0;
+  try {
+    mkdirSync(path.join(project, ".ritual"));
+    spawnSync(process.execPath, [fileURLToPath(import.meta.url)], { encoding: "utf8", env: { ...process.env, CLAUDE_PROJECT_DIR: project, CLAUDE_BIN: path.join(project, "no-claude") },
+      input: JSON.stringify({ session_id: "req", hook_event_name: "UserPromptSubmit", prompt: "hazme un formulario de citas", cwd: project }) });
+    const awaiting = readJson(path.join(project, ".ritual", "local", "sessions", "req.json"), {}).awaiting;
+    if (!awaiting?.job?.endsWith(".job.json") || !existsSync(awaiting.job)) { pending = 1; console.error(`✕ a request leaves its pick pending for the first step: ${JSON.stringify(awaiting)}`); }
+  } finally { try { rmSync(project, { recursive: true, force: true }); } catch { /* the worker may still hold it */ } }
+  return bad.length + wrong.length + pending;
 }
 
 if (isMain(import.meta.url)) {
@@ -87,7 +102,8 @@ if (isMain(import.meta.url)) {
   const input = await readInput();
   const ritual = ritualDir(input);
   if (!input || !ritual) process.exit(0);
-  const { data } = session(ritual, input.session_id);
+  const state = session(ritual, input.session_id);
+  const { data } = state;
   const logFile = path.join(ritual, "local", "log.jsonl");
   if (input.hook_event_name === "PostToolUseFailure") {
     // ponytail: logs every exit≠0, including a grep with no results; the ritual filters it with judgment. If it gets noisy, filter here by code and command.
@@ -99,10 +115,11 @@ if (isMain(import.meta.url)) {
     const r = agentReport(input.prompt);
     if (r) appendLine(logFile, { type: "agent", session: input.session_id, ...r });
   }
-  // A request starts a pick in the background: the lessons for it reach Claude at its next tool call (hooks/pick.mjs).
+  // A request starts a pick in the background, and Claude's first step of this turn waits for it (hooks/pick.mjs).
   if (input.hook_event_name === "UserPromptSubmit") {
     const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
     const work = config.picker !== false && workOfPrompt(input.prompt);
-    if (work) startPick(ritual, input.session_id, work, () => activeLessons(config, ritual).lessons);
+    const job = work && startPick(ritual, input.session_id, work, () => activeLessons(config, ritual).lessons);
+    if (job) { data.awaiting = { job, at: Date.now() }; state.save(); }
   }
 }

@@ -2,7 +2,8 @@
 // Picks, in the background, the lessons that apply to what Claude is doing now, from every group: the request the user
 // just sent, or a file Claude is about to write for the first time in the session. A small model (Haiku) reads the
 // work and the one-line catalog of active lessons and answers with their ids; the next tool call shows the ones this
-// session hasn't seen yet. Claude never waits: a pick takes 15 to 30 seconds, so it runs in its own process.
+// session hasn't seen yet. A pick takes 10 to 25 seconds, so it runs in its own process; only the first step after a
+// request waits for it (awaitRequest), because context given in PreToolUse reaches Claude after the tool has run.
 // Measured on the 12 clinic builds: Haiku picking per request and per file found all 61 lessons that broke in them,
 // showing about 12 of 63 per file; a small embedding model as a filter found 84% only when it showed 30.
 // The group questions stay as they are: without `claude`, offline, or when a pick fails, nothing is lost.
@@ -16,6 +17,8 @@ import { isMain, readJson } from "./common.mjs";
 
 const MAX_PICKS = 40; // per session: a long session that touches many files can't keep spending without end
 const MAX_WORK = 9000; // characters of the work a pick reads: the start of a file says what it does
+const WAIT_MS = 25000; // the longest a first step waits for its request's pick; a pick took 10 to 25 s on 2026-10-16
+const STALE_MS = 5 * 60000; // a request pick still pending after this belongs to an old turn
 
 const question = (l) => (l.parts["Detector question"] ?? Object.values(l.parts)[2] ?? "").replace(/\s+/g, " ");
 export const lessonLine = (l) => `- ${l.id} · ${l.title} · ${question(l)}`;
@@ -110,6 +113,23 @@ export function deliver(ritual, sessionId, state, lessons) {
   ].join("\n");
 }
 
+/** The first tool call after a request waits for that request's pick (`state.awaiting`, set when the request queued it),
+ * so its lessons can stop the step instead of arriving with its result: context given in PreToolUse reaches Claude only
+ * after the tool ran. Measured on 2026-10-16 over 1,171 requests that used a tool: the median wait is 3 s and 44% wait
+ * nothing; a chat with no tool call never waits. @returns {Promise<boolean>} whether this call is that first step. */
+export async function awaitRequest(state, { wait = WAIT_MS, poll = 200 } = {}) {
+  const pending = state.awaiting;
+  if (!pending) return false;
+  delete state.awaiting;
+  if (!(Date.now() - pending.at < STALE_MS)) return false;
+  const done = String(pending.job).replace(/\.job\.json$/, ".done.json");
+  for (const start = Date.now(); !existsSync(done) && Date.now() - start < wait;) await new Promise((r) => setTimeout(r, poll));
+  return true;
+}
+
+/** Why a first step is stopped: the lessons it should have before it runs, and to do it again. */
+export const stopReason = (text) => `Ritual · not yet: before this step, read the lessons picked for the request. Then do the step again, changed if one applies, and say so in one line.\n\n${text}`;
+
 /** The work a tool call is about to do, when it is a pick: writing a file for the first time. */
 export function workOf(input, rel) {
   const t = input?.tool_input ?? {};
@@ -152,6 +172,17 @@ export async function selftest() {
     await Promise.all(answers);
     const second = deliver(ritual, "s1", state, lessons) ?? "";
     if (!second.includes("- P-1 · Own") || second.includes("- 41 · ") || second.includes("WEB-4")) bad.push(`the second delivery shows only what is new:\n${second}`);
+    // The first step after a request waits for its pick, once; an old turn's pick or no request means no wait.
+    const job = path.join(ritual, "wait.job.json");
+    if (await awaitRequest({}) !== false) bad.push("with no request pending, a step is not a first step");
+    const state2 = { awaiting: { job, at: Date.now() } };
+    setTimeout(() => writeFileSync(job.replace(".job.json", ".done.json"), "{}"), 300);
+    let t = Date.now();
+    if (await awaitRequest(state2, { wait: 5000, poll: 20 }) !== true || Date.now() - t < 250 || Date.now() - t > 3000) bad.push(`the first step waits until the pick is done: ${Date.now() - t} ms`);
+    if (state2.awaiting || await awaitRequest(state2) !== false) bad.push("only the first step after a request waits");
+    t = Date.now();
+    if (await awaitRequest({ awaiting: { job: path.join(ritual, "never.job.json"), at: Date.now() } }, { wait: 200, poll: 20 }) !== true || Date.now() - t > 2000) bad.push("a pick that never finishes stops the wait at its limit");
+    if (await awaitRequest({ awaiting: { job, at: Date.now() - 10 * 60000 } }) !== false) bad.push("a pick from an old turn is not waited for");
     // A session can't queue picks without end.
     for (let i = 0; i < MAX_PICKS + 5; i++) startPick(ritual, "s2", { key: `k${i}`, label: "x", work: "y" }, lessons, { run: () => {} });
     if (readdirSync(dirOf(ritual, "s2")).filter((f) => f.endsWith(".job.json")).length !== MAX_PICKS) bad.push(`a session queues at most ${MAX_PICKS} picks`);
@@ -164,7 +195,7 @@ if (isMain(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--selftest")) {
     const bad = await selftest();
-    console.log(bad ? `${bad} case(s) wrong` : "✓ pick: ids only from active lessons, once per work, delivered once, nothing shown twice, capped");
+    console.log(bad ? `${bad} case(s) wrong` : "✓ pick: ids only from active lessons, once per work, delivered once, nothing shown twice, capped; the first step waits once");
     process.exit(bad ? 1 : 0);
   }
   const i = args.indexOf("--run");
