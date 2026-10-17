@@ -124,17 +124,19 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 54. «El X al inicio y al cierre»: todo traductor elige la misma lectura equivocada
 
-`from: f31b1607` · `by: ai`
+`from: 96bbb4cc` · `by: ai`
 
 **La idea.** Un calificativo colocado antes de dos elementos unidos por «y» puede referirse a ambos o solo al primero. Quien escribe sabe a cuál se refiere; quien lee tiene que adivinar, y los traductores adivinan igual.
 
 **Ejemplo.** Una página de resultados decía «lo que lo cambió son las lecciones al inicio y al cierre», refiriéndose a dos piezas de una herramienta: las lecciones que se muestran al inicio, y un paso de verificación final. Las seis traducciones lo leyeron como una sola cosa: lecciones mostradas al inicio y al final. Dos días después, la misma forma entró en un párrafo nuevo, y las traducciones volvieron a leerla mal.
 
-**Pregunta detectora.** En esta frase, ¿alguna «el X en A y B» tiene dos lecturas? Traducida palabra por palabra, ¿saldría la otra lectura?
+**Otro ejemplo.** Un párrafo nombró un tipo de error como «(la ruta de error, el foco del teclado, un archivo de datos dañado, una partición escrita antes de las corridas)», queriendo decir que el tipo mismo se había fijado antes de las corridas. Las seis traducciones lo listaron como un cuarto error. La pregunta de esta lección ya se le había mostrado a quien escribe ese mismo día.
 
-**Señal de alarma.** Una lista de dos donde un elemento es una cosa y el otro es un momento o un lugar.
+**Pregunta detectora.** En esta frase, ¿alguna «el X en A y B» tiene dos lecturas? Traducida palabra por palabra, ¿saldría la otra lectura? En una lista, ¿una nota sobre la lista queda donde se lee como un elemento más?
 
-**Qué hacer.** Haz visible la separación. Cuéntala («dos piezas: …»), dale a cada elemento su propio artículo («las lecciones al inicio, y el cierre»), o pon primero el elemento corto («el cierre, y las lecciones al inicio»). Luego lee la traducción de esa frase para ver si dice la lectura que querías.
+**Señal de alarma.** Una lista de dos donde un elemento es una cosa y el otro es un momento o un lugar. Una nota sobre una lista escrita dentro de ella, como su último elemento.
+
+**Qué hacer.** Haz visible la separación. Cuéntala («dos piezas: …»), dale a cada elemento su propio artículo («las lecciones al inicio, y el cierre»), o pon primero el elemento corto («el cierre, y las lecciones al inicio»). Una nota sobre una lista va fuera de ella, en su propia cláusula. Luego lee la traducción de esa frase para ver si dice la lectura que querías.
 
 ### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
 

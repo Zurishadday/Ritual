@@ -94,7 +94,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 36. Meça antes de escrever
 
-`from: 68fe8978` · `by: ai`
+`from: 2265b4bd` · `by: ai`
 
 **A ideia.** Todo número num documento vem de uma medição com data e fonte, não da memória nem de uma versão anterior do documento.
 
@@ -104,9 +104,11 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Um terceiro exemplo: o alcance, não o número.** Num curso escrito a partir de um arquivo de pesquisa com fontes citadas, todo número estava certo, e as frases ao redor deles não estavam: “a documentação de dois sistemas descreve três mecanismos” quando documentava um; “nenhum artigo proíbe” depois de ler dois; uma enquete que perguntou “o que você faz para aumentar suas chances quando se candidata?” foi recontada como “adapta o currículo a cada vaga”; “ninguém mediu” e “não há estudo” quando a pesquisa só não tinha encontrado um; “os guias concordam” sem nenhum guia entre as fontes. Cada uma foi escrita ao lado da sua fonte; os revisores as pegaram uma a uma.
 
-**Pergunta detectora.** De quais dados e de que data veio este número, ou esta comparação (“mais de mil”, “mais da metade”, “quase todos”)? A frase ao redor de um número com fonte diz mais do que a fonte: mais ampla (“todos”, “nenhum”, “só”, “a lei”), mais certa, ou sobre evidências que eu não procurei (“ninguém mediu”, “os guias concordam”)?
+**Um quarto exemplo: o que a fonte diz contra ele.** Um parágrafo do README deu o resultado favorável de um teste, com todos os números certos, enquanto o arquivo de resultados ao qual ele linkava dizia que, nos totais, não havia diferença. No mesmo dia, o parágrafo foi levado para o topo da página e seus números foram para imagens de uma publicação, em cada vez sem reler o arquivo. Um revisor de fora abriu o arquivo e chamou a manchete de exagero do próprio resultado nulo.
 
-**Sinal de alerta.** “É o número que a gente já tinha” · “dá mais ou menos isso” · “dá para ver que todos passam” · “é o que a fonte diz, mais ou menos”.
+**Pergunta detectora.** De quais dados e de que data veio este número, ou esta comparação (“mais de mil”, “mais da metade”, “quase todos”)? A frase ao redor de um número com fonte diz mais do que a fonte: mais ampla (“todos”, “nenhum”, “só”, “a lei”), mais certa, ou sobre evidências que eu não procurei (“ninguém mediu”, “os guias concordam”)? Ela deixa de fora o que a fonte diz contra ela?
+
+**Sinal de alerta.** “É o número que a gente já tinha” · “dá mais ou menos isso” · “dá para ver que todos passam” · “é o que a fonte diz, mais ou menos” · Uma afirmação levada a um lugar mais visível (o topo de uma página, um gráfico, uma publicação) sem ser relida contra a fonte.
 
 **O que fazer.** Antes de escrever um número, meça de novo e anote ao lado de que dados e de que data ele veio. Palavras de quantidade (“quase”, “mais de”, “a maioria”) são números disfarçados: meça-as do mesmo jeito. E se uma imagem tem contas dentro, faça o mesmo script que a desenha fazer a conta. Ao lado de uma afirmação com fonte, copie também o alcance da fonte: quem mediu, em que população, quando e, para uma enquete, a pergunta que foi feita; uma palavra absoluta que a fonte não tem é tirada. O que você não encontrou é dito como seu (“não encontramos nenhum estudo”), e uma recomendação sem fonte é assinada (“recomendamos”).
 

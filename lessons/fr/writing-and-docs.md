@@ -124,17 +124,19 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 54. « Le X au début et à la fin » : tous les traducteurs choisissent la même mauvaise lecture
 
-`from: f31b1607` · `by: ai`
+`from: 96bbb4cc` · `by: ai`
 
 **L'idée.** Un qualificatif placé devant deux éléments reliés par « et » peut s'appliquer aux deux, ou au premier seulement. L'auteur sait laquelle des deux lectures il vise ; le lecteur doit deviner, et les traducteurs devinent tous de la même façon.
 
 **Exemple.** Une page de résultats disait « ce qui l'a changé, ce sont les leçons du début et de la clôture », en parlant de deux parties d'un outil : les leçons affichées au début, et une étape de vérification finale. Les six traductions ont lu la phrase comme une seule chose : les leçons affichées au début et à la fin. Deux jours plus tard, la même construction s'est retrouvée dans un nouveau paragraphe, et les traductions l'ont de nouveau mal lue.
 
-**Question détectrice.** Dans cette phrase, une construction « le X au A et B » a-t-elle deux lectures ? Traduite mot à mot, l'autre lecture ressortirait-elle ?
+**Autre exemple.** Un paragraphe désignait un type d'erreur comme « (le chemin d'erreur, le focus clavier, un fichier de données endommagé, un découpage écrit avant les exécutions) », ce qui voulait dire que le type lui-même avait été fixé avant les exécutions. Les six traductions l'ont listé comme une quatrième erreur. La question de cette leçon avait été montrée à l'auteur le jour même.
 
-**Signal d'alarme.** Une liste de deux éléments dont l'un est une chose et l'autre un moment ou un lieu.
+**Question détectrice.** Dans cette phrase, une construction « le X au A et B » a-t-elle deux lectures ? Traduite mot à mot, l'autre lecture ressortirait-elle ? Dans une liste, une note sur la liste se trouve-t-elle là où elle se lit comme un élément de plus ?
 
-**Que faire.** Rendez la coupure visible. Comptez-la (« deux morceaux : … »), donnez à chaque élément son propre article (« les leçons du début, et la clôture »), ou placez d'abord l'élément court (« la clôture, et les leçons du début »). Relisez ensuite la traduction de cette phrase pour vérifier qu'elle porte la lecture voulue.
+**Signal d'alarme.** Une liste de deux éléments dont l'un est une chose et l'autre un moment ou un lieu. Une note sur une liste, écrite à l'intérieur de celle-ci, comme son dernier élément.
+
+**Que faire.** Rendez la coupure visible. Comptez-la (« deux morceaux : … »), donnez à chaque élément son propre article (« les leçons du début, et la clôture »), ou placez d'abord l'élément court (« la clôture, et les leçons du début »). Une note sur une liste se place hors de celle-ci, dans sa propre proposition. Relisez ensuite la traduction de cette phrase pour vérifier qu'elle porte la lecture voulue.
 
 ### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
 

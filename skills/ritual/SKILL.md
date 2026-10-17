@@ -50,7 +50,7 @@ Then follow the steps in order. Each step produces one or two lines for the user
 6. **Write everything together**, in the same commit: lessons, candidates, config and guard rules, the `CLAUDE.md` line. Then run `node "${CLAUDE_PLUGIN_ROOT}/scripts/lessons.mjs" --check --project .`; it must pass.
 7. **Anonymous and on its way.** Examples name no clients, products or people. A lesson caught here is meant for the library, so none should stay local by being forgotten. Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/share.mjs" status --apply`: it marks «Merged into N.» on the lessons the library accepted (so they are not shown twice) and lists the ones not shared yet. For each of those, and for any plugin lesson that fired because the mistake happened again, offer `/ritual share <id>` in one line. A lesson that only fits this project gets `` `local: <why>` `` in its data line instead, and is not offered again. Never publish anything yourself.
 
-Close with the report. Write `.ritual/local/ritual-<YYYY-MM-DD>.json` with one entry per error from step 1, in any language for `what`:
+Close with the report. Write `.ritual/local/ritual-<YYYY-MM-DD-HHMM>.json` (the time keeps a second ritual on the same day from replacing the first one's report) with one entry per error from step 1, in any language for `what`:
 
 ```json
 { "date": "<YYYY-MM-DD>", "cost": "<optional, measured, e.g. $9.53 in reviews>", "errors": [

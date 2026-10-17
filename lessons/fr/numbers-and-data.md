@@ -94,7 +94,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 36. Mesurer avant d'écrire
 
-`from: 68fe8978` · `by: ai`
+`from: 2265b4bd` · `by: ai`
 
 **L'idée.** Chaque chiffre d'un document provient d'une mesure datée et sourcée, et non de la mémoire ou d'une version antérieure du document.
 
@@ -104,9 +104,11 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Un troisième exemple : la portée, pas le chiffre.** Dans un cours écrit à partir d'un dossier de recherche avec des sources citées, chaque chiffre était juste et les phrases autour ne l'étaient pas : « la documentation de deux systèmes décrit trois mécanismes » alors qu'elle n'en décrivait qu'un ; « aucun article ne l'interdit » après en avoir lu deux ; une enquête qui demandait « que faites-vous pour améliorer vos chances quand vous postulez ? » racontée comme « adapte son CV à chaque offre » ; « personne ne l'a mesuré » et « il n'existe pas d'étude » alors que la recherche n'avait simplement pas trouvé d'étude ; « les guides s'accordent » sans qu'aucun guide ne figure parmi les sources. Chacune était écrite à côté de sa source ; les relecteurs les ont repérées une à une.
 
-**Question détectrice.** De quelles données et de quelle date viennent ce chiffre, ou cette comparaison (« plus d'un millier », « plus de la moitié », « presque tous ») ? La phrase autour d'un chiffre sourcé dit-elle plus que la source : plus large (« tous », « aucun », « seulement », « la loi »), plus certaine, ou portant sur des preuves que je n'ai pas cherchées (« personne ne l'a mesuré », « les guides s'accordent ») ?
+**Un quatrième exemple : ce que la source dit à l'encontre.** Un paragraphe de README donnait le résultat favorable d'un test, avec chaque chiffre juste, alors que le fichier de résultats auquel il renvoyait disait que, sur les totaux, il n'y avait aucune différence. Le même jour, le paragraphe a été placé en tête de page et ses chiffres ont été repris dans des images pour une publication, chaque fois sans relire le fichier. Un relecteur extérieur l'a ouvert et a qualifié le titre de survente de son propre résultat nul.
 
-**Signal d'alarme.** « C'est le chiffre qu'on avait déjà » · « ça sort à peu près ça » · « on voit bien qu'ils passent tous » · « c'est à peu près ce que dit la source ».
+**Question détectrice.** De quelles données et de quelle date viennent ce chiffre, ou cette comparaison (« plus d'un millier », « plus de la moitié », « presque tous ») ? La phrase autour d'un chiffre sourcé dit-elle plus que la source : plus large (« tous », « aucun », « seulement », « la loi »), plus certaine, ou portant sur des preuves que je n'ai pas cherchées (« personne ne l'a mesuré », « les guides s'accordent ») ? Passe-t-il sous silence ce que la source dit à l'encontre ?
+
+**Signal d'alarme.** « C'est le chiffre qu'on avait déjà » · « ça sort à peu près ça » · « on voit bien qu'ils passent tous » · « c'est à peu près ce que dit la source » · Une affirmation déplacée vers un endroit plus visible (le haut d'une page, un graphique, une publication) sans être relue par rapport à sa source.
 
 **Que faire.** Avant d'écrire un chiffre, mesurez-le à nouveau et notez à côté quelles données et quelle date l'ont fourni. Les mots de quantité (« presque », « plus de », « la plupart ») sont des chiffres déguisés : mesurez-les de la même façon. Et si une image contient des calculs, faites en sorte que le même script qui la dessine fasse le calcul. À côté d'une affirmation sourcée, reprenez aussi la portée de la source : qui l'a mesurée, sur quelle population, à quelle date et, pour une enquête, la question posée ; un mot absolu que la source n'a pas est retiré. Ce que vous n'avez pas trouvé se dit en votre nom (« nous n'avons trouvé aucune étude »), et une recommandation sans source se signe (« nous recommandons »).
 

@@ -124,17 +124,19 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 ### 54. “O X no início e no fechamento”: todo tradutor escolhe a mesma leitura errada
 
-`from: f31b1607` · `by: ai`
+`from: 96bbb4cc` · `by: ai`
 
 **A ideia.** Um qualificador antes de dois itens ligados por “e” pode se aplicar aos dois ou só ao primeiro. O autor sabe qual é o sentido pretendido; quem lê precisa adivinhar, e os tradutores adivinham igual.
 
 **Exemplo.** Uma página de resultados dizia “o que mudou isso são as lições do início e do fechamento”, referindo-se a duas partes de uma ferramenta: as lições mostradas no início, e uma etapa final de verificação. As seis traduções leram como uma coisa só, lições mostradas no início e no fim. Dois dias depois, a mesma construção entrou em um parágrafo novo, e as traduções a leram errado de novo.
 
-**Pergunta detectora.** Nesta frase, algum “o X no A e B” tem duas leituras? Traduzida palavra por palavra, a outra leitura aparece?
+**Outro exemplo.** Um parágrafo nomeou um tipo de erro como “(o caminho de erro, o foco do teclado, um arquivo de dados danificado, uma divisão anotada antes das execuções)”, querendo dizer que o próprio tipo já tinha sido definido antes das execuções. As seis traduções o listaram como um quarto erro. A pergunta desta lição tinha sido mostrada ao autor naquele mesmo dia.
 
-**Sinal de alerta.** Uma lista de dois itens em que um é uma coisa e o outro é um momento ou um lugar.
+**Pergunta detectora.** Nesta frase, algum “o X no A e B” tem duas leituras? Traduzida palavra por palavra, a outra leitura aparece? Numa lista, uma nota sobre a lista fica onde se lê como mais um item?
 
-**O que fazer.** Deixe a divisão visível. Conte-a (“duas partes: …”), dê a cada item o seu próprio artigo (“as lições do início, e o fechamento”), ou ponha o item curto primeiro (“o fechamento, e as lições do início”). Depois, leia a tradução dessa frase e confira se ela tem o sentido que você pretendia.
+**Sinal de alerta.** Uma lista de dois itens em que um é uma coisa e o outro é um momento ou um lugar. Uma nota sobre a lista escrita dentro dela, como seu último item.
+
+**O que fazer.** Deixe a divisão visível. Conte-a (“duas partes: …”), dê a cada item o seu próprio artigo (“as lições do início, e o fechamento”), ou ponha o item curto primeiro (“o fechamento, e as lições do início”). Uma nota sobre uma lista fica fora dela, em oração própria. Depois, leia a tradução dessa frase e confira se ela tem o sentido que você pretendia.
 
 ### EDU-2. O que o estudante vê antes de responder não pode conter a resposta
 

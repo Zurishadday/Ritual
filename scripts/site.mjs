@@ -168,8 +168,17 @@ export function build(out) {
   copyFileSync(path.join(ROOT, "assets", "social-preview.png"), path.join(out, "social-preview.png"));
 }
 
+/** A value the page's template failed to fill ("undefined", "null", "NaN"), outside the lessons' own prose: a lesson may say
+ * "a null result", a heading or an attribute may not. A paragraph that is only the word still counts. */
+export const leaks = (page) => /undefined|\bnull\b|NaN/.test(page.replace(/<script>[\s\S]*<\/script>/, "").replace(/ data-text="[^"]*"/g, "")
+  .replace(/<p>(?!(?:undefined|null|NaN)<\/p>)[\s\S]*?<\/p>/g, "<p></p>"));
+
 export function selftest() {
   const bad = [];
+  for (const [page, want] of [['<p>its own null result</p><article data-text="a null result">', false], ['<article data-models="undefined">', true],
+    ["<h2>Lesson undefined</h2>", true], ["<p>undefined</p>", true], ["<span>NaN lessons</span>", true]]) {
+    if (leaks(page) !== want) bad.push(`leaks(${page}) should be ${want}`);
+  }
   if (inline("a `<b>` and *this*\n\nnext") !== "<p>a <code>&lt;b&gt;</code> and <em>this</em></p><p>next</p>") bad.push(`inline: ${inline("a `<b>` and *this*\n\nnext")}`);
   if (inline("a glob `**/*.md` stays") !== "<p>a glob <code>**/*.md</code> stays</p>") bad.push(`a glob inside code must not become italics: ${inline("a glob `**/*.md` stays")}`);
   for (const l of Object.keys(PARTS)) if (!NAMES[l]) bad.push(`no name for language ${l}`);
@@ -183,7 +192,7 @@ export function selftest() {
       const text = readFileSync(file, "utf8");
       const missing = ids.filter((id) => !text.includes(`<article id="l-${id}"`));
       if (missing.length) bad.push(`${language}: lessons missing: ${missing.join(", ")}`);
-      if (/undefined|\bnull\b|NaN/.test(text.replace(/<script>[\s\S]*<\/script>/, ""))) bad.push(`${language}: "undefined" or "null" on the page`);
+      if (leaks(text)) bad.push(`${language}: "undefined" or "null" on the page`);
       if ((text.match(/hreflang=/g) ?? []).length !== Object.keys(NAMES).length) bad.push(`${language}: needs one hreflang per language`);
       if (!/<meta name="description" content="[^"]{15,}">/.test(text)) bad.push(`${language}: the description (README tagline) is missing`);
       if (!UI[language]) bad.push(`${language}: no interface strings`);

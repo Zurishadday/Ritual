@@ -130,11 +130,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **Example.** A results page said "what changed it is the lessons at the start and the close", meaning two pieces of a tool: the lessons shown at the start, and a final check step. All six translations read it as one thing, lessons shown at the start and at the end. Two days later the same shape went into a new paragraph, and the translations misread it again.
 
-**Detector question.** In this sentence, does any "the X at A and B" have two readings? Translated word by word, would the other reading come out?
+**Another example.** A paragraph named a kind of mistake as "(the error path, keyboard focus, a damaged data file, a split written down before the runs)", meaning that the kind itself had been set before the runs. All six translations listed it as a fourth mistake. This lesson's question had been shown to the writer that same day.
 
-**Warning sign.** A list of two where one item is a thing and the other is a moment or a place.
+**Detector question.** In this sentence, does any "the X at A and B" have two readings? Translated word by word, would the other reading come out? In a list, does a note about the list sit where it reads as one more item?
 
-**What to do.** Make the split visible. Count it ("two pieces: …"), give each item its own article ("the lessons at the start, and the close"), or put the short item first ("the close, and the lessons at the start"). Then read the translation of that sentence for the reading you meant.
+**Warning sign.** A list of two where one item is a thing and the other is a moment or a place. A note about a list written inside it, as its last item.
+
+**What to do.** Make the split visible. Count it ("two pieces: …"), give each item its own article ("the lessons at the start, and the close"), or put the short item first ("the close, and the lessons at the start"). A note about a list goes outside it, in its own clause. Then read the translation of that sentence for the reading you meant.
 
 ### EDU-2. What learners see before answering can't contain the answer
 
