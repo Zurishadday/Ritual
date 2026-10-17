@@ -266,13 +266,15 @@ export function selftest() {
     mark(tmp, { all: true });
     if (summary(tmp, { session: "bbbb2222-b" }).includes("theirs to review")) bad.push("--mark --all must mark every session");
     // The first steps since the last ritual: how many had their lessons first, and each miss with why.
-    const step = (outcome, extra) => appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type: "first-step", session: "aaaa1111-a", outcome, ...extra });
+    // Dated a second after the mark: on a fast machine an entry written in the mark's own millisecond is not after it.
+    const later = new Date(Date.now() + 1000).toISOString();
+    const step = (outcome, extra) => appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type: "first-step", session: "aaaa1111-a", outcome, ...extra, date: later });
     step("stopped", { ms: 3000 }); step("nothing new", { ms: 0 }); step("missed", { ms: 25000, reason: "the pick was not done after 25 s" });
     const fs1 = summary(tmp, { session: "aaaa1111-a" }).split("\n");
     const head = fs1.find((l) => l.startsWith("First step")) ?? "";
     if (!head.includes(": 3 · lessons before it 2 (stopped with new ones 1, nothing new 1) · missed 1") || !head.includes("wait median 3.0 s") || !fs1.some((l) => l.includes("missed  the pick was not done after 25 s"))) bad.push(`the summary counts first steps and lists each miss with why:\n${fs1.filter((l) => /first step|missed/i.test(l)).join("\n")}`);
     // The picker's rules: skips by rule, checks, and each failed check with the lessons it would have hidden.
-    const rule = (type, extra) => appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type, session: "aaaa1111-a", ...extra });
+    const rule = (type, extra) => appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type, session: "aaaa1111-a", ...extra, date: later });
     rule("pick-rule", { rule: "same change", file: "a.md", checked: false }); rule("pick-rule", { rule: "nothing new", file: "b.md", checked: false }); rule("pick-rule", { rule: "nothing new", file: "c.md", checked: true });
     rule("pick-rule-failed", { rule: "nothing new", file: "c.md", ids: ["41", "46"] }); rule("pick-batch", { files: 4 });
     const rl = summary(tmp, { session: "aaaa1111-a" }).split("\n");
