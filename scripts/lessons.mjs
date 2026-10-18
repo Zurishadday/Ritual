@@ -388,7 +388,10 @@ export function checkProject(project, language = ORIGINAL) {
   const parts = PARTS[language] ?? PARTS[ORIGINAL];
   const seen = new Set();
   const refining = [];
-  for (const file of readdirSync(dir).filter((a) => a.endsWith(".md")).sort()) {
+  const entries = readdirSync(dir, { withFileTypes: true });
+  for (const d of entries.filter((d) => d.isDirectory()))
+    findings.push({ file: `.ritual/lessons/${d.name}/`, line: 0, message: "a folder here is never read: a branch's file goes next to the others as <group>.<branch>.md, with every `/` in the branch name written as `-`", level: "error" });
+  for (const file of entries.filter((d) => d.isFile() && d.name.endsWith(".md")).map((d) => d.name).sort()) {
     const group = groupOfFile(file);
     const rel = `.ritual/lessons/${file}`;
     if (!GROUPS.includes(group)) { findings.push({ file: rel, line: 1, message: `the file must be named after a group (<group>.md or <group>.<branch>.md): ${GROUPS.join(", ")}`, level: "error" }); continue; }
@@ -576,6 +579,13 @@ export function selftest() {
     if (!checkProject(project).some((x) => x.message.includes("duplicate id"))) failures.push("an id used in <group>.md and in <group>.<branch>.md should fail as a duplicate");
     writeFileSync(path.join(project, ".ritual", "lessons", "cooking.videos.md"), `# Cooking\n\n${LESSON("P-3", "Invented")}`);
     if (!checkProject(project).some((x) => x.file.endsWith("cooking.videos.md") && x.message.includes("must be named after a group"))) failures.push("<invented>.<branch>.md should fail like an invented group");
+    // A branch name with `/` written as is (claude/foo) makes a folder, which no reader opens: its lessons would vanish.
+    mkdirSync(path.join(project, ".ritual", "lessons", "console-and-tools.claude"));
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.claude", "foo.md"), `# Console\n\n${LESSON("P-4", "In a folder")}`);
+    mkdirSync(path.join(project, ".ritual", "lessons", "folder.md"));
+    let folders = [];
+    try { folders = checkProject(project).filter((x) => x.message.includes("folder")); } catch (e) { failures.push(`a folder in .ritual/lessons should be reported, not throw: ${e.message}`); }
+    if (folders.length !== 2) failures.push(`each folder in .ritual/lessons should fail, «claude/foo» and «folder.md»: ${folders.map((x) => x.file).join(", ") || "none"}`);
   } finally { rmSync(project, { recursive: true, force: true }); }
   // --next-id: the highest number in use in any branch or worktree, not only in this folder.
   const repo = mkdtempSync(path.join(os.tmpdir(), "ritual-next-id-"));
