@@ -72,6 +72,12 @@ const INDEX = {
 const MERGED = /^(?:Merged into|Fusionada en la) (\S+?)\.?$/m;
 const REFERENCE = /\b(?:see lesson|lesson|ver(?: también)? la|lecci[oó]n) (\d+)\b/gi;
 
+/** The group of a project lesson file: `<group>.md`, or `<group>.<anything>.md` for a branch or a person that writes its
+ * own file, so two branches that add lessons at once never touch the same file and never clash when they join. */
+export function groupOfFile(file) {
+  return path.basename(file).replace(/\.md$/, "").split(".")[0];
+}
+
 /** Reads a group file and returns its lessons. */
 export function readGroupFile(file, group) {
   return parseLessons(readFileSync(file, "utf8"), group);
@@ -383,9 +389,9 @@ export function checkProject(project, language = ORIGINAL) {
   const seen = new Set();
   const refining = [];
   for (const file of readdirSync(dir).filter((a) => a.endsWith(".md")).sort()) {
-    const group = file.slice(0, -3);
+    const group = groupOfFile(file);
     const rel = `.ritual/lessons/${file}`;
-    if (!GROUPS.includes(group)) { findings.push({ file: rel, line: 1, message: `the file must be named after a group: ${GROUPS.join(", ")}`, level: "error" }); continue; }
+    if (!GROUPS.includes(group)) { findings.push({ file: rel, line: 1, message: `the file must be named after a group (<group>.md or <group>.<branch>.md): ${GROUPS.join(", ")}`, level: "error" }); continue; }
     for (const l of readGroupFile(path.join(dir, file), group).lessons) {
       const bad = (m) => findings.push({ file: rel, line: l.line, message: `${l.id}: ${m}`, level: "error" });
       if (l.data.refines) refining.push({ target: l.data.refines, bad, what: "refines" });
@@ -559,6 +565,17 @@ export function selftest() {
     if (!bad.includes("must be named after a group")) failures.push(`a file with an invented group name should fail and gave: ${bad || "nothing"}`);
     writeFileSync(path.join(project, ".ritual", "lessons", "git-and-process.md"), `# Git\n\n${LESSON("2", "No prefix")}`);
     if (!checkProject(project).some((x) => x.message.includes("prefix"))) failures.push("an id without prefix in a project lesson should fail");
+    // A branch's own file joins its group; an id taken in two files is still a duplicate; a made-up group still fails.
+    rmSync(path.join(project, ".ritual", "lessons"), { recursive: true });
+    mkdirSync(path.join(project, ".ritual", "lessons"));
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.md"), `# Console\n\n${LESSON("P-1", "Own")}`);
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.videos.md"), `# Console\n\n${LESSON("P-2", "Branch", "`origin: field · claude-opus-5-5 · 2026-10` · `refines: P-1`")}`);
+    const branch = checkProject(project);
+    if (branch.length) failures.push(`a branch's own file <group>.<branch>.md should pass: ${branch.map((x) => x.message).join(" | ")}`);
+    writeFileSync(path.join(project, ".ritual", "lessons", "console-and-tools.videos.md"), `# Console\n\n${LESSON("P-1", "Same id")}`);
+    if (!checkProject(project).some((x) => x.message.includes("duplicate id"))) failures.push("an id used in <group>.md and in <group>.<branch>.md should fail as a duplicate");
+    writeFileSync(path.join(project, ".ritual", "lessons", "cooking.videos.md"), `# Cooking\n\n${LESSON("P-3", "Invented")}`);
+    if (!checkProject(project).some((x) => x.file.endsWith("cooking.videos.md") && x.message.includes("must be named after a group"))) failures.push("<invented>.<branch>.md should fail like an invented group");
   } finally { rmSync(project, { recursive: true, force: true }); }
   // --next-id: the highest number in use in any branch or worktree, not only in this folder.
   const repo = mkdtempSync(path.join(os.tmpdir(), "ritual-next-id-"));
