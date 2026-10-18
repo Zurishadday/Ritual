@@ -56,9 +56,11 @@ The library grows with everyone's rituals, so contributions arrive faster than o
 
 ## Pull request
 
+Every pull request gets this review before it is merged, whoever opened it: a newcomer, the maintainer, or a Claude session. The one who wrote it does not review it alone (lesson 28): an agent that did not write it reads the diff too.
+
 1. `gh pr view <N>` and `gh pr diff <N>`. The CI runs the tests; read its result with `gh pr checks <N>`, do not rerun it by hand.
-2. Lessons in a PR get the same review as a `lesson` issue (covered, generic, model, where). Code gets: its cases seen failing (`CLAUDE.md`), Node only, English, nothing from `private/`.
-3. Write the review as a draft and show it. Merging is the maintainer's call.
+2. Lessons in a PR get the same review as a `lesson` issue (covered, generic, model, where). Code gets: its cases seen failing (`CLAUDE.md`: on the PR branch, in a separate worktree, put the old code back and run them), Node only, English, nothing from `private/`.
+3. Write the review as a draft and show it, ending with a verdict: merge, merge after a fix (which one), or don't. Merging is the maintainer's call.
 
 ## Translations
 
