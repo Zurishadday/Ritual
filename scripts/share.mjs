@@ -21,7 +21,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { GROUPS, PACKAGES, PARTS, TAXONOMY, originProblems, parseLessons, readGroupFile, readLessons, safetyProblems } from "./lessons.mjs";
+import { GROUPS, PACKAGES, PARTS, TAXONOMY, groupOfFile, originProblems, parseLessons, readGroupFile, readLessons, safetyProblems } from "./lessons.mjs";
 import { isMain } from "../hooks/common.mjs";
 
 const REPO = "https://github.com/Zurishadday/Ritual";
@@ -134,7 +134,7 @@ export function confirmUrl(id, model, month, example, kind = "", measured = "") 
 export function ownLessons(project) {
   const dir = path.join(project, ".ritual", "lessons");
   if (!existsSync(dir)) return [];
-  return readdirSync(dir).filter((f) => f.endsWith(".md")).sort().flatMap((f) => readGroupFile(path.join(dir, f), f.slice(0, -3)).lessons.map((l) => ({ ...l, file: path.join(dir, f) })));
+  return readdirSync(dir).filter((f) => f.endsWith(".md")).sort().flatMap((f) => readGroupFile(path.join(dir, f), groupOfFile(f)).lessons.map((l) => ({ ...l, file: path.join(dir, f) })));
 }
 
 /** Where each own lesson stands: not shared yet, sent, kept here on purpose, or merged into the library. */

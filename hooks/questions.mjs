@@ -12,7 +12,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { GROUPS, ORIGINAL, TAXONOMY, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
+import { GROUPS, ORIGINAL, TAXONOMY, groupOfFile, modelsOf, readLessons, readGroupFile } from "../scripts/lessons.mjs";
 import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 import { alreadyPicked, awaitRequest, deliver, fileRule, firstStepEntry, startPick, stopReason, workOf } from "./pick.mjs";
 
@@ -77,7 +77,7 @@ export function activeLessons(config, ritual) {
   const own = [];
   const projectDir = ritual && path.join(ritual, "lessons");
   if (projectDir && existsSync(projectDir))
-    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons.map((l) => ({ ...l, own: true })));
+    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), groupOfFile(file)).lessons.map((l) => ({ ...l, own: true })));
   const packages = new Set(config.packages ?? []);
   const demoted = new Set((config.demoted ?? []).map(String));
   const applies = (l) => {
@@ -135,7 +135,7 @@ export function packageLessons(config, ritual) {
   const own = [];
   const projectDir = ritual && path.join(ritual, "lessons");
   if (projectDir && existsSync(projectDir))
-    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), file.slice(0, -3)).lessons.map((l) => ({ ...l, own: true })));
+    for (const file of readdirSync(projectDir).filter((f) => f.endsWith(".md"))) own.push(...readGroupFile(path.join(projectDir, file), groupOfFile(file)).lessons.map((l) => ({ ...l, own: true })));
   const inPackage = (l) => !l.merged && !demoted.has(l.id) && (l.data.packages ?? "").split(",").map((s) => s.trim()).some((p) => packages.has(p));
   return [...readLessons(ORIGINAL, PLUGIN).lessons.filter(inPackage), ...own.filter(inPackage)];
 }
@@ -237,6 +237,11 @@ export function selftest() {
     if (!text.includes("- P-1 (refines 27) · Sharper question about the console?")) failures.push(`the refinement should say what it refines: ${text.split("\n").find((l) => l.includes("P-1"))}`);
     if (ids.indexOf("P-1") !== ids.indexOf("29") - 1) failures.push(`the refinement should sit where 27 was, before 29: ${ids.join(", ")}`);
     if (!text.includes("- P-2 (refines 13) · ") || !text.includes("- P-3 · ")) failures.push("a refinement of a lesson outside this group, and a plain project lesson, are listed as they are");
+    // A branch writes its own <group>.<branch>.md, so two branches never edit the same file: its lessons join the group.
+    writeFileSync(path.join(own, "console-and-tools.videos.md"), `# Console\n\n${lesson("P-4", "P-3", "A question from the videos branch?")}`);
+    const withBranch = context("console-and-tools", DEFAULT_CONFIG, path.join(project, ".ritual")) ?? "";
+    if (!withBranch.includes("- P-4 (refines P-3) · A question from the videos branch?") || withBranch.includes("- P-3 · ")) failures.push(`a lesson in console-and-tools.videos.md should join its group and refine P-3: ${withBranch.split("\n").filter((l) => l.includes("P-")).join(" / ")}`);
+    rmSync(path.join(own, "console-and-tools.videos.md"));
     // For agents without hooks: every group's active questions, in one file at a stable path.
     const all = digest(DEFAULT_CONFIG, path.join(project, ".ritual"));
     for (const x of ["## Console and tools", "## Tests and checks", "- P-1 (refines 27) · Sharper question about the console?", "- 13 · "]) if (!all.includes(x)) failures.push(`the digest lacks «${x}»`);
