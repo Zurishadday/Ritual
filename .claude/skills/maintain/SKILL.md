@@ -34,7 +34,7 @@ The library grows with everyone's rituals, so contributions arrive faster than o
 
 ## Confirmation (`confirmation` issue)
 
-1. Read the example. It must be anonymous (no clients, products, people, paths) and the same mechanism as the lesson. If it is a different mistake, it is not a confirmation: say so and draft a reply suggesting `/ritual share`.
+1. Read the example. It must be anonymous (no clients, products, people, paths) and the same mechanism as the lesson. If it is a different mistake, it is not a confirmation of that lesson: if its example is another library lesson's mechanism, it counts for that lesson (its `seen:`, and `Ritual: merged into <that id>.`); if no lesson has it, say so and draft a reply suggesting `/ritual share`.
 2. The model goes in `seen:` as written, Claude or not: `seen:` records which models make the mistake. A model with `~` is fine.
 3. Run `node scripts/maintain.mjs seen <id> <model> <YYYY-MM>` (the issue output prints this line). The data line is not part of the fingerprint, so translations stay current.
 4. `npm test`, then one commit: `Lesson <id> confirmed with <model> (<YYYY-MM>)` with `Closes #<N>` in the body. Push after `npm run check-publish`.
@@ -43,16 +43,27 @@ The library grows with everyone's rituals, so contributions arrive faster than o
 
 `issue <N>` writes the lesson to `.ritual/local/maintain/<N>.md` in the share format and runs the share check. Then:
 
-1. **Covered?** Run `node scripts/share.mjs context <group>` and compare by meaning. If a lesson covers it, it is a confirmation (above) or a sharpening of that lesson: edit the existing lesson's parts by hand, keeping its number, and treat it as a change to the original (Translations). Add, don't replace: `lessons.mjs --check` fails if an example the lesson had in `main` is gone, and a warning on a long detector question means checking that the original question still stands out.
+1. **Covered?** Run `node scripts/share.mjs context <group>` and compare by meaning. If a lesson covers it, it is a confirmation (above) or a sharpening of that lesson: edit the existing lesson's parts by hand, keeping its number, and treat it as a change to the original (Translations). Add, don't replace: `lessons.mjs --check` fails if an example the lesson had in `main` is gone, and a warning on a long detector question means checking that the original question still stands out. When several lessons cover it by meaning, sharpen the one whose detector question would have fired on the example and whose idea needs no rewording to take it; the others get a «see lesson N».
 2. **Generic?** It must help someone building something else: the mechanism, not the domain. Fix wording in the file if needed. If it is really one project's lesson, draft a kind reply and stop.
 3. **Model.** The `issue` output says whether the model is Claude.
    - Claude, with a concrete example: origin `field · <model> · <month>`.
    - Another model, or a doubtful example: follow [checking a contributed lesson](../../../simulations/README.md#checking-a-contributed-lesson). Turn the reproduce field into a small task and run it with the current Claude models (Sonnet builds, Opus reviews, in separate sessions). If it breaks: origin `lab · <claude model> · <month>`, and the contributor's model goes in `seen:` in the file's data line. If it does not break: it stays a candidate in the issue. Draft a reply saying so.
-4. **Where.** Check the `Where it goes` part against the ladder in `lessons/TEMPLATE.md#where-a-lesson-goes`. The `kind` field (the packages on in the contributor's project) is a hint: a lesson from a `core only` project with web examples may still belong to `web`, and several contributions from one kind of project with no package for it suggest a new package. A new package goes into `lessons/taxonomy.json` (with `covers` and `detect`) before the lesson. A new group waits for three lessons: leave the issue open with a reply.
+4. **Where.** Check the `Where it goes` part against the ladder in `lessons/TEMPLATE.md#where-a-lesson-goes`. The `kind` field (the packages on in the contributor's project) is a hint: a lesson from a `core only` project with web examples may still belong to `web`, and several contributions from one kind of project with no package for it suggest a new package. A new package goes into `lessons/taxonomy.json` (with `covers` and `detect`) before the lesson. A new group waits for three lessons: leave the issue open with a reply. A sharpening goes through the same test: if its example holds outside the package of the lesson it sharpens, it sharpens a core lesson or becomes one, never the package lesson, which projects without that package never see.
 5. **Add it.** Run `node scripts/maintain.mjs add .ritual/local/maintain/<N>.md "<origin>"`. It picks the next id (core number or package prefix), drops the share-only parts, and inserts it in order in `lessons/en/<group>.md`.
 6. **Translate it.** See Translations. The lesson can go in English alone if needed: missing translations are warnings.
 7. `node scripts/lessons.mjs --index`, `npm test`, then one commit: `Lesson <id>: <title>` with `Closes #<N>` in the body. Push after `npm run check-publish`. If the lesson counts appear in the READMEs (core count, packages), update all seven.
 8. **Tell the contributor's Ritual.** Draft a closing comment whose last line is exactly `Ritual: merged into <id>.`: the id it was added as, or the existing lesson it confirmed or sharpened in step 1. The contributor's next `/ritual` reads that line (`share.mjs status`) and marks their local lesson merged, so it is not shown twice. It counts only when the maintainer posts it: show the draft and post it on "va". A lesson that was not taken gets no such line.
+
+## Disagreement (a judge)
+
+When two reviews of the same contribution or pull request point to different places (another lesson, core or package, new or a sharpening), or a reviewer leaves it open between two, a judge decides before the maintainer is asked. Only for these cases: it costs more than a review.
+
+1. One agent with `model: fable` for all the open cases, read only: no edits, nothing on GitHub, no `private/`.
+2. **Blind.** Each case gives the options as A and B in random order, with the same length of reasoning each, never who proposed which.
+3. **Evidence, not only conclusions.** It reads the contribution in full, the full text of every lesson named, `lessons/TEMPLATE.md` and `lessons/taxonomy.json`.
+4. **By the written rules.** Its verdict cites the rule or step it used. If the rules do not settle it, it says so and proposes the rule that would: that gap goes into this skill.
+5. It may pick a third option. It gives its confidence and the one fact that would change its mind; with low confidence the case goes to the maintainer with both sides in two lines.
+6. Its verdict is advice: the maintainer decides. Add a row to [judge.md](judge.md) for each case, and fill in the maintainer's call when it is made, so after about ten cases the judge's worth can be measured instead of assumed.
 
 ## Pull request
 
