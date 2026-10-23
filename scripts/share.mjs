@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 // Sharing a lesson with Ritual: the mechanical half of `/ritual share`. Claude does the judgment (making the lesson
 // generic, deciding where it goes); this script gives it what to compare against, checks the result, and builds the
-// GitHub form link already filled in. It never publishes anything: the person opens the link and decides.
+// GitHub form link already filled in. It publishes only with `send`, after the person said yes to that lesson.
 // Usage: node scripts/share.mjs context [group]          groups and packages with what they cover, and the library
 //                                                         lessons of a group, to compare against before writing
 //        node scripts/share.mjs check <file> [project]   checks a lesson ready to share and prints the form link
+//        node scripts/share.mjs send <draft> [project]   checks it again, and opens the issue with gh in the form's own
+//                                                         format; marks the lesson `shared:` and deletes the draft. Without
+//                                                         gh signed in, prints the link instead
 //        node scripts/share.mjs confirm <id> <model> <YYYY-MM> <example-file>   link to confirm an existing lesson
 //        node scripts/share.mjs status [project] [--apply]   where each of the project's own lessons stands on its way
 //                                                         to the library; with --apply, marks the accepted ones merged
@@ -22,7 +25,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { GROUPS, PACKAGES, PARTS, TAXONOMY, groupOfFile, originProblems, parseLessons, readGroupFile, readLessons, safetyProblems } from "./lessons.mjs";
+import { GROUPS, PACKAGES, PARTS, ROOT, TAXONOMY, groupOfFile, originProblems, parseLessons, readGroupFile, readLessons, safetyProblems } from "./lessons.mjs";
 import { isMain } from "../hooks/common.mjs";
 
 const REPO = "https://github.com/Zurishadday/Ritual";
@@ -117,15 +120,28 @@ export function kindOf(project) {
 
 const formLink = (template, fields) => `${REPO}/issues/new?${new URLSearchParams({ template, ...fields }).toString()}`;
 
-export function shareUrl(l, where, kind = "") {
+/** The fields of an issue form: [{id, label}], read from its template. */
+export function formFields(template) {
+  const yml = readFileSync(path.join(ROOT, ".github", "ISSUE_TEMPLATE", template), "utf8").replace(/\r\n/g, "\n");
+  return [...yml.matchAll(/^\s+id: (\S+)\s*\n\s+attributes:\s*\n\s+label: (.+)$/gm)].map((m) => ({ id: m[1], label: m[2].trim().replace(/^"|"$/g, "") }));
+}
+
+/** The body the form itself makes from these fields, so an issue sent from here reads like one sent from the web. */
+export function formBody(template, fields) {
+  return formFields(template).map((f) => `### ${f.label}\n\n${String(fields[f.id] ?? "").trim() || "_No response_"}`).join("\n\n");
+}
+
+export function shareFields(l, where, kind = "") {
   const [, model, month] = (l.data.origin ?? "").split("·").map((s) => s.trim());
   const body = [`### ${l.title}`, "", ...PARTS.en.flatMap((p) => [`**${p}.** ${l.parts[p]}`, ""])].join("\n").trim();
-  return formLink("share-a-lesson.yml", {
+  return {
     title: `Lesson: ${l.title}`, model: model ?? "", month: month ?? "", kind, group: l.data.groups ?? "", where,
     lesson: body, transfer: l.parts["Transfers to"] ?? "", reproduce: l.parts["How to reproduce"] ?? "",
     measured: formatMeasured(parseMeasured(l.parts["Measured"]).values),
-  });
+  };
 }
+
+export const shareUrl = (l, where, kind = "") => formLink("share-a-lesson.yml", shareFields(l, where, kind));
 
 export function confirmUrl(id, model, month, example, kind = "", measured = "") {
   return formLink("confirm-a-lesson.yml", { title: `Confirm lesson ${id}`, lesson: id, model, month, kind, example, measured: formatMeasured(parseMeasured(measured).values) });
@@ -184,18 +200,93 @@ export function acceptedAs(comments) {
   return id;
 }
 
+// A file written with CRLF goes back with CRLF: only the marked line changes.
+const sameEol = (text, out) => (text.includes("\r\n") ? out.replace(/\n/g, "\r\n") : out);
+// The heading and the data line under it, with any blank lines between them, as the checker accepts.
+const headOf = (id) => `^### ${escape(id)}\\. .+\\n(?:[ \\t]*\\n)*`;
+
 /** Marks an own lesson merged: «Merged into N.» under its data line. Its parts stay, as history; the hooks skip it. */
 export function markMerged(text, id, target) {
   const src = text.replace(/\r\n/g, "\n");
   const lesson = parseLessons(src, "").lessons.find((l) => l.id === id);
   if (!lesson) throw new Error(`lesson ${id} not found`);
-  if (lesson.merged) return src;
-  const head = src.match(new RegExp(`^### ${escape(id)}\\. .+\\n\\n(\`[^\\n]+\\n\\n)?`, "m"));
-  return src.replace(head[0], `${head[0]}Merged into ${target}.\n\n`);
+  if (lesson.merged) return text;
+  const head = src.match(new RegExp(`${headOf(id)}(\`[^\\n]+\\n(?:[ \\t]*\\n)*)?`, "m"));
+  return sameEol(text, src.replace(head[0], `${head[0]}Merged into ${target}.\n\n`));
+}
+
+/** Marks an own lesson sent: `shared: <link>` at the end of its data line, so it is never offered again. */
+export function markShared(text, id, link) {
+  const src = text.replace(/\r\n/g, "\n");
+  const lesson = parseLessons(src, "").lessons.find((l) => l.id === id);
+  if (!lesson) throw new Error(`lesson ${id} not found`);
+  if (lesson.data.shared) return text;
+  const head = src.match(new RegExp(`${headOf(id)}\`[^\\n]+`, "m"));
+  if (!head) throw new Error(`lesson ${id} has no data line under its heading`);
+  return sameEol(text, src.replace(head[0], `${head[0]} · \`shared: ${link}\``));
+}
+
+/** Every issue whose title could be a shared lesson's, open or closed. Not by label: an issue sent from the terminal by
+ * someone without write access to the repository gets none. One request per 100 issues. */
+async function lessonIssues() {
+  const issues = [];
+  for (let page = 1; page <= 10; page++) {
+    const batch = await getJson(`${API}/issues?state=all&per_page=100&page=${page}`);
+    issues.push(...batch.filter((i) => !i.pull_request));
+    if (batch.length < 100) break;
+  }
+  return issues;
+}
+
+/** What `send` publishes for a checked draft: the title and the body in the form's own format. The box shows exactly this. */
+export function sendText(lesson, where, project) {
+  const fields = shareFields(lesson, where, kindOf(project));
+  return { title: fields.title, body: formBody("share-a-lesson.yml", fields), url: formLink("share-a-lesson.yml", fields) };
+}
+
+/** Sends one draft the person said yes to. GitHub comes in `io`, so the selftest can stand in for it:
+ * issues() → every issue (throws when GitHub can't be reached), me → the gh login or null, create(title, body) → the link.
+ * Nothing is published unless the lesson can be marked afterwards, and a title already on GitHub is never sent again. */
+export function sendDraft(draft, project, io) {
+  const id = path.basename(draft, ".md");
+  const { problems, lesson, where } = checkShare(readFileSync(draft, "utf8"), projectNames(project));
+  if (problems.length) return { code: 1, lines: problems.map((p) => `✕ ${p}`) };
+  const own = ownLessons(project).find((l) => l.id === id);
+  if (!own) return { code: 1, lines: [`✕ no lesson ${id} in .ritual/lessons/: the draft is named after the lesson it shares`] };
+  if (own.merged || own.data.shared || own.data.local) return { code: 1, lines: [`✕ ${id} is already ${own.merged ? "merged" : own.data.local ? "local" : "sent"}: nothing was sent; delete the draft`] };
+  const text = readFileSync(own.file, "utf8");
+  try { markShared(text, id, "x"); } catch (e) { return { code: 1, lines: [`✕ ${e.message}: put its data line right under its heading; nothing was sent`] }; }
+  const save =(link) => { writeFileSync(own.file, markShared(text, id, link)); rmSync(draft); };
+  const lines = [];
+  let issues = [];
+  try { issues = io.issues(); } catch (e) {
+    if (io.me) return { code: 1, lines: [`✕ could not check GitHub for this lesson (${e.message}): nothing was sent, try again later`] };
+    lines.push(`! could not check GitHub for this lesson (${e.message}): search its title there before submitting the link below`);
+  }
+  const before = issues.filter((i) => sameTitle(i.title) === sameTitle(lesson.title)).sort((a, b) => a.number - b.number)[0];
+  if (before && io.me && before.user?.login === io.me) { save(before.html_url); return { code: 0, lines: [...lines, `✓ ${id} was already on GitHub as #${before.number}, sent by you: marked shared, nothing sent again (${before.html_url})`] }; }
+  if (before) return { code: 1, lines: [...lines, `✕ an issue with this title is already on GitHub: #${before.number} by ${before.user?.login ?? "someone"} (${before.html_url}). Nothing was sent. If it is yours, write \`shared: ${before.html_url}\` in its data line; if it is the same mistake, confirm that lesson; if not, give yours a title of its own`] };
+  const out = sendText(lesson, where, project);
+  if (!io.me) {
+    if (out.url.length > MAX_URL) return { code: 1, lines: [...lines, `✕ GitHub CLI (gh) is not signed in to github.com, and the lesson is too long for a link: run \`gh auth login\` and send it again, or open ${REPO}/issues/new?template=share-a-lesson.yml and paste it`] };
+    return { code: 0, lines: [...lines, `→ GitHub CLI (gh) is not signed in to github.com, so it can't be sent from here. Open this link and submit it; then write \`shared:\` in its data line:\n${out.url}`] };
+  }
+  let link;
+  try { link = io.create(out.title, out.body); } catch (e) { return { code: 1, lines: [`✕ gh could not open the issue (${String(e.stderr || e.message).trim().split("\n")[0]}): look on GitHub before sending again`] }; }
+  if (!link) return { code: 1, lines: ["✕ gh did not return the new issue's link: look on GitHub before sending again"] };
+  save(link);
+  return { code: 0, lines: [`✓ ${id} sent: ${link}`] };
 }
 
 const API = "https://api.github.com/repos/Zurishadday/Ritual";
+// Always github.com: a gh signed in only to another host (or GH_HOST pointing at one) counts as not signed in here.
+const gh = (args, opts = {}) => execFileSync("gh", args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], timeout: 30000, maxBuffer: 64 * 1024 * 1024, ...opts });
+let login;
+/** The github.com account gh is signed in with, or null. */
+const ghLogin = () => (login ??= (() => { try { return gh(["api", "--hostname", "github.com", "user", "--jq", ".login"], { timeout: 15000 }).trim() || null; } catch { return null; } })());
+/** Through gh when it is signed in: GitHub allows 60 requests an hour without signing in, and a few rituals use them up. */
 async function getJson(url) {
+  if (ghLogin()) return JSON.parse(gh(["api", "--hostname", "github.com", url.replace("https://api.github.com/", "")]));
   const r = await fetch(url, { headers: { Accept: "application/vnd.github+json", "User-Agent": "ritual-share-status" }, signal: AbortSignal.timeout(10000) });
   if (!r.ok) throw new Error(`GitHub answered ${r.status}`);
   return r.json();
@@ -338,6 +429,42 @@ export function selftest() {
   const marked = markMerged(src, "P-1", "54");
   const after = parseLessons(marked, "g").lessons;
   if (after[0].merged !== "54" || after[0].parts["The idea"] !== "a" || after[1].merged || markMerged(marked, "P-1", "54") !== marked) failures.push(`markMerged: ${marked}`);
+  const link = "https://github.com/Zurishadday/Ritual/issues/60";
+  const sent = markShared(src.replace(/\n/g, "\r\n"), "P-2", link);
+  const both = parseLessons(sent, "g").lessons;
+  if (both[1].data.shared !== link || both[1].data.origin !== "x" || both[0].data.shared !== "2026-10-16" || markShared(sent, "P-2", "other") !== sent) failures.push(`markShared: ${sent}`);
+  if (!sent.includes("\r\n") || sent.replace(/\r\n/g, "\n").split("\n").filter((l, i) => l !== src.split("\n")[i]).length !== 1) failures.push("markShared must keep a CRLF file's line endings and change only the data line");
+  // send: a fake GitHub stands in for gh. It publishes only when it can mark the lesson afterwards, and never a title
+  // already there: someone else's issue keeps the draft, the person's own marks it without sending again.
+  const T = "A reader that skips bad lines loses the next one too";
+  const O7 = "`origin: field · claude-opus-5-5 · 2026-10`";
+  const trySend = (name, { lesson = `### P-7. ${T}\r\n\r\n${O7}\r\n\r\n**The idea.** x\r\n`, me = "me", issues = [], create = () => link }, expect) => {
+    const p = mkdtempSync(path.join(os.tmpdir(), "ritual-send-"));
+    try {
+      mkdirSync(path.join(p, ".ritual", "lessons"), { recursive: true });
+      mkdirSync(path.join(p, ".ritual", "local", "share"), { recursive: true });
+      const file = path.join(p, ".ritual", "lessons", "scripts-and-files.md");
+      const draft = path.join(p, ".ritual", "local", "share", "P-7.md");
+      writeFileSync(file, `# Scripts\r\n\r\n${lesson}`);
+      writeFileSync(draft, LESSON());
+      const made = [];
+      const r = sendDraft(draft, p, { me, issues: typeof issues === "function" ? issues : () => issues, create: (title, body) => { made.push({ title, body }); return create(); } });
+      const after = readFileSync(file, "utf8");
+      const got = { code: r.code, sent: made.length, shared: parseLessons(after, "g").lessons[0]?.data.shared ?? null, draft: existsSync(draft), crlf: !/[^\r]\n/.test(after) };
+      for (const [k, v] of Object.entries(expect)) if (got[k] !== v) failures.push(`send, ${name}: ${k} is ${got[k]}, expected ${v} · ${r.lines.join(" | ")}`);
+      if (made[0] && (made[0].title !== `Lesson: ${T}` || !made[0].body.startsWith("### Model\n\nclaude-opus-5-5") || !made[0].body.includes(`### The lesson\n\n### ${T}`))) failures.push(`send publishes the form's own format: ${made[0].title}\n${made[0].body.slice(0, 200)}`);
+      return r;
+    } finally { rmSync(p, { recursive: true, force: true }); }
+  };
+  trySend("a new lesson", {}, { code: 0, sent: 1, shared: link, draft: false, crlf: true });
+  trySend("no blank line under the heading", { lesson: `### P-7. ${T}\n${O7}\n\n**The idea.** x\n` }, { code: 0, sent: 1, shared: link, draft: false });
+  trySend("already sent by the same person", { issues: [{ number: 5, title: `Lesson: ${T}.`, user: { login: "me" }, html_url: "u5" }] }, { code: 0, sent: 0, shared: "u5", draft: false });
+  trySend("someone else's issue with the same title", { issues: [{ number: 5, title: `Lesson: ${T}`, user: { login: "other" }, html_url: "u5" }] }, { code: 1, sent: 0, shared: null, draft: true });
+  const linkOnly = trySend("gh not signed in", { me: null }, { code: 0, sent: 0, shared: null, draft: true });
+  if (!linkOnly.lines.join().includes("/issues/new?template=share-a-lesson.yml")) failures.push("without gh, send gives the form link");
+  trySend("GitHub can't be checked", { issues: () => { throw new Error("offline"); } }, { code: 1, sent: 0, shared: null, draft: true });
+  trySend("no data line to mark", { lesson: `### P-7. ${T}\n\n**The idea.** x\n` }, { code: 1, sent: 0, draft: true });
+  trySend("gh fails", { create: () => { throw new Error("HTTP 502"); } }, { code: 1, sent: 1, shared: null, draft: true });
   for (const m of failures) console.error(`✕ ${m}`);
   return failures.length;
 }
@@ -358,8 +485,38 @@ if (isMain(import.meta.url)) {
     if (problems.length) process.exit(1);
     const url = shareUrl(lesson, where, kindOf(project));
     if (url.length > MAX_URL) { console.log(`✕ the lesson is too long for a link (${url.length} characters): shorten it, or open ${REPO}/issues/new?template=share-a-lesson.yml and paste it`); process.exit(1); }
-    console.log(`✓ ready to share. Open this link, read it, and submit it yourself:\n${url}`);
+    console.log(`✓ ready to share: ask in the box. The form link, only for whoever can't send it from here:\n${url}`);
     process.exit(0);
+  }
+  if (cmd === "preview" || cmd === "send") {
+    // preview: the exact title and body `send` would publish, for the box. send: only after the person said yes to
+    // this lesson in the box, with this same text; it opens a public issue in their name.
+    if (!args[0] || !existsSync(args[0])) { console.error(`✕ usage: node scripts/share.mjs ${cmd} <draft> [project]`); process.exit(1); }
+    const project = path.resolve(args[1] ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
+    if (cmd === "preview") {
+      const { problems, lesson, where } = checkShare(readFileSync(args[0], "utf8"), projectNames(project));
+      for (const p of problems) console.log(`✕ ${p}`);
+      if (problems.length) process.exit(1);
+      const { title, body } = sendText(lesson, where, project);
+      console.log(`${title}\n\n${body}`);
+      process.exit(0);
+    }
+    const me = ghLogin();
+    let issues, failed;
+    try { issues = await lessonIssues(); } catch (e) { failed = e; }
+    const { code, lines } = sendDraft(args[0], project, {
+      me,
+      issues: () => { if (failed) throw failed; return issues; },
+      create: (title, body) => {
+        const dir = mkdtempSync(path.join(os.tmpdir(), "ritual-send-"));
+        try {
+          writeFileSync(path.join(dir, "body.md"), body);
+          return gh(["issue", "create", "--repo", "github.com/Zurishadday/Ritual", "--title", title, "--body-file", path.join(dir, "body.md")], { timeout: 60000 }).match(/https:\/\/github\.com\/\S+\/issues\/\d+/)?.[0];
+        } finally { rmSync(dir, { recursive: true, force: true }); }
+      },
+    });
+    for (const l of lines) console.log(l);
+    process.exit(code);
   }
   if (cmd === "confirm") {
     const [id, model, month, file, measured = ""] = args;
@@ -389,22 +546,16 @@ if (isMain(import.meta.url)) {
     const sentBefore = new Set();
     if (s.ready.length || s.triage.length) {
       try {
-        const issues = [];
-        for (let page = 1; page <= 10; page++) {
-          const batch = await getJson(`${API}/issues?state=all&labels=lesson&per_page=100&page=${page}`);
-          issues.push(...batch);
-          if (batch.length < 100) break;
-        }
-        for (const { lesson, issue } of alreadySent(s, issues, project)) {
+        for (const { lesson, issue } of alreadySent(s, await lessonIssues(), project)) {
           sentBefore.add(lesson.id);
           console.log(`! ${lesson.id}: already sent as #${issue.number} (${issue.state}): ${issue.html_url}. Don't send it again: write \`shared: ${issue.html_url}\` in its data line`);
         }
       } catch (e) { console.log(`! could not check GitHub for lessons already sent (${e.message}): look before sending`); }
     }
-    for (const l of s.ready.filter((x) => !sentBefore.has(x.id))) console.log(`→ ${l.id} · ${l.title}: draft ready, /ritual share ${l.id}`);
-    if (s.triage.length || s.ready.length > 1) console.log(`→ ${s.triage.length} to triage, ${s.ready.length} ready: run /ritual share --pending to go through them at once`);
+    for (const l of s.ready.filter((x) => !sentBefore.has(x.id))) console.log(`→ ${l.id} · ${l.title}: draft ready, ask whether to share it`);
+    if (s.triage.length) console.log(`→ ${s.triage.length} to triage: run /ritual share --pending to classify them before asking`);
     process.exit(0);
   }
-  console.error("✕ usage: node scripts/share.mjs context [group] | check <file> [project] | confirm <id> <model> <YYYY-MM> <example-file> | status [project] [--apply] | --selftest");
+  console.error("✕ usage: node scripts/share.mjs context [group] | check <file> [project] | send <draft> [project] | confirm <id> <model> <YYYY-MM> <example-file> | status [project] [--apply] | --selftest");
   process.exit(1);
 }

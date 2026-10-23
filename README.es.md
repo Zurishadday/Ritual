@@ -106,7 +106,7 @@ Al cerrar una sesión, o después de un error que dolió, escribe `/ritual`. Lee
 4. Escribe una **lección nueva** solo si ninguna lo cubre, con sus cinco partes.
 5. **Sube por la escalera** lo que se pueda: un patrón de comando se vuelve regla del guardia; una propiedad del código, una prueba con el nombre de la lección, vista fallar contra el error real antes de confiar en ella; lo que no se puede automatizar y ya se rompió dos veces, una línea en `CLAUDE.md`. Lo demás queda como candidato con su fecha.
 6. Guarda todo junto, en el mismo commit, y corre el verificador.
-7. Deja los ejemplos anónimos y, si una lección vale para cualquier proyecto, te ofrece el texto para compartirla aquí. Te recuerda las lecciones que aún no has compartido y, cuando la biblioteca acepta una, marca la tuya para que no se muestre dos veces. Nunca publica nada por su cuenta.
+7. Deja los ejemplos anónimos y, si una lección vale para cualquier proyecto, te pregunta en un cuadro de diálogo si quieres compartirla aquí, con el texto exacto que publicaría. Te recuerda las lecciones que aún no has compartido y, cuando la biblioteca acepta una, marca la tuya para que no se muestre dos veces. Solo publica las lecciones que tú aceptas.
 
 </details>
 
@@ -170,7 +170,7 @@ La forma más fácil: **confirma una lección**. Si una lección también te pas
 
 También puedes:
 
-- **Compartir una lección** tuya: escribe `/ritual share`. La compara con la biblioteca (un error que ya está cubierto se vuelve una confirmación, no un duplicado), la reescribe para que le sirva a alguien que construye otra cosa, revisa que no nombre nada de tu proyecto, decide dónde va y abre el [formulario](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) ya lleno. Tú lo lees y lo envías. Una lección que solo pasó con otro modelo [se comprueba con Claude primero](simulations/README.es.md#cómo-se-revisa-una-lección-que-alguien-aporta).
+- **Compartir una lección** tuya: escribe `/ritual share`. La compara con la biblioteca (un error que ya está cubierto se vuelve una confirmación, no un duplicado), la reescribe para que le sirva a alguien que construye otra cosa, revisa que no nombre nada de tu proyecto, decide dónde va y te muestra el texto exacto en un cuadro de diálogo. Si dices que sí, abre el issue con tu cuenta de GitHub mediante la CLI de GitHub (`gh`). Sin `gh` con sesión iniciada, te da el [formulario](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) ya lleno, para que lo envíes tú. Una lección que solo pasó con otro modelo [se comprueba con Claude primero](simulations/README.es.md#cómo-se-revisa-una-lección-que-alguien-aporta).
 - **Abrir un paquete nuevo** para un tipo de proyecto que falte: `/ritual share` lo propone cuando una lección no cabe en ninguno de los que existen. O **proponer una tarea de simulación** para él.
 - **Revisar una traducción**: las lecciones las traduce un modelo, y cada una lo dice (`by: ai`). Si eres hablante nativo, corrígela y fírmala con tu usuario de GitHub. El flujo está en [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Agregar una regla al guardia**, o un caso que debía dejar pasar.

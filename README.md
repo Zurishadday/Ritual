@@ -105,7 +105,7 @@ When you close a session, or after a mistake that hurt, type `/ritual`. It reads
 4. Writes a **new lesson** only if none covers it, with its five parts.
 5. **Climbs the ladder** wherever it can: a command pattern becomes a guard rule; a property of the code, a test named after the lesson, seen failing against the real mistake before it is trusted; what cannot be automated and has already broken twice, a line in `CLAUDE.md`. Everything else stays as a dated candidate.
 6. Saves everything together, in the same commit, and runs the checker.
-7. Keeps the examples anonymous and, if a lesson holds for any project, offers you the text to share it here. It reminds you of the lessons you haven't shared yet, and once the library takes one, marks yours so it isn't shown twice. It never publishes anything on its own.
+7. Keeps the examples anonymous and, if a lesson holds for any project, asks you in a box whether to share it here, with the exact text it would publish. It reminds you of the lessons you haven't shared yet, and once the library takes one, marks yours so it isn't shown twice. It publishes only the lessons you say yes to.
 
 </details>
 
@@ -169,7 +169,7 @@ The easiest way: **confirm a lesson**. If a lesson happened to you too, [open a 
 
 You can also:
 
-- **Share a lesson** of yours: type `/ritual share`. It compares it with the library (a mistake already covered becomes a confirmation, not a duplicate), rewrites it so it helps someone building something else, checks that it names nothing of your project, decides where it goes, and opens the [form](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) already filled in. You read it and submit it. A lesson that only happened with another model is [checked with Claude first](simulations/README.md#checking-a-contributed-lesson).
+- **Share a lesson** of yours: type `/ritual share`. It compares it with the library (a mistake already covered becomes a confirmation, not a duplicate), rewrites it so it helps someone building something else, checks that it names nothing of your project, decides where it goes, and shows you the exact text in a box. If you say yes, it opens the issue under your GitHub account with the GitHub CLI (`gh`). Without `gh` signed in, it gives you the [form](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) already filled in, to submit yourself. A lesson that only happened with another model is [checked with Claude first](simulations/README.md#checking-a-contributed-lesson).
 - **Open a new package** for a kind of project that's missing: `/ritual share` proposes one when a lesson fits none of the existing ones. Or **propose a simulation task** for it.
 - **Review a translation**: the lessons are translated by a model, and each one says so (`by: ai`). If you are a native speaker, fix it and sign it with your GitHub user. The workflow is in [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Add a guard rule**, or a case it should have let through.

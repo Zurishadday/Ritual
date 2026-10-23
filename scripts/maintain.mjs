@@ -14,18 +14,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { isMain } from "../hooks/common.mjs";
 import { ROOT, TAXONOMY, compareIds, parseLessons, readLessons, safetyProblems } from "./lessons.mjs";
-import { checkShare, parseMeasured } from "./share.mjs";
+import { checkShare, formBody, formFields, parseMeasured, shareFields } from "./share.mjs";
 
 const FORMS = { lesson: "share-a-lesson.yml", confirmation: "confirm-a-lesson.yml" };
 const SHARE_ONLY = ["Where it goes", "Transfers to", "How to reproduce", "Measured"];
 const list = (s) => String(s ?? "").split(",").map((x) => x.trim()).filter(Boolean);
 const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-/** The fields of an issue form: [{id, label}], read from its template. */
-export function formFields(template) {
-  const yml = readFileSync(path.join(ROOT, ".github", "ISSUE_TEMPLATE", template), "utf8").replace(/\r\n/g, "\n");
-  return [...yml.matchAll(/^\s+id: (\S+)\s*\n\s+attributes:\s*\n\s+label: (.+)$/gm)].map((m) => ({ id: m[1], label: m[2].trim().replace(/^"|"$/g, "") }));
-}
 
 /** An issue body made by a form, back into its fields. It splits only on the form's own labels: the lesson itself has `### ` headings. */
 export function parseForm(body, fields) {
@@ -191,6 +185,9 @@ export function selftest() {
   if (c.lesson !== "27" || c.example !== "It happened." || c.fired !== "" || c.kind !== "web, education") bad.push(`parseForm on a confirmation: ${JSON.stringify(c)}`);
   const share = checkShare(shareText(f));
   if (share.problems.length) bad.push(`a form lesson should pass the share check: ${share.problems.join(" | ")}`);
+  // What `share.mjs send` puts on GitHub has to come back here as the same lesson.
+  const sent = parseForm(formBody(FORMS.lesson, shareFields(share.lesson, share.where, "web")), fields);
+  if (shareText(sent) !== shareText({ ...f, measured: "caught: unknown · fired: unknown · recurred: unknown · cost: unknown" }) || sent.kind !== "web") bad.push(`a lesson sent from the terminal should read back the same:\n${shareText(sent)}\n---\n${shareText(f)}`);
   const pkg = checkShare(shareText({ ...f, where: "package web" }));
   if (pkg.lesson?.data.packages !== "web" || pkg.problems.length) bad.push(`\`package web\` should become packages: web: ${pkg.problems.join(" | ")}`);
   const { lessons } = readLessons();

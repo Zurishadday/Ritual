@@ -106,7 +106,7 @@ Ao fechar uma sessão, ou depois de um erro que doeu, digite `/ritual`. Ele lê 
 4. Escreve uma **lição nova** só se nenhuma cobre, com suas cinco partes.
 5. **Sobe a escada** sempre que possível: um padrão de comando vira uma regra da Guarda; uma propriedade do código, ou um teste com o nome da lição, visto falhando contra o erro real antes de ser confiado; o que não pode ser automatizado e já quebrou duas vezes, uma linha no `CLAUDE.md`. O resto fica como candidato datado.
 6. Salva tudo junto, no mesmo commit, e roda o verificador.
-7. Mantém os exemplos anônimos e, se uma lição vale para qualquer projeto, oferece o texto para você compartilhar aqui. Ele lembra você das lições que ainda não compartilhou e, quando a biblioteca aceita uma, marca a sua para que não seja mostrada duas vezes. Nunca publica nada por conta própria.
+7. Mantém os exemplos anônimos e, se uma lição vale para qualquer projeto, pergunta numa caixa de diálogo se você quer compartilhá-la aqui, com o texto exato que publicaria. Ele lembra você das lições que ainda não compartilhou e, quando a biblioteca aceita uma, marca a sua para que não seja mostrada duas vezes. Publica somente as lições que você aceita.
 
 </details>
 
@@ -170,7 +170,7 @@ O jeito mais fácil: **confirme uma lição**. Se uma lição também aconteceu 
 
 Você também pode:
 
-- **Compartilhe uma lição** sua: escreva `/ritual share`. O comando compara a lição com a biblioteca (um erro que já está coberto vira uma confirmação, não uma duplicata), a reescreve para servir a quem constrói outra coisa, verifica que ela não cita nada do seu projeto, decide onde ela vai e abre o [formulário](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) já preenchido. Você lê e envia. Uma lição que só aconteceu com outro modelo é [verificada com Claude antes](simulations/README.pt.md#como-verificar-uma-lição-contribuída).
+- **Compartilhe uma lição** sua: escreva `/ritual share`. O comando compara a lição com a biblioteca (um erro que já está coberto vira uma confirmação, não uma duplicata), a reescreve para servir a quem constrói outra coisa, verifica que ela não cita nada do seu projeto, decide onde ela vai e mostra o texto exato numa caixa de diálogo. Se você disser que sim, abre a issue com a sua conta do GitHub, pela GitHub CLI (`gh`). Sem o `gh` autenticado, dá o [formulário](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) já preenchido, para você enviar por conta própria. Uma lição que só aconteceu com outro modelo é [verificada com Claude antes](simulations/README.pt.md#como-verificar-uma-lição-contribuída).
 - **Abra um pacote novo** para um tipo de projeto que ainda não tem: `/ritual share` propõe um quando uma lição não cabe em nenhum dos que existem. Ou **proponha uma tarefa de simulação** para ele.
 - **Revise uma tradução**: as lições são traduzidas por um modelo, e cada uma indica isso (`by: ai`). Se você é falante nativo, corrija e assine com o seu usuário do GitHub. O fluxo está em [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Adicione uma regra à Guarda**, ou um caso que ela deveria ter deixado passar.

@@ -106,7 +106,7 @@ Quand vous fermez une session, ou après une erreur qui a fait mal, tapez `/ritu
 4. Écrit une **nouvelle leçon** seulement si aucune ne couvre le cas, avec ses cinq parties.
 5. **Monte l'échelle** là où c'est possible : un motif de commande devient une règle de garde ; une propriété du code, ou un test qui porte le nom de la leçon, vu échouer face à la vraie erreur avant qu'on lui fasse confiance ; ce qui ne peut pas être automatisé et a déjà cassé deux fois, une ligne dans `CLAUDE.md`. Le reste reste un candidat daté.
 6. Enregistre tout ensemble, dans le même commit, et lance le vérificateur.
-7. Garde les exemples anonymes et, si une leçon vaut pour n'importe quel projet, vous propose le texte à partager ici. Il vous rappelle les leçons que vous n'avez pas encore partagées et, dès que la bibliothèque en accepte une, marque la vôtre pour qu'elle ne soit pas affichée deux fois. Il ne publie jamais rien de lui-même.
+7. Garde les exemples anonymes et, si une leçon vaut pour n'importe quel projet, vous demande dans une boîte de dialogue si vous voulez la partager ici, avec le texte exact qu'il publierait. Il vous rappelle les leçons que vous n'avez pas encore partagées et, dès que la bibliothèque en accepte une, marque la vôtre pour qu'elle ne soit pas affichée deux fois. Il ne publie que les leçons que vous acceptez.
 
 </details>
 
@@ -170,7 +170,7 @@ La façon la plus simple : **confirmer une leçon**. Si une leçon vous est auss
 
 Vous pouvez aussi :
 
-- **Partager une leçon** de la vôtre : écrivez `/ritual share`. La commande la compare à la bibliothèque (une erreur déjà couverte devient une confirmation, pas un doublon), la réécrit pour qu'elle serve à quelqu'un qui construit autre chose, vérifie qu'elle ne nomme rien de votre projet, décide où elle va et ouvre le [formulaire](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) déjà rempli. Vous la relisez et l'envoyez. Une leçon qui ne s'est produite qu'avec un autre modèle est [vérifiée avec Claude d'abord](simulations/README.fr.md#vérifier-une-leçon-contribuée).
+- **Partager une leçon** de la vôtre : écrivez `/ritual share`. La commande la compare à la bibliothèque (une erreur déjà couverte devient une confirmation, pas un doublon), la réécrit pour qu'elle serve à quelqu'un qui construit autre chose, vérifie qu'elle ne nomme rien de votre projet, décide où elle va et vous montre le texte exact dans une boîte de dialogue. Si vous dites oui, il ouvre le ticket sous votre compte GitHub avec la CLI GitHub (`gh`). Sans `gh` connecté, il vous donne le [formulaire](https://github.com/Zurishadday/Ritual/issues/new?template=share-a-lesson.yml) déjà rempli, à envoyer vous-même. Une leçon qui ne s'est produite qu'avec un autre modèle est [vérifiée avec Claude d'abord](simulations/README.fr.md#vérifier-une-leçon-contribuée).
 - **Ouvrir un nouveau paquet** pour un type de projet qui manque : `/ritual share` en propose un lorsqu'une leçon ne rentre dans aucun de ceux qui existent. Ou **proposer une tâche de simulation** pour lui.
 - **Relire une traduction** : les leçons sont traduites par un modèle, et chacune l'indique (`by: ai`). Si vous êtes locuteur natif, corrigez-la et signez-la avec votre nom d'utilisateur GitHub. La procédure se trouve dans [`lessons/TRANSLATING.md`](lessons/TRANSLATING.md).
 - **Ajouter une règle de garde**, ou un cas qu'elle aurait dû laisser passer.
