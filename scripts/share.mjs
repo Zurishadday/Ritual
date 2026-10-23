@@ -157,6 +157,22 @@ export function statusLine(s) {
   return `Lessons here: ${s.triage.length} to triage${ids(s.triage)} · ${s.ready.length} ready to send${ids(s.ready)} · ${s.local.length} only for this project · ${s.sent.length} sent · ${s.merged.length} merged into the library`;
 }
 
+/** The lessons about to be sent (ready or to triage) that already have an issue with the same title: their `shared:`
+ * was never written, or a batch ran twice. The title compared is the draft's for a ready lesson (the one the issue got),
+ * the lesson's own for one to triage; case, spaces and a final period don't count, a longer title is another lesson.
+ * Sent more than once, the first issue is the one: the later ones were closed as its duplicates. */
+const sameTitle = (t) => String(t ?? "").replace(/^Lesson:/i, "").replace(/\s+/g, " ").trim().replace(/\.$/, "").toLowerCase();
+export function alreadySent(s, issues, project = ".") {
+  const titleOf = (l) => {
+    const draft = path.join(project, ".ritual", "local", "share", `${l.id}.md`);
+    return existsSync(draft) ? readFileSync(draft, "utf8").match(/^### (.+)$/m)?.[1] : l.title;
+  };
+  return [...s.triage, ...s.ready]
+    .map((lesson) => ({ lesson, issue: issues.filter((i) => sameTitle(i.title) === sameTitle(titleOf(lesson))).sort((a, b) => a.number - b.number)[0] }))
+    .filter((x) => x.issue)
+    .sort((a, b) => a.lesson.id.localeCompare(b.lesson.id));
+}
+
 const MAINTAINERS = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
 /** The library id an issue was merged into: the last «Ritual: merged into N.» written by a maintainer, or null. */
 export function acceptedAs(comments) {
@@ -306,6 +322,13 @@ export function selftest() {
     if ([st.sent, st.local, st.triage, st.merged, st.ready].map(ids).join("|") !== "P-1|P-2|P-3|P-4|P-5") failures.push(`localStatus: ${Object.entries(st).map(([k, v]) => `${k}=${ids(v)}`).join(" ")}`);
     if (ids(st.stale) !== "P-1,P-2,P-4") failures.push(`a draft of a lesson already sent, merged or local is a stale draft, never ready: stale=${ids(st.stale)}`);
     if (statusLine(st) !== "Lessons here: 1 to triage (P-3) · 1 ready to send (P-5) · 1 only for this project · 1 sent · 1 merged into the library") failures.push(`statusLine: ${statusLine(st)}`);
+    // A lesson already on GitHub (its `shared:` never written, or a batch run twice) is found by title before it is
+    // sent again: the draft's title for a ready one, the lesson's own for one to triage; a title that only contains
+    // another one is a different lesson.
+    // Sent twice already (#28 was a duplicate of #12): the first one is where the maintainer's answer is.
+    const issues = [{ number: 28, title: "Lesson: Drafted", state: "closed", html_url: "u28" }, { number: 12, title: "Lesson: Drafted", state: "closed", html_url: "u12" }, { number: 9, title: "Lesson: Waiting longer", state: "open", html_url: "u9" }, { number: 7, title: "Lesson:  waiting.", state: "open", html_url: "u7" }];
+    const dup = alreadySent(st, issues, sandbox).map(({ lesson, issue }) => `${lesson.id}#${issue.number}`).join();
+    if (dup !== "P-3#7,P-5#12") failures.push(`alreadySent should find P-3 as #7 and P-5 as #12, the first of its two issues: ${dup || "nothing"}`);
   } finally { rmSync(sandbox, { recursive: true, force: true }); }
   const said = (body, author_association) => ({ body, author_association });
   if (acceptedAs([said("Thanks!", "OWNER"), said("Ritual: merged into 54.", "OWNER")]) !== "54") failures.push("the maintainer's mark gives the id");
@@ -362,7 +385,23 @@ if (isMain(import.meta.url)) {
       else console.log(`· ${l.id} sent, still open: ${issue.url}`);
     }
     for (const l of s.stale) console.log(`! ${l.id}: stale draft, the lesson is already ${l.merged ? "merged" : l.data.local ? "local" : "sent"}; delete .ritual/local/share/${l.id}.md`);
-    for (const l of s.ready) console.log(`→ ${l.id} · ${l.title}: draft ready, /ritual share ${l.id}`);
+    // Before anything is offered for sending: is it on GitHub already? One request per 100 lesson issues, open or closed.
+    const sentBefore = new Set();
+    if (s.ready.length || s.triage.length) {
+      try {
+        const issues = [];
+        for (let page = 1; page <= 10; page++) {
+          const batch = await getJson(`${API}/issues?state=all&labels=lesson&per_page=100&page=${page}`);
+          issues.push(...batch);
+          if (batch.length < 100) break;
+        }
+        for (const { lesson, issue } of alreadySent(s, issues, project)) {
+          sentBefore.add(lesson.id);
+          console.log(`! ${lesson.id}: already sent as #${issue.number} (${issue.state}): ${issue.html_url}. Don't send it again: write \`shared: ${issue.html_url}\` in its data line`);
+        }
+      } catch (e) { console.log(`! could not check GitHub for lessons already sent (${e.message}): look before sending`); }
+    }
+    for (const l of s.ready.filter((x) => !sentBefore.has(x.id))) console.log(`→ ${l.id} · ${l.title}: draft ready, /ritual share ${l.id}`);
     if (s.triage.length || s.ready.length > 1) console.log(`→ ${s.triage.length} to triage, ${s.ready.length} ready: run /ritual share --pending to go through them at once`);
     process.exit(0);
   }
