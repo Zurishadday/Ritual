@@ -16,7 +16,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { DEFAULT_CONFIG, packageBrief, writeDigest } from "./questions.mjs";
+import { packageBrief, writeDigest, projectConfig } from "./questions.mjs";
 import { prunePicks } from "./pick.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
@@ -157,7 +157,7 @@ if (isMain(import.meta.url)) {
   resetQuestions(ritual, input);
   prunePicks(ritual);
   writeDigest(ritual);
-  const brief = packageBrief({ ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) }, ritual);
+  const brief = packageBrief(projectConfig(ritual), ritual);
   if (brief) { const state = session(ritual, input?.session_id); state.data.brief = true; state.save(); }
   const text = [brief, notice({ config: configDir(), ritual }), aboutNotice({ ritual })].filter(Boolean).join("\n\n");
   if (text) console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "SessionStart", additionalContext: text } }));

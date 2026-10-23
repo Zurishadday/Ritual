@@ -10,7 +10,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import os from "node:os";
 import path from "node:path";
 import { isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
-import { DEFAULT_CONFIG, packageLessons } from "./questions.mjs";
+import { packageLessons, projectConfig } from "./questions.mjs";
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 
@@ -33,7 +33,7 @@ export function closeReason(config, ritual, plugin = PLUGIN) {
 /** The decision for a Stop event, or null to let Claude finish. Marks the session closed when it asks. */
 export function decide(input, ritual, plugin = PLUGIN) {
   if (!ritual || input?.stop_hook_active) return null;
-  const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
+  const config = projectConfig(ritual);
   if (config.close !== true) return null;
   const state = session(ritual, input?.session_id);
   if (!state.data.edited || state.data.closed) return null;

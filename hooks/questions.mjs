@@ -18,6 +18,18 @@ import { alreadyPicked, awaitRequest, deliver, fileRule, firstStepEntry, startPi
 
 const PLUGIN = path.resolve(import.meta.dirname, "..");
 export const DEFAULT_CONFIG = readJson(path.join(PLUGIN, "templates", "config.json"), { language: "en", packages: [], demoted: [], groups: {} });
+
+/** The project's settings over the template's, except the group patterns, which join: a project keeps the patterns it
+ * was set up with (a copy of the template then) plus its own, and a pattern added to the template later reaches it too. */
+export function mergeConfig(project) {
+  const groups = {};
+  for (const g of new Set([...Object.keys(DEFAULT_CONFIG.groups ?? {}), ...Object.keys(project.groups ?? {})]))
+    groups[g] = [...new Set([...(project.groups?.[g] ?? []), ...(DEFAULT_CONFIG.groups?.[g] ?? [])])];
+  return { ...DEFAULT_CONFIG, ...project, groups };
+}
+
+/** The project's .ritual/config.json over the template's. */
+export const projectConfig = (ritual) => mergeConfig(readJson(path.join(ritual, "config.json"), {}));
 const GIT = /(^|[\s;&|(])git\s+(commit|push|merge|rebase|tag|cherry-pick|revert)\b/;
 
 /** @returns {{group: string | null, target: string}} */
@@ -166,7 +178,7 @@ export function digest(config, ritual) {
 
 export function writeDigest(ritual) {
   if (!ritual) return;
-  const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
+  const config = projectConfig(ritual);
   try { mkdirSync(path.join(ritual, "local"), { recursive: true }); writeFileSync(path.join(ritual, "local", "lessons.md"), digest(config, ritual)); } catch { /* no digest */ }
 }
 
@@ -216,6 +228,11 @@ export function selftest() {
     const { group } = groupOf(input);
     if (group !== expected) failures.push(`${input.tool_input.command ?? input.tool_input.file_path}: expected ${expected}, got ${group}`);
   }
+  // A project keeps the patterns it was set up with; a pattern added to the template later still reaches it, and its own stay.
+  const older = mergeConfig({ packages: ["web"], groups: { "scripts-and-files": ["**/scripts/**", "**/*.sh", "**/tools/**"] } });
+  if (groupOf({ tool_name: "Write", tool_input: { file_path: "C:/p/start.bat" }, cwd: "C:/p" }, older).group !== "scripts-and-files") failures.push("a project set up before .bat joined the template should still get it");
+  if (groupOf({ tool_name: "Write", tool_input: { file_path: "C:/p/tools/x.py" }, cwd: "C:/p" }, older).group !== "scripts-and-files" || older.packages.join() !== "web") failures.push("the project's own patterns and settings must stay");
+  if (groupOf({ tool_name: "Write", tool_input: { file_path: "C:/p/docs/a.md" }, cwd: "C:/p" }, older).group !== "writing-and-docs") failures.push("a group the project's config lacks comes from the template");
   if (saved) process.env.CLAUDE_PROJECT_DIR = saved;
   const consoleText = context("console-and-tools", DEFAULT_CONFIG, null) ?? "";
   for (const id of ["27", "29", "44"]) if (!consoleText.includes(`- ${id} · `)) failures.push(`the console context lacks lesson ${id}`);
@@ -336,7 +353,7 @@ if (isMain(import.meta.url)) {
   const own = file ? nearestRitual(file) : null;
   const ritual = own ?? ritualDir(input);
   if (!ritual) process.exit(0);
-  const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
+  const config = projectConfig(ritual);
   const { group, target } = groupOf(input, config, own ? path.dirname(own) : undefined);
   const state = session(ritual, input.session_id);
   state.data.last = { tool: input.tool_name, target, date: new Date().toISOString() };

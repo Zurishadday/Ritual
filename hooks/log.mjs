@@ -17,7 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { appendLine, isMain, readInput, readJson, ritualDir, session } from "./common.mjs";
 import { resetQuiet, skipReason, startPick, workOfPrompt } from "./pick.mjs";
-import { DEFAULT_CONFIG, activeLessons } from "./questions.mjs";
+import { activeLessons, projectConfig } from "./questions.mjs";
 
 // Precision over coverage: a phrase that is not logged is lost; one logged in excess dirties the ritual.
 const CORRECTION = [
@@ -126,7 +126,7 @@ if (isMain(import.meta.url)) {
   }
   // A request starts a pick in the background, and Claude's first step of this turn waits for it (hooks/pick.mjs).
   if (input.hook_event_name === "UserPromptSubmit") {
-    const config = { ...DEFAULT_CONFIG, ...readJson(path.join(ritual, "config.json"), {}) };
+    const config = projectConfig(ritual);
     const work = config.picker !== false && workOfPrompt(input.prompt);
     const job = work && startPick(ritual, input.session_id, work, () => activeLessons(config, ritual).lessons);
     if (job) data.awaiting = { job, at: Date.now() };
