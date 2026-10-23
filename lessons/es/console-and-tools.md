@@ -79,3 +79,17 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 **Señal de alarma.** «Ya funcionaba con el ejemplo corto».
 
 **Qué hacer.** Todo lo que pueda crecer viaja en un archivo, por la entrada estándar o en el cuerpo de una petición, nunca como argumentos, variables de entorno ni en la URL. Prueba una vez con el texto más largo que esperas, en el sistema más estricto donde vaya a correr.
+
+### 62. Parar un trabajo en segundo plano es parar lo que lo lanza, y luego comprobar que no queda nada
+
+`from: 9276f71e` · `by: ai`
+
+**La idea.** El trabajo largo en segundo plano suele tener un lanzador (un script que corre los pasos uno tras otro) y procesos hijos (cada paso). Si matas solo al hijo, el lanzador arranca el siguiente paso; la GPU, el disco o la red siguen ocupados mientras tú reportas «quedó detenido».
+
+**Ejemplo.** Un usuario pidió detener un entrenamiento de modelo que corría desde la noche. Se detuvo primero el agente que lo había lanzado, y luego el proceso de Python que entrenaba. Una comprobación encontró otro proceso de Python entrenando con un PID nuevo: el script lanzador había pasado al siguiente paso. Hizo falta encontrar todo el árbol de procesos, cerrar el lanzador y un `tail -f` que seguía el registro, y confirmar con `nvidia-smi` qué seguía usando la GPU.
+
+**Pregunta detectora.** ¿Quién lanzó este proceso, y lo volverá a lanzar si lo cierro? Después de detenerlo, ¿qué comando demuestra que nada mío sigue corriendo?
+
+**Señal de alarma.** «Maté el proceso, ya está detenido».
+
+**Qué hacer.** Cierra todo el árbol desde el lanzador (`taskkill /t /f` en Windows, matar el grupo de procesos en Unix). Luego busca en los procesos en ejecución, por línea de comandos, cualquier cosa que quede de ese trabajo, y revisa el recurso (GPU, puerto, bloqueo de archivo) hasta que esté libre; di «detenido» solo después de esa comprobación (ver la 38). Por diseño, dale al trabajo una parada limpia (un archivo `STOP` que revisa antes de cada paso), y haz que el lanzador se detenga cuando se mate un paso, en lugar de pasar al siguiente.

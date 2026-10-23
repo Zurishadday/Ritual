@@ -95,3 +95,17 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 **Señal de alarma.** «Cada quien probó lo suyo» · «la falla es de otra pieza» · «cada uno toca archivos distintos, no chocan».
 
 **Qué hacer.** Que lo compartido lo integre una sola persona, con un paso que se detenga si un nombre choca. Que las pruebas lean el original, no una copia. Corre las pruebas completas cuando todas terminen, o sin las piezas que siguen cambiando, y di cuáles quedaron fuera. Y guarda juntas las piezas que comparten archivos, para que cada versión guardada funcione completa. Dale a cada sesión su propia carpeta (`git worktree`), lee `git status -sb` antes de cada commit, y después de un push revisa que la rama remota tenga el commit.
+
+### 65. Una regla sobre cómo trabajar no tiene excepción para los pasos chicos
+
+`from: 1f76d0cd` · `by: ai`
+
+**La idea.** Una instrucción permanente sobre cómo trabajar (quién hace qué, dónde corre, con qué herramienta) no tiene excepción por tamaño. «Es solo una revisión rápida» es justo el caso que la regla quería cubrir.
+
+**Ejemplo.** El usuario había pedido, y estaba guardado en la memoria, que todo el trabajo mecánico (instalar, correr scripts, transcribir) fuera a un subagente de modelo más barato, y que el modelo principal solo razonara. Ante tres archivos de audio largos, el modelo principal escribió y corrió él mismo una transcripción de muestra «para ver qué contenían»; falló por una biblioteca que faltaba, lo reintentó, y el usuario lo detuvo para recordarle la regla.
+
+**Pregunta detectora.** Antes del primer comando de una petición: ¿hay una regla permanente (memoria, instrucciones del proyecto, lo que dijo el usuario) sobre quién hace este tipo de paso, o cómo? ¿Me la estoy saltando porque el paso es «chico»?
+
+**Señal de alarma.** «Primero le echo un vistazo y luego lo delego» · «esto es muy corto como para delegarlo».
+
+**Qué hacer.** Clasifica el paso por su tipo, no por su tamaño: si es mecánico, va como dice la regla desde el primer comando. Si una excepción de verdad tiene sentido, dilo antes de hacerla y deja que el usuario decida.

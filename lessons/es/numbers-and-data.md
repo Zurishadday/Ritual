@@ -131,3 +131,17 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 **Señal de alarma.** «Los números lo confirman».
 
 **Qué hacer.** Antes de enseñar o reportar por qué pasa algo, escribe la explicación rival y arma un caso donde las dos predigan distinto. Compara partes del mismo tamaño, prueba con otro tamaño de ejemplo y mide una afirmación general en datos simulados antes de escribirla. Si no logras separarlas, di que el ejemplo es compatible con las dos. Cuando el código construye el ejemplo (una demo, un conjunto de datos de muestra), deja en él un assert que falle si la explicación rival daría el mismo resultado.
+
+### AI-3. Un modelo afinado también aprende los bordes y el fondo de sus ejemplos
+
+`from: 381ee3d8` · `by: ai`
+
+**La idea.** Un modelo entrenado con ejemplos copia todo lo que esos ejemplos tienen en común, no solo lo que quisiste enseñarle. Si cada clip termina de golpe o trae el mismo ruido de fondo, el modelo genera finales abruptos y ese mismo ruido.
+
+**Ejemplo.** Para clonar una voz, los clips de entrenamiento se cortaron 0.1 s después de la última palabra, y las grabaciones de origen tenían ruido de sala cerca de −48 dB. El modelo afinado terminó cada frase en su última sílaba (−23 dB en la última muestra) y puso ese ruido en todas las frases, incluso con una voz de referencia limpia. El usuario lo escuchó («se corta en seco»); la verificación automática de la transcripción dijo que el texto estaba completo, así que no lo detectó (una revisión de una sola dimensión, ver la 19).
+
+**Pregunta detectora.** Además de lo que quiero enseñar, ¿qué comparten casi todos mis ejemplos: cómo empiezan y terminan, su fondo, su formato? ¿Quiero que el modelo produzca eso también?
+
+**Señal de alarma.** «El texto coincide, así que el conjunto de datos está bien» · «el ruido es leve, el modelo aprende la voz, no la sala».
+
+**Qué hacer.** Mide en el conjunto de datos las mismas propiedades que le exigirás a la salida (en audio: el nivel al final de cada clip, el piso de ruido, la longitud de la cola) y hazlas cumplir como filtros antes de entrenar. Si la salida tiene un defecto que no está en el código, busca primero en los datos.

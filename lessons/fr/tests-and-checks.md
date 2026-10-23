@@ -4,7 +4,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### 13. Un contrôle qui n'a jamais vu l'erreur ne vérifie rien
 
-`from: eb6c6b31` · `by: ai`
+`from: 200d356e` · `by: ai`
 
 **L'idée.** Un test qui réussit toujours peut être cassé. La seule façon de le savoir est de le voir échouer face à la vraie erreur.
 
@@ -14,11 +14,13 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Encore un exemple.** Une règle qui détectait le code indenté signalait une ligne commençant par un texte : le cas qui devait passer n'avait pas cette forme. Et un test vérifiant que la comparaison de texte fonctionnait réussissait alors que la comparaison était cassée, parce qu'une autre relecture avait rejeté l'erreur en premier.
 
-**Question détectrice.** Ai-je testé mon contrôle face à l'erreur dans les formes où elle apparaîtrait réellement ? Et face au cas correct ?
+**Un quatrième exemple.** Un classifieur qui signale les objections commerciales a obtenu 0 fausse alerte sur 30 phrases ordinaires de clients, et ce chiffre a été rapporté. En ajoutant 25 phrases sur les mêmes sujets, le résultat s'est inversé : des signaux d'achat comme « puis-je payer par carte ? » l'ont fait se déclencher 7 fois. Dans un autre projet, un détecteur qui baissait les respirations dans une piste de voix baissait aussi le « s » final des mots : rien dans son test ne sonnait comme une respiration sans en être une.
 
-**Signal d'alarme.** « Il réussit déjà, donc il est bien configuré. »
+**Question détectrice.** Ai-je testé mon contrôle face à l'erreur dans les formes où elle apparaîtrait réellement ? Et face aux cas corrects qui ressemblent le plus à l'erreur : même sujet, mêmes mots, sens opposé ?
 
-**Que faire.** Calibrez-le avec deux cas : un où il doit trouver quelque chose et un où il ne doit rien trouver, et lancez-le réellement le jour même de sa création. Le bon cas compte autant que le mauvais : un contrôle qui rejette ce qui est correct est lui aussi cassé, et c'est plus difficile à remarquer parce qu'il paraît strict. Le cas correct inclut les formes réelles de ce qui est juste, y compris celles que vous n'avez pas écrites vous-même : un autre ordre, un autre nom. Chaque contrôle se calibre lui-même : si un autre attrape l'erreur en premier, le vôtre n'a jamais été testé. Et une relecture qui répète ce qu'elle a déjà lu ne peut pas échouer (une « deuxième passe » qui relit le même fichier) : remplacez-la par une réconciliation qui échoue si quelque chose ne va pas.
+**Signal d'alarme.** « Il réussit déjà, donc il est bien configuré. » · « Zéro fausse alerte, c'est réglé. »
+
+**Que faire.** Calibrez-le avec deux cas : un où il doit trouver quelque chose et un où il ne doit rien trouver, et lancez-le réellement le jour même de sa création. Le bon cas compte autant que le mauvais : un contrôle qui rejette ce qui est correct est lui aussi cassé, et c'est plus difficile à remarquer parce qu'il paraît strict. Le cas correct inclut les formes réelles de ce qui est juste, y compris celles que vous n'avez pas écrites vous-même : un autre ordre, un autre nom. Construisez les plus difficiles exprès : pour chaque chose que le contrôle doit attraper, son jumeau qu'il doit laisser passer, et signalez les fausses alertes sur ces cas à part des cas faciles ; un zéro qui ne vient que des cas faciles ne prouve rien. Chaque contrôle se calibre lui-même : si un autre attrape l'erreur en premier, le vôtre n'a jamais été testé. Et une relecture qui répète ce qu'elle a déjà lu ne peut pas échouer (une « deuxième passe » qui relit le même fichier) : remplacez-la par une réconciliation qui échoue si quelque chose ne va pas.
 
 ### 14. La sonde ne passe pas par le canal qu'elle examine
 

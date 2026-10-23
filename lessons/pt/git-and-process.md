@@ -95,3 +95,17 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 **Sinal de alerta.** “Cada um testou a sua” · “a falha está na outra peça” · “cada um mexe em arquivos diferentes, não colidem.”
 
 **O que fazer.** Tenha uma pessoa integrando o que é compartilhado, com uma etapa que pare se um nome colidir. Faça os testes lerem o original, e não uma cópia. Rode a suíte de testes completa uma vez, quando todos terminarem, ou sem as peças que ainda estão mudando, e diga quais ficaram de fora. E salve juntas as peças que compartilham arquivos, para que cada versão salva funcione por inteiro. Dê a cada sessão a sua própria pasta (`git worktree`), leia `git status -sb` antes de cada commit, e depois de um push confira se a branch remota tem o commit.
+
+### 65. Uma regra sobre como trabalhar não tem exceção para passos pequenos
+
+`from: 1f76d0cd` · `by: ai`
+
+**A ideia.** Uma instrução permanente sobre como trabalhar (quem faz o quê, onde roda, com qual ferramenta) não tem exceção de tamanho. “É só uma verificação rápida” é justamente o caso que a regra pretendia cobrir.
+
+**Exemplo.** O usuário tinha pedido, e isso estava salvo na memória, que todo trabalho mecânico (instalações, rodar scripts, transcrever) fosse para um subagente de modelo mais barato, ficando o modelo principal só com o raciocínio. Diante de três arquivos de áudio longos, o modelo principal escreveu e rodou ele mesmo uma transcrição de amostra “para ver o que eles continham”; falhou por causa de uma biblioteca ausente, tentou de novo, e o usuário o interrompeu para lembrar a regra.
+
+**Pergunta detectora.** Antes do primeiro comando de um pedido: existe uma regra permanente (memória, instruções do projeto, o que o usuário disse) sobre quem faz este tipo de passo, ou como? Estou pulando-a porque o passo é “pequeno”?
+
+**Sinal de alerta.** “Primeiro dou uma olhada rápida e delego depois” · “isto é curto demais para valer a pena delegar”.
+
+**O que fazer.** Classifique o passo pelo tipo, e não pelo tamanho: se for mecânico, ele segue o caminho que a regra diz desde o primeiro comando. Se uma exceção fizer sentido de fato, diga isso antes de fazê-la e deixe o usuário decidir.

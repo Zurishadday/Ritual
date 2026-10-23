@@ -131,3 +131,17 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 **Signal d'alarme.** « Les chiffres le confirment. »
 
 **Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux. Quand du code construit l'exemple (une démo, un jeu de données d'exemple), laissez-y une assertion qui échoue si l'explication rivale donnerait le même résultat.
+
+### AI-3. Un modèle affiné apprend aussi les bords et le bruit de fond de ses exemples
+
+`from: 381ee3d8` · `by: ai`
+
+**L'idée.** Un modèle entraîné sur des exemples copie tout ce que ces exemples ont en commun, et pas seulement ce que vous vouliez enseigner. Si chaque extrait se termine brusquement ou porte le même bruit de fond, le modèle génère des fins brusques et ce bruit.
+
+**Exemple.** Pour cloner une voix, les extraits d'entraînement ont été coupés 0.1 s après le dernier mot, et les enregistrements sources portaient un bruit de pièce d'environ −48 dB. Le modèle affiné terminait chaque phrase sur sa dernière syllabe (−23 dB au dernier échantillon) et mettait ce bruit dans chaque phrase, même avec une voix de référence propre. L'utilisateur l'a entendu (« ça s'arrête net ») ; la vérification automatique de la transcription disait que le texte était complet, et elle l'a manqué (une relecture d'une seule dimension, leçon 19).
+
+**Question détectrice.** En dehors de ce que je veux enseigner, qu'ont presque tous mes exemples en commun : leur début et leur fin, leur fond sonore, leur format ? Est-ce que je veux que le modèle produise aussi cela ?
+
+**Signal d'alarme.** « Le texte correspond, donc le jeu de données est bon. » · « le bruit est faible, le modèle apprend la voix, pas la pièce ».
+
+**Que faire.** Mesurez dans le jeu de données les mêmes propriétés que vous exigerez de la sortie (pour l'audio : le niveau à la fin de chaque extrait, le plancher de bruit, la longueur de la queue) et imposez-les comme filtres avant l'entraînement. Si la sortie a un défaut qui n'est pas dans le code, cherchez-le d'abord dans les données.

@@ -79,3 +79,17 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 **Signal d'alarme.** « Ça marchait déjà avec l'exemple court. »
 
 **Que faire.** Tout ce qui peut grandir voyage dans un fichier, par l'entrée standard ou dans le corps d'une requête, jamais en arguments, en variables d'environnement ni dans l'URL. Testez une fois avec le plus long texte que vous attendez, sur le système le plus strict où il tournera.
+
+### 62. Arrêter un travail en arrière-plan, c'est arrêter ce qui le lance, puis prouver qu'il ne reste rien
+
+`from: 9276f71e` · `by: ai`
+
+**L'idée.** Un travail de fond a généralement un lanceur (un script qui enchaîne les étapes une à une) et des processus enfants (chaque étape). Si vous ne tuez que l'enfant, le lanceur passe à l'étape suivante ; le GPU, le disque ou le réseau restent occupés pendant que vous annoncez « c'est arrêté ».
+
+**Exemple.** Un utilisateur a demandé d'arrêter un entraînement de modèle qui tournait pendant la nuit. L'agent qui l'avait lancé a été arrêté, puis le processus Python qui entraînait le modèle. Une vérification a trouvé un autre processus Python en train de s'entraîner sous un nouveau PID : le script lanceur était passé à l'étape suivante. Il a fallu trouver tout l'arbre des processus, fermer le lanceur et un `tail -f` qui suivait encore le journal, puis confirmer avec `nvidia-smi` ce qui utilisait encore le GPU.
+
+**Question détectrice.** Qui a lancé ce processus, et le relancera-t-il si je le ferme ? Après l'avoir arrêté, quelle commande prouve que rien de ce qui est à moi ne tourne encore ?
+
+**Signal d'alarme.** « J'ai tué le processus, il est arrêté. »
+
+**Que faire.** Fermez tout l'arbre depuis le lanceur (`taskkill /t /f` sous Windows, tuez le groupe de processus sous Unix). Puis cherchez dans les processus en cours, par ligne de commande, ce qui reste de ce travail, et vérifiez la ressource (GPU, port, verrou de fichier) jusqu'à ce qu'elle soit libre ; ne dites « arrêté » qu'après cette vérification (voir la leçon 38). Par conception, donnez au travail un arrêt propre (un fichier `STOP` qu'il vérifie avant chaque étape), et faites en sorte que le lanceur s'arrête quand une étape est tuée au lieu de passer à la suivante.

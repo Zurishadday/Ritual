@@ -131,3 +131,17 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 **Warning sign.** "The numbers confirm it."
 
 **What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both. When code builds the example (a demo, a sample dataset), leave an assert in it that fails if the rival would give the same result.
+
+### AI-3. A fine-tuned model also learns the edges and the background of its examples
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: scripts-and-files` · `packages: ai`
+
+**The idea.** A model trained on examples copies everything those examples have in common, not only what you meant to teach. If every clip ends abruptly or carries the same background noise, the model generates abrupt endings and that noise.
+
+**Example.** To clone a voice, training clips were cut 0.1 s after the last word, and the source recordings had room noise around −48 dB. The fine-tuned model ended every phrase on its last syllable (−23 dB at the final sample) and put that noise into every phrase, even with a clean reference voice. The user heard it ("it stops dry"); the automatic transcription check said the text was complete, so it missed it (a review of one dimension, lesson 19).
+
+**Detector question.** Besides what I want to teach, what do almost all my examples share: how they start and end, their background, their format? Do I want the model to produce that too?
+
+**Warning sign.** "The text matches, so the dataset is fine" · "the noise is faint, the model learns the voice, not the room".
+
+**What to do.** Measure in the dataset the same properties you will demand from the output (for audio: the level at the end of each clip, the noise floor, the tail length) and enforce them as filters before training. If the output has a defect that is not in the code, look for it in the data first.

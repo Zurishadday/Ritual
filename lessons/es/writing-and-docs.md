@@ -160,6 +160,20 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 **Qué hacer.** Primero la pregunta en palabras. Luego cada pieza mostrada en los datos, un color para cada una, con su nombre y lo que significa al lado. Después el resultado calculado a mano. Solo entonces la instrucción, armada en partes con los mismos colores y una pausa entre partes, con lo nuevo al final. No es lo mismo que la lección 51: aquí cada pieza puede ya ser conocida, y lo que falla es el orden.
 
+### 64. Ancla un concepto en algo que el lector ya vivió, no en cómo se calcula
+
+`from: 8ff766c9` · `by: ai`
+
+**La idea.** Para introducir un concepto difícil a quien es nuevo en él (quien aprende, un gerente que lee un reporte, un usuario que lee un tooltip), ancla la intuición en algo que ya vivió, con los datos reales del caso. El procedimiento que lo calcula (una simulación, una reordenación, la fórmula) va después, o no va. El procedimiento es exacto para quien ya entiende el concepto; quien llega por primera vez lo siente como un truco y deja de confiar en el resultado.
+
+**Ejemplo.** Una lección enseñaba el valor p con una prueba de permutación: barajar las etiquetas de los grupos de los mismos datos 300 veces y contar con qué frecuencia aparecía la diferencia. Además usaba una prueba de dos colas para una pregunta de una sola cola («¿vende más?»). Tres revisores la aprobaron a lo largo de varias rondas: era correcta y estaba bien construida. El responsable del curso la rechazó, porque nadie hace barajadas imaginarias. La versión que funcionó abrió con los días reales de venta (un día así de alto ya había ocurrido; uno tan alto nunca), agregó una comparación que todos han vivido (cruzarte con tu madre es normal si vive a una cuadra), derivó el corte de los mismos datos, y usó una sola cola, porque la pregunta real solo buscaba un aumento.
+
+**Pregunta detectora.** ¿En qué se apoya la intuición de este concepto: en algo que el lector ya vivió, con datos reales, o en el procedimiento que lo calcula? ¿La pregunta que hace el ejemplo es la que una persona se haría en la vida real (su dirección, su escala, sus palabras), o la que le conviene al método?
+
+**Señal de alarma.** «Es la forma más honesta de calcularlo» · «los revisores dicen que es correcto» · «imagina que repites el experimento mil veces».
+
+**Qué hacer.** Antes del script o del texto, escribe en una línea la experiencia cotidiana que tiene la misma forma que el concepto. Si no aparece ninguna, pregunta a quien conoce a la audiencia. Construye la apertura con esa experiencia y los datos del caso, y deja el método como «cómo se calcula» al final. Pregúntale a un revisor «¿en qué se apoya la intuición?» además de «¿es correcto?». Lo que el lector ya debe saber es la lección 51.
+
 ### AI-1. Si restringes dónde puede escribir el modelo, escribe donde lo dejes
 
 `from: abeb61b2` · `by: ai`

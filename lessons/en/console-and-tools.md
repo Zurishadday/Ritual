@@ -79,3 +79,17 @@ What applies when you run commands, servers, tests, or captures, and when the to
 **Warning sign.** "It already worked with the short example".
 
 **What to do.** Whatever can grow travels in a file, through standard input or in a request body, never as arguments, environment variables or the URL. Test once with the longest text you expect, on the strictest system it will run on.
+
+### 62. Stopping background work means stopping whatever launches it, then proving nothing is left
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** Long background work usually has a launcher (a script that runs the steps one after another) and child processes (each step). Kill only the child and the launcher starts the next step; the GPU, the disk or the network stay busy while you report "it's stopped".
+
+**Example.** A user asked to stop a model-training job that was running overnight. The agent that launched it was stopped, then the Python process that was training. A check found another Python process training under a new PID: the launcher script had moved on to the next step. It took finding the whole process tree, closing the launcher and a `tail -f` still following the log, and confirming with `nvidia-smi` what was still using the GPU.
+
+**Detector question.** Who launched this process, and will it launch it again if I close it? After stopping it, which command proves nothing of mine is still running?
+
+**Warning sign.** "I killed the process, it's stopped."
+
+**What to do.** Close the whole tree from the launcher (`taskkill /t /f` on Windows, kill the process group on Unix). Then search running processes by command line for anything left from that job, and check the resource (GPU, port, file lock) until it is free; say "stopped" only after that check (see lesson 38). By design, give the job a clean stop (a `STOP` file it checks before each step), and make the launcher stop when a step is killed instead of moving on to the next one.

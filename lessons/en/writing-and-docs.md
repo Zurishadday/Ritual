@@ -160,6 +160,20 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **What to do.** First the question in words. Then each piece shown in the data, one colour each, with its name and what it means beside it. Then the result worked out by hand. Only then the instruction, built in parts with the same colours and a pause between parts, with the new thing last. Not the same as lesson 51: here every piece may already be known, and what fails is the order.
 
+### 64. Anchor a concept in something the reader has already experienced, not in how it is computed
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: interface-and-design, numbers-and-data`
+
+**The idea.** To introduce a hard concept to someone new to it (a learner, a manager reading a report, a user reading a tooltip), anchor the intuition in something they have already experienced, using the case's own real data. The procedure that computes it (a simulation, a reshuffle, the formula) comes later, or not at all. The procedure is exact for someone who already understands the concept; a newcomer feels it as a trick and stops trusting the result.
+
+**Example.** A lesson taught the p-value through a permutation test: shuffle the group labels of the same data 300 times and count how often the difference shows up. It also used a two-sided test for a one-sided question ("does it sell more?"). Three reviewers approved it over several rounds: it was correct and well built. The course owner rejected it, because nobody runs imaginary shuffles. The version that worked opened with the real days of sales (a day this high had happened before; one that high never had), added a comparison everyone has lived (running into your mother is normal if she lives a block away), derived the cutoff from the same data, and used one tail, because the real question only looked up.
+
+**Detector question.** What does the intuition for this concept rest on: something the reader has already experienced, with real data, or the procedure that computes it? Is the question the example asks the one a person would ask in real life (its direction, its scale, its words), or the one convenient for the method?
+
+**Warning sign.** "It's the most honest way to compute it" · "the reviewers say it's correct" · "imagine you repeat the experiment a thousand times".
+
+**What to do.** Before the script or the text, write in one line the everyday experience that has the same shape as the concept. If none comes, ask someone who knows the audience. Build the opening from that experience and the case's data, and leave the method as "how it's computed" at the end. Ask a reviewer "what does the intuition rest on?" as well as "is it correct?". What the reader must already know is lesson 51.
+
 ### AI-1. If you restrict where the model may write, it writes wherever you let it
 
 `origin: field · claude-opus-5-5 · 2026-10` · `groups: interface-and-design` · `packages: ai`

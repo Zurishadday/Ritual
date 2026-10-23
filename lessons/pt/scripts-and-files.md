@@ -166,6 +166,76 @@ O que vale quando um programa escreve, gera, transforma ou move arquivos e dados
 
 **O que fazer.** Torne a operação explícita (`api.post(path)`, `save(x, create=True)`), ou faça do padrão o caso seguro. Enquanto o auxiliar ambíguo existir, revise cada chamada que omite esse argumento.
 
+### 63. Antes de limpar em lote algo que ninguém salvou, salve do jeito que está
+
+`from: 8f7e7662` · `by: ai`
+
+**A ideia.** Arquivos recém-gerados (dados, relatórios, a saída de um agente) muitas vezes ainda não estão sob controle de versão. Se a etapa seguinte os reescreve em lote (deduplicar, renomear rótulos, remover linhas) e remove demais, não há como voltar ao original. A lição 24 protege uma escrita que falha no meio; esta protege contra uma limpeza que funciona e está errada.
+
+**Exemplo.** Sete agentes escreveram 3,780 frases de treinamento em arquivos novos. A etapa seguinte era limpá-las: descartar as muito parecidas com o conjunto de teste e as duplicatas entre arquivos. Os arquivos ainda não estavam no git. Antes de a reescrita rodar, o sistema de permissões a bloqueou como irreversível, e fez bem. As 3,780 frases foram commitadas primeiro, e a limpeza (73 linhas removidas, 1 com rótulo alterado) foi para um commit próprio, que pode ser revisado e revertido.
+
+**Pergunta detectora.** O que estou prestes a reescrever está salvo em algum lugar no estado atual? Se minha limpeza remover demais, de onde recupero isso?
+
+**Sinal de alerta.** “São arquivos novos, limpo tudo de uma vez.”
+
+**O que fazer.** Primeiro, um commit (ou uma cópia) do estado original. Depois, a limpeza em commit próprio, com a contagem do que foi removido e o motivo (ver a lição 56), para que a mudança possa ser revisada linha por linha e desfeita.
+
+### 66. Um script novo herda a configuração que o projeto já usa
+
+`from: 6a79105c` · `by: ai`
+
+**A ideia.** Se o projeto já carrega uma biblioteca em outro script com uma configuração especial (caminhos de bibliotecas nativas, variáveis de ambiente, dispositivo, versão do modelo), um script novo que a usa precisa da mesma configuração. Escrevê-lo do zero repete um problema que o projeto já resolveu.
+
+**Exemplo.** Um script descartável para transcrever na GPU falhou com uma DLL do CUDA ausente. O script de dataset do projeto já resolvia isso acrescentando a pasta de bibliotecas do framework de aprendizado profundo ao caminho de busca de DLLs antes de importar a biblioteca de fala; o script novo não copiou essa linha.
+
+**Pergunta detectora.** Esta biblioteca já é carregada em outro script do projeto? O que esse script faz logo antes de importá-la ou criá-la?
+
+**Sinal de alerta.** “É um script de cinco linhas, não preciso ver como o outro faz.”
+
+**O que fazer.** Antes de escrever um script que usa uma biblioteca do projeto, procure onde ela já é carregada e copie a configuração, ou, melhor ainda, importe o carregador do projeto, para que a configuração fique em um só lugar (ver a lição 6). Se aparecer um erro de carregamento, procure-o no código do projeto antes de pesquisar fora.
+
+### 67. Um valor ajustado em uma amostra não serve para todas as amostras
+
+`from: c4c22bc2` · `by: ai`
+
+**A ideia.** Um ajuste escolhido testando-o numa amostra (um limiar, um corte, um ganho) fica ajustado a essa amostra. Quando chega uma mais alta, mais longa ou mais rara, o mesmo número já não dá o resultado que foi aprovado.
+
+**Exemplo.** As respirações de uma voz gerada foram reduzidas em 18 dB; numa amostra de 15 s elas ficaram inaudíveis, e o usuário aprovou. Na lição completa, o modelo respirava mais alto, e quatro respirações continuaram audíveis. Antes de cortar mais forte, cada uma foi inspecionada: três não eram respirações, e sim o “s” final de palavras, que o detector tinha confundido (ver a lição 13), e cortar até −35 dB fez a transcrição perder o “s”.
+
+**Pergunta detectora.** Em quantas amostras, e quais casos extremos, este número foi escolhido? Ele descreve o resultado que eu quero, ou uma etapa que só deu esse resultado na amostra?
+
+**Sinal de alerta.** “Ficou perfeito na amostra, aplique o mesmo a tudo” · “sobraram alguns, corte mais forte”.
+
+**O que fazer.** Escolha o valor pelos extremos, e não por uma amostra só: o mais alto, o mais longo, o caso mais raro. Quando for possível, escreva-o como o resultado que você quer, com limites (“terminar em −61 dBFS, cortando entre 18 e 35 dB”), e não como um passo fixo. Quando algo sobrevive à configuração, olhe cada caso antes de apertá-la: pode não ser para isso que ela serve.
+
+### 68. Uma etapa que lê além de uma borda vai antes da etapa que a corta
+
+`from: 1e65549b` · `by: ai`
+
+**A ideia.** Algumas etapas precisam de material além da borda do que trabalham: uma reverberação ou um eco estende um som além do seu fim, e um filtro de suavização ou uma média móvel lê os vizinhos de cada ponto. Colocadas depois de um corte, de um fade ou de um filtro, não encontram mais o que ler, e o resultado sai igual, ou errado nas bordas.
+
+**Exemplo.** Para que as frases de narração desaparecessem com um fade mais natural, testou-se uma reverberação leve. Ela foi aplicada a frases já cortadas e com fade: a cauda da reverberação ficou 8 a 30 dB abaixo do fundo, inaudível, e o teste não mudou nada.
+
+**Pergunta detectora.** Esta etapa precisa de material que fica além do ponto onde eu já cortei, desvaneci ou filtrei? Em que ponto da cadeia estou colocando-a?
+
+**Sinal de alerta.** “Acrescento o efeito no fim, sobre o que já está pronto.”
+
+**O que fazer.** Antes de acrescentar uma etapa a uma cadeia de processamento, anote o que ela precisa como entrada e o que deixa como saída, e coloque-a onde a entrada ainda existe. Depois confira se ela mudou a saída (ver a lição 50) antes de pedir que alguém olhe ou ouça.
+
+### VIDEO-3. Colar clipes sobre silêncio digital expõe o ruído de fundo de cada um
+
+`from: 1bd2ffe3` · `by: ai`
+
+**A ideia.** Quando trechos de áudio são colocados numa linha do tempo de zeros, cada trecho carrega o próprio ruído de fundo, e as lacunas são silêncio absoluto. O ouvido percebe o fundo ligando e desligando a cada corte. Um fundo colocado sob as lacunas só esconde isso se combinar com os trechos em nível e em som, e mesmo um fundo que combine pode ser ouvido como um chiado constante.
+
+**Exemplo.** A narração de uma lição foi montada colocando cada frase gerada sobre zeros. Com uma voz limpa (piso de ruído −83 dB) nada era audível; com uma voz clonada que trazia ruído de ambiente (−48 dB), o usuário ouviu um silêncio súbito nos 17 cortes. Depois, um fundo de −63 dB sob uma voz com piso de −58 dB deixou degraus, e um de −58 dB foi ouvido como um chiado constante e fraco.
+
+**Pergunta detectora.** Qual é o piso de ruído dentro de cada trecho, e entre os trechos? Eles combinam em nível e em som, ou o corte muda um dos dois?
+
+**Sinal de alerta.** “A lacuna está em silêncio, não pode ficar mais limpa” · “é só pôr um fundo embaixo”.
+
+**O que fazer.** Meça o piso dos trechos antes de uni-los. Se ele for tão baixo quanto o das lacunas (aqui, a voz limpa, em −83 dB, não mostrou emendas), deixe as lacunas em silêncio. Caso contrário, reduza o ruído dos trechos até perto desse nível antes de uni-los; se em vez disso você puser um fundo sob as lacunas, tire-o dos próprios trechos, no nível deles, e ouça o conjunto inteiro em fones de ouvido antes de mantê-lo. Confira a saída em busca de degraus de nível em cada corte. De onde veio o ruído é tratado na lição AI-3.
+
 ### WEB-1. Um armazenamento danificado não pode levar o próximo registro junto
 
 `from: e896b1e3` · `by: ai`

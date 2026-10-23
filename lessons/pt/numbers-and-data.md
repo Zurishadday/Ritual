@@ -131,3 +131,17 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 **Sinal de alerta.** “Os números confirmam.”
 
 **O que fazer.** Antes de ensinar ou reportar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se você não consegue separá-las, diga que o exemplo é compatível com as duas. Quando o código monta o exemplo (uma demonstração, um conjunto de dados de amostra), deixe nele um assert que falhe se a explicação rival der o mesmo resultado.
+
+### AI-3. Um modelo ajustado também aprende as bordas e o fundo de seus exemplos
+
+`from: 381ee3d8` · `by: ai`
+
+**A ideia.** Um modelo treinado com exemplos copia tudo o que esses exemplos têm em comum, e não só o que você quis ensinar. Se todo clipe termina de repente ou traz o mesmo ruído de fundo, o modelo gera finais abruptos e esse mesmo ruído.
+
+**Exemplo.** Para clonar uma voz, os clipes de treinamento foram cortados 0.1 s depois da última palavra, e as gravações de origem tinham ruído de ambiente em torno de −48 dB. O modelo ajustado terminava cada frase na última sílaba (−23 dB na última amostra) e punha esse ruído em todas as frases, mesmo com uma voz de referência limpa. O usuário ouviu (“termina seco”); a verificação automática de transcrição disse que o texto estava completo, e por isso não pegou (uma revisão de uma só dimensão, ver a lição 19).
+
+**Pergunta detectora.** Além do que quero ensinar, o que quase todos os meus exemplos têm em comum: como começam e terminam, o fundo deles, o formato? Eu quero que o modelo produza isso também?
+
+**Sinal de alerta.** “O texto confere, então o conjunto de dados está bom” · “o ruído é fraco, o modelo aprende a voz, não o ambiente”.
+
+**O que fazer.** Meça no conjunto de dados as mesmas propriedades que você vai exigir da saída (no áudio: o nível no fim de cada clipe, o piso de ruído, o comprimento da cauda) e imponha-as como filtros antes do treinamento. Se a saída tem um defeito que não está no código, procure-o primeiro nos dados.

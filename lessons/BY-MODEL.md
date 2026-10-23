@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 46 | 5 | 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
-| `claude-opus-5-5` | 15 | 8 | 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, AI-1, AI-2, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2 |
+| `claude-opus-5-5` | 24 | 9 | 13, 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, AI-1, AI-2, AI-3, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-fable-5-1` | 0 | 1 | 44 |
@@ -20,6 +20,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 
 The most general mistakes: different models made them.
 
+- [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) · `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
 - [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
@@ -51,7 +52,7 @@ The most general mistakes: different models made them.
 | [10. Twin modules change together](en/interface-and-design.md#10-twin-modules-change-together) | `~opus` 2026-08 |
 | [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [12. Running the query doesn't prove the number is right](en/numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right) | `~opus` 2026-08 |
-| [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
+| [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) | `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again) |
 | [14. The probe doesn't travel the channel it investigates](en/tests-and-checks.md#14-the-probe-doesnt-travel-the-channel-it-investigates) | `~opus` 2026-08 |
 | [15. A test that switches itself off doesn't report that it switched off](en/tests-and-checks.md#15-a-test-that-switches-itself-off-doesnt-report-that-it-switched-off) | `~opus` 2026-08 |
 | [16. Your checker's filter usually excludes exactly what matters](en/tests-and-checks.md#16-your-checkers-filter-usually-excludes-exactly-what-matters) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
@@ -100,8 +101,16 @@ The most general mistakes: different models made them.
 | [59. An event from something already replaced must not act](en/interface-and-design.md#59-an-event-from-something-already-replaced-must-not-act) | `claude-opus-5-5` 2026-10 |
 | [60. What travels as a process argument has a ceiling you don't see until it grows](en/console-and-tools.md#60-what-travels-as-a-process-argument-has-a-ceiling-you-dont-see-until-it-grows) | `claude-opus-5-5` 2026-10 |
 | [61. A helper that guesses intent from the shape of its arguments](en/scripts-and-files.md#61-a-helper-that-guesses-intent-from-the-shape-of-its-arguments) | `claude-opus-5-5` 2026-10 |
+| [62. Stopping background work means stopping whatever launches it, then proving nothing is left](en/console-and-tools.md#62-stopping-background-work-means-stopping-whatever-launches-it-then-proving-nothing-is-left) | `claude-opus-5-5` 2026-10 |
+| [63. Before bulk-cleaning something nobody has saved, save it as it is](en/scripts-and-files.md#63-before-bulk-cleaning-something-nobody-has-saved-save-it-as-it-is) | `claude-opus-5-5` 2026-10 |
+| [64. Anchor a concept in something the reader has already experienced, not in how it is computed](en/writing-and-docs.md#64-anchor-a-concept-in-something-the-reader-has-already-experienced-not-in-how-it-is-computed) | `claude-opus-5-5` 2026-10 |
+| [65. A rule about how to work has no exception for small steps](en/git-and-process.md#65-a-rule-about-how-to-work-has-no-exception-for-small-steps) | `claude-opus-5-5` 2026-10 |
+| [66. A new script inherits the setup the project already uses](en/scripts-and-files.md#66-a-new-script-inherits-the-setup-the-project-already-uses) | `claude-opus-5-5` 2026-10 |
+| [67. A value tuned on one sample does not fit every sample](en/scripts-and-files.md#67-a-value-tuned-on-one-sample-does-not-fit-every-sample) | `claude-opus-5-5` 2026-10 |
+| [68. A step that reads past an edge goes before the step that cuts it](en/scripts-and-files.md#68-a-step-that-reads-past-an-edge-goes-before-the-step-that-cuts-it) | `claude-opus-5-5` 2026-10 |
 | [AI-1. If you restrict where the model may write, it writes wherever you let it](en/writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it) | `claude-opus-5-5` 2026-10 |
 | [AI-2. A rule written as a checklist gets executed as a checklist, even after the other person answered](en/writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered) | `claude-opus-5-5` 2026-10 |
+| [AI-3. A fine-tuned model also learns the edges and the background of its examples](en/numbers-and-data.md#ai-3-a-fine-tuned-model-also-learns-the-edges-and-the-background-of-its-examples) | `claude-opus-5-5` 2026-10 |
 | [EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it](en/tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-2. What learners see before answering can't contain the answer](en/writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-3. A question with two defensible answers measures nothing](en/writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing) | `~opus` 2026-10 |
@@ -109,6 +118,7 @@ The most general mistakes: different models made them.
 | [EDU-5. A hint points at the cause of the mistake, not at the answer](en/writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer) | `claude-opus-5-5` 2026-10 |
 | [VIDEO-1. In a video, each action lands when the narration names it](en/interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it) | `claude-opus-5-5` 2026-10 |
 | [VIDEO-2. In a video, what changes without showing gets marked](en/interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked) | `claude-opus-5-5` 2026-10 |
+| [VIDEO-3. Pasting clips onto digital silence exposes their background noise](en/scripts-and-files.md#video-3-pasting-clips-onto-digital-silence-exposes-their-background-noise) | `claude-opus-5-5` 2026-10 |
 | [WEB-1. A damaged store must not take the next record down with it](en/scripts-and-files.md#web-1-a-damaged-store-must-not-take-the-next-record-down-with-it) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-2. A public form gets bots from day one](en/interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one) | `claude-sonnet-5-5` 2026-10 |
 | [WEB-3. A fallback nobody tested is not a fallback](en/interface-and-design.md#web-3-a-fallback-nobody-tested-is-not-a-fallback) | `claude-sonnet-5-5` 2026-10 |

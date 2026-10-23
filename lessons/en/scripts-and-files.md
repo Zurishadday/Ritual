@@ -166,6 +166,76 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **What to do.** Make the operation explicit (`api.post(path)`, `save(x, create=True)`), or make the default the safe case. While the ambiguous helper exists, review every call that omits that argument.
 
+### 63. Before bulk-cleaning something nobody has saved, save it as it is
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: git-and-process`
+
+**The idea.** Freshly generated files (data, reports, an agent's output) are often not under version control yet. If the next step rewrites them in bulk (dedupe, relabel, drop lines) and removes too much, there is no way back to the original. Lesson 24 protects a write that fails midway; this one protects against a cleanup that works and is wrong.
+
+**Example.** Seven agents wrote 3,780 training sentences into new files. The next step was to clean them: drop the ones too similar to the test set and the duplicates across files. The files were not in git yet. Before the rewrite ran, the permission system blocked it as irreversible, and it was right. The 3,780 were committed first, and the cleanup (73 lines removed, 1 relabeled) went into its own commit that can be reviewed and reverted.
+
+**Detector question.** Is what I'm about to rewrite saved anywhere in its current state? If my cleanup removes too much, where do I get it back from?
+
+**Warning sign.** "They're new files, I'll just clean them in one go."
+
+**What to do.** First a commit (or a copy) of the original state. Then the cleanup in its own commit, with a count of what was removed and why (see lesson 56), so the change can be reviewed line by line and undone.
+
+### 66. A new script inherits the setup the project already uses
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: console-and-tools`
+
+**The idea.** If the project already loads a library in another script with special setup (native library paths, environment variables, device, model version), a new script that uses it needs that same setup. Writing it from scratch repeats a problem the project already solved.
+
+**Example.** A throwaway script to transcribe on the GPU failed with a missing CUDA DLL. The project's dataset script already solved that by adding the deep-learning framework's library folder to the DLL search path before importing the speech library; the new script did not copy it.
+
+**Detector question.** Is this library already loaded in another script of the project? What does that script do right before importing or creating it?
+
+**Warning sign.** "It's a five-line script, I don't need to see how the other one does it".
+
+**What to do.** Before writing a script that uses a project library, search where it is already loaded and copy its setup, or better, import the project's loader, so the setup lives in one place (lesson 6). If a loading error appears, look for it in the project's code before researching outside.
+
+### 67. A value tuned on one sample does not fit every sample
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: numbers-and-data`
+
+**The idea.** A setting chosen by trying it on one sample (a threshold, a cut, a gain) is fitted to that sample. When a louder, longer or rarer one comes in, the same number no longer gives the result that was approved.
+
+**Example.** Breaths in a generated voice were lowered by 18 dB; in a 15 s sample they became inaudible and the user approved it. In the full lesson the model breathed louder, and four breaths stayed audible. Before cutting harder, each one was inspected: three were not breaths but the final "s" of words, which the detector had confused (lesson 13), and cutting to −35 dB made the transcription lose the "s".
+
+**Detector question.** On how many samples, and which extreme ones, was this number chosen? Does it describe the result I want, or a step that only gave that result on the sample?
+
+**Warning sign.** "It was perfect on the sample, apply it the same to everything" · "a few are left, cut harder".
+
+**What to do.** Choose the value on the extremes, not on one sample: the loudest, the longest, the rarest case. Where you can, write it as the result you want, with limits ("end at −61 dBFS, cutting between 18 and 35 dB"), rather than as a fixed step. When something survives the setting, look at each case before tightening it: it may not be what the setting is for.
+
+### 68. A step that reads past an edge goes before the step that cuts it
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** Some steps need material beyond the edge of what they work on: a reverb or an echo extends a sound past its end, and a smoothing filter or a rolling average reads the neighbours of each point. Placed after a trim, a fade or a filter, they find nothing left to read, and the result comes out unchanged, or wrong at the edges.
+
+**Example.** To make narration phrases fade out more naturally, a light reverb was tested. It was applied to phrases already trimmed and faded out: the reverb tail came out 8 to 30 dB below the background, inaudible, and the test changed nothing.
+
+**Detector question.** Does this step need material that lies past the point where I already cut, faded or filtered? Where in the chain am I putting it?
+
+**Warning sign.** "I'll add the effect at the end, on what's already done".
+
+**What to do.** Before adding a step to a processing chain, write down what it needs as input and what it leaves as output, and place it where its input still exists. Then check that it changed the output (lesson 50) before asking anyone to look or listen.
+
+### VIDEO-3. Pasting clips onto digital silence exposes their background noise
+
+`origin: field · claude-opus-5-5 · 2026-10` · `packages: video`
+
+**The idea.** When audio pieces are placed on a timeline of zeros, each piece carries its own background noise and the gaps are absolute silence. The ear hears the background switch on and off at every cut. A background laid under the gaps only hides that if it matches the pieces in level and in sound, and even a matching one can be heard as a constant hiss.
+
+**Example.** A lesson narration was built by placing each generated phrase on zeros. With a clean voice (noise floor −83 dB) nothing was audible; with a cloned voice that carried room noise (−48 dB), the user heard a sudden silence at all 17 cuts. Later, a filler at −63 dB under a voice with a −58 dB floor left steps, and one at −58 dB was heard as a constant faint hiss.
+
+**Detector question.** What is the noise floor inside each piece, and between pieces? Do they match in level and in sound, or does the cut change either?
+
+**Warning sign.** "The gap is silent, it can't get cleaner" · "I'll just put a background under it".
+
+**What to do.** Measure the pieces' floor before joining them. If it is as low as the gaps (here, the clean voice at −83 dB showed no seams), leave the gaps silent. Otherwise clean the pieces down toward that level before joining them; if you lay a background under the gaps instead, take it from the pieces themselves at their level and listen to the whole on headphones before keeping it. Check the output for level steps at every cut. Where the noise came from is lesson AI-3.
+
 ### WEB-1. A damaged store must not take the next record down with it
 
 `origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`

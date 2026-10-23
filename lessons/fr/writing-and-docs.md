@@ -160,6 +160,20 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Que faire.** D'abord la question en mots. Ensuite chaque morceau montré dans les données, une couleur par morceau, avec son nom et ce qu'il signifie à côté. Puis le résultat calculé à la main. Seulement après, la consigne, construite par parties avec les mêmes couleurs et une pause entre les parties, la nouveauté en dernier. Ce n'est pas la même chose que la leçon 51 : ici chaque morceau peut déjà être connu, ce qui échoue, c'est l'ordre.
 
+### 64. Ancrer un concept dans ce que le lecteur a déjà vécu, pas dans la façon dont il se calcule
+
+`from: 8ff766c9` · `by: ai`
+
+**L'idée.** Pour présenter un concept difficile à quelqu'un qui le découvre (un apprenant, un responsable qui lit un rapport, un utilisateur qui lit une info-bulle), ancrez l'intuition dans quelque chose que la personne a déjà vécu, en utilisant les vraies données du cas. La procédure qui le calcule (une simulation, un tirage au sort, la formule) vient après, ou jamais. La procédure est exacte pour quelqu'un qui comprend déjà le concept ; un débutant la vit comme un tour de passe-passe et cesse de faire confiance au résultat.
+
+**Exemple.** Une leçon enseignait la p-value avec un test par permutation : mélanger les étiquettes des groupes des mêmes données 300 fois et compter combien de fois l'écart apparaît. Elle utilisait aussi un test bilatéral pour une question unilatérale (« est-ce que ça vend davantage ? »). Trois relecteurs l'ont approuvée au fil de plusieurs tours : elle était correcte et bien construite. Le responsable du cours l'a refusée, parce que personne ne fait de mélanges imaginaires. La version qui a fonctionné s'ouvrait sur les vraies journées de vente (une journée aussi forte était déjà arrivée ; une aussi forte n'était jamais arrivée), ajoutait une comparaison que tout le monde a vécue (croiser votre mère est normal si elle habite à un pâté de maisons), tirait le seuil des mêmes données, et utilisait une seule queue, parce que la vraie question ne regardait que vers le haut.
+
+**Question détectrice.** Sur quoi repose l'intuition de ce concept : sur quelque chose que le lecteur a déjà vécu, avec de vraies données, ou sur la procédure qui le calcule ? La question que pose l'exemple est-elle celle qu'une personne poserait dans la vie réelle (son sens, son ampleur, ses mots), ou celle qui arrange la méthode ?
+
+**Signal d'alarme.** « C'est la façon la plus honnête de le calculer » · « les relecteurs disent que c'est correct » · « imaginez que vous répétez l'expérience mille fois ».
+
+**Que faire.** Avant le script ou le texte, écrivez en une ligne l'expérience quotidienne qui a la même forme que le concept. Si aucune ne vient, demandez à quelqu'un qui connaît le public. Construisez l'ouverture à partir de cette expérience et des données du cas, et laissez la méthode comme « comment cela se calcule », à la fin. Demandez à un relecteur « sur quoi repose l'intuition ? » en plus de « est-ce correct ? ». Ce que le lecteur doit déjà savoir relève de la leçon 51.
+
 ### AI-1. Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez
 
 `from: abeb61b2` · `by: ai`

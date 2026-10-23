@@ -14,6 +14,7 @@
 - **52.** [Write about a fast-moving tool from today's practice, not from memory](writing-and-docs.md#52-write-about-a-fast-moving-tool-from-todays-practice-not-from-memory)
 - **54.** ["The X at the start and the close": every translator picks the same wrong reading](writing-and-docs.md#54-the-x-at-the-start-and-the-close-every-translator-picks-the-same-wrong-reading)
 - **58.** [An instruction made of many pieces is seen before it is assembled](writing-and-docs.md#58-an-instruction-made-of-many-pieces-is-seen-before-it-is-assembled)
+- **64.** [Anchor a concept in something the reader has already experienced, not in how it is computed](writing-and-docs.md#64-anchor-a-concept-in-something-the-reader-has-already-experienced-not-in-how-it-is-computed)
 - **AI-1.** [If you restrict where the model may write, it writes wherever you let it](writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it)
 - **AI-2.** [A rule written as a checklist gets executed as a checklist, even after the other person answered](writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered)
 - **EDU-2.** [What learners see before answering can't contain the answer](writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer)
@@ -30,6 +31,7 @@
 - **12.** [Running the query doesn't prove the number is right](numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right)
 - **36.** [Measure before you write](numbers-and-data.md#36-measure-before-you-write)
 - **50.** [If two explanations predict the same thing, your example doesn't choose between them](numbers-and-data.md#50-if-two-explanations-predict-the-same-thing-your-example-doesnt-choose-between-them)
+- **AI-3.** [A fine-tuned model also learns the edges and the background of its examples](numbers-and-data.md#ai-3-a-fine-tuned-model-also-learns-the-edges-and-the-background-of-its-examples)
 
 ## Tests and checks
 
@@ -59,6 +61,11 @@
 - **48.** [If a file comes from a generator, the fix goes in the generator](scripts-and-files.md#48-if-a-file-comes-from-a-generator-the-fix-goes-in-the-generator)
 - **56.** [An incremental update is not a rebuild: read what it drops](scripts-and-files.md#56-an-incremental-update-is-not-a-rebuild-read-what-it-drops)
 - **61.** [A helper that guesses intent from the shape of its arguments](scripts-and-files.md#61-a-helper-that-guesses-intent-from-the-shape-of-its-arguments)
+- **63.** [Before bulk-cleaning something nobody has saved, save it as it is](scripts-and-files.md#63-before-bulk-cleaning-something-nobody-has-saved-save-it-as-it-is)
+- **66.** [A new script inherits the setup the project already uses](scripts-and-files.md#66-a-new-script-inherits-the-setup-the-project-already-uses)
+- **67.** [A value tuned on one sample does not fit every sample](scripts-and-files.md#67-a-value-tuned-on-one-sample-does-not-fit-every-sample)
+- **68.** [A step that reads past an edge goes before the step that cuts it](scripts-and-files.md#68-a-step-that-reads-past-an-edge-goes-before-the-step-that-cuts-it)
+- **VIDEO-3.** [Pasting clips onto digital silence exposes their background noise](scripts-and-files.md#video-3-pasting-clips-onto-digital-silence-exposes-their-background-noise)
 - **WEB-1.** [A damaged store must not take the next record down with it](scripts-and-files.md#web-1-a-damaged-store-must-not-take-the-next-record-down-with-it)
 
 ## Interface and design
@@ -88,6 +95,7 @@
 - **44.** [What you cut from the output can be the verdict](console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict)
 - **53.** [Code goes through the editor, not through the shell's text handling](console-and-tools.md#53-code-goes-through-the-editor-not-through-the-shells-text-handling)
 - **60.** [What travels as a process argument has a ceiling you don't see until it grows](console-and-tools.md#60-what-travels-as-a-process-argument-has-a-ceiling-you-dont-see-until-it-grows)
+- **62.** [Stopping background work means stopping whatever launches it, then proving nothing is left](console-and-tools.md#62-stopping-background-work-means-stopping-whatever-launches-it-then-proving-nothing-is-left)
 
 ## Git and process
 
@@ -97,3 +105,4 @@
 - **35.** [A to-do list written in passing goes stale](git-and-process.md#35-a-to-do-list-written-in-passing-goes-stale)
 - **40.** [The log says what was left and why, not a chronicle of missteps](git-and-process.md#40-the-log-says-what-was-left-and-why-not-a-chronicle-of-missteps)
 - **47.** [What's worked on in parallel collides in what's shared](git-and-process.md#47-whats-worked-on-in-parallel-collides-in-whats-shared)
+- **65.** [A rule about how to work has no exception for small steps](git-and-process.md#65-a-rule-about-how-to-work-has-no-exception-for-small-steps)

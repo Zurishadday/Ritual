@@ -23,7 +23,7 @@
       "detect": ["@hubspot/api-client", "hubspot", "jsforce", "simple-salesforce", "twilio", "@sendgrid/mail", "mailchimp-marketing"]
     },
     "ai": {
-      "covers": "Products built on language models: prompts, agents, retrieval, evaluations, model calls.",
+      "covers": "Products built on language models, and models trained or fine-tuned on your own examples: prompts, agents, retrieval, evaluations, model calls, training data.",
       "detect": ["openai", "@anthropic-ai/sdk", "anthropic", "langchain", "@langchain/core", "llamaindex", "llama-index", "ai", "@ai-sdk/openai", "transformers", "ollama"]
     },
     "security": {

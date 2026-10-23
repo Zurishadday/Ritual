@@ -166,6 +166,76 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 **Qué hacer.** Haz explícita la operación (`api.post(path)`, `save(x, create=True)`), o haz que el valor por defecto sea el caso seguro. Mientras exista la función auxiliar ambigua, revisa cada llamada que omite ese argumento.
 
+### 63. Antes de limpiar en masa algo que nadie guardó, guárdalo tal como está
+
+`from: 8f7e7662` · `by: ai`
+
+**La idea.** Los archivos recién generados (datos, reportes, la salida de un agente) suelen no estar todavía bajo control de versiones. Si el siguiente paso los reescribe en masa (quitar duplicados, cambiar etiquetas, borrar líneas) y borra de más, no hay vuelta atrás al original. La lección 24 protege una escritura que falla a medio camino; esta protege contra una limpieza que funciona y está mal.
+
+**Ejemplo.** Siete agentes escribieron 3,780 oraciones de entrenamiento en archivos nuevos. El siguiente paso era limpiarlas: quitar las demasiado parecidas al conjunto de prueba y los duplicados entre archivos. Los archivos todavía no estaban en git. Antes de que corriera la reescritura, el sistema de permisos la bloqueó por irreversible, y tenía razón. Las 3,780 se guardaron primero en un commit, y la limpieza (73 líneas quitadas, 1 con etiqueta cambiada) fue a su propio commit, que se puede revisar y revertir.
+
+**Pregunta detectora.** ¿Lo que voy a reescribir está guardado en algún lado en su estado actual? Si mi limpieza borra de más, ¿de dónde lo recupero?
+
+**Señal de alarma.** «Son archivos nuevos, los limpio de una vez».
+
+**Qué hacer.** Primero un commit (o una copia) del estado original. Luego la limpieza en su propio commit, con un conteo de lo que se quitó y por qué (ver la 56), para que el cambio se pueda revisar línea por línea y deshacer.
+
+### 66. Un script nuevo hereda la configuración que el proyecto ya usa
+
+`from: 6a79105c` · `by: ai`
+
+**La idea.** Si el proyecto ya carga una biblioteca en otro script con una configuración especial (rutas de librerías nativas, variables de entorno, dispositivo, versión del modelo), un script nuevo que la use necesita esa misma configuración. Escribirlo desde cero repite un problema que el proyecto ya resolvió.
+
+**Ejemplo.** Un script desechable para transcribir en GPU falló con una DLL de CUDA que faltaba. El script de dataset del proyecto ya resolvía eso agregando la carpeta de bibliotecas del framework de deep learning a la ruta de búsqueda de DLL antes de importar la biblioteca de reconocimiento de voz; el script nuevo no la copió.
+
+**Pregunta detectora.** ¿Esta biblioteca ya se carga en otro script del proyecto? ¿Qué hace ese script justo antes de importarla o crearla?
+
+**Señal de alarma.** «Es un script de cinco líneas, no necesito ver cómo lo hace el otro».
+
+**Qué hacer.** Antes de escribir un script que use una biblioteca del proyecto, busca dónde ya se carga y copia su configuración, o mejor, importa el cargador del proyecto, para que la configuración viva en un solo lugar (ver la 6). Si aparece un error de carga, búscalo primero en el código del proyecto, antes de investigar por fuera.
+
+### 67. Un valor ajustado en una muestra no sirve para todas las muestras
+
+`from: c4c22bc2` · `by: ai`
+
+**La idea.** Un ajuste elegido probándolo en una muestra (un umbral, un corte, una ganancia) se ajusta a esa muestra. Cuando llega una más fuerte, más larga o más rara, el mismo número ya no da el resultado que se aprobó.
+
+**Ejemplo.** Las respiraciones de una voz generada se bajaron 18 dB; en una muestra de 15 s quedaron inaudibles y el usuario lo aprobó. En la lección completa el modelo respiraba más fuerte, y cuatro respiraciones seguían audibles. Antes de cortar más fuerte, se revisó cada una: tres no eran respiraciones sino la «s» final de palabras, que el detector había confundido (ver la 13), y cortar a −35 dB hacía que la transcripción perdiera la «s».
+
+**Pregunta detectora.** ¿En cuántas muestras, y en cuáles extremas, se eligió este número? ¿Describe el resultado que quiero, o un paso que solo dio ese resultado en la muestra?
+
+**Señal de alarma.** «Quedó perfecto en la muestra, aplícalo igual a todo» · «quedan unos cuantos, corta más fuerte».
+
+**Qué hacer.** Elige el valor con los extremos, no con una sola muestra: el más fuerte, el más largo, el caso más raro. Cuando se pueda, escríbelo como el resultado que quieres, con límites («terminar en −61 dBFS, cortando entre 18 y 35 dB»), en lugar de como un paso fijo. Cuando algo sobrevive al ajuste, mira cada caso antes de apretarlo: puede que no sea lo que el ajuste busca.
+
+### 68. Un paso que lee más allá de un borde va antes del paso que lo corta
+
+`from: 1e65549b` · `by: ai`
+
+**La idea.** Algunos pasos necesitan material más allá del borde de lo que procesan: una reverberación o un eco prolonga un sonido más allá de su final, y un filtro de suavizado o un promedio móvil lee a los vecinos de cada punto. Puestos después de un recorte, un fundido o un filtro, no encuentran nada que leer, y el resultado sale igual, o mal en los bordes.
+
+**Ejemplo.** Para que las frases de narración se desvanecieran más natural, se probó una reverberación ligera. Se aplicó a frases ya recortadas y desvanecidas: la cola de la reverberación quedó entre 8 y 30 dB por debajo del fondo, inaudible, y la prueba no cambió nada.
+
+**Pregunta detectora.** ¿Este paso necesita material que queda más allá del punto donde ya corté, desvanecí o filtré? ¿En qué lugar de la cadena lo estoy poniendo?
+
+**Señal de alarma.** «Agrego el efecto al final, sobre lo que ya está hecho».
+
+**Qué hacer.** Antes de agregar un paso a una cadena de procesamiento, escribe qué necesita de entrada y qué deja de salida, y ponlo donde su entrada todavía exista. Luego comprueba que cambió la salida (ver la 50) antes de pedirle a alguien que lo mire o lo escuche.
+
+### VIDEO-3. Pegar clips sobre silencio digital deja al descubierto su ruido de fondo
+
+`from: 1bd2ffe3` · `by: ai`
+
+**La idea.** Cuando se colocan piezas de audio sobre una línea de tiempo de ceros, cada pieza trae su propio ruido de fondo, y los huecos son silencio absoluto. El oído escucha el fondo prenderse y apagarse en cada corte. Un fondo puesto debajo de los huecos solo lo oculta si coincide con las piezas en nivel y en sonido, y aun uno que coincide puede escucharse como un siseo constante.
+
+**Ejemplo.** La narración de una lección se armó colocando cada frase generada sobre ceros. Con una voz limpia (piso de ruido −83 dB) no se escuchaba nada; con una voz clonada que traía ruido de sala (−48 dB), el usuario escuchó un silencio repentino en los 17 cortes. Después, un relleno a −63 dB bajo una voz con piso de −58 dB dejó escalones, y uno a −58 dB se escuchó como un siseo tenue y constante.
+
+**Pregunta detectora.** ¿Cuál es el piso de ruido dentro de cada pieza, y entre piezas? ¿Coinciden en nivel y en sonido, o el corte cambia alguno de los dos?
+
+**Señal de alarma.** «El hueco está en silencio, no puede quedar más limpio» · «le pongo un fondo y listo».
+
+**Qué hacer.** Mide el piso de las piezas antes de unirlas. Si es tan bajo como los huecos (aquí, la voz limpia a −83 dB no mostró costuras), deja los huecos en silencio. Si no, limpia las piezas hacia ese nivel antes de unirlas; si en cambio pones un fondo bajo los huecos, tómalo de las propias piezas a su nivel y escucha el conjunto completo con audífonos antes de quedarte con él. Revisa la salida por saltos de nivel en cada corte. De dónde salió el ruido está en la lección AI-3.
+
 ### WEB-1. Un almacenamiento dañado no debe arrastrar consigo el registro siguiente
 
 `from: e896b1e3` · `by: ai`

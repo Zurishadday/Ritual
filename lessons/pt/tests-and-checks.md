@@ -4,7 +4,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### 13. Um verificador que nunca viu o erro não verifica nada
 
-`from: eb6c6b31` · `by: ai`
+`from: 200d356e` · `by: ai`
 
 **A ideia.** Um teste que sempre passa pode estar quebrado. A única forma de saber é vê-lo falhar contra o erro real.
 
@@ -14,11 +14,13 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **Mais um exemplo.** Uma regra que detectava código indentado sinalizou uma linha que começava com um texto: o caso que deveria passar não tinha essa forma. E um teste de que a comparação de texto funcionava passou mesmo com a comparação quebrada, porque outra revisão rejeitou o erro antes.
 
-**Pergunta detectora.** Testei meu verificador contra o erro nas formas em que ele realmente apareceria? E contra o caso correto?
+**Um quarto exemplo.** Um classificador que sinaliza objeções de venda deu 0 falsos alarmes em 30 frases comuns de clientes, e esse número foi relatado. Ao acrescentar 25 frases sobre os mesmos temas, mas no sentido contrário (sinais de compra como “posso pagar no cartão?”), ele disparou 7 vezes. Em outro projeto, um detector que baixava as respirações numa trilha de voz também baixava o “s” final das palavras: nada no seu teste soava como uma respiração sem ser uma.
 
-**Sinal de alerta.** “Já passa, então está bem configurado.”
+**Pergunta detectora.** Testei meu verificador contra o erro nas formas em que ele realmente apareceria? E contra os casos corretos que mais se parecem com o erro: mesmo assunto, mesmas palavras, sentido oposto?
 
-**O que fazer.** Calibre com dois casos: um em que ele precisa encontrar algo e outro em que não pode encontrar nada, e rode de verdade no dia em que nasce. O caso bom importa tanto quanto o ruim: um verificador que rejeita o que está correto também está quebrado, e isso é mais difícil de notar porque parece rigoroso. O caso bom inclui as formas reais do que está certo, inclusive as que você não escreveu: outra ordem, outro nome. Cada verificação se calibra sozinha: se outra pega o erro antes, a sua nunca foi testada. E uma revisão que repete o que já leu não consegue falhar (uma “segunda passada” que relê o mesmo arquivo): substitua por uma reconciliação que falha se algo estiver errado.
+**Sinal de alerta.** “Já passa, então está bem configurado.” · “Zero alarmes falsos, pronto.”
+
+**O que fazer.** Calibre com dois casos: um em que ele precisa encontrar algo e outro em que não pode encontrar nada, e rode de verdade no dia em que nasce. O caso bom importa tanto quanto o ruim: um verificador que rejeita o que está correto também está quebrado, e isso é mais difícil de notar porque parece rigoroso. O caso bom inclui as formas reais do que está certo, inclusive as que você não escreveu: outra ordem, outro nome. Construa os mais difíceis de propósito: para cada coisa que a verificação precisa pegar, a sua gêmea que ela precisa deixar passar, e informe os falsos alarmes nessas separadamente dos casos fáceis; um zero que vem só dos casos fáceis não diz nada. Cada verificação se calibra sozinha: se outra pega o erro antes, a sua nunca foi testada. E uma revisão que repete o que já leu não consegue falhar (uma “segunda passada” que relê o mesmo arquivo): substitua por uma reconciliação que falha se algo estiver errado.
 
 ### 14. A sonda não percorre o canal que investiga
 

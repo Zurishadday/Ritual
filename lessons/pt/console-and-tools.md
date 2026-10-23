@@ -79,3 +79,17 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 **Sinal de alerta.** “Já funcionava com o exemplo curto”.
 
 **O que fazer.** Tudo o que pode crescer viaja num arquivo, pela entrada padrão ou no corpo de uma requisição, nunca como argumentos, variáveis de ambiente ou na URL. Teste uma vez com o texto mais longo que você espera, no sistema mais restritivo em que ele vai rodar.
+
+### 62. Parar trabalho em segundo plano é parar quem o lança, e depois provar que nada sobrou
+
+`from: 9276f71e` · `by: ai`
+
+**A ideia.** Trabalho longo em segundo plano geralmente tem um lançador (um script que roda as etapas uma após a outra) e processos filhos (cada etapa). Se você mata só o filho, o lançador inicia a etapa seguinte; a GPU, o disco ou a rede continuam ocupados enquanto você diz que está “parado”.
+
+**Exemplo.** Um usuário pediu para parar um treinamento de modelo que rodava durante a noite. O agente que o tinha lançado foi parado, depois o processo Python que treinava. Uma verificação encontrou outro processo Python treinando com um PID novo: o script lançador tinha passado para a etapa seguinte. Foi preciso encontrar a árvore inteira de processos, fechar o lançador e um `tail -f` que ainda seguia o log, e confirmar com `nvidia-smi` o que ainda usava a GPU.
+
+**Pergunta detectora.** Quem lançou este processo, e ele vai lançá-lo de novo se eu o fechar? Depois de pará-lo, qual comando prova que nada meu continua rodando?
+
+**Sinal de alerta.** “Matei o processo, ele está parado.”
+
+**O que fazer.** Feche a árvore inteira a partir do lançador (`taskkill /t /f` no Windows, matar o grupo de processos no Unix). Depois, procure entre os processos em execução, pela linha de comando, qualquer coisa que tenha sobrado daquele trabalho, e confira o recurso (GPU, porta, trava de arquivo) até que esteja livre; diga “parado” só depois dessa verificação (ver a lição 38). Na concepção, dê ao trabalho uma parada limpa (um arquivo `STOP` que ele verifica antes de cada etapa), e faça o lançador parar quando uma etapa for morta, em vez de passar para a seguinte.

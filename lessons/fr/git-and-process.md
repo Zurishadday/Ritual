@@ -95,3 +95,17 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 **Signal d'alarme.** « Chacun a testé sa partie » · « l'échec est dans une autre partie » · « chacun touche des fichiers différents, ils ne se heurtent pas ».
 
 **Que faire.** Confiez à une seule personne l'intégration de ce qui est partagé, avec une étape qui s'arrête si un nom entre en conflit. Faites lire les tests à l'original, pas à une copie. Lancez toute la suite de tests une fois que tout le monde a fini, ou sans les parties qui changent encore, et dites lesquelles ont été exclues. Et enregistrez ensemble les parties qui partagent des fichiers, pour que chaque version enregistrée fonctionne en entier. Donnez à chaque session son propre dossier (`git worktree`), lisez `git status -sb` avant chaque commit, et après un push vérifiez que la branche distante contient le commit.
+
+### 65. Une règle sur la manière de travailler n'a pas d'exception pour les petites étapes
+
+`from: 1f76d0cd` · `by: ai`
+
+**L'idée.** Une consigne permanente sur la manière de travailler (qui fait quoi, où cela tourne, avec quel outil) n'a pas d'exception de taille. « C'est juste une petite vérification » est exactement le cas que la règle était censée couvrir.
+
+**Exemple.** L'utilisateur avait demandé, et cela avait été enregistré en mémoire, que tout le travail mécanique (installations, exécution de scripts, transcription) soit confié à un sous-agent au modèle moins coûteux, le modèle principal ne faisant que raisonner. Face à trois longs fichiers audio, le modèle principal a lui-même écrit et lancé un essai de transcription « pour voir ce qu'ils contenaient » ; il a échoué sur une bibliothèque manquante, a réessayé, et l'utilisateur l'a arrêté pour lui rappeler la règle.
+
+**Question détectrice.** Avant la première commande d'une demande : existe-t-il une règle permanente (mémoire, instructions du projet, ce que l'utilisateur a dit) sur qui fait ce genre d'étape, ou sur la manière de la faire ? Est-ce que je la saute parce que l'étape est « petite » ?
+
+**Signal d'alarme.** « Je jette d'abord un coup d'œil, et je délègue ensuite. » · « c'est trop court pour valoir la peine de déléguer ».
+
+**Que faire.** Classez l'étape selon sa nature, pas selon sa taille : si elle est mécanique, elle suit la règle dès la première commande. Si une exception se justifie vraiment, dites-le avant de la faire et laissez l'utilisateur décider.

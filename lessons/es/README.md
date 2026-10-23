@@ -16,6 +16,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **52.** [Sobre una herramienta que cambia rápido se escribe desde la práctica de hoy, no de memoria](writing-and-docs.md#52-sobre-una-herramienta-que-cambia-rápido-se-escribe-desde-la-práctica-de-hoy-no-de-memoria)
 - **54.** [«El X al inicio y al cierre»: todo traductor elige la misma lectura equivocada](writing-and-docs.md#54-el-x-al-inicio-y-al-cierre-todo-traductor-elige-la-misma-lectura-equivocada)
 - **58.** [Una instrucción hecha de muchas piezas se ve antes de armarla](writing-and-docs.md#58-una-instrucción-hecha-de-muchas-piezas-se-ve-antes-de-armarla)
+- **64.** [Ancla un concepto en algo que el lector ya vivió, no en cómo se calcula](writing-and-docs.md#64-ancla-un-concepto-en-algo-que-el-lector-ya-vivió-no-en-cómo-se-calcula)
 - **AI-1.** [Si restringes dónde puede escribir el modelo, escribe donde lo dejes](writing-and-docs.md#ai-1-si-restringes-dónde-puede-escribir-el-modelo-escribe-donde-lo-dejes)
 - **AI-2.** [Una regla escrita como lista se ejecuta como lista, aun después de que la otra persona respondió](writing-and-docs.md#ai-2-una-regla-escrita-como-lista-se-ejecuta-como-lista-aun-después-de-que-la-otra-persona-respondió)
 - **EDU-2.** [Lo que se ve antes de responder no puede traer la respuesta](writing-and-docs.md#edu-2-lo-que-se-ve-antes-de-responder-no-puede-traer-la-respuesta)
@@ -32,6 +33,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **12.** [Que la consulta corra no prueba que el número esté bien](numbers-and-data.md#12-que-la-consulta-corra-no-prueba-que-el-número-esté-bien)
 - **36.** [Mide antes de escribir](numbers-and-data.md#36-mide-antes-de-escribir)
 - **50.** [Si dos explicaciones predicen lo mismo, tu ejemplo no elige entre ellas](numbers-and-data.md#50-si-dos-explicaciones-predicen-lo-mismo-tu-ejemplo-no-elige-entre-ellas)
+- **AI-3.** [Un modelo afinado también aprende los bordes y el fondo de sus ejemplos](numbers-and-data.md#ai-3-un-modelo-afinado-también-aprende-los-bordes-y-el-fondo-de-sus-ejemplos)
 
 ## Prácticas y pruebas
 
@@ -61,6 +63,11 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **48.** [Si un archivo sale de un generador, el arreglo va en el generador](scripts-and-files.md#48-si-un-archivo-sale-de-un-generador-el-arreglo-va-en-el-generador)
 - **56.** [Una actualización incremental no es reconstruir todo: revisa lo que elimina](scripts-and-files.md#56-una-actualización-incremental-no-es-reconstruir-todo-revisa-lo-que-elimina)
 - **61.** [Una función auxiliar que adivina la intención por la forma de sus argumentos](scripts-and-files.md#61-una-función-auxiliar-que-adivina-la-intención-por-la-forma-de-sus-argumentos)
+- **63.** [Antes de limpiar en masa algo que nadie guardó, guárdalo tal como está](scripts-and-files.md#63-antes-de-limpiar-en-masa-algo-que-nadie-guardó-guárdalo-tal-como-está)
+- **66.** [Un script nuevo hereda la configuración que el proyecto ya usa](scripts-and-files.md#66-un-script-nuevo-hereda-la-configuración-que-el-proyecto-ya-usa)
+- **67.** [Un valor ajustado en una muestra no sirve para todas las muestras](scripts-and-files.md#67-un-valor-ajustado-en-una-muestra-no-sirve-para-todas-las-muestras)
+- **68.** [Un paso que lee más allá de un borde va antes del paso que lo corta](scripts-and-files.md#68-un-paso-que-lee-más-allá-de-un-borde-va-antes-del-paso-que-lo-corta)
+- **VIDEO-3.** [Pegar clips sobre silencio digital deja al descubierto su ruido de fondo](scripts-and-files.md#video-3-pegar-clips-sobre-silencio-digital-deja-al-descubierto-su-ruido-de-fondo)
 - **WEB-1.** [Un almacenamiento dañado no debe arrastrar consigo el registro siguiente](scripts-and-files.md#web-1-un-almacenamiento-dañado-no-debe-arrastrar-consigo-el-registro-siguiente)
 
 ## Interfaz y diseño
@@ -90,6 +97,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **44.** [Lo que recortas de la salida puede ser el veredicto](console-and-tools.md#44-lo-que-recortas-de-la-salida-puede-ser-el-veredicto)
 - **53.** [El código pasa por el editor, no por el manejo de texto de la consola](console-and-tools.md#53-el-código-pasa-por-el-editor-no-por-el-manejo-de-texto-de-la-consola)
 - **60.** [Lo que viaja como argumento de un proceso tiene un techo que no se ve hasta que crece](console-and-tools.md#60-lo-que-viaja-como-argumento-de-un-proceso-tiene-un-techo-que-no-se-ve-hasta-que-crece)
+- **62.** [Parar un trabajo en segundo plano es parar lo que lo lanza, y luego comprobar que no queda nada](console-and-tools.md#62-parar-un-trabajo-en-segundo-plano-es-parar-lo-que-lo-lanza-y-luego-comprobar-que-no-queda-nada)
 
 ## Git y proceso
 
@@ -99,3 +107,4 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **35.** [Una lista de pendientes escrita de paso envejece](git-and-process.md#35-una-lista-de-pendientes-escrita-de-paso-envejece)
 - **40.** [El registro dice qué quedó y por qué, no la crónica de tropiezos](git-and-process.md#40-el-registro-dice-qué-quedó-y-por-qué-no-la-crónica-de-tropiezos)
 - **47.** [Lo que se trabaja en paralelo se cruza en lo compartido](git-and-process.md#47-lo-que-se-trabaja-en-paralelo-se-cruza-en-lo-compartido)
+- **65.** [Una regla sobre cómo trabajar no tiene excepción para los pasos chicos](git-and-process.md#65-una-regla-sobre-cómo-trabajar-no-tiene-excepción-para-los-pasos-chicos)

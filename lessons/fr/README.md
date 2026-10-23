@@ -16,6 +16,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **52.** [Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire](writing-and-docs.md#52-écrire-sur-un-outil-qui-évolue-vite-à-partir-de-la-pratique-daujourdhui-pas-de-mémoire)
 - **54.** [« Le X au début et à la fin » : tous les traducteurs choisissent la même mauvaise lecture](writing-and-docs.md#54--le-x-au-début-et-à-la-fin---tous-les-traducteurs-choisissent-la-même-mauvaise-lecture)
 - **58.** [Une consigne faite de plusieurs morceaux se voit avant d'être assemblée](writing-and-docs.md#58-une-consigne-faite-de-plusieurs-morceaux-se-voit-avant-dêtre-assemblée)
+- **64.** [Ancrer un concept dans ce que le lecteur a déjà vécu, pas dans la façon dont il se calcule](writing-and-docs.md#64-ancrer-un-concept-dans-ce-que-le-lecteur-a-déjà-vécu-pas-dans-la-façon-dont-il-se-calcule)
 - **AI-1.** [Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez](writing-and-docs.md#ai-1-si-vous-restreignez-lendroit-où-le-modèle-peut-écrire-il-écrit-là-où-vous-le-laissez)
 - **AI-2.** [Une règle écrite en liste de contrôle s'exécute comme une liste, même après que l'autre personne a répondu](writing-and-docs.md#ai-2-une-règle-écrite-en-liste-de-contrôle-sexécute-comme-une-liste-même-après-que-lautre-personne-a-répondu)
 - **EDU-2.** [Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse](writing-and-docs.md#edu-2-ce-que-lapprenant-voit-avant-de-répondre-ne-peut-pas-contenir-la-réponse)
@@ -32,6 +33,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **12.** [Exécuter la requête ne prouve pas que le chiffre est juste](numbers-and-data.md#12-exécuter-la-requête-ne-prouve-pas-que-le-chiffre-est-juste)
 - **36.** [Mesurer avant d'écrire](numbers-and-data.md#36-mesurer-avant-décrire)
 - **50.** [Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles](numbers-and-data.md#50-si-deux-explications-prédisent-la-même-chose-votre-exemple-ne-tranche-pas-entre-elles)
+- **AI-3.** [Un modèle affiné apprend aussi les bords et le bruit de fond de ses exemples](numbers-and-data.md#ai-3-un-modèle-affiné-apprend-aussi-les-bords-et-le-bruit-de-fond-de-ses-exemples)
 
 ## Tests et vérifications
 
@@ -61,6 +63,11 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **48.** [Si un fichier vient d'un générateur, la correction va dans le générateur](scripts-and-files.md#48-si-un-fichier-vient-dun-générateur-la-correction-va-dans-le-générateur)
 - **56.** [Une mise à jour incrémentale n'est pas une reconstruction : lisez ce qu'elle supprime](scripts-and-files.md#56-une-mise-à-jour-incrémentale-nest-pas-une-reconstruction--lisez-ce-quelle-supprime)
 - **61.** [Une fonction d'aide qui devine l'intention d'après la forme de ses arguments](scripts-and-files.md#61-une-fonction-daide-qui-devine-lintention-daprès-la-forme-de-ses-arguments)
+- **63.** [Avant de nettoyer en masse ce que personne n'a sauvegardé, sauvegardez-le tel quel](scripts-and-files.md#63-avant-de-nettoyer-en-masse-ce-que-personne-na-sauvegardé-sauvegardez-le-tel-quel)
+- **66.** [Un nouveau script hérite de la configuration que le projet utilise déjà](scripts-and-files.md#66-un-nouveau-script-hérite-de-la-configuration-que-le-projet-utilise-déjà)
+- **67.** [Une valeur réglée sur un échantillon ne convient pas à tous les échantillons](scripts-and-files.md#67-une-valeur-réglée-sur-un-échantillon-ne-convient-pas-à-tous-les-échantillons)
+- **68.** [Une étape qui lit au-delà d'un bord passe avant l'étape qui le coupe](scripts-and-files.md#68-une-étape-qui-lit-au-delà-dun-bord-passe-avant-létape-qui-le-coupe)
+- **VIDEO-3.** [Coller des extraits sur du silence numérique révèle leur bruit de fond](scripts-and-files.md#video-3-coller-des-extraits-sur-du-silence-numérique-révèle-leur-bruit-de-fond)
 - **WEB-1.** [Un stockage endommagé ne doit pas entraîner l'enregistrement suivant avec lui](scripts-and-files.md#web-1-un-stockage-endommagé-ne-doit-pas-entraîner-lenregistrement-suivant-avec-lui)
 
 ## Interface et design
@@ -90,6 +97,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **44.** [Ce que vous retirez de la sortie peut être le verdict](console-and-tools.md#44-ce-que-vous-retirez-de-la-sortie-peut-être-le-verdict)
 - **53.** [Le code passe par l'éditeur, pas par le traitement de texte du shell](console-and-tools.md#53-le-code-passe-par-léditeur-pas-par-le-traitement-de-texte-du-shell)
 - **60.** [Ce qui passe en argument d'un processus a un plafond qu'on ne voit qu'en grandissant](console-and-tools.md#60-ce-qui-passe-en-argument-dun-processus-a-un-plafond-quon-ne-voit-quen-grandissant)
+- **62.** [Arrêter un travail en arrière-plan, c'est arrêter ce qui le lance, puis prouver qu'il ne reste rien](console-and-tools.md#62-arrêter-un-travail-en-arrière-plan-cest-arrêter-ce-qui-le-lance-puis-prouver-quil-ne-reste-rien)
 
 ## Git et processus
 
@@ -99,3 +107,4 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **35.** [Une liste de choses à faire notée en passant devient périmée](git-and-process.md#35-une-liste-de-choses-à-faire-notée-en-passant-devient-périmée)
 - **40.** [Le journal dit ce qui reste et pourquoi, pas une chronique des erreurs](git-and-process.md#40-le-journal-dit-ce-qui-reste-et-pourquoi-pas-une-chronique-des-erreurs)
 - **47.** [Ce qui est travaillé en parallèle entre en collision dans ce qui est partagé](git-and-process.md#47-ce-qui-est-travaillé-en-parallèle-entre-en-collision-dans-ce-qui-est-partagé)
+- **65.** [Une règle sur la manière de travailler n'a pas d'exception pour les petites étapes](git-and-process.md#65-une-règle-sur-la-manière-de-travailler-na-pas-dexception-pour-les-petites-étapes)

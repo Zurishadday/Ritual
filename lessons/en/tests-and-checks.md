@@ -4,7 +4,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 13. A checker that never saw the error verifies nothing
 
-`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10, claude-opus-5-5 2026-10`
 
 **The idea.** A test that always passes may be broken. The only way to know is to watch it fail against the real error.
 
@@ -14,11 +14,13 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **One more example.** A rule that detected indented code flagged a line that started with a text: the case that should pass did not have that shape. And a test that the text comparison worked passed even though the comparison was broken, because another review rejected the error first.
 
-**Detector question.** Did I test my check against the error in the forms it would really appear? And against the correct case?
+**A fourth example.** A classifier that flags sales objections scored 0 false alarms on 30 ordinary customer sentences, and that number was reported. Adding 25 sentences on the same topics said the other way round (buying signals like "can I pay by card?") made it fire 7 times. In another project, a detector that lowered breaths in a voice track also lowered the final "s" of words: nothing in its test sounded like a breath without being one.
 
-**Warning sign.** "It already passes, so it's set up right."
+**Detector question.** Did I test my check against the error in the forms it would really appear? And against the correct cases that look most like the error: same topic, same words, opposite meaning?
 
-**What to do.** Calibrate it with two cases: one where it must find something and one where it must not, and run it for real on the day it's born. The good case matters as much as the bad one: a checker that rejects what's correct is broken too, and that is harder to notice because it looks strict. The good case includes the real forms of what's correct, including the ones you didn't write yourself: another order, another name. Each check calibrates itself: if another one catches the error first, yours was never tested. And a review that repeats what it already read can't fail (a "second run" that rereads the same file): replace it with a reconciliation that does fail if something is wrong.
+**Warning sign.** "It already passes, so it's set up right." · "Zero false alarms, done."
+
+**What to do.** Calibrate it with two cases: one where it must find something and one where it must not, and run it for real on the day it's born. The good case matters as much as the bad one: a checker that rejects what's correct is broken too, and that is harder to notice because it looks strict. The good case includes the real forms of what's correct, including the ones you didn't write yourself: another order, another name. Build the hardest ones on purpose: for each thing the check must catch, its twin that it must let through, and report false alarms on those apart from the easy ones; a zero that only comes from easy cases says nothing. Each check calibrates itself: if another one catches the error first, yours was never tested. And a review that repeats what it already read can't fail (a "second run" that rereads the same file): replace it with a reconciliation that does fail if something is wrong.
 
 ### 14. The probe doesn't travel the channel it investigates
 

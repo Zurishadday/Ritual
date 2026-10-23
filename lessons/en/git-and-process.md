@@ -95,3 +95,17 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 **Warning sign.** "Each of us tested our own" · "the failure is in another piece" · "each one touches different files, they don't collide."
 
 **What to do.** Have one person integrate what's shared, with a step that stops if a name clashes. Have the tests read the original, not a copy. Run the full test suite once everyone is done, or without the pieces that are still changing, and say which ones were left out. And save pieces that share files together, so each saved version works in full. Give each session its own folder (`git worktree`), read `git status -sb` before every commit, and after a push check that the remote branch has the commit.
+
+### 65. A rule about how to work has no exception for small steps
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: console-and-tools`
+
+**The idea.** A standing instruction about how to work (who does what, where it runs, with which tool) has no size exception. "It's just a quick check" is exactly the case the rule was meant to cover.
+
+**Example.** The user had asked, and it was saved in memory, that all mechanical work (installs, running scripts, transcribing) go to a cheaper subagent model, with the main model only reasoning. Given three long audio files, the main model wrote and ran a sample transcription itself "to see what they contained"; it failed on a missing library, it retried, and the user stopped it to point out the rule.
+
+**Detector question.** Before the first command of a request: is there a standing rule (memory, project instructions, what the user said) about who does this kind of step, or how? Am I skipping it because the step is "small"?
+
+**Warning sign.** "I'll take a quick look first and delegate after" · "this is too short to be worth delegating".
+
+**What to do.** Classify the step by its kind, not its size: if it is mechanical, it goes the way the rule says from the first command. If an exception really makes sense, say so before doing it and let the user decide.

@@ -160,6 +160,20 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 **O que fazer.** Primeiro a pergunta em palavras. Depois cada peça mostrada nos dados, uma cor para cada, com o nome e o significado ao lado. Depois o resultado calculado à mão. Só então a instrução, montada em partes com as mesmas cores e uma pausa entre elas, com a novidade por último. Não é o mesmo que a lição 51: aqui cada peça pode já ser conhecida, e o que falha é a ordem.
 
+### 64. Ancore um conceito em algo que o leitor já viveu, e não em como ele é calculado
+
+`from: 8ff766c9` · `by: ai`
+
+**A ideia.** Para apresentar um conceito difícil a quem ainda não o conhece (um aluno, um gerente lendo um relatório, um usuário lendo uma dica de ferramenta), ancore a intuição em algo que a pessoa já viveu, usando os próprios dados reais do caso. O procedimento que o calcula (uma simulação, um embaralhamento, a fórmula) vem depois, ou nunca. O procedimento é exato para quem já entende o conceito; quem está chegando o sente como um truque e deixa de confiar no resultado.
+
+**Exemplo.** Uma lição ensinou o valor-p por meio de um teste de permutação: embaralhar os rótulos de grupo dos mesmos dados 300 vezes e contar quantas vezes a diferença aparece. Ela também usava um teste bicaudal para uma pergunta unicaudal (“será que vende mais?”). Três revisores aprovaram-na em várias rodadas: estava correta e bem construída. O responsável pelo curso a rejeitou, porque ninguém faz embaralhamentos imaginários. A versão que funcionou começou com os dias reais de venda (um dia tão alto já tinha acontecido; um tão alto nunca), acrescentou uma comparação que todos já viveram (dar de cara com a mãe na rua é normal se ela mora a um quarteirão de você), derivou o limite a partir dos mesmos dados e usou uma cauda só, porque a pergunta real só olhava para um lado.
+
+**Pergunta detectora.** Em que repousa a intuição deste conceito: em algo que o leitor já viveu, com dados reais, ou no procedimento que o calcula? A pergunta que o exemplo faz é a que uma pessoa faria na vida real (sua direção, sua escala, suas palavras), ou a que é conveniente para o método?
+
+**Sinal de alerta.** “É a forma mais honesta de calcular” · “os revisores dizem que está correto” · “imagine que você repete o experimento mil vezes”.
+
+**O que fazer.** Antes do script ou do texto, escreva em uma linha a experiência cotidiana que tem o mesmo formato do conceito. Se nenhuma vier à mente, pergunte a quem conhece o público. Construa a abertura a partir dessa experiência e dos dados do caso, e deixe o método como “como é calculado” no fim. Pergunte a um revisor “em que repousa a intuição?”, além de “está correto?”. O que o leitor precisa já saber é o tema da lição 51.
+
 ### AI-1. Se você restringe onde o modelo pode escrever, ele escreve onde você deixar
 
 `from: abeb61b2` · `by: ai`

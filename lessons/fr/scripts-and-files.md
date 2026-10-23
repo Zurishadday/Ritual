@@ -166,6 +166,76 @@ Ce qui s'applique quand un programme écrit, génère, transforme ou déplace de
 
 **Que faire.** Rendez l'opération explicite (`api.post(path)`, `save(x, create=True)`), ou faites que la valeur par défaut soit le cas sûr. Tant que la fonction ambiguë existe, relisez chaque appel qui omet cet argument.
 
+### 63. Avant de nettoyer en masse ce que personne n'a sauvegardé, sauvegardez-le tel quel
+
+`from: 8f7e7662` · `by: ai`
+
+**L'idée.** Les fichiers fraîchement générés (données, rapports, sortie d'un agent) ne sont souvent pas encore sous contrôle de version. Si l'étape suivante les réécrit en masse (dédoublonner, réétiqueter, retirer des lignes) et supprime trop, il n'existe aucun moyen de revenir à l'original. La leçon 24 protège une écriture qui échoue en plein milieu ; celle-ci protège contre un nettoyage qui réussit et qui est faux.
+
+**Exemple.** Sept agents ont écrit 3,780 phrases d'entraînement dans de nouveaux fichiers. L'étape suivante devait les nettoyer : retirer celles trop proches de l'ensemble de test, et les doublons entre fichiers. Les fichiers n'étaient pas encore dans git. Avant que la réécriture ne s'exécute, le système de permissions l'a bloquée comme irréversible, et il avait raison. Les 3,780 phrases ont d'abord été enregistrées dans un commit, et le nettoyage (73 lignes retirées, 1 réétiquetée) a été mis dans son propre commit, que l'on peut relire et annuler.
+
+**Question détectrice.** Ce que je m'apprête à réécrire est-il sauvegardé dans son état actuel ? Si mon nettoyage retire trop, d'où le récupère-t-on ?
+
+**Signal d'alarme.** « Ce sont des fichiers neufs, je les nettoie d'un seul coup. »
+
+**Que faire.** D'abord un commit (ou une copie) de l'état original. Puis le nettoyage dans son propre commit, avec le compte de ce qui a été retiré et pourquoi (voir la leçon 56), pour que la modification puisse être relue ligne par ligne et annulée.
+
+### 66. Un nouveau script hérite de la configuration que le projet utilise déjà
+
+`from: 6a79105c` · `by: ai`
+
+**L'idée.** Si le projet charge déjà une bibliothèque dans un autre script avec une configuration particulière (chemins de bibliothèques natives, variables d'environnement, appareil, version du modèle), un nouveau script qui l'utilise a besoin de cette même configuration. Le réécrire à zéro répète un problème que le projet a déjà résolu.
+
+**Exemple.** Un script jetable destiné à transcrire sur le GPU échouait avec une DLL CUDA manquante. Le script de constitution du jeu de données du projet avait déjà résolu ce problème : il ajoutait le dossier des bibliothèques du framework de deep learning au chemin de recherche des DLL avant d'importer la bibliothèque de reconnaissance vocale ; le nouveau script n'avait pas recopié cette étape.
+
+**Question détectrice.** Cette bibliothèque est-elle déjà chargée dans un autre script du projet ? Que fait ce script juste avant de l'importer ou de la créer ?
+
+**Signal d'alarme.** « C'est un script de cinq lignes, je n'ai pas besoin de voir comment l'autre fait. »
+
+**Que faire.** Avant d'écrire un script qui utilise une bibliothèque du projet, cherchez où elle est déjà chargée et recopiez sa configuration, ou mieux, importez le chargeur du projet, pour que la configuration vive à un seul endroit (voir la leçon 6). Si une erreur de chargement apparaît, cherchez-la dans le code du projet avant de faire des recherches à l'extérieur.
+
+### 67. Une valeur réglée sur un échantillon ne convient pas à tous les échantillons
+
+`from: c4c22bc2` · `by: ai`
+
+**L'idée.** Un réglage choisi en l'essayant sur un échantillon (un seuil, une coupure, un gain) est calé sur cet échantillon. Quand arrive un échantillon plus fort, plus long ou plus rare, le même chiffre ne donne plus le résultat qui avait été approuvé.
+
+**Exemple.** Les respirations d'une voix générée ont été baissées de 18 dB ; dans un échantillon de 15 s, elles devenaient inaudibles et l'utilisateur l'a approuvé. Dans la leçon complète, le modèle respirait plus fort, et quatre respirations restaient audibles. Avant de couper plus fort, chacune a été inspectée : trois n'étaient pas des respirations mais le « s » final de mots, que le détecteur avait confondus (leçon 13), et couper à −35 dB faisait perdre le « s » à la transcription.
+
+**Question détectrice.** Sur combien d'échantillons, et lesquels parmi les cas extrêmes, ce chiffre a-t-il été choisi ? Décrit-il le résultat que je veux, ou une étape qui n'a donné ce résultat que sur cet échantillon ?
+
+**Signal d'alarme.** « C'était parfait sur l'échantillon, appliquez la même chose à tout. » · « il en reste quelques-unes, coupez plus fort ».
+
+**Que faire.** Choisissez la valeur sur les cas extrêmes, et non sur un seul échantillon : le plus fort, le plus long, le cas le plus rare. Quand c'est possible, écrivez-la comme le résultat voulu, avec des bornes (« finir à −61 dBFS, en coupant entre 18 et 35 dB »), plutôt que comme un pas fixe. Quand quelque chose survit au réglage, examinez chaque cas avant de le resserrer : ce n'est peut-être pas ce pour quoi le réglage existe.
+
+### 68. Une étape qui lit au-delà d'un bord passe avant l'étape qui le coupe
+
+`from: 1e65549b` · `by: ai`
+
+**L'idée.** Certaines étapes ont besoin de matière au-delà du bord de ce sur quoi elles travaillent : une réverbération ou un écho prolonge un son au-delà de sa fin, et un filtre de lissage ou une moyenne glissante lit les voisins de chaque point. Placées après un découpage, un fondu ou un filtre, elles ne trouvent plus rien à lire, et le résultat sort inchangé, ou faux aux bords.
+
+**Exemple.** Pour que les phrases de narration s'estompent plus naturellement, une légère réverbération a été testée. Elle a été appliquée à des phrases déjà découpées et déjà estompées : la queue de réverbération sortait 8 à 30 dB sous le fond sonore, inaudible, et le test n'a rien changé.
+
+**Question détectrice.** Cette étape a-t-elle besoin de matière qui se trouve au-delà du point où j'ai déjà coupé, estompé ou filtré ? À quel endroit de la chaîne la place-je ?
+
+**Signal d'alarme.** « J'ajouterai l'effet à la fin, sur ce qui est déjà fait. »
+
+**Que faire.** Avant d'ajouter une étape à une chaîne de traitement, notez ce qu'elle a besoin en entrée et ce qu'elle laisse en sortie, et placez-la là où son entrée existe encore. Puis vérifiez qu'elle a changé la sortie (voir la leçon 50) avant de demander à quelqu'un de regarder ou d'écouter.
+
+### VIDEO-3. Coller des extraits sur du silence numérique révèle leur bruit de fond
+
+`from: 1bd2ffe3` · `by: ai`
+
+**L'idée.** Quand des morceaux audio sont placés sur une piste de zéros, chaque morceau porte son propre bruit de fond, et les intervalles sont un silence absolu. L'oreille entend le fond s'allumer et s'éteindre à chaque coupure. Un fond posé sous les intervalles ne cache cela que s'il correspond aux morceaux en niveau et en timbre, et même un fond qui correspond peut s'entendre comme un souffle constant.
+
+**Exemple.** La narration d'une leçon a été construite en plaçant chaque phrase générée sur des zéros. Avec une voix propre (plancher de bruit à −83 dB), rien n'était audible ; avec une voix clonée qui portait le bruit de la pièce (−48 dB), l'utilisateur entendait un silence soudain à chacune des 17 coupures. Plus tard, un remplissage à −63 dB sous une voix dont le plancher était à −58 dB laissait des sauts de niveau, et un autre à −58 dB s'entendait comme un souffle léger et constant.
+
+**Question détectrice.** Quel est le plancher de bruit à l'intérieur de chaque morceau, et entre les morceaux ? Correspondent-ils en niveau et en timbre, ou la coupure change-t-elle l'un ou l'autre ?
+
+**Signal d'alarme.** « L'intervalle est silencieux, il ne peut pas être plus propre. » · « je vais juste mettre un fond dessous ».
+
+**Que faire.** Mesurez le plancher des morceaux avant de les assembler. S'il est aussi bas que les intervalles (ici, la voix propre à −83 dB ne montrait aucune couture), laissez les intervalles silencieux. Sinon, nettoyez les morceaux vers ce niveau avant de les assembler ; si vous posez un fond sous les intervalles, prenez-le dans les morceaux eux-mêmes, à leur niveau, et écoutez l'ensemble au casque avant de le garder. Vérifiez la sortie pour y trouver des sauts de niveau à chaque coupure. La cause du bruit fait l'objet de la leçon AI-3.
+
 ### WEB-1. Un stockage endommagé ne doit pas entraîner l'enregistrement suivant avec lui
 
 `from: e896b1e3` · `by: ai`

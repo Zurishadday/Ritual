@@ -4,7 +4,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 13. Un verificador que nunca vio el error no verifica nada
 
-`from: eb6c6b31` · `by: author`
+`from: 200d356e` · `by: ai`
 
 **La idea.** Una prueba que siempre pasa puede estar rota. La única forma de saberlo es verla fallar contra el error real.
 
@@ -14,11 +14,13 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Un ejemplo más.** Una regla que detectaba código sangrado marcó una línea que empezaba con un texto: el caso que debía pasar no traía esa forma. Y una prueba de que el texto se comparaba bien pasaba aunque la comparación estuviera rota, porque otra revisión rechazaba antes el error.
 
-**Pregunta detectora.** ¿Probé mi verificación contra el error en las formas en que aparecería de verdad? ¿Y contra el caso correcto?
+**Un cuarto ejemplo.** Un clasificador que marca objeciones de venta dio 0 falsas alarmas en 30 frases ordinarias de clientes, y ese número se reportó. Al agregar 25 frases de los mismos temas que decían lo contrario (señales de compra como «¿puedo pagar con tarjeta?»), se disparó 7 veces. En otro proyecto, un detector que bajaba las respiraciones de una pista de voz también bajaba la «s» final de las palabras: nada en su prueba sonaba a respiración sin serlo.
 
-**Señal de alarma.** «Ya pasa, entonces está bien puesta».
+**Pregunta detectora.** ¿Probé mi verificación contra el error en las formas en que aparecería de verdad? ¿Y contra los casos correctos que más se parecen al error: el mismo tema, las mismas palabras, el significado contrario?
 
-**Qué hacer.** Calibra con dos casos: uno donde debe encontrar y otro donde no debe, y córrela de verdad el día que nace. El caso bueno importa tanto como el malo: un verificador que rechaza lo correcto también está roto, y se nota menos, porque parece exigente. El caso bueno lleva las formas reales de lo correcto, también las que no escribiste tú: otro orden, otro nombre. Cada verificación se calibra sola: si otra atrapa el error antes, la tuya nunca se probó. Y una revisión que repite lo que ya leyó no puede fallar (una «segunda corrida» que vuelve a leer el mismo archivo): cámbiala por un cuadre que sí falle si algo está mal.
+**Señal de alarma.** «Ya pasa, entonces está bien puesta». · «Cero falsas alarmas, listo».
+
+**Qué hacer.** Calibra con dos casos: uno donde debe encontrar y otro donde no debe, y córrela de verdad el día que nace. El caso bueno importa tanto como el malo: un verificador que rechaza lo correcto también está roto, y se nota menos, porque parece exigente. El caso bueno lleva las formas reales de lo correcto, también las que no escribiste tú: otro orden, otro nombre. Construye los más difíciles a propósito: por cada cosa que la verificación debe atrapar, su gemelo que debe dejar pasar, y reporta las falsas alarmas de esos aparte de las fáciles; un cero que sale solo de los casos fáciles no dice nada. Cada verificación se calibra sola: si otra atrapa el error antes, la tuya nunca se probó. Y una revisión que repite lo que ya leyó no puede fallar (una «segunda corrida» que vuelve a leer el mismo archivo): cámbiala por un cuadre que sí falle si algo está mal.
 
 ### 14. La sonda no viaja por el canal que investiga
 
