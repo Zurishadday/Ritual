@@ -10,7 +10,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
-| `~opus` | 46 | 0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
+| `~opus` | 46 | 5 | 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
 | `claude-opus-5-5` | 7 | 8 | 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
@@ -46,20 +46,20 @@ The most general mistakes: different models made them.
 | [5. A perfect result is a warning, not a win](en/numbers-and-data.md#5-a-perfect-result-is-a-warning-not-a-win) | `~opus` 2026-08 |
 | [6. The business definition lives in one place](en/scripts-and-files.md#6-the-business-definition-lives-in-one-place) | `~opus` 2026-08 |
 | [7. Read what was published, not the intent](en/scripts-and-files.md#7-read-what-was-published-not-the-intent) | `~opus` 2026-08 |
-| [8. List the consumers, don't remember them](en/git-and-process.md#8-list-the-consumers-dont-remember-them) | `~opus` 2026-08 |
+| [8. List the consumers, don't remember them](en/git-and-process.md#8-list-the-consumers-dont-remember-them) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) | `~opus` 2026-08 |
 | [10. Twin modules change together](en/interface-and-design.md#10-twin-modules-change-together) | `~opus` 2026-08 |
-| [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) | `~opus` 2026-08 |
+| [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [12. Running the query doesn't prove the number is right](en/numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right) | `~opus` 2026-08 |
-| [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) | `~opus` 2026-08 |
+| [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [14. The probe doesn't travel the channel it investigates](en/tests-and-checks.md#14-the-probe-doesnt-travel-the-channel-it-investigates) | `~opus` 2026-08 |
 | [15. A test that switches itself off doesn't report that it switched off](en/tests-and-checks.md#15-a-test-that-switches-itself-off-doesnt-report-that-it-switched-off) | `~opus` 2026-08 |
-| [16. Your checker's filter usually excludes exactly what matters](en/tests-and-checks.md#16-your-checkers-filter-usually-excludes-exactly-what-matters) | `~opus` 2026-08 |
+| [16. Your checker's filter usually excludes exactly what matters](en/tests-and-checks.md#16-your-checkers-filter-usually-excludes-exactly-what-matters) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [17. Code that compiles is not code that runs](en/tests-and-checks.md#17-code-that-compiles-is-not-code-that-runs) | `~opus` 2026-08 |
 | [18. Checking the source is not checking what gets delivered](en/tests-and-checks.md#18-checking-the-source-is-not-checking-what-gets-delivered) | `~opus` 2026-08 |
 | [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) | `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again) |
 | [20. Idempotent is not the same as updatable](en/scripts-and-files.md#20-idempotent-is-not-the-same-as-updatable) | `~opus` 2026-08 |
-| [21. Your marker must be your own](en/scripts-and-files.md#21-your-marker-must-be-your-own) | `~opus` 2026-08 |
+| [21. Your marker must be your own](en/scripts-and-files.md#21-your-marker-must-be-your-own) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [22. The second run is the one that finds the bug](en/scripts-and-files.md#22-the-second-run-is-the-one-that-finds-the-bug) | `~opus` 2026-08 |
 | [23. Position-based addresses expire](en/scripts-and-files.md#23-position-based-addresses-expire) | `~opus` 2026-08 |
 | [24. Write with a safety net](en/scripts-and-files.md#24-write-with-a-safety-net) | `~opus` 2026-08 |

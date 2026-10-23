@@ -4,7 +4,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 11. Removing a chart doesn't remove the claim it made
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
 
 **The idea.** If you remove something because the data wasn't reliable, that same claim probably still lives in other texts, written in other words.
 

@@ -48,7 +48,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 21. Your marker must be your own
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
 
 **The idea.** If you locate your change by searching for text the user reads, like a title or a label, another improvement will stick something on top of it, and your change will stop finding it.
 

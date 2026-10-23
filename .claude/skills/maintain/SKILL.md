@@ -37,7 +37,7 @@ The library grows with everyone's rituals, so contributions arrive faster than o
 1. Read the example. It must be anonymous (no clients, products, people, paths) and the same mechanism as the lesson. If it is a different mistake, it is not a confirmation of that lesson: if its example is another library lesson's mechanism, it counts for that lesson (its `seen:`, and `Ritual: merged into <that id>.`); if no lesson has it, say so and draft a reply suggesting `/ritual share`.
 2. The model goes in `seen:` as written, Claude or not: `seen:` records which models make the mistake. A model with `~` is fine.
 3. Run `node scripts/maintain.mjs seen <id> <model> <YYYY-MM>` (the issue output prints this line). The data line is not part of the fingerprint, so translations stay current.
-4. `npm test`, then one commit: `Lesson <id> confirmed with <model> (<YYYY-MM>)` with `Closes #<N>` in the body. Push after `npm run check-publish`.
+4. `node scripts/lessons.mjs --index` (a new `seen:` changes `lessons/BY-MODEL.md`), `npm test`, then one commit: `Lesson <id> confirmed with <model> (<YYYY-MM>)` with `Closes #<N>` in the body. Push after `npm run check-publish`.
 
 ## Lesson (`lesson` issue)
 

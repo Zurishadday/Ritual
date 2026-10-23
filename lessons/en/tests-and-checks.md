@@ -4,7 +4,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 13. A checker that never saw the error verifies nothing
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
 
 **The idea.** A test that always passes may be broken. The only way to know is to watch it fail against the real error.
 
@@ -52,7 +52,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 16. Your checker's filter usually excludes exactly what matters
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
 
 **The idea.** Every automatic review filters for what's "relevant", and that filter can leave it blind exactly where the problem is.
 

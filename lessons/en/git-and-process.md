@@ -4,7 +4,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 8. List the consumers, don't remember them
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
 
 **The idea.** When you change a piece of data that others read by its name, the list of who reads it has to be written down. Memory always leaves one out.
 
