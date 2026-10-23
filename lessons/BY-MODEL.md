@@ -105,7 +105,7 @@ The most general mistakes: different models made them.
 | [EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it](en/tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-2. What learners see before answering can't contain the answer](en/writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-3. A question with two defensible answers measures nothing](en/writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing) | `~opus` 2026-10 |
-| [EDU-4. If you can guess the right option by its place or its length, the quiz measures guessing](en/tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-or-its-length-the-quiz-measures-guessing) | `~opus` 2026-10 |
+| [EDU-4. If you can guess the right option by its place, its length or its look, the quiz measures guessing](en/tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing) | `~opus` 2026-10 |
 | [EDU-5. A hint points at the cause of the mistake, not at the answer](en/writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer) | `claude-opus-5-5` 2026-10 |
 | [VIDEO-1. In a video, each action lands when the narration names it](en/interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it) | `claude-opus-5-5` 2026-10 |
 | [VIDEO-2. In a video, what changes without showing gets marked](en/interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked) | `claude-opus-5-5` 2026-10 |

@@ -60,13 +60,13 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **Another example.** A test went through every page always marking the first option and running each query as it came. It always passed, and it never checked that the correct answer was accepted.
 
-**One more example.** To decide whether someone changed a text, whitespace was ignored. That left out exactly the case of the page that explained how to lay out that text with spaces and line breaks. Normalizing is also filtering.
+**One more example.** To decide whether someone changed a text, whitespace was ignored. That left out exactly the case of the page that explained how to lay out that text with spaces and line breaks. Normalizing is also filtering. And a test run for one page "passed" without testing anything: the filter was a regular expression on test names, the page title had parentheses, which are special characters in a regular expression, so the filter matched no test and none ran.
 
-**Detector question.** What does my filter leave out? Write it down before you believe the result.
+**Detector question.** What does my filter leave out? Write it down before you believe the result. And how many did it select? Zero is not a pass.
 
-**Warning sign.** "It found 48 differences, I already have the list" · "the test goes through all of them."
+**Warning sign.** "It found 48 differences, I already have the list" · "the test goes through all of them" · "the filtered run passed."
 
-**What to do.** Write down what the filter leaves out and check a sample of the excluded items by hand. And when you learn that a filter left you blind, look for the other similar filters you already wrote: a review that stripped all spaces from the code joined two words into one and rejected correct code, shortly after the same lesson had been learned from a different normalization.
+**What to do.** Write down what the filter leaves out and check a sample of the excluded items by hand. And when you learn that a filter left you blind, look for the other similar filters you already wrote: a review that stripped all spaces from the code joined two words into one and rejected correct code, shortly after the same lesson had been learned from a different normalization. Before you read the verdict of a filtered test run, count what the filter selected (`--list`, or the runner's count of tests run), and filter by an id rather than by a name: a run that selected nothing has no verdict, and no verdict means "I don't know" (see lesson 44).
 
 ### 17. Code that compiles is not code that runs
 
@@ -124,7 +124,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **Warning sign.** "I already reviewed it myself."
 
-**What to do.** One runs it and the other checks by reading the result. "I already did it" is the sign that it can now be verified, not the verification. And whoever verifies does not look through the same channel as whoever did it (see lesson 14): if both read only the source, neither sees the screen.
+**What to do.** One runs it and the other checks by reading the result. "I already did it" is the sign that it can now be verified, not the verification. And whoever verifies does not look through the same channel as whoever did it (see lesson 14): if both read only the source, neither sees the screen. A reviewer who approves a statement about a tool (what it does, what it has, how it is set up) says what they looked at today: its help, its configuration or a run of it. If they didn't look, they say so, and the work stops until someone does.
 
 ### 34. Trust the symptom in a QA finding and measure the cause
 
@@ -164,22 +164,26 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **Another example.** A practice done in a spreadsheet asked learners to set the region, import a CSV and type back how many units of one product it had. The count was a whole number stored in the file: a plain text editor showed it with no import and no region set. It was replaced by units times a price with a decimal point, which only gives the expected number when the sheet reads that decimal correctly. In the same course, an exercise to sort files by their extension could be solved from the file names alone.
 
+**One more example.** In a course with drawn interfaces (a browser, a mail inbox, a spreadsheet), the exercises checked only the final state, and other routes reached it. Closing the lesson and staying on the other tab passed "switch tabs"; reopening some other tab passed "reopen the lesson"; deleting the cell and dragging the fill handle passed "copy the formula". And a counter counted a fake email twice when it was reported and then deleted.
+
 **Detector question.** What result does someone get who skips exactly what I teach, or who submits the exercise untouched? Is it different from the right one? Did I pick a case where both calculations happen to match (the first group, the first step, the total)?
 
 **Warning sign.** "With the right answer it gives the number, so it works." · "They'll do the setup anyway."
 
-**What to do.** Solve every exercise three times: untouched, with the most likely mistake, and correctly. Only the third may pass. Then run the same list of shortcuts on every exercise: the number typed by hand, the starting code with the answer added at the end, the symptom fixed by hand instead of the cause, the required word used empty, and a run with memory left over from an earlier attempt. Keep any tolerance smaller than the distance between the answer and the most likely mistake, and write three correct forms a learner would use, so the check doesn't reject what is right. When the practice happens in another tool and only a typed number comes back, ask for one that only appears after the taught step (a calculation the setup affects), not a value stored in the file, and add "the setup skipped" to the shortcuts. In a sorting exercise, keep everything equal except the feature being taught.
+**What to do.** Solve every exercise three times: untouched, with the most likely mistake, and correctly. Only the third may pass. Then run the same list of shortcuts on every exercise: the number typed by hand, the starting code with the answer added at the end, the symptom fixed by hand instead of the cause, the required word used empty, and a run with memory left over from an earlier attempt. Keep any tolerance smaller than the distance between the answer and the most likely mistake, and write three correct forms a learner would use, so the check doesn't reject what is right. When the practice happens in another tool and only a typed number comes back, ask for one that only appears after the taught step (a calculation the setup affects), not a value stored in the file, and add "the setup skipped" to the shortcuts. In a sorting exercise, keep everything equal except the feature being taught. In a drawn interface, check the route, not only the end state: the taught action has to happen, so closing the lesson's tab must not count as switching tabs. And count each item once, whatever happens to it afterwards.
 
-### EDU-4. If you can guess the right option by its place or its length, the quiz measures guessing
+### EDU-4. If you can guess the right option by its place, its length or its look, the quiz measures guessing
 
 `origin: field · ~opus · 2026-10` · `packages: education`
 
-**The idea.** Each question can be fine on its own and the set still give the answer away: the right option is always second, always the longest, or always the middle-sized one. Learners notice patterns faster than authors do.
+**The idea.** Each question can be fine on its own and the set still give the answer away: the right option is always second, always the longest, always the middle-sized one, or the only one with a button. Learners notice patterns faster than authors do.
 
 **Example.** In one module's closing quiz the right answer was the second option in six of seven questions. Across a course, the right option was the longest in 55 % of questions, when chance with three options is one in three. After the length was balanced by hand, the right option ended up as the shortest in six of seven questions of one lesson, and as the middle one in every question of three lessons in a row.
 
-**Detector question.** If I read only the position and the length of the options, without the text, do I guess the right one more than once in three?
+**Another example.** In a drawn mail inbox, only the fake emails had a report button, so learners reported them without reading the sender. In a "tap the right screenshot" question, the right screenshot was the only one with content: the other two were blocks of color.
+
+**Detector question.** If I read only the position, the length and the look of the options, without the text, do I guess the right one more than once in three?
 
 **Warning sign.** "I checked each question, they're all correct."
 
-**What to do.** Shuffle the options when they are shown, with an order that doesn't come from where the right one was written. Measure longest, shortest and middle per file, and pool small files per module, so a few questions don't hide the pattern. Read the count against what you asked for: a balancing pass can move the giveaway instead of removing it.
+**What to do.** Shuffle the options when they are shown, with an order that doesn't come from where the right one was written. Measure longest, shortest and middle per file, and pool small files per module, so a few questions don't hide the pattern. Read the count against what you asked for: a balancing pass can move the giveaway instead of removing it. Give every option the same controls (every email has a link and a button), and draw the wrong options as believably as the right one.

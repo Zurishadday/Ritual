@@ -4,17 +4,19 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 ### 10. Módulos gêmeos mudam juntos
 
-`from: 39a1c52b` · `by: ai`
+`from: cbdd1d55` · `by: ai`
 
 **A ideia.** Se o seu produto tem duas versões da mesma tela, para dois tipos de usuário, duas regiões ou dois produtos, uma melhoria numa delas é uma melhoria pendente na outra.
 
 **Exemplo.** A versão de desktop ganhou um filtro de data. A versão para celular, que as pessoas veem como “a mesma tela”, ficou sem ele por um mês.
 
+**Outro exemplo.** Em um curso web, três coisas cabiam no celular e falharam ali. Uma prévia reduzida de um documento cabia na largura com texto de 3 px. Um exercício de arrastar e soltar empilhava seis caixas-alvo numa coluna só, com três telas de altura, então o alvo ficava fora da tela durante o arraste. Um rótulo de um gráfico de barras desenhado cabia no desktop, mas no celular quebrava e invadia o rótulo seguinte.
+
 **Pergunta detectora.** O que estou mexendo tem um gêmeo que os usuários veem como “o mesmo módulo”?
 
-**Sinal de alerta.** “Não me pediram isso na outra.”
+**Sinal de alerta.** “Não me pediram isso na outra.” · “Cabe no celular, então é igual.”
 
-**O que fazer.** Não feche a mudança antes de conferir o gêmeo e escrever “igual” ou “não se aplica porque…”.
+**O que fazer.** Não feche a mudança antes de conferir o gêmeo e escrever “igual” ou “não se aplica porque…”. Quando o gêmeo é a versão para celular, confira usando-a ali: leia o texto no tamanho em que é renderizado, termine cada arraste ou toque com o alvo na tela o tempo todo, e veja os rótulos na largura mais estreita. Para comparar cada propriedade, ver a lição 19; para olhar como o leitor vê, ver a lição 41.
 
 ### 19. Revisar uma dimensão não é revisar
 
@@ -171,7 +173,7 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 ### VIDEO-1. Em um vídeo, cada ação cai quando a narração a nomeia
 
-`from: 93ac042f` · `by: ai`
+`from: 0fa6dd51` · `by: ai`
 
 **A ideia.** Quando a tela faz algo antes ou depois de a voz dizer, o espectador olha para o que não está ouvindo e ouve o que não está vendo. Um clique que acontece antes da palavra que o nomeia ensina o clique sem o nome.
 
@@ -179,11 +181,13 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 **Outro exemplo.** Na mesma série, o dono do curso disse que um vídeo passava de uma ideia para a outra depressa demais. Uma pausa parada de 1 a 1,5 segundos no fim de cada ideia nova resolveu.
 
-**Pergunta detectora.** Para cada clique e cada tecla pressionada nesta cena, em qual palavra da narração ele cai? Essa palavra o nomeia? Cada ideia nova termina com um momento parado antes de começar a próxima?
+**Mais um exemplo.** Em vídeos do mesmo tipo, a voz dizia “deixamos aberto, C2:C” enquanto a tela mostrava C1:C1000. Outra frase dizia “envolvemos em IFERROR” sem dizer onde o cursor vai, e sem nomear as aspas que são digitadas. O revisor pedagógico marcou as duas como obrigatórias.
 
-**Sinal de alerta.** “Diz isso mais ou menos aí” · “é uma fração da cena, encaixa”.
+**Pergunta detectora.** Para cada clique e cada tecla pressionada nesta cena, em qual palavra da narração ele cai? Essa palavra o nomeia? A narração diz o que o quadro mostra, e diz onde cada movimento é feito? Cada ideia nova termina com um momento parado antes de começar a próxima?
 
-**O que fazer.** Se a voz não dá a marcação de tempo de cada palavra, posicione cada ação pelo lugar que a palavra dela ocupa na frase (os caracteres antes dela), e confira no vídeo completo, na velocidade real, e não em quadros parados. Se o motor de voz dá marcações de tempo por palavra, posicione as ações nelas. Trocar a voz ou reescrever uma frase desloca todas as palavras: confira a cena de novo. Feche cada ideia nova com uma pausa parada curta, de cerca de um segundo, e julgue também na velocidade real.
+**Sinal de alerta.** “Diz isso mais ou menos aí” · “é uma fração da cena, encaixa” · “a imagem deixa claro”.
+
+**O que fazer.** Se a voz não dá a marcação de tempo de cada palavra, posicione cada ação pelo lugar que a palavra dela ocupa na frase (os caracteres antes dela), e confira no vídeo completo, na velocidade real, e não em quadros parados. Se o motor de voz dá marcações de tempo por palavra, posicione as ações nelas. Trocar a voz ou reescrever uma frase desloca todas as palavras: confira a cena de novo. Feche cada ideia nova com uma pausa parada curta, de cerca de um segundo, e julgue também na velocidade real. O que a voz diz é conferido contra o quadro em que ela toca (renderize exatamente esse quadro); quando cada ação cai é conferido na velocidade real. Onde a voz e o quadro não batem, mude um dos dois. A narração diz onde cada movimento novo é feito, e nomeia cada símbolo na primeira vez em que aparece.
 
 ### VIDEO-2. Em um vídeo, o que muda sem aparecer é marcado
 

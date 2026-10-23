@@ -52,7 +52,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### 16. Le filtre de votre contrôle exclut généralement exactement ce qui compte
 
-`from: 5301da23` · `by: ai`
+`from: ef7dcfa7` · `by: ai`
 
 **L'idée.** Chaque revue automatique filtre ce qui est « pertinent », et ce filtre peut la rendre aveugle précisément là où se trouve le problème.
 
@@ -60,13 +60,13 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Autre exemple.** Un test parcourait chaque page en cochant toujours la première option et en exécutant chaque requête au fur et à mesure. Il réussissait toujours, sans jamais vérifier que la bonne réponse était acceptée.
 
-**Encore un exemple.** Pour savoir si quelqu'un avait modifié un texte, les espaces étaient ignorés. Cela laissait de côté justement le cas de la page qui expliquait comment mettre en forme ce texte avec des espaces et des sauts de ligne. Normaliser, c'est aussi filtrer.
+**Encore un exemple.** Pour savoir si quelqu'un avait modifié un texte, les espaces étaient ignorés. Cela laissait de côté justement le cas de la page qui expliquait comment mettre en forme ce texte avec des espaces et des sauts de ligne. Normaliser, c'est aussi filtrer. Et un test lancé pour une seule page a « réussi » sans rien tester : le filtre était une expression régulière appliquée aux noms de tests, et le titre de la page contenait des parenthèses, qui sont des caractères spéciaux dans une expression régulière ; le filtre ne correspondait à aucun test, et aucun n'a été exécuté.
 
-**Question détectrice.** Que laisse de côté mon filtre ? Notez-le avant de croire le résultat.
+**Question détectrice.** Que laisse de côté mon filtre ? Notez-le avant de croire le résultat. Et combien en a-t-il sélectionné ? Zéro n'est pas une réussite.
 
-**Signal d'alarme.** « Il a trouvé 48 différences, j'ai déjà la liste » · « le test passe par toutes ».
+**Signal d'alarme.** « Il a trouvé 48 différences, j'ai déjà la liste » · « le test passe par toutes » · « l'exécution filtrée a réussi ».
 
-**Que faire.** Notez ce que le filtre laisse de côté et vérifiez à la main un échantillon des éléments exclus. Et quand vous découvrez qu'un filtre vous a rendu aveugle, cherchez les autres filtres semblables que vous avez déjà écrits : une revue qui retirait tous les espaces du code collait deux mots en un seul et rejetait du code correct, peu après que la même leçon avait été tirée d'une normalisation différente.
+**Que faire.** Notez ce que le filtre laisse de côté et vérifiez à la main un échantillon des éléments exclus. Et quand vous découvrez qu'un filtre vous a rendu aveugle, cherchez les autres filtres semblables que vous avez déjà écrits : une revue qui retirait tous les espaces du code collait deux mots en un seul et rejetait du code correct, peu après que la même leçon avait été tirée d'une normalisation différente. Avant de lire le verdict d'une exécution filtrée, comptez ce que le filtre a sélectionné (`--list`, ou le décompte de tests exécutés de l'outil), et filtrez par identifiant plutôt que par nom : une exécution qui n'a rien sélectionné n'a pas de verdict, et pas de verdict veut dire « je ne sais pas » (voir la leçon 44).
 
 ### 17. Du code qui compile n'est pas du code qui s'exécute
 
@@ -114,7 +114,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### 28. Celui qui exécute et celui qui vérifie sont deux personnes différentes
 
-`from: ed079f80` · `by: ai`
+`from: 0090f5e0` · `by: ai`
 
 **L'idée.** Si la même personne exécute et confirme, une erreur d'exécution se confirme elle-même.
 
@@ -124,7 +124,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Signal d'alarme.** « Je l'ai déjà relu moi-même. »
 
-**Que faire.** L'un exécute et l'autre vérifie en lisant le résultat. « Je l'ai déjà fait » est le signe qu'on peut maintenant le vérifier, pas la vérification. Et celui qui vérifie ne doit pas regarder par le même canal que celui qui a fait (voir la leçon 14) : si les deux ne lisent que la source, aucun des deux ne voit l'écran.
+**Que faire.** L'un exécute et l'autre vérifie en lisant le résultat. « Je l'ai déjà fait » est le signe qu'on peut maintenant le vérifier, pas la vérification. Et celui qui vérifie ne doit pas regarder par le même canal que celui qui a fait (voir la leçon 14) : si les deux ne lisent que la source, aucun des deux ne voit l'écran. Celui qui approuve une affirmation sur un outil (ce qu'il fait, ce qu'il contient, comment il est configuré) dit ce qu'il a regardé aujourd'hui : son aide, sa configuration ou une exécution. S'il n'a pas regardé, il le dit, et le travail s'arrête jusqu'à ce que quelqu'un le fasse.
 
 ### 34. Croire le symptôme d'un constat QA et mesurer la cause
 
@@ -156,7 +156,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### EDU-1. Si la réponse est la même sans la compétence, l'exercice ne la mesure pas
 
-`from: 9c298143` · `by: ai`
+`from: 164808ab` · `by: ai`
 
 **L'idée.** Un exercice ne vérifie une compétence que si quelqu'un qui saute cette compétence obtient un résultat différent. Si le point de départ, un exemple ou un raccourci produit déjà la bonne réponse, l'exercice valide tout le monde. C'est la leçon 13 appliquée aux exercices : un contrôle n'a de valeur qu'une fois que vous l'avez vu rejeter l'erreur.
 
@@ -164,22 +164,26 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Autre exemple.** Un exercice réalisé dans un tableur demandait aux apprenants de régler la région, d'importer un CSV et de retaper combien d'unités d'un produit il contenait. Le nombre était un entier stocké dans le fichier : un éditeur de texte brut l'affichait sans import ni réglage de la région. On l'a remplacé par des unités multipliées par un prix avec un séparateur décimal, qui ne donne le bon résultat que si le tableur lit correctement ce séparateur. Dans le même cours, un exercice de tri des fichiers par extension pouvait être résolu à partir des seuls noms de fichiers.
 
+**Encore un exemple.** Dans un cours avec des interfaces dessinées (un navigateur, une boîte de messagerie, un tableur), les exercices ne vérifiaient que l'état final, et d'autres chemins y menaient. Fermer la leçon et rester sur l'autre onglet validait « changer d'onglet » ; rouvrir un autre onglet validait « rouvrir la leçon » ; supprimer la cellule et tirer la poignée de recopie validait « copier la formule ». Et un compteur comptait deux fois un faux e-mail signalé puis supprimé.
+
 **Question détectrice.** Quel résultat obtient quelqu'un qui saute exactement ce que j'enseigne, ou qui rend l'exercice sans y toucher ? Est-il différent du bon ? Ai-je choisi un cas où les deux calculs tombent juste par hasard (le premier groupe, la première étape, le total) ?
 
 **Signal d'alarme.** « Avec la bonne réponse, il donne le chiffre, donc ça marche. » · « De toute façon, ils feront le réglage. »
 
-**Que faire.** Résolvez chaque exercice trois fois : sans y toucher, avec l'erreur la plus probable, et correctement. Seule la troisième version doit passer. Puis appliquez la même liste de raccourcis à chaque exercice : le nombre tapé à la main, le code de départ avec la réponse ajoutée à la fin, le symptôme corrigé à la main au lieu de la cause, le mot exigé employé à vide, et une exécution avec la mémoire laissée par une tentative précédente. Gardez toute tolérance inférieure à l'écart entre la réponse et l'erreur la plus probable, et écrivez trois formes correctes qu'un apprenant utiliserait, pour que le contrôle ne rejette pas ce qui est juste. Quand l'exercice se fait dans un autre outil et que seul un nombre tapé revient, demandez un nombre qui n'apparaît qu'après l'étape enseignée (un calcul que le réglage affecte), et non une valeur stockée dans le fichier ; ajoutez « le réglage sauté » aux raccourcis. Dans un exercice de tri, gardez tout identique, sauf la fonctionnalité enseignée.
+**Que faire.** Résolvez chaque exercice trois fois : sans y toucher, avec l'erreur la plus probable, et correctement. Seule la troisième version doit passer. Puis appliquez la même liste de raccourcis à chaque exercice : le nombre tapé à la main, le code de départ avec la réponse ajoutée à la fin, le symptôme corrigé à la main au lieu de la cause, le mot exigé employé à vide, et une exécution avec la mémoire laissée par une tentative précédente. Gardez toute tolérance inférieure à l'écart entre la réponse et l'erreur la plus probable, et écrivez trois formes correctes qu'un apprenant utiliserait, pour que le contrôle ne rejette pas ce qui est juste. Quand l'exercice se fait dans un autre outil et que seul un nombre tapé revient, demandez un nombre qui n'apparaît qu'après l'étape enseignée (un calcul que le réglage affecte), et non une valeur stockée dans le fichier ; ajoutez « le réglage sauté » aux raccourcis. Dans un exercice de tri, gardez tout identique, sauf la fonctionnalité enseignée. Dans une interface dessinée, vérifiez le chemin, pas seulement l'état final : l'action enseignée doit avoir lieu, donc fermer l'onglet de la leçon ne doit pas compter comme changer d'onglet. Et comptez chaque élément une fois, quoi qu'il lui arrive ensuite.
 
-### EDU-4. Si l'on peut deviner la bonne option à sa place ou à sa longueur, le quiz mesure la devinette
+### EDU-4. Si l'on peut deviner la bonne option à sa place, à sa longueur ou à son apparence, le quiz mesure la devinette
 
-`from: dcfa5304` · `by: ai`
+`from: d2e6b716` · `by: ai`
 
-**L'idée.** Chaque question peut être correcte prise isolément, et l'ensemble donner quand même la réponse : la bonne option est toujours la deuxième, toujours la plus longue, ou toujours de taille moyenne. Les apprenants repèrent les régularités plus vite que les auteurs.
+**L'idée.** Chaque question peut être correcte prise isolément, et l'ensemble donner quand même la réponse : la bonne option est toujours la deuxième, toujours la plus longue, toujours de taille moyenne, ou la seule à avoir un bouton. Les apprenants repèrent les régularités plus vite que les auteurs.
 
 **Exemple.** Dans le quiz de clôture d'un module, la bonne réponse était la deuxième option dans six questions sur sept. Sur l'ensemble d'un cours, la bonne option était la plus longue dans 55 % des questions, alors que le hasard, avec trois options, donne une chance sur trois. Après un rééquilibrage de la longueur à la main, la bonne option s'est retrouvée la plus courte dans six questions sur sept d'une leçon, et celle du milieu dans chaque question de trois leçons de suite.
 
-**Question détectrice.** Si je ne lis que la position et la longueur des options, sans le texte, est-ce que je devine la bonne plus d'une fois sur trois ?
+**Autre exemple.** Dans une boîte de messagerie dessinée, seuls les faux e-mails avaient un bouton de signalement, si bien que les apprenants les signalaient sans lire l'expéditeur. Dans une question « touchez la bonne capture d'écran », la bonne capture était la seule à contenir quelque chose : les deux autres étaient des blocs de couleur.
+
+**Question détectrice.** Si je ne lis que la position, la longueur et l'apparence des options, sans le texte, est-ce que je devine la bonne plus d'une fois sur trois ?
 
 **Signal d'alarme.** « J'ai vérifié chaque question, elles sont toutes correctes. »
 
-**Que faire.** Mélangez les options à l'affichage, selon un ordre qui ne dépend pas de l'endroit où la bonne a été écrite. Mesurez la plus longue, la plus courte et celle du milieu par fichier, et regroupez les petits fichiers par module, pour que quelques questions ne cachent pas la régularité. Relisez les chiffres au regard de ce que vous visiez : une passe d'équilibrage peut déplacer l'indice qui trahit la réponse au lieu de le supprimer.
+**Que faire.** Mélangez les options à l'affichage, selon un ordre qui ne dépend pas de l'endroit où la bonne a été écrite. Mesurez la plus longue, la plus courte et celle du milieu par fichier, et regroupez les petits fichiers par module, pour que quelques questions ne cachent pas la régularité. Relisez les chiffres au regard de ce que vous visiez : une passe d'équilibrage peut déplacer l'indice qui trahit la réponse au lieu de le supprimer. Donnez à chaque option les mêmes commandes (chaque e-mail a un lien et un bouton), et dessinez les mauvaises options aussi crédiblement que la bonne.

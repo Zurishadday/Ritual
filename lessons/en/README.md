@@ -44,7 +44,7 @@
 - **34.** [Trust the symptom in a QA finding and measure the cause](tests-and-checks.md#34-trust-the-symptom-in-a-qa-finding-and-measure-the-cause)
 - **55.** [Green on your machine is one machine's verdict](tests-and-checks.md#55-green-on-your-machine-is-one-machines-verdict)
 - **EDU-1.** [If the answer comes out the same without the skill, the exercise doesn't measure it](tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it)
-- **EDU-4.** [If you can guess the right option by its place or its length, the quiz measures guessing](tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-or-its-length-the-quiz-measures-guessing)
+- **EDU-4.** [If you can guess the right option by its place, its length or its look, the quiz measures guessing](tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing)
 
 ## Scripts and files
 

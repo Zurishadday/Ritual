@@ -26,11 +26,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **Another example.** One campaign table had the spend for the whole company, but the revenue came from a sample of one purchase in every hundred. Both columns were labeled "pesos," and the return came out negative for every campaign.
 
+**One more example.** The cost of some sub-agents was taken from a token count in each one's summary, and it came out far too low: that count left out part of the usage. Adding up the usage of every response in their transcripts gave the real cost. And a log said a guard had left "23 lines" when it had left 19 blocks.
+
 **Detector question.** Is there a rule that's true for one of the two things and false for the other? And if I combine two figures in one calculation, do they come from the same universe, the same scale, and the same period?
 
 **Warning sign.** "It's the same date" · "the view already filters it" · "they're both in pesos."
 
-**What to do.** Give each variant a different name in the code and on the screen, even if it's ugly. And before dividing or subtracting two figures from different sources, write down where each one comes from: if a result comes out the same in every case (they all lose, they all win), suspect the scale before the business.
+**What to do.** Give each variant a different name in the code and on the screen, even if it's ugly. And before dividing or subtracting two figures from different sources, write down where each one comes from: if a result comes out the same in every case (they all lose, they all win), suspect the scale before the business. When a figure comes from a field or a count, read how it is computed (its documentation or its code) and write the unit next to the number: "19 blocks", not "23 lines". To get the figure a second way, see lesson 12.
 
 ### 3. The current period is always incomplete
 
@@ -106,11 +108,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **A fourth example: what the source says against it.** A README paragraph gave a test's favorable result, every number right, while the results file it linked to said that on the totals there was no difference. The same day the paragraph was moved to the top of the page and its numbers went into images for a post, each time without rereading the file. An outside reviewer opened it and called the headline an oversell of its own null result.
 
+**A fifth example: a figure from somewhere else.** In a course, "the sum is in the thousands" was copied from a twin lesson that used another table; on this lesson's table it was false. A voice-generation cost was given as the number of credits times one price per credit, when each generation had been billed at its own rate. And in a course, a made-up learner retold her final project with figures that did not come from that project's data: whoever did the project would see numbers that aren't theirs.
+
 **Detector question.** What data and what date did this number, or this comparison ("more than a thousand," "over half," "almost all"), come from? Does the sentence around a sourced figure say more than the source: wider ("all", "none", "only", "the law"), more certain, or about evidence I didn't look for ("nobody has measured", "the guides agree")? Does it drop what the source says against it?
 
 **Warning sign.** "It's the figure we already had" · "it comes out about that" · "you can see they all pass" · "that's what the source says, more or less." · A claim moved somewhere more visible (the top of a page, a chart, a post) without being reread against its source.
 
-**What to do.** Before writing a figure, measure it again and note next to it what data and what date it came from. Quantity words ("almost," "more than," "most") are numbers in disguise: measure them the same way. And if an image has calculations in it, have the same script that draws it do the math. Next to a sourced claim, copy the source's scope too: who measured it, over what population, when, and for a survey the question that was asked; an absolute word the source doesn't have goes. What you didn't find is said as yours ("we found no study"), and a recommendation with no source is signed ("we recommend").
+**What to do.** Before writing a figure, measure it again and note next to it what data and what date it came from. Quantity words ("almost," "more than," "most") are numbers in disguise: measure them the same way. And if an image has calculations in it, have the same script that draws it do the math. Next to a sourced claim, copy the source's scope too: who measured it, over what population, when, and for a survey the question that was asked; an absolute word the source doesn't have goes. What you didn't find is said as yours ("we found no study"), and a recommendation with no source is signed ("we recommend"). A figure copied from a twin text, or told by a made-up character, is measured again on this text's own data; a cost is added up from each item's own record, not from one rate for every item.
 
 ### 50. If two explanations predict the same thing, your example doesn't choose between them
 

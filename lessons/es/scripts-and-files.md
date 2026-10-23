@@ -48,13 +48,13 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 21. Tu marcador debe ser tuyo
 
-`from: e8ae4ba7` · `by: author`
+`from: b201fbb7` · `by: ai`
 
 **La idea.** Si ubicas tu cambio buscando un texto que el usuario lee, como un título o un rótulo, otra mejora le pegará algo encima y tu cambio dejará de encontrarlo.
 
 **Ejemplo.** Se agregó un ícono de ayuda junto a varios títulos, y las actualizaciones que se ubicaban por esos títulos dejaron de funcionar.
 
-**Otro ejemplo.** Una revisión buscaba el texto «int(» para saber si alguien convirtió un número, y lo encontraba dentro de «print(»: cualquier línea que mostrara algo parecía cumplir. Lo buscado tiene que ser una palabra completa, no un pedazo de otra.
+**Otro ejemplo.** Una revisión buscaba el texto «int(» para saber si alguien convirtió un número, y lo encontraba dentro de «print(»: cualquier línea que mostrara algo parecía cumplir. Un conteo de atajos de teclado buscaba «Ctrl+» seguido de una letra, sin distinguir mayúsculas, y contó Ctrl+Shift+V como «Ctrl+S»: la S era la primera letra de «Shift». Lo buscado tiene que ser una palabra completa, no un pedazo de otra.
 
 **Un ejemplo más.** Una revisión tomaba la última línea que mostraba el código como su respuesta. Con una función que muestra el número por dentro y no lo devuelve, esa línea existía por otra razón: la respuesta se veía, aunque el código no la entregaba.
 
@@ -62,35 +62,39 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 **Señal de alarma.** «Me anclo en el título, que es único».
 
-**Qué hacer.** Usa marcadores propios, como un identificador o un comentario de sección. Y cuando un cambio toca muchos bloques a la vez, revísalos todos, no solo el primero.
+**Qué hacer.** Usa marcadores propios, como un identificador o un comentario de sección. Y cuando un cambio toca muchos bloques a la vez, revísalos todos, no solo el primero. Un conteo que sale de una búsqueda se revisa en sus coincidencias, no solo en el total: abre tres de ellas.
 
 ### 22. La segunda corrida es la que encuentra el error
 
-`from: 56b0053e` · `by: author`
+`from: 8a1c8a92` · `by: ai`
 
 **La idea.** Un cambio que se repite sin romper nada se comprueba corriéndolo dos veces, no una.
 
 **Ejemplo.** Para comprobar que un script no cambiaba nada en su segunda corrida, se comparó dos veces la huella de la misma corrida, y después dos huellas sacadas de listas de archivos distintas. Las dos comparaciones decían «igual» o «distinto» sin probar nada. La comparación que sirve toma la huella, corre el script y toma la huella otra vez, de los mismos archivos y en un solo comando.
 
-**Pregunta detectora.** ¿Corrí mi cambio sobre algo que ya lo tenía aplicado? ¿Qué otro proceso toca este mismo texto después de mí?
+**Otro ejemplo.** Un lanzador de doble clic arrancaba dos servidores locales en puertos fijos y abría el navegador. Se probó una vez, con todo cerrado, y funcionó. Se corrió otra vez para obtener una versión nueva mientras la anterior seguía corriendo: los dos servidores nuevos fallaron con «port already in use», y el navegador se quedó en la versión vieja sin que nada lo dijera (ver la 27). Aquí la segunda corrida chocó con procesos y puertos, no con archivos.
+
+**Pregunta detectora.** ¿Corrí mi cambio sobre algo que ya lo tenía aplicado? ¿Qué otro proceso toca este mismo texto después de mí? ¿Qué pasa si lo vuelvo a iniciar mientras la primera corrida sigue viva?
 
 **Señal de alarma.** «Corrió bien, ya quedó».
 
-**Qué hacer.** Córrelo dos veces desde el mismo punto de partida y compara los archivos: la segunda corrida no debe cambiar nada.
+**Qué hacer.** Córrelo dos veces desde el mismo punto de partida y compara los archivos: la segunda corrida no debe cambiar nada. Prueba un lanzador iniciándolo otra vez sin cerrar la corrida anterior. Antes de iniciar nada, el lanzador detiene solo sus propios procesos (los encuentra por su nombre de proceso o por el título de su ventana, nunca por «lo que esté en el puerto»), y avisa si otro programa ocupa el puerto.
 
 ### 23. Las direcciones por posición caducan
 
-`from: d94e6ad5` · `by: author`
+`from: 9c3d3e62` · `by: ai`
 
 **La idea.** Si insertas algo antes de «la celda 9», la celda 9 ya es otra.
 
 **Ejemplo.** Un script insertaba una celda de título antes de la celda 9 de un cuaderno y después editaba «la celda 9»: editó la que acababa de insertar.
 
-**Pregunta detectora.** ¿Esta herramienta ubica las cosas por su posición, y acabo de insertar o borrar algo antes?
+**Otro ejemplo.** Una marca que apunta a algo dibujado (una caja, una flecha, un resaltado) también es una dirección por posición. Un video hecho con código redibujó una celda de código con un diseño nuevo y más ancho. La caja alrededor del resultado tenía `x = 150` escrito a mano, de la celda vieja, y quedó cruzando dos columnas de la tabla de resultados. Quien vio el video completo lo notó; el revisor de cuadros fijos lo había pasado.
 
-**Señal de alarma.** «La celda 9 es la que acabo de ver».
+**Pregunta detectora.** ¿Esta herramienta ubica las cosas por su posición, y acabo de insertar o borrar algo antes? ¿Una marca sale de lo que marca, o de coordenadas escritas a mano?
 
-**Qué hacer.** Vuelve a ubicar el lugar después de cada inserción, y comprueba el resultado revisando la estructura completa.
+**Señal de alarma.** «La celda 9 es la que acabo de ver» · «Solo cambió el estilo, las marcas son las mismas».
+
+**Qué hacer.** Vuelve a ubicar el lugar después de cada inserción, y comprueba el resultado revisando la estructura completa. Haz que una sola función devuelva la caja de cada cosa dibujada, y pide a esa función cada marca. Después de un redibujo, busca en el código los números de posición sueltos.
 
 ### 24. Escribe con red
 

@@ -4,7 +4,7 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 ### 8. Liste os consumidores, não os lembre
 
-`from: b3d4e214` · `by: ai`
+`from: 74a3645f` · `by: ai`
 
 **A ideia.** Quando você muda um dado que outros leem pelo nome, a lista de quem o lê precisa estar escrita. A memória sempre deixa um de fora.
 
@@ -12,27 +12,29 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 **Outro exemplo.** Ao escrever um capítulo, afirmou-se de memória que o leitor já conhecia três funções de um capítulo anterior. Uma busca mostrou que o capítulo ensinava só uma, e que outro capítulo já tinha explicado o tema apresentado como novo.
 
-**Mais um exemplo.** Uma mudança foi salva com a lista de arquivos escrita de memória, e um ficou de fora: justamente o que fazia a coisa nova funcionar. A lista de mudanças pendentes, revisada depois, mostrou isso.
+**Mais um exemplo.** Uma mudança foi salva com a lista de arquivos escrita de memória, e um ficou de fora: justamente o que fazia a coisa nova funcionar. A lista de mudanças pendentes, revisada depois, mostrou isso. Outra vez, um commit dizia que uma cópia de alguns arquivos estava “atualizada” enquanto três deles faltavam; outro revisor encontrou.
 
 **Pergunta detectora.** De onde tirei a lista de quem usa isto: de uma busca ou da memória?
 
 **Sinal de alerta.** “Já cobri os três lugares onde é usado” · “eles já viram isso” · “já adicionei tudo”.
 
-**O que fazer.** Mantenha um mapa escrito de impactos por tipo de mudança. Percorra-o inteiro, dizendo “muda” ou “não se aplica porque…”, e se a mudança cria um novo consumidor, adicione-o na mesma mudança. Antes de citar uma fonte, copie a frase que você está afirmando dela: o que alguém diz que outra pessoa fez ou viu também precisa ser conferido.
+**O que fazer.** Mantenha um mapa escrito de impactos por tipo de mudança. Percorra-o inteiro, dizendo “muda” ou “não se aplica porque…”, e se a mudança cria um novo consumidor, adicione-o na mesma mudança. Antes de citar uma fonte, copie a frase que você está afirmando dela: o que alguém diz que outra pessoa fez ou viu também precisa ser conferido. Antes de escrever que uma cópia está “completa” ou “atualizada”, compare a lista do que ela deveria ter com a lista do que ela tem.
 
 ### 9. Um estado vive em vários registros: mova-os juntos
 
-`from: bc14d730` · `by: ai`
+`from: d7a99bc7` · `by: ai`
 
 **A ideia.** Fechar uma pendência costuma envolver três lugares: a lista de pendências, o teste que a vigia e o documento que a descreve. Se você mexe em um, os outros contradizem.
 
 **Exemplo.** Uma pendência foi marcada como fechada na lista, mas o teste que a vigiava ainda estava marcado como “esperado que falhe”, e o documento ainda a descrevia como aberta. Três lugares, três versões.
 
-**Pergunta detectora.** Que outros lugares afirmam este estado? Nomeie-os antes de salvar.
+**Outro exemplo.** Uma caixa de texto era preenchida por ditado por voz, que mantinha o texto numa variável separada, e o botão de enviar mandava essa variável. A pessoa apagou a primeira metade à mão enquanto ainda ditava, e o texto inteiro foi enviado, com a parte apagada. Depois, enviar limpava a caixa, mas não a variável, então o ditado seguinte começava com a mensagem anterior.
 
-**Sinal de alerta.** “Atualizo o outro lado depois.”
+**Pergunta detectora.** Que outros lugares afirmam este estado? Nomeie-os antes de salvar. E o que eu envio ou salvo: vem da cópia que a pessoa vê, ou de uma guardada à parte?
 
-**O que fazer.** A unidade de trabalho é o conjunto completo, na mesma mudança.
+**Sinal de alerta.** “Atualizo o outro lado depois.” · “A variável já tem o texto, vou enviar essa.”
+
+**O que fazer.** A unidade de trabalho é o conjunto completo, na mesma mudança. O que é enviado ou salvo vem do que a pessoa vê, e todo envio ou reset limpa todas as cópias de uma vez, numa só linha de código.
 
 ### 30. Explique antes de agir, e espere o sim
 
@@ -80,14 +82,16 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 ### 47. O que se trabalha em paralelo colide no que é compartilhado
 
-`from: 3565a1b4` · `by: ai`
+`from: 83287f40` · `by: ai`
 
 **A ideia.** Quando várias pessoas trabalham ao mesmo tempo, cada uma vê bem a sua parte. O que elas compartilham (os testes, os dados, os documentos do projeto inteiro) combina as mudanças de todas: nomes que colidem, cópias que ficam para trás, testes que leem um trabalho de outra pessoa ainda incompleto. Integrar é trabalho, não é colar.
 
 **Exemplo.** Quatro pessoas escreviam cada uma uma peça ao mesmo tempo e deixavam as partes compartilhadas como entrega. Na integração, duas entregas usaram um nome que já existia no teste compartilhado, e o teste parou de rodar. Outro teste guardava uma cópia do que verificava; a peça mudou e a cópia não. Uma rodada de testes falhou por causa de uma imagem que outra pessoa ainda estava desenhando. E no fim, cada peça não podia ser salva separadamente: os arquivos compartilhados já carregavam mudanças de todos.
 
-**Pergunta detectora.** Qual arquivo duas peças estão tocando ao mesmo tempo, e quem o integra? Meu teste está lendo um trabalho de outra pessoa ainda incompleto?
+**Outro exemplo.** Duas conversas trabalhavam na mesma pasta, que compartilha mais do que arquivos: uma branch ativa, uma saída de build, uma porta de servidor de testes. Uma conversa trocou a pasta para outra branch; o próximo commit da outra caiu nessa branch, e o push para main disse “everything up to date” sem enviar nada. Voltar a pasta para main então levou junto as mudanças não commitadas da primeira conversa.
 
-**Sinal de alerta.** “Cada um testou a sua” · “a falha está na outra peça”.
+**Pergunta detectora.** Qual arquivo duas peças estão tocando ao mesmo tempo, e quem o integra? Meu teste está lendo um trabalho de outra pessoa ainda incompleto? Em qual branch esta pasta está logo antes do commit, e quem mais a usa?
 
-**O que fazer.** Tenha uma pessoa integrando o que é compartilhado, com uma etapa que pare se um nome colidir. Faça os testes lerem o original, e não uma cópia. Rode a suíte de testes completa uma vez, quando todos terminarem, ou sem as peças que ainda estão mudando, e diga quais ficaram de fora. E salve juntas as peças que compartilham arquivos, para que cada versão salva funcione por inteiro.
+**Sinal de alerta.** “Cada um testou a sua” · “a falha está na outra peça” · “cada um mexe em arquivos diferentes, não colidem.”
+
+**O que fazer.** Tenha uma pessoa integrando o que é compartilhado, com uma etapa que pare se um nome colidir. Faça os testes lerem o original, e não uma cópia. Rode a suíte de testes completa uma vez, quando todos terminarem, ou sem as peças que ainda estão mudando, e diga quais ficaram de fora. E salve juntas as peças que compartilham arquivos, para que cada versão salva funcione por inteiro. Dê a cada sessão a sua própria pasta (`git worktree`), leia `git status -sb` antes de cada commit, e depois de um push confira se a branch remota tem o commit.

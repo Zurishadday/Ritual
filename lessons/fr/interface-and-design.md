@@ -4,17 +4,19 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 ### 10. Les modules jumeaux évoluent ensemble
 
-`from: 39a1c52b` · `by: ai`
+`from: cbdd1d55` · `by: ai`
 
 **L'idée.** Si votre produit a deux versions du même écran, pour deux types d'utilisateurs, deux régions ou deux produits, une amélioration de l'une est une amélioration en attente pour l'autre.
 
 **Exemple.** La version bureau a reçu un filtre par date. La version mobile, que les gens perçoivent comme « le même écran », en a été privée pendant un mois.
 
+**Autre exemple.** Dans un cours web, trois choses tenaient sur mobile et y échouaient. Un aperçu réduit d'un document tenait dans la largeur, avec un texte de 3 px. Un exercice de glisser-déposer empilait six zones cibles dans une seule colonne, haute de trois écrans : la cible sortait de l'écran pendant le glissement. Une étiquette d'un graphique en barres dessiné tenait sur ordinateur, mais sur mobile elle passait à la ligne et heurtait l'étiquette suivante.
+
 **Question détectrice.** Ce que je touche a-t-il un jumeau que les utilisateurs considèrent comme « le même module » ?
 
-**Signal d'alarme.** « Ils ne me l'ont pas demandé pour l'autre. »
+**Signal d'alarme.** « Ils ne me l'ont pas demandé pour l'autre. » · « Ça tient sur mobile, c'est donc pareil. »
 
-**Que faire.** Ne clôturez pas la modification tant que vous n'avez pas vérifié le jumeau et écrit soit « identique », soit « sans objet parce que… ».
+**Que faire.** Ne clôturez pas la modification tant que vous n'avez pas vérifié le jumeau et écrit soit « identique », soit « sans objet parce que… ». Quand le jumeau est la version mobile, vérifiez-la en vous en servant là-bas : lisez le texte à sa taille affichée, terminez chaque glissement ou appui en gardant sa cible à l'écran tout du long, et regardez les étiquettes à la largeur la plus étroite. Pour comparer chaque propriété, voir la leçon 19 ; pour la regarder comme la voit le lecteur, voir la leçon 41.
 
 ### 19. Une revue sur une seule dimension n'est pas une revue
 
@@ -171,7 +173,7 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 ### VIDEO-1. Dans une vidéo, chaque action tombe au moment où la narration la nomme
 
-`from: 93ac042f` · `by: ai`
+`from: 0fa6dd51` · `by: ai`
 
 **L'idée.** Quand l'écran fait quelque chose avant ou après que la voix le dit, le spectateur regarde ce qu'il n'entend pas et entend ce qu'il ne voit pas. Un clic qui précède son mot enseigne le clic sans son nom.
 
@@ -179,11 +181,13 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 **Autre exemple.** Dans la même série, le responsable du cours a dit qu'une vidéo passait d'une idée à la suivante beaucoup trop vite. Une pause sur image fixe de 1 à 1,5 seconde à la fin de chaque nouvelle idée a réglé le problème.
 
-**Question détectrice.** Pour chaque clic et chaque frappe de touche dans cette scène, sur quel mot de la narration tombe-t-il ? Ce mot le nomme-t-il ? Chaque nouvelle idée se termine-t-elle par un moment immobile avant que la suivante ne commence ?
+**Encore un exemple.** Dans des vidéos du même genre, la voix disait « on la laisse ouverte, C2:C » alors que l'écran montrait C1:C1000. Une autre phrase disait « on l'entoure de IFERROR » sans dire où va le curseur, et sans nommer les guillemets qui sont tapés. Le relecteur pédagogique les a toutes deux marquées comme à corriger.
 
-**Signal d'alarme.** « Ça le dit à peu près là » · « c'est une fraction de la scène, ça tombe juste ».
+**Question détectrice.** Pour chaque clic et chaque frappe de touche dans cette scène, sur quel mot de la narration tombe-t-il ? Ce mot le nomme-t-il ? La narration dit-elle ce que montre l'image, et dit-elle où chaque geste est fait ? Chaque nouvelle idée se termine-t-elle par un moment immobile avant que la suivante ne commence ?
 
-**Que faire.** Si la voix ne donne aucun horodatage par mot, placez chaque action selon la position de son mot dans la phrase (les caractères qui le précèdent), et vérifiez-la dans la vidéo entière à sa vitesse réelle, pas sur des images fixes. Si le moteur de voix fournit des horodatages par mot, placez les actions dessus. Changer de voix ou reformuler une phrase déplace chaque mot : revérifiez la scène. Terminez chaque nouvelle idée par une courte pause sur image fixe, d'environ une seconde, et jugez-la aussi à vitesse réelle.
+**Signal d'alarme.** « Ça le dit à peu près là » · « c'est une fraction de la scène, ça tombe juste » · « l'image rend ça clair ».
+
+**Que faire.** Si la voix ne donne aucun horodatage par mot, placez chaque action selon la position de son mot dans la phrase (les caractères qui le précèdent), et vérifiez-la dans la vidéo entière à sa vitesse réelle, pas sur des images fixes. Si le moteur de voix fournit des horodatages par mot, placez les actions dessus. Changer de voix ou reformuler une phrase déplace chaque mot : revérifiez la scène. Terminez chaque nouvelle idée par une courte pause sur image fixe, d'environ une seconde, et jugez-la aussi à vitesse réelle. Ce que dit la voix se vérifie sur l'image au moment où elle passe (rendez cette image exacte) ; le moment où chaque action tombe se vérifie à vitesse réelle. Là où la voix et l'image ne concordent pas, changez l'une des deux. La narration dit où est fait chaque nouveau geste, et nomme chaque symbole la première fois qu'il apparaît.
 
 ### VIDEO-2. Dans une vidéo, ce qui change sans être montré est signalé
 

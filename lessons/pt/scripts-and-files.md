@@ -48,13 +48,13 @@ O que vale quando um programa escreve, gera, transforma ou move arquivos e dados
 
 ### 21. Sua marca tem que ser sua
 
-`from: e8ae4ba7` · `by: ai`
+`from: b201fbb7` · `by: ai`
 
 **A ideia.** Se você localiza a sua mudança procurando um texto que o usuário lê, como um título ou um rótulo, outra melhoria vai colar algo em cima dele, e a sua mudança deixa de encontrá-lo.
 
 **Exemplo.** Um ícone de ajuda foi adicionado ao lado de vários títulos, e as atualizações que se localizavam pelos títulos pararam de funcionar.
 
-**Outro exemplo.** Uma revisão procurava o texto “int(” para ver se alguém converteu um número, e ele casava dentro de “print(”: qualquer linha que imprimisse algo parecia passar. O que você procura tem que ser uma palavra inteira, e não um pedaço de outra.
+**Outro exemplo.** Uma revisão procurava o texto “int(” para ver se alguém converteu um número, e ele casava dentro de “print(”: qualquer linha que imprimisse algo parecia passar. Uma contagem de atalhos de teclado procurava “Ctrl+” seguido de uma letra, sem diferenciar maiúsculas, e contou Ctrl+Shift+V como “Ctrl+S”: o S era a primeira letra de “Shift”. O que você procura tem que ser uma palavra inteira, e não um pedaço de outra.
 
 **Mais um exemplo.** Uma revisão tomava a última linha impressa pelo código como resposta. Com uma função que imprime o número lá dentro e não o devolve, aquela linha existia por outro motivo: a resposta aparecia na tela, mesmo que o código nunca a entregasse.
 
@@ -62,35 +62,39 @@ O que vale quando um programa escreve, gera, transforma ou move arquivos e dados
 
 **Sinal de alerta.** “Vou ancorar no título, ele é único.”
 
-**O que fazer.** Use marcas próprias, como um ID ou um comentário de seção. E quando uma mudança toca muitos blocos de uma vez, confira todos, e não só o primeiro.
+**O que fazer.** Use marcas próprias, como um ID ou um comentário de seção. E quando uma mudança toca muitos blocos de uma vez, confira todos, e não só o primeiro. Uma contagem que vem de uma busca é conferida nos seus achados, e não só no total: abra três dos achados.
 
 ### 22. A segunda execução é a que encontra o bug
 
-`from: 56b0053e` · `by: ai`
+`from: 8a1c8a92` · `by: ai`
 
 **A ideia.** Uma mudança que se repete sem quebrar nada precisa ser verificada rodando duas vezes, e não uma.
 
 **Exemplo.** Para verificar que um script não mudou nada na segunda execução, comparou-se o checksum da mesma execução duas vezes, e depois dois checksums tirados de listas de arquivos diferentes. As duas comparações diziam “igual” ou “diferente” sem provar nada. A comparação que funciona tira o checksum, roda o script e tira o checksum de novo, dos mesmos arquivos e num único comando.
 
-**Pergunta detectora.** Rodei minha mudança sobre algo que já tinha essa mudança aplicada? Que outro processo mexe neste mesmo texto depois de mim?
+**Outro exemplo.** Um lançador de duplo clique abria dois servidores locais em portas fixas e abria o navegador. Foi testado uma vez, com tudo fechado, e funcionou. Foi rodado de novo para obter uma versão nova enquanto a antiga ainda estava rodando: os dois servidores novos falharam com “porta já em uso”, e o navegador ficou na versão antiga sem nenhum aviso (ver a lição 27). Aqui a segunda execução colidiu com processos e portas, não com arquivos.
+
+**Pergunta detectora.** Rodei minha mudança sobre algo que já tinha essa mudança aplicada? Que outro processo mexe neste mesmo texto depois de mim? O que acontece se eu iniciá-lo de novo enquanto a primeira execução ainda está viva?
 
 **Sinal de alerta.** “Rodou bem, então está pronto.”
 
-**O que fazer.** Rode duas vezes a partir do mesmo ponto de partida e compare os arquivos: a segunda execução não pode mudar nada.
+**O que fazer.** Rode duas vezes a partir do mesmo ponto de partida e compare os arquivos: a segunda execução não pode mudar nada. Teste um lançador iniciando-o de novo sem fechar a execução anterior. Antes de iniciar qualquer coisa, o lançador para só os próprios processos (achados pelo nome do processo ou pelo título da janela, nunca por “o que estiver na porta”), e avisa se outro programa ocupa a porta.
 
 ### 23. Endereços por posição expiram
 
-`from: d94e6ad5` · `by: ai`
+`from: 9c3d3e62` · `by: ai`
 
 **A ideia.** Se você insere algo antes da “célula 9”, a célula 9 agora é outra célula.
 
 **Exemplo.** Um script inseriu uma célula de título antes da célula 9 de um notebook, e depois editou a “célula 9”: editou justamente a célula que tinha acabado de inserir.
 
-**Pergunta detectora.** Esta ferramenta localiza as coisas por posição, e eu acabei de inserir ou apagar algo antes dela?
+**Outro exemplo.** Uma marca que aponta para algo desenhado (uma caixa, uma seta, um destaque) também é um endereço por posição. Um vídeo feito com código redesenhou uma célula de código com um novo desenho, mais largo. A caixa em volta do resultado tinha `x = 150` digitado à mão, da célula antiga, e ficou atravessando duas colunas da tabela de resultado. Quem assistiu ao vídeo completo viu; um revisor de quadros parados tinha aprovado.
 
-**Sinal de alerta.** “A célula 9 é a que eu acabei de olhar.”
+**Pergunta detectora.** Esta ferramenta localiza as coisas por posição, e eu acabei de inserir ou apagar algo antes dela? Uma marca vem do que ela marca, ou de coordenadas digitadas à mão?
 
-**O que fazer.** Localize o ponto de novo depois de cada inserção, e confira o resultado revisando a estrutura completa.
+**Sinal de alerta.** “A célula 9 é a que eu acabei de olhar.” · “Só o estilo mudou, as marcas são as mesmas.”
+
+**O que fazer.** Localize o ponto de novo depois de cada inserção, e confira o resultado revisando a estrutura completa. Tenha uma função que devolva a caixa de cada coisa desenhada, e peça a ela cada marca. Depois de um redesenho, busque no código números de posição soltos.
 
 ### 24. Escreva com rede de segurança
 

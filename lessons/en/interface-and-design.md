@@ -10,11 +10,13 @@ What applies when a person is going to see or use what you build: screens, compo
 
 **Example.** The desktop version gained a date filter. The mobile version, which people see as "the same screen," went without it for a month.
 
+**Another example.** In a web course, three things fit on mobile and failed there. A scaled-down preview of a document fit the width with 3 px text. A drag-and-drop exercise stacked six target boxes in one column, three screens tall, so the target was off the screen during the drag. A label in a drawn bar chart fit on desktop, but on mobile it wrapped and ran into the next label.
+
 **Detector question.** Does what I'm touching have a twin that users see as "the same module"?
 
-**Warning sign.** "They didn't ask me for it on the other one."
+**Warning sign.** "They didn't ask me for it on the other one." · "It fits on mobile, so it's the same."
 
-**What to do.** Don't close the change until you've checked the twin and written either "same" or "doesn't apply because…".
+**What to do.** Don't close the change until you've checked the twin and written either "same" or "doesn't apply because…". When the twin is the mobile version, check it by using it there: read the text at its rendered size, finish each drag or tap with its target on screen the whole time, and look at the labels at the narrowest width. To compare every property, see lesson 19; to look at it the way the reader sees it, see lesson 41.
 
 ### 19. A review of one dimension is not a review
 
@@ -178,11 +180,13 @@ What applies when a person is going to see or use what you build: screens, compo
 
 **Another example.** In the same series, the course owner said a video jumped from one idea to the next too fast. A still pause of 1 to 1.5 seconds at the end of each new idea fixed it.
 
-**Detector question.** For each click and key press in this scene, which word of the narration does it land on? Does that word name it? Does each new idea end with a still moment before the next one starts?
+**One more example.** In videos of the same kind, the voice said "we leave it open, C2:C" while the screen showed C1:C1000. Another sentence said "we wrap it in IFERROR" without saying where the cursor goes, and without naming the quotation marks that get typed. The pedagogical reviewer marked both as required.
 
-**Warning sign.** "It says it around there" · "it's a fraction of the scene, it lines up".
+**Detector question.** For each click and key press in this scene, which word of the narration does it land on? Does that word name it? Does the narration say what the frame shows, and does it say where each move is made? Does each new idea end with a still moment before the next one starts?
 
-**What to do.** If the voice gives no timestamp per word, place each action by where its word sits in the sentence (the characters before it), and check it in the full video at its real speed, not in still frames. If the voice engine gives word timestamps, place actions on them. Changing the voice or rewording a sentence moves every word: check the scene again. Close each new idea with a short still pause, about a second, and judge it at real speed too.
+**Warning sign.** "It says it around there" · "it's a fraction of the scene, it lines up" · "the picture makes it clear".
+
+**What to do.** If the voice gives no timestamp per word, place each action by where its word sits in the sentence (the characters before it), and check it in the full video at its real speed, not in still frames. If the voice engine gives word timestamps, place actions on them. Changing the voice or rewording a sentence moves every word: check the scene again. Close each new idea with a short still pause, about a second, and judge it at real speed too. What the voice says is checked against the frame where it plays (render that exact frame); when each action lands is checked at real speed. Wherever the voice and the frame differ, change one of them. The narration says where each new move is made, and names each symbol the first time it appears.
 
 ### VIDEO-2. In a video, what changes without showing gets marked
 

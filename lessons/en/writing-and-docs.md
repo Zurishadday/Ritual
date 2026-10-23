@@ -12,11 +12,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **Another example.** A chapter plan was renumbered from 7 to 15. Two lists in another document still pointed to "7.4" and "7.7" from the old plan, which now were different topics. When you replace a plan, the old numbers are claims too.
 
-**Detector question.** What other texts say the same thing as what I just removed?
+**One more example.** A project kept its own list of lessons, and a library had adopted them into its own list. Both numbered the same up to 44 and differently from 45 on. The project's instructions and its reviewer agents kept citing "46", which in the library is a different lesson. It came out only when the owner asked for a second review.
 
-**Warning sign.** "I already removed the chart."
+**Detector question.** What other texts say the same thing as what I just removed? When two numberings coexist, does each citation say which list it uses?
 
-**What to do.** Search by topic, not by identifier. Echoes don't have a variable name.
+**Warning sign.** "I already removed the chart." · "The numbers are the same."
+
+**What to do.** Search by topic, not by identifier. Echoes don't have a variable name. When two numberings coexist, cite with a prefix that names the list ("v2 #46", "library #46"), and search every citation of the changed range in every file, not only in the one you renumbered (see lesson 8).
 
 ### 37. Document what's there, not what you wish were there
 
@@ -44,11 +46,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **One more example.** Someone asked about a tool by a name that wasn't familiar. It was taken for a well-known one with a similar name, which was looked up and explained at length. They meant a new product with that exact name; searching for it as written would have found it at once.
 
-**Detector question.** Do I know this detail, or am I assuming it because it sounds reasonable? A cause, a name, a figure: did I see it, or is it my best guess?
+**Variant.** The detail can be the current state of a tool, or what happened earlier. In two days, two statements about tools came from memory and were false: that an update command rebuilt a whole index (it reads only what changed), and that a plugin's automatic updates were "probably" off (the plugin's own `doctor` command said on). One look at each tool would have answered it. And when a project's rules were moved to a new format, several of their examples were rebuilt from memory and didn't match what had happened; one told of a mistake that never occurred. They were fixed by opening the old log.
 
-**Warning sign.** "Surely it's like that." · "That must be why." · "They must mean…"
+**Detector question.** Do I know this detail, or am I assuming it because it sounds reasonable? A cause, a name, a figure, what a tool does, how a tool is set up: did I see it, or is it my best guess? Which record did I copy this example from?
 
-**What to do.** Mark what's missing in a visible way, like "Pending" in red, and ask whoever does know. Neutral wording is better than false wording. In a commit message, a cause nobody saw in an output is written as a guess ("likely"). A name you don't recognize is searched for exactly as written; if nothing matches, ask which one they mean.
+**Warning sign.** "Surely it's like that." · "That must be why." · "They must mean…" · "That's how it happened, more or less."
+
+**What to do.** Mark what's missing in a visible way, like "Pending" in red, and ask whoever does know. Neutral wording is better than false wording. In a commit message, a cause nobody saw in an output is written as a guess ("likely"). A name you don't recognize is searched for exactly as written; if nothing matches, ask which one they mean. Before saying what a tool does or how it is set up, run the cheapest look (its `doctor`, its `--help`, its config, a search) and say what it showed, or mark the statement as unchecked (see lesson 29 and lesson 52). A reviewer's "correct" is a guess too unless they looked (see lesson 28). An example of what happened is copied from its record (the log, the commit), never rebuilt.
 
 **Not to be confused with.** The mark is for the person deciding, not for the final reader. A "pending confirmation" inside a published text is another piece of data that shouldn't be there. If the document goes out before it's confirmed, use neutral wording that doesn't claim what's missing, and leave the pending item in the report or the project record.
 
@@ -88,11 +92,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **Example.** One section said that nothing is saved without a connection. The FAQ still said that whatever is captured is kept on the device.
 
-**Detector question.** How many corrections has this document had since someone last read it in full?
+**Another example.** A final project for a statistics module came in three parts. The second part accepted as correct "the second payment stayed the same" with a p-value of 0.875; the third taught that a high p-value does not prove there is no effect. After that was fixed, the same claim came back in three other places: a transition sentence ("when launched, it changed nothing"), a step title, and what a character said in a simulated meeting.
+
+**Detector question.** How many corrections has this document had since someone last read it in full? Does any sentence, titles and dialogue included, break a rule this document teaches?
 
 **Warning sign.** "I checked each fix where it was."
 
-**What to do.** When you finish each round, search by topic for everything the document says about what you corrected.
+**What to do.** When you finish each round, search by topic for everything the document says about what you corrected. Then list the rules the document teaches and search for each one by topic, also in the parts that aren't about it: titles, transitions, examples and dialogue.
 
 ### 51. What looks obvious to you is the first thing to teach
 
@@ -102,11 +108,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **Example.** A programming course for beginners opened with a cell that had six new things at once, and the plan never taught what a data type is or that `=` stores and reads right to left. The course owner said it in one sentence: "you assume a lot about the students." Later, three lessons said "like dragging a formula"; no lesson had taught dragging, only "copying the formula down".
 
-**Detector question.** In my first example, how many things are new to someone who knows nothing? Has every symbol, every word, every button name and every action I ask for been taught before?
+**Another example.** In a beginners' module, the same small word named a spreadsheet cell in one step and the little square at its corner in another. A practice's own notices used a cell reference and the name of a screenshot tool before the text had introduced either of them.
 
-**Warning sign.** "Anyone gets that" · "it's just one line" · "it's the usual word."
+**Detector question.** In my first example, how many things are new to someone who knows nothing? Has every symbol, every word, every button name and every action I ask for been taught before? Does one word name two things? Does a notice name something not yet taught?
 
-**What to do.** Before writing, list what your example takes for granted (symbols, words, clicks, things the learner should have built already) and teach those first: one new idea at a time, each symbol explained the first time it appears. Search for each word that matches a button's name, and each action you ask for, the way you search for a symbol. If possible, let an automatic check compare what each example uses with what was already taught.
+**Warning sign.** "Anyone gets that" · "it's just one line" · "it's the usual word." · "The notice explains it."
+
+**What to do.** Before writing, list what your example takes for granted (symbols, words, clicks, things the learner should have built already) and teach those first: one new idea at a time, each symbol explained the first time it appears. Search for each word that matches a button's name, and each action you ask for, the way you search for a symbol. If possible, let an automatic check compare what each example uses with what was already taught. Read the interface's notices and hints in the order the learner meets them, and search for each name they use the way you search for a symbol. Give each thing one name and keep it (see lesson 2).
 
 ### 52. Write about a fast-moving tool from today's practice, not from memory
 
@@ -190,11 +198,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **Another example.** An exercise asked learners to type a formula sign by sign, with the formula shown right above the box and pasting allowed: it measured copy and paste.
 
+**One more example.** In a course with drawn interfaces, four components carried in their source code the figures that a later exercise asked for. The automatic check for leaked answers never searched there; reviewers found them. In five of seven steps of one module, the question sat right under the text that answered it: a heading "Double click: open" over the question "what opens a folder?".
+
 **Detector question.** Does the learner see this figure, image or phrase before answering, here or in an earlier lesson? Not only the exact number: also an approximation ("about 25"), the conclusion written in a caption, a title, a "you just saw that…", or what the most likely wrong answer of an earlier exercise shows on screen.
 
 **Warning sign.** "It's just context" · "it's only the title" · "it's the caption."
 
-**What to do.** Look for each answer in everything shown before its question, including what appears after a first failed attempt, what starting code prints when run, downloadable files and what can be counted in a drawing. Write the step title and the learning goals last, and read them next to the result of each prediction. An automatic check finds exact figures; approximations and paraphrases are found only by someone reading with the answer in mind. When an exercise asks learners to type what is on screen, block pasting and say why.
+**What to do.** Look for each answer in everything shown before its question, including what appears after a first failed attempt, what starting code prints when run, downloadable files and what can be counted in a drawing. Write the step title and the learning goals last, and read them next to the result of each prediction. An automatic check finds exact figures; approximations and paraphrases are found only by someone reading with the answer in mind. When an exercise asks learners to type what is on screen, block pasting and say why. Extend the check to every file that draws the learner's screen, the code of components included (see lesson 16). In a step that explains and then asks, the explanation that gives the answer comes after the question, or the question asks about a case the explanation doesn't cover.
 
 ### EDU-3. A question with two defensible answers measures nothing
 

@@ -4,7 +4,7 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 11. Retirer un graphique ne retire pas l'affirmation qu'il faisait
 
-`from: 36ab089d` · `by: ai`
+`from: 36fecfbc` · `by: ai`
 
 **L'idée.** Si vous retirez quelque chose parce que la donnée n'était pas fiable, la même affirmation vit probablement encore dans d'autres textes, écrite avec d'autres mots.
 
@@ -12,11 +12,13 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Autre exemple.** Un plan de chapitres a été renuméroté de 7 à 15. Deux listes d'un autre document pointaient encore vers « 7.4 » et « 7.7 » de l'ancien plan, qui désignaient maintenant d'autres sujets. Quand vous remplacez un plan, les anciens numéros sont eux aussi des affirmations.
 
-**Question détectrice.** Quels autres textes disent la même chose que ce que je viens de retirer ?
+**Encore un exemple.** Un projet tenait sa propre liste de leçons, et une bibliothèque avait repris ces leçons dans sa propre liste. Les deux les numérotaient de la même façon jusqu'à 44, et différemment à partir de 45. Les instructions du projet et ses agents relecteurs continuaient de citer « 46 », qui désigne dans la bibliothèque une autre leçon. Le problème n'est apparu que lorsque le propriétaire a demandé une seconde relecture.
 
-**Signal d'alarme.** « J'ai déjà retiré le graphique. »
+**Question détectrice.** Quels autres textes disent la même chose que ce que je viens de retirer ? Quand deux numérotations coexistent, chaque citation dit-elle quelle liste elle utilise ?
 
-**Que faire.** Cherchez par sujet, pas par identifiant. Les échos n'ont pas de nom de variable.
+**Signal d'alarme.** « J'ai déjà retiré le graphique. » · « Les numéros sont les mêmes. »
+
+**Que faire.** Cherchez par sujet, pas par identifiant. Les échos n'ont pas de nom de variable. Quand deux numérotations coexistent, citez avec un préfixe qui nomme la liste (« v2 #46 », « bibliothèque #46 »), et cherchez chaque citation de la plage modifiée dans chaque fichier, pas seulement dans celui que vous avez renuméroté (voir la leçon 8).
 
 ### 37. Documenter ce qui existe, pas ce que vous aimeriez qu'il existe
 
@@ -34,7 +36,7 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 38. Ce qu'on ne sait pas se marque, il ne s'invente pas
 
-`from: 93f49fe9` · `by: ai`
+`from: dc2fde6c` · `by: ai`
 
 **L'idée.** Un document officiel affirme tout avec la même autorité. Un détail inventé, comme un responsable, un calendrier ou un délai de réponse, se lit exactement comme un détail réel.
 
@@ -44,11 +46,13 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Encore un exemple.** Quelqu'un a posé une question sur un outil dont le nom ne disait rien. On l'a pris pour un outil bien connu au nom voisin, qu'on a cherché et expliqué longuement. Il parlait d'un produit nouveau portant ce nom exact ; le chercher tel quel l'aurait trouvé tout de suite.
 
-**Question détectrice.** Est-ce que je connais ce détail, ou est-ce que je le suppose parce qu'il semble raisonnable ? Une cause, un nom, un chiffre : est-ce que je l'ai vu, ou est-ce ma meilleure supposition ?
+**Variante.** Le détail peut porter sur l'état actuel d'un outil, ou sur ce qui s'est passé plus tôt. En deux jours, deux affirmations sur des outils venaient de la mémoire et étaient fausses : qu'une commande de mise à jour reconstruisait tout un index (elle ne lit que ce qui a changé), et que les mises à jour automatiques d'un plugin étaient « probablement » désactivées (la commande `doctor` du plugin disait qu'elles étaient activées). Un seul coup d'œil à chaque outil aurait suffi à répondre. Et quand les règles d'un projet ont été transférées dans un nouveau format, plusieurs de leurs exemples ont été reconstruits de mémoire et ne correspondaient pas à ce qui s'était passé ; l'un racontait une erreur qui n'a jamais eu lieu. Ils ont été corrigés en ouvrant l'ancien journal.
 
-**Signal d'alarme.** « Forcément, c'est comme ça. » · « C'est sûrement pour ça. » · « Ils doivent vouloir dire… »
+**Question détectrice.** Est-ce que je connais ce détail, ou est-ce que je le suppose parce qu'il semble raisonnable ? Une cause, un nom, un chiffre, ce que fait un outil, comment il est configuré : est-ce que je l'ai vu, ou est-ce ma meilleure supposition ? D'après quel relevé ai-je copié cet exemple ?
 
-**Que faire.** Marquez ce qui manque de façon visible, par exemple « En attente » en rouge, et demandez à qui le sait. Une formulation neutre vaut mieux qu'une formulation fausse. Dans un message de commit, une cause que personne n'a vue dans une sortie s'écrit comme une supposition (« probablement »). Un nom que vous ne reconnaissez pas se cherche exactement tel quel ; si rien ne correspond, demandez de quel nom il s'agit.
+**Signal d'alarme.** « Forcément, c'est comme ça. » · « C'est sûrement pour ça. » · « Ils doivent vouloir dire… » · « C'est à peu près comme ça que ça s'est passé. »
+
+**Que faire.** Marquez ce qui manque de façon visible, par exemple « En attente » en rouge, et demandez à qui le sait. Une formulation neutre vaut mieux qu'une formulation fausse. Dans un message de commit, une cause que personne n'a vue dans une sortie s'écrit comme une supposition (« probablement »). Un nom que vous ne reconnaissez pas se cherche exactement tel quel ; si rien ne correspond, demandez de quel nom il s'agit. Avant de dire ce que fait un outil ou comment il est configuré, lancez le contrôle le moins coûteux (son `doctor`, son `--help`, sa configuration, une recherche) et dites ce qu'il a montré, ou marquez l'affirmation comme non vérifiée (voir la leçon 29 et la leçon 52). Le « correct » d'un relecteur est aussi une supposition, sauf s'il a regardé (voir la leçon 28). Un exemple de ce qui s'est passé se copie depuis son relevé (le journal, le commit), il ne se reconstruit jamais.
 
 **À ne pas confondre avec.** La marque est destinée à la personne qui décide, pas au lecteur final. Un « confirmation en attente » dans un texte publié est une autre donnée qui ne devrait pas s'y trouver. Si le document sort avant d'être confirmé, utilisez une formulation neutre qui n'affirme pas ce qui manque, et gardez l'élément en attente dans le rapport ou le dossier du projet.
 
@@ -82,31 +86,35 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 43. Relire du début à la fin après de nombreuses corrections
 
-`from: 781d2fa2` · `by: ai`
+`from: b956a885` · `by: ai`
 
 **L'idée.** Après plusieurs séries de corrections ponctuelles, un document peut se contredire lui-même. Chaque correction était vraie dans sa propre section, mais personne n'a relu les autres.
 
 **Exemple.** Une section disait que rien n'est enregistré sans connexion. La FAQ affirmait encore que tout ce qui est capturé est conservé sur l'appareil.
 
-**Question détectrice.** Combien de corrections ce document a-t-il reçues depuis la dernière fois que quelqu'un l'a relu en entier ?
+**Autre exemple.** Un projet final pour un module de statistiques comportait trois parties. La deuxième acceptait comme juste « le second paiement est resté le même » avec une p-value de 0.875 ; la troisième enseignait qu'une p-value élevée ne prouve pas l'absence d'effet. Une fois cela corrigé, la même affirmation est revenue à trois autres endroits : une phrase de transition (« une fois lancé, il n'a rien changé »), un titre d'étape, et ce que disait un personnage dans une réunion simulée.
+
+**Question détectrice.** Combien de corrections ce document a-t-il reçues depuis la dernière fois que quelqu'un l'a relu en entier ? Une phrase, titres et dialogues compris, enfreint-elle une règle que ce document enseigne ?
 
 **Signal d'alarme.** « J'ai vérifié chaque correction à son emplacement. »
 
-**Que faire.** À la fin de chaque série, cherchez par sujet tout ce que le document dit sur ce que vous avez corrigé.
+**Que faire.** À la fin de chaque série, cherchez par sujet tout ce que le document dit sur ce que vous avez corrigé. Puis listez les règles que le document enseigne, et cherchez chacune par sujet, y compris dans les parties qui n'en parlent pas : titres, transitions, exemples et dialogues.
 
 ### 51. Ce qui vous paraît évident est la première chose à enseigner
 
-`from: 1fed11d1` · `by: ai`
+`from: c970d3ec` · `by: ai`
 
 **L'idée.** Quelqu'un qui sait déjà ne voit pas les étapes qu'il franchit sans y penser. Son premier exemple apporte donc plusieurs notions nouvelles à la fois, et un débutant se perd dès la première ligne.
 
 **Exemple.** Un cours de programmation pour débutants s'ouvrait sur une cellule qui introduisait six notions nouvelles à la fois, et le plan n'enseignait jamais ce qu'est un type de donnée, ni que `=` stocke et lit de droite à gauche. Le responsable du cours l'a formulé en une phrase : « vous supposez beaucoup de choses sur les apprenants ». Plus tard, trois leçons disaient « comme en faisant glisser une formule » ; aucune leçon n'avait enseigné le glisser-déposer, seulement « recopier la formule vers le bas ».
 
-**Question détectrice.** Dans mon premier exemple, combien de notions sont nouvelles pour quelqu'un qui ne sait rien ? Chaque symbole, chaque mot, chaque nom de bouton et chaque action que je demande a-t-il déjà été enseigné ?
+**Autre exemple.** Dans un module pour débutants, le même petit mot désignait une cellule du tableur à une étape, et le petit carré dans son coin à une autre. Les messages propres à un exercice utilisaient une référence de cellule et le nom d'un outil de capture d'écran avant que le texte ait présenté l'un ou l'autre.
 
-**Signal d'alarme.** « N'importe qui comprend ça » · « ce n'est qu'une ligne » · « c'est le mot habituel ».
+**Question détectrice.** Dans mon premier exemple, combien de notions sont nouvelles pour quelqu'un qui ne sait rien ? Chaque symbole, chaque mot, chaque nom de bouton et chaque action que je demande a-t-il déjà été enseigné ? Un mot désigne-t-il deux choses ? Un message nomme-t-il quelque chose qui n'a pas encore été enseigné ?
 
-**Que faire.** Avant d'écrire, listez ce que votre exemple tient pour acquis (symboles, mots, clics, choses que l'apprenant aurait déjà dû construire) et enseignez-les d'abord : une idée nouvelle à la fois, chaque symbole expliqué à sa première apparition. Cherchez chaque mot qui correspond au nom d'un bouton, et chaque action demandée, de la même façon que vous cherchez un symbole. Si c'est possible, laissez une vérification automatique comparer ce que chaque exemple utilise avec ce qui a déjà été enseigné.
+**Signal d'alarme.** « N'importe qui comprend ça » · « ce n'est qu'une ligne » · « c'est le mot habituel » · « le message l'explique ».
+
+**Que faire.** Avant d'écrire, listez ce que votre exemple tient pour acquis (symboles, mots, clics, choses que l'apprenant aurait déjà dû construire) et enseignez-les d'abord : une idée nouvelle à la fois, chaque symbole expliqué à sa première apparition. Cherchez chaque mot qui correspond au nom d'un bouton, et chaque action demandée, de la même façon que vous cherchez un symbole. Si c'est possible, laissez une vérification automatique comparer ce que chaque exemple utilise avec ce qui a déjà été enseigné. Lisez les messages et les indications de l'interface dans l'ordre où l'apprenant les rencontre, et cherchez chaque nom qu'ils emploient comme vous cherchez un symbole. Donnez un seul nom à chaque chose et gardez-le (voir la leçon 2).
 
 ### 52. Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire
 
@@ -182,7 +190,7 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
 
-`from: 8262f769` · `by: ai`
+`from: 2ffd5c1e` · `by: ai`
 
 **L'idée.** Une question cesse de mesurer dès que sa réponse est déjà apparue : dans une image, dans l'idée clé, dans l'explication d'un autre exercice, dans le titre d'une étape ou dans une leçon précédente. Celui qui répond juste vient peut-être de la lire.
 
@@ -190,11 +198,13 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Autre exemple.** Un exercice demandait aux apprenants de taper une formule signe par signe, avec la formule affichée juste au-dessus de la case et le collage autorisé : il mesurait le copier-coller.
 
+**Encore un exemple.** Dans un cours avec des interfaces dessinées, quatre composants portaient dans leur code source les chiffres qu'un exercice ultérieur demandait. La vérification automatique des réponses qui fuient ne les cherchait jamais là ; des relecteurs les ont trouvés. Dans cinq des sept étapes d'un module, la question était placée juste sous le texte qui y répondait : un titre « Double-clic : ouvrir » au-dessus de la question « qu'est-ce qui ouvre un dossier ? ».
+
 **Question détectrice.** L'apprenant voit-il ce chiffre, cette image ou cette formulation avant de répondre, ici ou dans une leçon précédente ? Pas seulement le nombre exact : aussi une approximation (« environ 25 »), la conclusion écrite dans une légende, un titre, un « vous venez de voir que… », ou ce que montre à l'écran la mauvaise réponse la plus probable d'un exercice précédent.
 
 **Signal d'alarme.** « C'est juste du contexte » · « ce n'est que le titre » · « c'est la légende ».
 
-**Que faire.** Cherchez chaque réponse dans tout ce qui est montré avant sa question, y compris ce qui apparaît après une première tentative ratée, ce que le code de départ affiche à l'exécution, les fichiers téléchargeables et ce qui peut être compté dans un dessin. Rédigez en dernier le titre de l'étape et les objectifs d'apprentissage, et relisez-les à côté du résultat de chaque prédiction. Une vérification automatique trouve les chiffres exacts ; les approximations et les paraphrases ne sont repérées que par quelqu'un qui lit en ayant la réponse à l'esprit. Quand un exercice demande de taper ce qui est affiché à l'écran, bloquez le collage et dites pourquoi.
+**Que faire.** Cherchez chaque réponse dans tout ce qui est montré avant sa question, y compris ce qui apparaît après une première tentative ratée, ce que le code de départ affiche à l'exécution, les fichiers téléchargeables et ce qui peut être compté dans un dessin. Rédigez en dernier le titre de l'étape et les objectifs d'apprentissage, et relisez-les à côté du résultat de chaque prédiction. Une vérification automatique trouve les chiffres exacts ; les approximations et les paraphrases ne sont repérées que par quelqu'un qui lit en ayant la réponse à l'esprit. Quand un exercice demande de taper ce qui est affiché à l'écran, bloquez le collage et dites pourquoi. Étendez la vérification à chaque fichier qui dessine l'écran de l'apprenant, code des composants compris (voir la leçon 16). Dans une étape qui explique puis demande, l'explication qui donne la réponse vient après la question, ou la question porte sur un cas que l'explication ne couvre pas.
 
 ### EDU-3. Une question à deux réponses défendables ne mesure rien
 

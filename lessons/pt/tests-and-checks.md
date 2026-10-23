@@ -52,7 +52,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### 16. O filtro do seu verificador costuma deixar de fora exatamente o que importa
 
-`from: 5301da23` · `by: ai`
+`from: ef7dcfa7` · `by: ai`
 
 **A ideia.** Toda revisão automática filtra pelo que é “relevante”, e esse filtro pode deixá-la cega justamente onde está o problema.
 
@@ -60,13 +60,13 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **Outro exemplo.** Um teste percorria todas as páginas marcando sempre a primeira opção e executando cada consulta conforme aparecia. Sempre passava, e nunca verificava se a resposta correta era aceita.
 
-**Mais um exemplo.** Para decidir se alguém alterou um texto, os espaços eram ignorados. Isso deixava de fora exatamente o caso da página que explicava como dispor aquele texto com espaços e quebras de linha. Normalizar também é filtrar.
+**Mais um exemplo.** Para decidir se alguém alterou um texto, os espaços eram ignorados. Isso deixava de fora exatamente o caso da página que explicava como dispor aquele texto com espaços e quebras de linha. Normalizar também é filtrar. E uma execução de testes de uma página “passou” sem testar nada: o filtro era uma expressão regular sobre os nomes dos testes, o título da página tinha parênteses, que são caracteres especiais numa expressão regular, então o filtro não casou com nenhum teste e nenhum rodou.
 
-**Pergunta detectora.** O que meu filtro deixa de fora? Escreva antes de acreditar no resultado.
+**Pergunta detectora.** O que meu filtro deixa de fora? Escreva antes de acreditar no resultado. E quantos ele selecionou? Zero não é aprovação.
 
-**Sinal de alerta.** “Encontrou 48 diferenças, já tenho a lista” · “o teste percorre todas elas”.
+**Sinal de alerta.** “Encontrou 48 diferenças, já tenho a lista” · “o teste percorre todas elas” · “a execução filtrada passou”.
 
-**O que fazer.** Anote o que o filtro deixa de fora e confira à mão uma amostra dos itens excluídos. E quando descobrir que um filtro te deixou cego, procure os outros filtros parecidos que você já escreveu: uma revisão que tirava todos os espaços do código juntava duas palavras numa só e rejeitava código correto, logo depois de a mesma lição ter sido aprendida com outra normalização.
+**O que fazer.** Anote o que o filtro deixa de fora e confira à mão uma amostra dos itens excluídos. E quando descobrir que um filtro te deixou cego, procure os outros filtros parecidos que você já escreveu: uma revisão que tirava todos os espaços do código juntava duas palavras numa só e rejeitava código correto, logo depois de a mesma lição ter sido aprendida com outra normalização. Antes de ler o veredito de uma execução filtrada, conte o que o filtro selecionou (`--list`, ou a contagem de testes rodados pelo executor), e filtre por um id, e não por um nome: uma execução que não selecionou nada não tem veredito, e sem veredito significa “não sei” (ver a lição 44).
 
 ### 17. Código que compila não é código que roda
 
@@ -114,7 +114,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### 28. Quem roda e quem verifica são pessoas diferentes
 
-`from: ed079f80` · `by: ai`
+`from: 0090f5e0` · `by: ai`
 
 **A ideia.** Se a mesma pessoa roda e confirma, um erro de execução se confirma sozinho.
 
@@ -124,7 +124,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **Sinal de alerta.** “Eu mesmo já revisei.”
 
-**O que fazer.** Um roda e o outro verifica lendo o resultado. “Eu já fiz” é o sinal de que agora pode ser verificado, não a verificação. E quem verifica não olha pelo mesmo canal que quem fez (ver a lição 14): se os dois leem só a fonte, nenhum dos dois vê a tela.
+**O que fazer.** Um roda e o outro verifica lendo o resultado. “Eu já fiz” é o sinal de que agora pode ser verificado, não a verificação. E quem verifica não olha pelo mesmo canal que quem fez (ver a lição 14): se os dois leem só a fonte, nenhum dos dois vê a tela. Um revisor que aprova uma afirmação sobre uma ferramenta (o que ela faz, o que tem, como está configurada) diz o que olhou hoje: a ajuda dela, a configuração ou uma execução. Se não olhou, diz isso, e o trabalho para até alguém olhar.
 
 ### 34. Confie no sintoma de um achado de QA e meça a causa
 
@@ -156,7 +156,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### EDU-1. Se a resposta sai igual sem a habilidade, o exercício não a mede
 
-`from: 9c298143` · `by: ai`
+`from: 164808ab` · `by: ai`
 
 **A ideia.** Um exercício só verifica uma habilidade se quem pula essa habilidade obtém um resultado diferente. Se o ponto de partida, um exemplo ou um atalho já produz a resposta certa, o exercício aprova todo mundo. É a lição 13 aplicada a exercícios: uma verificação só vale alguma coisa depois que você a viu rejeitar o erro.
 
@@ -164,22 +164,26 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **Outro exemplo.** Um exercício feito em uma planilha pedia que o estudante definisse a região, importasse um CSV e digitasse de volta quantas unidades de um produto havia. A contagem era um número inteiro guardado no arquivo: um editor de texto simples o mostrava sem nenhuma importação e sem região definida. Ele foi trocado por unidades vezes um preço com ponto decimal, que só dá o número esperado quando a planilha lê esse decimal corretamente. No mesmo curso, um exercício para ordenar arquivos pela extensão podia ser resolvido só pelos nomes dos arquivos.
 
+**Mais um exemplo.** Num curso com interfaces desenhadas (um navegador, uma caixa de e-mail, uma planilha), os exercícios conferiam só o estado final, e outros caminhos chegavam nele. Fechar a lição e ficar na outra aba passava em “trocar de aba”; reabrir outra aba qualquer passava em “reabrir a lição”; apagar a célula e arrastar a alça de preenchimento passava em “copiar a fórmula”. E um contador contava duas vezes um e-mail falso quando ele foi denunciado e depois apagado.
+
 **Pergunta detectora.** Que resultado obtém quem pula exatamente o que eu ensino, ou quem entrega o exercício sem mexer? Ele é diferente do certo? Escolhi um caso em que os dois cálculos por acaso coincidem (o primeiro grupo, o primeiro passo, o total)?
 
 **Sinal de alerta.** “Com a resposta certa ele dá o número, então funciona.” · “Eles vão fazer a configuração de qualquer forma.”
 
-**O que fazer.** Resolva cada exercício três vezes: sem mexer, com o erro mais provável, e corretamente. Só a terceira pode passar. Depois, rode a mesma lista de atalhos em todos os exercícios: o número digitado à mão, o código inicial com a resposta acrescentada no fim, o sintoma corrigido à mão em vez da causa, a palavra exigida usada vazia, e uma execução com estado deixado por uma tentativa anterior. Mantenha qualquer margem de tolerância menor que a distância entre a resposta e o erro mais provável, e escreva três formas corretas que um estudante usaria, para que a verificação não rejeite o que está certo. Quando o exercício acontece em outra ferramenta e só volta um número digitado, peça um número que só apareça depois do passo ensinado (um cálculo que a configuração afeta), e não um valor guardado no arquivo, e acrescente “a configuração pulada” à lista de atalhos. Em um exercício de ordenação, mantenha tudo igual, exceto o recurso que está sendo ensinado.
+**O que fazer.** Resolva cada exercício três vezes: sem mexer, com o erro mais provável, e corretamente. Só a terceira pode passar. Depois, rode a mesma lista de atalhos em todos os exercícios: o número digitado à mão, o código inicial com a resposta acrescentada no fim, o sintoma corrigido à mão em vez da causa, a palavra exigida usada vazia, e uma execução com estado deixado por uma tentativa anterior. Mantenha qualquer margem de tolerância menor que a distância entre a resposta e o erro mais provável, e escreva três formas corretas que um estudante usaria, para que a verificação não rejeite o que está certo. Quando o exercício acontece em outra ferramenta e só volta um número digitado, peça um número que só apareça depois do passo ensinado (um cálculo que a configuração afeta), e não um valor guardado no arquivo, e acrescente “a configuração pulada” à lista de atalhos. Em um exercício de ordenação, mantenha tudo igual, exceto o recurso que está sendo ensinado. Em interface desenhada, confira o caminho, e não só o estado final: a ação ensinada precisa acontecer, então fechar a aba da lição não pode contar como trocar de aba. E conte cada item uma vez, aconteça o que acontecer com ele depois.
 
-### EDU-4. Se dá para adivinhar a opção certa pela posição ou pelo tamanho, o quiz mede adivinhação
+### EDU-4. Se dá para adivinhar a opção certa pela posição, pelo tamanho ou pela aparência, o quiz mede adivinhação
 
-`from: dcfa5304` · `by: ai`
+`from: d2e6b716` · `by: ai`
 
-**A ideia.** Cada pergunta pode estar boa isoladamente e, ainda assim, o conjunto entregar a resposta: a opção certa é sempre a segunda, sempre a mais longa, ou sempre a de tamanho intermediário. Os estudantes percebem padrões mais rápido que os autores.
+**A ideia.** Cada pergunta pode estar boa isoladamente e, ainda assim, o conjunto entregar a resposta: a opção certa é sempre a segunda, sempre a mais longa, sempre a de tamanho intermediário, ou a única com um botão. Os estudantes percebem padrões mais rápido que os autores.
 
 **Exemplo.** No quiz final de um módulo, a resposta certa era a segunda opção em seis de sete perguntas. Em um curso inteiro, a opção certa era a mais longa em 55 % das perguntas, quando o acaso, com três opções, dá uma em três. Depois que o tamanho foi equilibrado à mão, a opção certa acabou sendo a mais curta em seis de sete perguntas de uma lição, e a do meio em todas as perguntas de três lições seguidas.
 
-**Pergunta detectora.** Se eu ler só a posição e o tamanho das opções, sem o texto, acerto a certa mais de uma vez em três?
+**Outro exemplo.** Em uma caixa de e-mail desenhada, só os e-mails falsos tinham um botão de denunciar, então os estudantes denunciavam sem ler o remetente. Numa pergunta de “toque na captura de tela certa”, a captura certa era a única com conteúdo: as outras duas eram blocos de cor.
+
+**Pergunta detectora.** Se eu ler só a posição, o tamanho e a aparência das opções, sem o texto, acerto a certa mais de uma vez em três?
 
 **Sinal de alerta.** “Eu revisei cada pergunta, todas estão certas.”
 
-**O que fazer.** Embaralhe as opções na hora de mostrá-las, com uma ordem que não venha de onde a certa foi escrita. Meça a mais longa, a mais curta e a do meio em cada arquivo, e agrupe arquivos pequenos por módulo, para que poucas perguntas não escondam o padrão. Compare a contagem com o que você pediu: uma passagem de balanceamento pode deslocar a pista em vez de eliminá-la.
+**O que fazer.** Embaralhe as opções na hora de mostrá-las, com uma ordem que não venha de onde a certa foi escrita. Meça a mais longa, a mais curta e a do meio em cada arquivo, e agrupe arquivos pequenos por módulo, para que poucas perguntas não escondam o padrão. Compare a contagem com o que você pediu: uma passagem de balanceamento pode deslocar a pista em vez de eliminá-la. Dê a todas as opções os mesmos controles (todo e-mail tem um link e um botão), e desenhe as opções erradas tão verossímeis quanto a certa.

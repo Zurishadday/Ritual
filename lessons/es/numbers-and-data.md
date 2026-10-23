@@ -18,7 +18,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 2. Dos cosas con el mismo nombre no son la misma cosa
 
-`from: 36e0626d` · `by: author`
+`from: 17c673f3` · `by: ai`
 
 **La idea.** «Cliente activo», «fecha», «el jefe», «el umbral»: la misma palabra suele esconder dos definiciones. Cuando dos reportes no cuadran, casi siempre es esto.
 
@@ -26,11 +26,13 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 **Otro ejemplo.** Una tabla de campañas traía la inversión de la empresa completa, pero los ingresos salían de una muestra de una compra de cada cien. Las dos columnas decían «pesos», y el retorno de todas las campañas salía negativo.
 
+**Un ejemplo más.** El costo de unos subagentes se calculó a partir del conteo de tokens del resumen de cada uno, y salió muy bajo: ese conteo dejaba fuera parte del uso. Sumar el uso de cada respuesta en sus transcripciones dio el costo real. Y un registro decía que un guardia había dejado «23 líneas» cuando había dejado 19 bloques.
+
 **Pregunta detectora.** ¿Hay una regla que es verdad para una de las dos cosas y falsa para la otra? Y si combino dos cifras en una cuenta, ¿vienen del mismo universo, la misma escala y el mismo periodo?
 
 **Señal de alarma.** «Es la misma fecha» · «la vista ya lo filtra» · «las dos están en pesos».
 
-**Qué hacer.** Dale a cada variante un nombre distinto en el código y en la pantalla, aunque quede feo. Y antes de dividir o restar dos cifras de fuentes distintas, escribe de dónde sale cada una: si un resultado sale igual en todos los casos (todas pierden, todas ganan), sospecha de la escala antes que del negocio.
+**Qué hacer.** Dale a cada variante un nombre distinto en el código y en la pantalla, aunque quede feo. Y antes de dividir o restar dos cifras de fuentes distintas, escribe de dónde sale cada una: si un resultado sale igual en todos los casos (todas pierden, todas ganan), sospecha de la escala antes que del negocio. Cuando una cifra sale de un campo o de un conteo, lee cómo se calcula (su documentación o su código) y escribe la unidad junto al número: «19 bloques», no «23 líneas». Para obtener la cifra de otra manera, ver la 12.
 
 ### 3. El periodo en curso siempre está incompleto
 
@@ -94,7 +96,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 36. Mide antes de escribir
 
-`from: 2265b4bd` · `by: ai`
+`from: 086f1f80` · `by: ai`
 
 **La idea.** Cada cifra de un documento viene de una medición con fecha y fuente, no de la memoria ni de una versión anterior del documento.
 
@@ -106,11 +108,13 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 **Un cuarto ejemplo: lo que dice la fuente en contra.** Un párrafo de un README daba el resultado favorable de una prueba, con todas las cifras bien, mientras el archivo de resultados al que enlazaba decía que en los totales no había diferencia. El mismo día el párrafo se subió al inicio de la página y sus cifras pasaron a imágenes para una publicación, cada vez sin releer el archivo. Un revisor externo lo abrió y llamó al titular una exageración de su propio resultado nulo.
 
+**Un quinto ejemplo: una cifra de otro lado.** En un curso, «la suma está en los miles» se copió de una lección gemela que usaba otra tabla; en la tabla de esta lección era falso. Un costo de generación de voz se dio como número de créditos por un precio por crédito, cuando cada generación se había cobrado a su propia tarifa. Y en un curso, una alumna inventada contó su proyecto final con cifras que no salían de los datos de ese proyecto: quien hizo el proyecto vería números que no son suyos.
+
 **Pregunta detectora.** Este número, o esta comparación («más de mil», «arriba de la mitad», «casi todas»), ¿de qué dato y de qué fecha salió? ¿La frase alrededor de una cifra con fuente dice más que la fuente: más amplia («todas», «ninguna», «solo», «la ley»), más segura, o sobre evidencia que no busqué («nadie lo ha medido», «las guías coinciden»)? ¿Deja fuera lo que la fuente dice en contra?
 
 **Señal de alarma.** «Es la cifra que ya teníamos» · «da más o menos eso» · «se ve que todas pasan» · «eso es lo que dice la fuente, más o menos». · Una afirmación movida a un lugar más visible (el inicio de una página, una gráfica, una publicación) sin releerla contra su fuente.
 
-**Qué hacer.** Antes de escribir una cifra, mídela otra vez y anota junto a ella de qué dato y de qué fecha salió. Las palabras de cantidad («casi», «más de», «la mayoría») son cifras con disfraz: se miden igual. Y si una imagen trae cuentas, que las haga el mismo script que la dibuja. Junto a una afirmación con fuente, copia también el alcance de la fuente: quién lo midió, sobre qué población, cuándo y, en una encuesta, la pregunta que se hizo; una palabra absoluta que la fuente no tiene, se quita. Lo que no encontraste se dice como tuyo («no encontramos ningún estudio»), y una recomendación sin fuente va firmada («recomendamos»).
+**Qué hacer.** Antes de escribir una cifra, mídela otra vez y anota junto a ella de qué dato y de qué fecha salió. Las palabras de cantidad («casi», «más de», «la mayoría») son cifras con disfraz: se miden igual. Y si una imagen trae cuentas, que las haga el mismo script que la dibuja. Junto a una afirmación con fuente, copia también el alcance de la fuente: quién lo midió, sobre qué población, cuándo y, en una encuesta, la pregunta que se hizo; una palabra absoluta que la fuente no tiene, se quita. Lo que no encontraste se dice como tuyo («no encontramos ningún estudio»), y una recomendación sin fuente va firmada («recomendamos»). Una cifra copiada de un texto gemelo, o contada por un personaje inventado, se vuelve a medir con los datos de este texto; un costo se suma desde el registro propio de cada elemento, no con una sola tarifa para todos.
 
 ### 50. Si dos explicaciones predicen lo mismo, tu ejemplo no elige entre ellas
 

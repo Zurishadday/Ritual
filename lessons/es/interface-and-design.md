@@ -4,17 +4,19 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 10. Los módulos gemelos se cambian juntos
 
-`from: 39a1c52b` · `by: author`
+`from: cbdd1d55` · `by: ai`
 
 **La idea.** Si tu producto tiene dos versiones de la misma pantalla, para dos tipos de usuario, dos regiones o dos productos, una mejora en una es una mejora pendiente en la otra.
 
 **Ejemplo.** La versión de escritorio ganó un filtro por fecha. La de celular, que la gente ve como «la misma pantalla», siguió sin él durante un mes.
 
+**Otro ejemplo.** En un curso web, tres cosas cabían en el celular y fallaron ahí. Una vista previa reducida de un documento cabía al ancho con texto de 3 px. Un ejercicio de arrastrar y soltar apilaba seis casillas destino en una sola columna, de tres pantallas de alto, así que el destino quedaba fuera de la pantalla durante el arrastre. Una etiqueta de un gráfico de barras dibujado cabía en escritorio, pero en celular se partía y chocaba con la siguiente.
+
 **Pregunta detectora.** ¿Esto que toco tiene un gemelo que el usuario ve como «el mismo módulo»?
 
-**Señal de alarma.** «En el otro no me lo pidieron».
+**Señal de alarma.** «En el otro no me lo pidieron» · «En el celular cabe, así que es lo mismo».
 
-**Qué hacer.** No cierres el cambio hasta revisar el gemelo y decir «igual» o «no aplica porque…».
+**Qué hacer.** No cierres el cambio hasta revisar el gemelo y decir «igual» o «no aplica porque…». Cuando el gemelo es la versión de celular, revísalo usándolo ahí: lee el texto a su tamaño real, termina cada arrastre o toque con su destino en pantalla todo el tiempo, y mira las etiquetas en el ancho más angosto. Para comparar cada propiedad, ver la 19; para mirarlo como lo ve el lector, ver la 41.
 
 ### 19. Una revisión de una sola dimensión no es una revisión
 
@@ -171,7 +173,7 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### VIDEO-1. En un video, cada acción cae cuando la narración la nombra
 
-`from: 93ac042f` · `by: ai`
+`from: 0fa6dd51` · `by: ai`
 
 **La idea.** Cuando la pantalla hace algo antes o después de que la voz lo diga, quien mira ve lo que no está escuchando y escucha lo que no está viendo. Un clic que llega antes de su palabra enseña el clic sin su nombre.
 
@@ -179,11 +181,13 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 **Otro ejemplo.** En la misma serie, el responsable del curso dijo que un video saltaba de una idea a la siguiente demasiado rápido. Una pausa sin movimiento de 1 a 1.5 segundos al final de cada idea nueva lo arregló.
 
-**Pregunta detectora.** Para cada clic y cada tecla de esta escena, ¿qué palabra de la narración cae encima? ¿Esa palabra lo nombra? ¿Cada idea nueva termina con un momento quieto antes de que empiece la siguiente?
+**Un ejemplo más.** En videos del mismo tipo, la voz decía «la dejamos abierta, C2:C» mientras la pantalla mostraba C1:C1000. Otra frase decía «la envolvemos en IFERROR» sin decir a dónde va el cursor, y sin nombrar las comillas que se teclean. La revisión pedagógica marcó ambas como obligatorias.
 
-**Señal de alarma.** «Dice algo así por ahí» · «es una fracción de la escena, así que cuadra».
+**Pregunta detectora.** Para cada clic y cada tecla de esta escena, ¿qué palabra de la narración cae encima? ¿Esa palabra lo nombra? ¿La narración dice lo que muestra el cuadro, y dice dónde se hace cada movimiento? ¿Cada idea nueva termina con un momento quieto antes de que empiece la siguiente?
 
-**Qué hacer.** Si la voz no da una marca de tiempo por palabra, ubica cada acción según dónde está su palabra en la frase (los caracteres que van antes de ella), y revísala en el video completo a su velocidad real, no en cuadros fijos. Si el motor de voz da marcas de tiempo por palabra, ubica las acciones con ellas. Cambiar la voz o reescribir una frase mueve cada palabra: revisa la escena otra vez. Cierra cada idea nueva con una pausa breve, de alrededor de un segundo, y júzgala también a velocidad real.
+**Señal de alarma.** «Dice algo así por ahí» · «es una fracción de la escena, así que cuadra» · «la imagen lo deja claro».
+
+**Qué hacer.** Si la voz no da una marca de tiempo por palabra, ubica cada acción según dónde está su palabra en la frase (los caracteres que van antes de ella), y revísala en el video completo a su velocidad real, no en cuadros fijos. Si el motor de voz da marcas de tiempo por palabra, ubica las acciones con ellas. Cambiar la voz o reescribir una frase mueve cada palabra: revisa la escena otra vez. Cierra cada idea nueva con una pausa breve, de alrededor de un segundo, y júzgala también a velocidad real. Lo que dice la voz se revisa contra el cuadro donde suena (renderiza ese cuadro exacto); cuándo cae cada acción se revisa a velocidad real. Donde la voz y el cuadro no coinciden, cambia uno de los dos. La narración dice dónde se hace cada movimiento nuevo y nombra cada símbolo la primera vez que aparece.
 
 ### VIDEO-2. En un video, lo que cambia sin mostrarse se marca
 

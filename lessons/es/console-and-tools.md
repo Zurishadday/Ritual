@@ -4,13 +4,13 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 ### 27. Antes de dudar del sistema, duda del instrumento
 
-`from: 4b9a0956` · `by: author`
+`from: 11b6d719` · `by: ai`
 
 **La idea.** Si un número no cambió cuando debía, o cambió justo cuando lo mirabas, sospecha en este orden: caché, otro proceso que escribe en la misma tabla, la herramienta por la que miras, y hasta el final el sistema.
 
 **Ejemplo.** Una tabla «perdió la mitad de sus columnas». Minutos después estaba completa: la estabas viendo mientras otro proceso la reconstruía.
 
-**Otro ejemplo.** Una imagen nueva «no cargaba» en la página. El archivo estaba bien: el servidor de prueba no veía las carpetas creadas después de arrancar.
+**Otro ejemplo.** Una imagen nueva «no cargaba» en la página. El archivo estaba bien: el servidor de prueba no veía las carpetas creadas después de arrancar. Un servidor que se estaba midiendo seguía respondiendo con el código viejo: al detener su tarea, el proceso anterior había quedado vivo en el mismo puerto. Y un `git log` entre dos versiones de un plugin instalado falló con «unknown revision»: la copia local era superficial y tenía un solo commit, y el historial estaba solo en el remoto.
 
 **Un ejemplo más.** Un script «calculaba mal» un patrón de texto. El script estaba bien: la consola por la que se pasó convirtió cada `\n` en un salto de línea real antes de que el script lo leyera. Y en un cuaderno donde las celdas comparten memoria, un error que se quería mostrar no salía: la variable seguía guardada de una celda anterior.
 
@@ -18,7 +18,7 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 **Señal de alarma.** «Ya lo arreglé y sigue igual» · «esta vez sí lo escribí bien».
 
-**Qué hacer.** Toma una segunda foto con minutos de diferencia antes de declarar una catástrofe. Si un instrumento ya te falló de la misma forma, cámbialo en lugar de vigilarlo: un tropiezo repetido no es mala suerte, es la herramienta equivocada. Una consola que transforma `\n` o `\\` en el camino no sirve para pasarle código: el código va en un archivo, escrito con una herramienta que no lo toque, y se corre desde ahí. Y lo que es mecánico (un comando que ya falló tres veces) se bloquea con un guardia, no se recuerda.
+**Qué hacer.** Toma una segunda foto con minutos de diferencia antes de declarar una catástrofe. Si un instrumento ya te falló de la misma forma, cámbialo en lugar de vigilarlo: un tropiezo repetido no es mala suerte, es la herramienta equivocada. Una consola que transforma `\n` o `\\` en el camino no sirve para pasarle código: el código va en un archivo, escrito con una herramienta que no lo toque, y se corre desde ahí. Y lo que es mecánico (un comando que ya falló tres veces) se bloquea con un guardia, no se recuerda. Antes de medir un servidor, revisa qué proceso ocupa su puerto. Antes de leer el historial de una copia, revisa si es superficial (`git rev-parse --is-shallow-repository`), y si lo es, pregunta al remoto.
 
 ### 29. Verifica el comando antes de pasárselo a otro
 
@@ -36,13 +36,13 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 ### 44. Lo que recortas de la salida puede ser el veredicto
 
-`from: a41e2cda` · `by: ai`
+`from: c24ec5bb` · `by: ai`
 
 **La idea.** Mirar solo las últimas líneas de un resultado, o pasarlo por otro comando, puede tirar justo la parte que decía «falló». Una salida recortada de una prueba que falló se ve igual que la de una que pasó.
 
 **Ejemplo.** Una página se marcó como revisada porque su prueba «terminó sin errores». El resultado pasaba por un comando que mostraba solo el final, y el aviso de que la prueba había fallado se perdió en el camino.
 
-**Otro ejemplo.** Una suite de pruebas reintentaba sola cada prueba que fallaba. Las que pasaban al segundo intento no contaban como falla, solo como «inestables», y la causa quedó escondida: cada cambio de paso volvía a pedir la página al servidor. Sin reintentos, la falla apareció y se pudo medir.
+**Otro ejemplo.** Una suite de pruebas reintentaba sola cada prueba que fallaba. Las que pasaban al segundo intento no contaban como falla, solo como «inestables», y la causa quedó escondida: cada cambio de paso volvía a pedir la página al servidor. Sin reintentos, la falla apareció y se pudo medir. En otra suite, una comprobación falló una vez y pasó al repetirla: la repetición sobrescribió la traza de la primera falla, y su causa se perdió. Y una suite terminó con código de salida 0 y sin conteo de aprobadas ni fallidas: su salida completa se había guardado dentro de la carpeta que el ejecutor de pruebas vacía al arrancar, así que la herramienta que escribe el veredicto la había borrado.
 
 **Un ejemplo más.** `npm test 2>&1 | tail -4 && git commit …`: un script no se pudo cargar, la prueba terminó con error, y aun así el commit se hizo, porque el `&&` vio el código de salida de `tail`, que siempre es cero. En otro caso, `Select-Object -First 1` cortó un script en cuanto tuvo su primera línea, así que nunca llegó a su limpieza, y se quedó una copia modificada de un archivo.
 
@@ -50,7 +50,7 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 
 **Señal de alarma.** «No salió ningún error en pantalla» · «con las últimas líneas basta» · «lo encadeno para que sea un solo comando».
 
-**Qué hacer.** Busca la línea del veredicto antes de cambiar un estado. Si encadenas comandos, haz que el fallo del primero llegue hasta el final. Si la salida no trae veredicto, eso es un «no sé», no un «pasó» (ver la 1). Y guarda la salida completa en un archivo y busca ahí el veredicto: así no tienes que decidir antes cuánto leer. En un shell, `set -o pipefail` hace que una tubería falle cuando falla la prueba; y nunca cortes a la mitad un script que limpia lo que deja tras de sí.
+**Qué hacer.** Busca la línea del veredicto antes de cambiar un estado. Si encadenas comandos, haz que el fallo del primero llegue hasta el final. Si la salida no trae veredicto, eso es un «no sé», no un «pasó» (ver la 1). Y guarda la salida completa en un archivo y busca ahí el veredicto: así no tienes que decidir antes cuánto leer. En un shell, `set -o pipefail` hace que una tubería falle cuando falla la prueba; y nunca cortes a la mitad un script que limpia lo que deja tras de sí. Guarda el archivo con la salida completa fuera de cualquier carpeta que la herramienta vacía al arrancar. Antes de volver a correr una prueba fallida, copia la traza y la captura de la primera falla a un lugar que la siguiente corrida no toque.
 
 ### 53. El código pasa por el editor, no por el manejo de texto de la consola
 

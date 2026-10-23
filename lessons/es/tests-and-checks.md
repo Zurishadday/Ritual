@@ -52,7 +52,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 16. El filtro de tu verificador suele excluir justo lo que importa
 
-`from: 5301da23` · `by: author`
+`from: ef7dcfa7` · `by: ai`
 
 **La idea.** Toda revisión automática filtra lo «relevante», y ese filtro puede dejarla ciega exactamente donde está el problema.
 
@@ -60,13 +60,13 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Otro ejemplo.** Una prueba recorría cada página marcando siempre la primera opción y corriendo cada consulta tal como venía. Pasaba siempre, y nunca comprobó que la respuesta correcta se aceptara.
 
-**Un ejemplo más.** Para decidir si alguien cambió un texto, se ignoraron los espacios. Eso dejó fuera justo el caso de la página que explicaba cómo acomodar ese texto con espacios y saltos de línea. Normalizar también es filtrar.
+**Un ejemplo más.** Para decidir si alguien cambió un texto, se ignoraron los espacios. Eso dejó fuera justo el caso de la página que explicaba cómo acomodar ese texto con espacios y saltos de línea. Normalizar también es filtrar. Y una corrida de pruebas para una página «pasó» sin probar nada: el filtro era una expresión regular sobre los nombres de las pruebas, y el título de la página tenía paréntesis, que son caracteres especiales en una expresión regular; el filtro no coincidió con ninguna prueba y no corrió ninguna.
 
-**Pregunta detectora.** ¿Qué deja fuera mi filtro? Escríbelo antes de creerle al resultado.
+**Pregunta detectora.** ¿Qué deja fuera mi filtro? Escríbelo antes de creerle al resultado. ¿Y cuántas seleccionó? Cero no es un pase.
 
-**Señal de alarma.** «Encontró 48 diferencias, ya tengo la lista» · «la prueba recorre todas».
+**Señal de alarma.** «Encontró 48 diferencias, ya tengo la lista» · «la prueba recorre todas» · «la corrida filtrada pasó».
 
-**Qué hacer.** Escribe qué deja fuera el filtro y revisa a mano una muestra de lo excluido. Y cuando aprendas que un filtro te dejó ciego, busca los otros filtros parecidos que ya escribiste: una revisión que quitaba todos los espacios del código pegó dos palabras en una, y rechazó código correcto, poco después de que se aprendiera la misma lección con otra normalización.
+**Qué hacer.** Escribe qué deja fuera el filtro y revisa a mano una muestra de lo excluido. Y cuando aprendas que un filtro te dejó ciego, busca los otros filtros parecidos que ya escribiste: una revisión que quitaba todos los espacios del código pegó dos palabras en una, y rechazó código correcto, poco después de que se aprendiera la misma lección con otra normalización. Antes de leer el veredicto de una corrida filtrada, cuenta lo que el filtro seleccionó (`--list`, o el conteo de pruebas que corrió el ejecutor), y filtra por un identificador en lugar de por un nombre: una corrida que no seleccionó nada no tiene veredicto, y sin veredicto se dice «no sé» (ver la 44).
 
 ### 17. Que el código compile no es que corra
 
@@ -114,7 +114,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 28. Quien ejecuta y quien verifica son personas distintas
 
-`from: ed079f80` · `by: author`
+`from: 0090f5e0` · `by: ai`
 
 **La idea.** Si la misma persona ejecuta y confirma, un error de ejecución se confirma a sí mismo.
 
@@ -124,7 +124,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Señal de alarma.** «Ya lo revisé yo».
 
-**Qué hacer.** Uno ejecuta y el otro comprueba leyendo el resultado. «Ya lo hice» es el aviso de que ya se puede verificar, no la verificación. Y el que verifica no mira por el mismo canal que quien hizo (ver la 14): si los dos leen solo la fuente, ninguno ve la pantalla.
+**Qué hacer.** Uno ejecuta y el otro comprueba leyendo el resultado. «Ya lo hice» es el aviso de que ya se puede verificar, no la verificación. Y el que verifica no mira por el mismo canal que quien hizo (ver la 14): si los dos leen solo la fuente, ninguno ve la pantalla. Un revisor que aprueba una afirmación sobre una herramienta (qué hace, qué tiene, cómo está configurada) dice qué miró hoy: su ayuda, su configuración o una corrida de ella. Si no lo miró, lo dice, y el trabajo se detiene hasta que alguien lo haga.
 
 ### 34. A un hallazgo de QA créele el síntoma y mide la causa
 
@@ -156,7 +156,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### EDU-1. Si la respuesta sale igual sin la habilidad, el ejercicio no la mide
 
-`from: 9c298143` · `by: ai`
+`from: 164808ab` · `by: ai`
 
 **La idea.** Un ejercicio comprueba una habilidad solo si quien se la salta obtiene otro resultado. Si el punto de partida, un ejemplo o un atajo ya dan la respuesta correcta, el ejercicio aprueba a todos. Es la lección 13 aplicada a ejercicios: una revisión vale algo solo después de verla rechazar el error.
 
@@ -164,22 +164,26 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Otro ejemplo.** Una práctica hecha en una hoja de cálculo pedía a los estudiantes configurar la región, importar un CSV y escribir cuántas unidades tenía de un producto. La cuenta era un número entero guardado en el archivo: un editor de texto plano lo mostraba sin importar nada ni configurar la región. Se reemplazó por unidades multiplicadas por un precio con punto decimal, que solo da el número esperado si la hoja interpreta bien ese decimal. En el mismo curso, un ejercicio para ordenar archivos por su extensión se podía resolver solo con los nombres de los archivos.
 
+**Un ejemplo más.** En un curso con interfaces dibujadas (un navegador, una bandeja de correo, una hoja de cálculo), los ejercicios revisaban solo el estado final, y otros caminos llegaban a él. Cerrar la lección y quedarse en la otra pestaña pasó «cambiar de pestaña»; reabrir otra pestaña pasó «reabrir la lección»; borrar la celda y arrastrar el controlador de relleno pasó «copiar la fórmula». Y un contador contó dos veces un correo falso cuando se reportó y después se borró.
+
 **Pregunta detectora.** ¿Qué resultado obtiene quien omite justo lo que enseño, o quien entrega el ejercicio sin tocarlo? ¿Es distinto del correcto? ¿Elegí un caso donde los dos cálculos coinciden por casualidad (el primer grupo, el primer paso, el total)?
 
 **Señal de alarma.** «Con la respuesta correcta da el número, ya funciona» · «De todos modos van a hacer la configuración».
 
-**Qué hacer.** Resuelve cada ejercicio tres veces: sin tocarlo, con el error más probable y bien. Solo la tercera debe pasar. Prueba en todos la misma lista de atajos: el número tecleado, el código de partida con la respuesta agregada al final, el síntoma corregido a mano en lugar de la causa, la palabra exigida usada vacía, y una corrida con la memoria de un intento anterior. Deja la tolerancia más chica que la distancia entre la respuesta y el error probable, y escribe tres formas correctas que usaría un estudiante, para no rechazar lo que está bien. Cuando la práctica ocurre en otra herramienta y solo vuelve un número tecleado, pide uno que aparezca solo después del paso enseñado (un cálculo al que afecta la configuración), no un valor guardado en el archivo, y agrega «la configuración omitida» a los atajos. En un ejercicio de ordenar, mantén igual todo excepto la función que se enseña.
+**Qué hacer.** Resuelve cada ejercicio tres veces: sin tocarlo, con el error más probable y bien. Solo la tercera debe pasar. Prueba en todos la misma lista de atajos: el número tecleado, el código de partida con la respuesta agregada al final, el síntoma corregido a mano en lugar de la causa, la palabra exigida usada vacía, y una corrida con la memoria de un intento anterior. Deja la tolerancia más chica que la distancia entre la respuesta y el error probable, y escribe tres formas correctas que usaría un estudiante, para no rechazar lo que está bien. Cuando la práctica ocurre en otra herramienta y solo vuelve un número tecleado, pide uno que aparezca solo después del paso enseñado (un cálculo al que afecta la configuración), no un valor guardado en el archivo, y agrega «la configuración omitida» a los atajos. En un ejercicio de ordenar, mantén igual todo excepto la función que se enseña. En una interfaz dibujada, revisa el camino, no solo el estado final: la acción enseñada tiene que ocurrir, así que cerrar la pestaña de la lección no debe contar como cambiar de pestaña. Y cuenta cada elemento una sola vez, pase lo que pase después.
 
-### EDU-4. Si adivinas la correcta por su lugar o su largo, el quiz mide la suerte
+### EDU-4. Si adivinas la correcta por su lugar, su largo o su aspecto, el quiz mide la suerte
 
-`from: dcfa5304` · `by: author`
+`from: d2e6b716` · `by: ai`
 
-**La idea.** Cada pregunta puede estar bien sola y el conjunto delatar la respuesta: la correcta es siempre la segunda, siempre la más larga o siempre la de largo medio. Los estudiantes notan los patrones antes que quien escribe.
+**La idea.** Cada pregunta puede estar bien sola y el conjunto delatar la respuesta: la correcta es siempre la segunda, siempre la más larga, siempre la de largo medio o la única con un botón. Los estudiantes notan los patrones antes que quien escribe.
 
 **Ejemplo.** En el quiz de cierre de un módulo, la correcta era la segunda opción en seis de siete preguntas. En todo un curso, la correcta era la más larga en el 55 % de las preguntas, cuando al azar, con tres opciones, toca una de cada tres. Después de emparejar los largos a mano, la correcta quedó como la más corta en seis de siete preguntas de una lección, y en medio en todas las de tres lecciones seguidas.
 
-**Pregunta detectora.** Si leo solo el lugar y el largo de las opciones, sin el texto, ¿adivino la correcta más de una vez de cada tres?
+**Otro ejemplo.** En un buzón de correo dibujado, solo los correos falsos tenían un botón de reportar, así que los estudiantes reportaban sin leer el remitente. En una pregunta de «toca la captura correcta», la captura correcta era la única con contenido: las otras dos eran bloques de color.
+
+**Pregunta detectora.** Si leo solo el lugar, el largo y el aspecto de las opciones, sin el texto, ¿adivino la correcta más de una vez de cada tres?
 
 **Señal de alarma.** «Revisé cada pregunta y todas están bien».
 
-**Qué hacer.** Baraja las opciones al mostrarlas, con un orden que no salga de dónde se escribió la correcta. Mide la más larga, la más corta y la de en medio por archivo, y junta por módulo los archivos chicos, para que unas pocas preguntas no escondan el patrón. Lee el conteo contra lo que pediste: emparejar a mano puede mover la pista en lugar de quitarla.
+**Qué hacer.** Baraja las opciones al mostrarlas, con un orden que no salga de dónde se escribió la correcta. Mide la más larga, la más corta y la de en medio por archivo, y junta por módulo los archivos chicos, para que unas pocas preguntas no escondan el patrón. Lee el conteo contra lo que pediste: emparejar a mano puede mover la pista en lugar de quitarla. Da a cada opción los mismos controles (cada correo tiene un enlace y un botón), y dibuja las opciones incorrectas tan creíbles como la correcta.

@@ -4,7 +4,7 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 ### 8. Lister les consommateurs, ne pas s'en souvenir
 
-`from: b3d4e214` · `by: ai`
+`from: 74a3645f` · `by: ai`
 
 **L'idée.** Quand vous modifiez une donnée que d'autres lisent par son nom, la liste de ceux qui la lisent doit être écrite. La mémoire en oublie toujours un.
 
@@ -12,27 +12,29 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 **Autre exemple.** En rédigeant un chapitre, on a affirmé de mémoire que le lecteur connaissait déjà trois fonctions d'un chapitre antérieur. Une recherche a montré que le chapitre n'en enseignait qu'une, et qu'un autre chapitre avait déjà expliqué le sujet présenté comme nouveau.
 
-**Encore un exemple.** Une modification a été enregistrée avec la liste des fichiers écrite de mémoire, et l'un d'eux manquait : celui qui faisait fonctionner la nouveauté. La liste des changements en attente, relue ensuite, l'a montré.
+**Encore un exemple.** Une modification a été enregistrée avec la liste des fichiers écrite de mémoire, et l'un d'eux manquait : celui qui faisait fonctionner la nouveauté. La liste des changements en attente, relue ensuite, l'a montré. Une autre fois, un commit annonçait qu'une copie de certains fichiers était « à jour » alors que trois d'entre eux manquaient ; un autre relecteur l'a repéré.
 
 **Question détectrice.** D'où vient la liste de ceux qui utilisent ceci : d'une recherche ou de ma mémoire ?
 
 **Signal d'alarme.** « J'ai déjà couvert les trois endroits où c'est utilisé » · « ils l'ont déjà vu » · « j'ai déjà tout ajouté ».
 
-**Que faire.** Tenez une carte écrite des impacts par type de modification. Parcourez-la en entier en disant « modifié » ou « sans objet parce que… », et si la modification crée un nouveau consommateur, ajoutez-le dans la même modification. Avant de citer une source, copiez la phrase que vous affirmez à partir de cette source : ce que quelqu'un dit qu'une autre personne a fait ou vu doit aussi être vérifié.
+**Que faire.** Tenez une carte écrite des impacts par type de modification. Parcourez-la en entier en disant « modifié » ou « sans objet parce que… », et si la modification crée un nouveau consommateur, ajoutez-le dans la même modification. Avant de citer une source, copiez la phrase que vous affirmez à partir de cette source : ce que quelqu'un dit qu'une autre personne a fait ou vu doit aussi être vérifié. Avant d'écrire qu'une copie est « complète » ou « à jour », comparez la liste de ce qu'elle devrait contenir à la liste de ce qu'elle contient.
 
 ### 9. Un état vit dans plusieurs fiches : déplacez-les ensemble
 
-`from: bc14d730` · `by: ai`
+`from: d7a99bc7` · `by: ai`
 
 **L'idée.** Clôturer un élément en attente implique généralement trois endroits : la liste des éléments en attente, le test qui le surveille et le document qui le décrit. Si vous en déplacez un seul, les autres le contredisent.
 
 **Exemple.** Un élément en attente était marqué comme clos dans la liste, mais le test qui le surveillait était encore marqué « échec attendu » et le document le décrivait toujours comme ouvert. Trois endroits, trois versions.
 
-**Question détectrice.** Quels autres endroits affirment cet état ? Nommez-les avant d'enregistrer.
+**Autre exemple.** Une zone de texte était remplie par la dictée vocale, qui gardait le texte dans une variable à part, et le bouton d'envoi envoyait cette variable. La personne a effacé à la main la première moitié pendant qu'elle dictait encore, et tout le texte a été envoyé, partie effacée comprise. Plus tard, l'envoi vidait la zone mais pas la variable, si bien que la dictée suivante commençait par le message précédent.
 
-**Signal d'alarme.** « Je mettrai à jour l'autre côté plus tard. »
+**Question détectrice.** Quels autres endroits affirment cet état ? Nommez-les avant d'enregistrer. Et ce que j'envoie ou enregistre : vient-il de la copie que voit la personne, ou de celle gardée à part ?
 
-**Que faire.** L'unité de travail est l'ensemble complet, dans la même modification.
+**Signal d'alarme.** « Je mettrai à jour l'autre côté plus tard. » · « La variable a déjà le texte, j'envoie celle-là. »
+
+**Que faire.** L'unité de travail est l'ensemble complet, dans la même modification. Ce qui est envoyé ou enregistré vient de ce que voit la personne, et chaque envoi ou remise à zéro vide toutes les copies d'un seul coup, en une ligne de code.
 
 ### 30. Expliquer avant d'agir, et attendre le oui
 
@@ -80,14 +82,16 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 ### 47. Ce qui est travaillé en parallèle entre en collision dans ce qui est partagé
 
-`from: 3565a1b4` · `by: ai`
+`from: 83287f40` · `by: ai`
 
 **L'idée.** Quand plusieurs personnes travaillent en même temps, chacune voit clairement sa propre partie. Ce qu'elles partagent (les tests, les données, les documents de tout le projet) combine leurs modifications : des noms qui se heurtent, des copies qui prennent du retard, des tests qui lisent le travail à moitié fini de quelqu'un d'autre. Intégrer est un travail, pas un copier-coller.
 
 **Exemple.** Quatre personnes écrivaient chacune une partie au même moment en laissant les parties communes comme livrable. À l'intégration, deux livrables utilisaient un nom qui existait déjà dans le test partagé, et le test a cessé de tourner. Un autre test gardait une copie de ce qu'il vérifiait ; la partie avait changé, pas la copie. Un test a échoué à cause d'une image qu'une autre personne dessinait encore. Et au final, chaque partie ne pouvait pas être enregistrée séparément : les fichiers partagés portaient déjà les modifications de tout le monde.
 
-**Question détectrice.** Quel fichier deux parties touchent-elles en même temps, et qui l'intègre ? Mon test lit-il le travail à moitié fini de quelqu'un d'autre ?
+**Autre exemple.** Deux conversations travaillaient dans le même dossier, qui partage plus que des fichiers : une seule branche active, un seul résultat de build, un seul port pour le serveur de test. Une conversation a fait passer le dossier sur une autre branche ; le commit suivant de l'autre conversation a atterri sur cette branche, et son push vers main a répondu « everything up to date » sans rien envoyer. Remettre ensuite le dossier sur main a entraîné avec lui les modifications non enregistrées de la première conversation.
 
-**Signal d'alarme.** « Chacun a testé sa partie » · « l'échec est dans une autre partie ».
+**Question détectrice.** Quel fichier deux parties touchent-elles en même temps, et qui l'intègre ? Mon test lit-il le travail à moitié fini de quelqu'un d'autre ? Sur quelle branche se trouve ce dossier juste avant le commit, et qui d'autre l'utilise ?
 
-**Que faire.** Confiez à une seule personne l'intégration de ce qui est partagé, avec une étape qui s'arrête si un nom entre en conflit. Faites lire les tests à l'original, pas à une copie. Lancez toute la suite de tests une fois que tout le monde a fini, ou sans les parties qui changent encore, et dites lesquelles ont été exclues. Et enregistrez ensemble les parties qui partagent des fichiers, pour que chaque version enregistrée fonctionne en entier.
+**Signal d'alarme.** « Chacun a testé sa partie » · « l'échec est dans une autre partie » · « chacun touche des fichiers différents, ils ne se heurtent pas ».
+
+**Que faire.** Confiez à une seule personne l'intégration de ce qui est partagé, avec une étape qui s'arrête si un nom entre en conflit. Faites lire les tests à l'original, pas à une copie. Lancez toute la suite de tests une fois que tout le monde a fini, ou sans les parties qui changent encore, et dites lesquelles ont été exclues. Et enregistrez ensemble les parties qui partagent des fichiers, pour que chaque version enregistrée fonctionne en entier. Donnez à chaque session son propre dossier (`git worktree`), lisez `git status -sb` avant chaque commit, et après un push vérifiez que la branche distante contient le commit.

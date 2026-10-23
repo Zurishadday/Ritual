@@ -4,13 +4,13 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 ### 27. Douter de l'instrument avant de douter du système
 
-`from: 4b9a0956` · `by: ai`
+`from: 11b6d719` · `by: ai`
 
 **L'idée.** Si un chiffre n'a pas changé alors qu'il aurait dû, ou a changé juste au moment où vous le regardiez, soupçonnez dans l'ordre : le cache, un autre processus qui écrit dans la même table, l'outil à travers lequel vous regardez, et seulement à la toute fin le système lui-même.
 
 **Exemple.** Une table « avait perdu la moitié de ses colonnes ». Quelques minutes plus tard, elle était complète : vous la regardiez pendant qu'un autre processus la reconstruisait.
 
-**Autre exemple.** Une nouvelle image « ne se chargeait pas » sur la page. Le fichier était bon : le serveur de test ne voyait pas les dossiers créés après son démarrage.
+**Autre exemple.** Une nouvelle image « ne se chargeait pas » sur la page. Le fichier était bon : le serveur de test ne voyait pas les dossiers créés après son démarrage. Un serveur mesuré continuait de répondre avec l'ancien code : arrêter sa tâche avait laissé vivant le processus précédent, sur le même port. Et un `git log` entre deux versions d'un plugin installé échouait avec « unknown revision » : la copie locale était superficielle, avec un seul commit, et l'historique n'existait que sur le dépôt distant.
 
 **Encore un exemple.** Un script « calculait mal un motif de texte ». Le script était bon : la console par laquelle on lui passait le code transformait chaque `\n` en un vrai saut de ligne avant que le script ne le lise. Et dans un carnet où les cellules partagent la mémoire, une erreur qui aurait dû apparaître n'est pas apparue : la variable était encore stockée depuis une cellule précédente.
 
@@ -18,7 +18,7 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 **Signal d'alarme.** « Je l'ai déjà corrigé et c'est toujours pareil » · « cette fois je l'ai vraiment bien tapé ».
 
-**Que faire.** Prenez un second instantané quelques minutes plus tard avant de déclarer un désastre. Si un instrument vous a déjà trompé de la même façon, remplacez-le au lieu de continuer à le surveiller : un raté qui se répète n'est pas de la malchance, c'est le mauvais outil. Une console qui transforme `\n` ou `\\` en cours de route ne convient pas pour lui passer du code : le code va dans un fichier, écrit avec un outil qui n'y touche pas, et s'exécute depuis là. Et tout ce qui est mécanique (une commande qui a déjà échoué trois fois) se bloque par un garde-fou, il ne se retient pas de mémoire.
+**Que faire.** Prenez un second instantané quelques minutes plus tard avant de déclarer un désastre. Si un instrument vous a déjà trompé de la même façon, remplacez-le au lieu de continuer à le surveiller : un raté qui se répète n'est pas de la malchance, c'est le mauvais outil. Une console qui transforme `\n` ou `\\` en cours de route ne convient pas pour lui passer du code : le code va dans un fichier, écrit avec un outil qui n'y touche pas, et s'exécute depuis là. Et tout ce qui est mécanique (une commande qui a déjà échoué trois fois) se bloque par un garde-fou, il ne se retient pas de mémoire. Avant de mesurer un serveur, vérifiez quel processus occupe son port. Avant de lire l'historique d'une copie, vérifiez si elle est superficielle (`git rev-parse --is-shallow-repository`), et si c'est le cas, interrogez le dépôt distant.
 
 ### 29. Vérifier la commande avant de la transmettre à quelqu'un d'autre
 
@@ -36,13 +36,13 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 ### 44. Ce que vous retirez de la sortie peut être le verdict
 
-`from: a41e2cda` · `by: ai`
+`from: c24ec5bb` · `by: ai`
 
 **L'idée.** Ne regarder que les dernières lignes d'un résultat, ou le faire passer par une autre commande, peut jeter justement la partie qui disait « échec ». Une sortie tronquée d'un test raté ressemble exactement à celle d'un test réussi.
 
 **Exemple.** Une page a été marquée comme relue parce que son test « s'était terminé sans erreur ». Le résultat est passé par une commande qui n'affichait que la fin, et l'avis disant que le test avait échoué s'est perdu en chemin.
 
-**Autre exemple.** Une suite de tests relançait automatiquement chaque test en échec. Les tests réussis au second essai ne comptaient pas comme échecs, seulement comme « instables », et la cause restait cachée : chaque changement d'étape demandait à nouveau la page au serveur. Sans relance, l'échec apparaissait et pouvait être mesuré.
+**Autre exemple.** Une suite de tests relançait automatiquement chaque test en échec. Les tests réussis au second essai ne comptaient pas comme échecs, seulement comme « instables », et la cause restait cachée : chaque changement d'étape demandait à nouveau la page au serveur. Sans relance, l'échec apparaissait et pouvait être mesuré. Dans une autre suite, un test a échoué une fois et a réussi en étant relancé : la relance a écrasé la trace du premier échec, et sa cause a été perdue. Et une suite s'est terminée avec le code de sortie 0 et sans aucun décompte de réussites ni d'échecs : sa sortie complète avait été enregistrée dans le dossier que l'outil de tests vide à son démarrage, si bien que l'outil qui écrit le verdict l'avait effacée.
 
 **Encore un exemple.** `npm test 2>&1 | tail -4 && git commit …` : un script n'a pas pu se charger, le test s'est terminé avec une erreur, et le commit est passé quand même, parce que le `&&` regardait le code de sortie de `tail`, qui vaut toujours zéro. Dans un autre cas, `Select-Object -First 1` a coupé un script dès qu'il avait sa première ligne : il n'a jamais atteint son propre nettoyage, et une copie modifiée d'un fichier est restée en place.
 
@@ -50,7 +50,7 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 **Signal d'alarme.** « Aucune erreur n'est apparue à l'écran » · « les dernières lignes suffisent » · « je l'enchaîne pour que ce ne soit qu'une seule commande ».
 
-**Que faire.** Trouvez la ligne du verdict avant de changer un statut. Si vous enchaînez des commandes, assurez-vous que l'échec de la première parvient jusqu'à la fin. Si la sortie n'a pas de verdict, cela signifie « je ne sais pas », pas « c'est passé » (voir la leçon 1). Et enregistrez la sortie complète dans un fichier et cherchez le verdict là : ainsi, vous n'avez pas à décider à l'avance combien lire. Dans un shell, `set -o pipefail` fait échouer un tube lorsque le test échoue ; n'interrompez jamais un script qui nettoie après lui-même.
+**Que faire.** Trouvez la ligne du verdict avant de changer un statut. Si vous enchaînez des commandes, assurez-vous que l'échec de la première parvient jusqu'à la fin. Si la sortie n'a pas de verdict, cela signifie « je ne sais pas », pas « c'est passé » (voir la leçon 1). Et enregistrez la sortie complète dans un fichier et cherchez le verdict là : ainsi, vous n'avez pas à décider à l'avance combien lire. Dans un shell, `set -o pipefail` fait échouer un tube lorsque le test échoue ; n'interrompez jamais un script qui nettoie après lui-même. Gardez le fichier de la sortie complète hors de tout dossier que l'outil vide au démarrage. Avant de relancer un test échoué, copiez la trace et la capture d'écran du premier échec vers un endroit que la relance suivante ne touche pas.
 
 ### 53. Le code passe par l'éditeur, pas par le traitement de texte du shell
 

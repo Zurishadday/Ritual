@@ -18,7 +18,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 2. Duas coisas com o mesmo nome não são a mesma coisa
 
-`from: 36e0626d` · `by: ai`
+`from: 17c673f3` · `by: ai`
 
 **A ideia.** “Cliente ativo”, “data”, “o chefe”, “o limite”: a mesma palavra muitas vezes esconde duas definições. Quando dois relatórios não batem, quase sempre é isso.
 
@@ -26,11 +26,13 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Outro exemplo.** Uma tabela de campanhas tinha o gasto da empresa inteira, mas a receita vinha de uma amostra de uma compra em cada cem. As duas colunas estavam rotuladas como “reais”, e o retorno saiu negativo para todas as campanhas.
 
+**Mais um exemplo.** O custo de alguns subagentes foi tirado de uma contagem de tokens no resumo de cada um, e saiu muito baixo: essa contagem deixava de fora parte do uso. Somar o uso de cada resposta nas transcrições deu o custo real. E um log dizia que uma proteção tinha deixado “23 linhas”, quando tinha deixado 19 blocos.
+
 **Pergunta detectora.** Existe uma regra verdadeira para uma das duas coisas e falsa para a outra? E, se eu combino dois números num mesmo cálculo, eles vêm do mesmo universo, da mesma escala e do mesmo período?
 
 **Sinal de alerta.** “É a mesma data” · “a visão já filtra isso” · “as duas estão em reais”.
 
-**O que fazer.** Dê um nome diferente para cada variante no código e na tela, mesmo que fique feio. E antes de dividir ou subtrair dois números de fontes diferentes, anote de onde vem cada um: se um resultado sai igual em todos os casos (todos perdem, todos ganham), suspeite da escala antes do negócio.
+**O que fazer.** Dê um nome diferente para cada variante no código e na tela, mesmo que fique feio. E antes de dividir ou subtrair dois números de fontes diferentes, anote de onde vem cada um: se um resultado sai igual em todos os casos (todos perdem, todos ganham), suspeite da escala antes do negócio. Quando um número vem de um campo ou de uma contagem, leia como ele é calculado (a documentação ou o código dele) e escreva a unidade ao lado do número: “19 blocos”, não “23 linhas”. Para obter o número de outra forma, ver a lição 12.
 
 ### 3. O período atual está sempre incompleto
 
@@ -94,7 +96,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 36. Meça antes de escrever
 
-`from: 2265b4bd` · `by: ai`
+`from: 086f1f80` · `by: ai`
 
 **A ideia.** Todo número num documento vem de uma medição com data e fonte, não da memória nem de uma versão anterior do documento.
 
@@ -106,11 +108,13 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Um quarto exemplo: o que a fonte diz contra ele.** Um parágrafo do README deu o resultado favorável de um teste, com todos os números certos, enquanto o arquivo de resultados ao qual ele linkava dizia que, nos totais, não havia diferença. No mesmo dia, o parágrafo foi levado para o topo da página e seus números foram para imagens de uma publicação, em cada vez sem reler o arquivo. Um revisor de fora abriu o arquivo e chamou a manchete de exagero do próprio resultado nulo.
 
+**Um quinto exemplo: um número de outro lugar.** Num curso, “a soma está na casa dos milhares” foi copiada de uma lição gêmea que usava outra tabela; na tabela desta lição, era falso. Um custo de geração de voz foi dado como o número de créditos vezes um preço por crédito, quando cada geração tinha sido cobrada pela sua própria tarifa. E num curso, uma estudante fictícia recontou seu projeto final com números que não vinham dos dados daquele projeto: quem fez o projeto veria números que não são seus.
+
 **Pergunta detectora.** De quais dados e de que data veio este número, ou esta comparação (“mais de mil”, “mais da metade”, “quase todos”)? A frase ao redor de um número com fonte diz mais do que a fonte: mais ampla (“todos”, “nenhum”, “só”, “a lei”), mais certa, ou sobre evidências que eu não procurei (“ninguém mediu”, “os guias concordam”)? Ela deixa de fora o que a fonte diz contra ela?
 
 **Sinal de alerta.** “É o número que a gente já tinha” · “dá mais ou menos isso” · “dá para ver que todos passam” · “é o que a fonte diz, mais ou menos” · Uma afirmação levada a um lugar mais visível (o topo de uma página, um gráfico, uma publicação) sem ser relida contra a fonte.
 
-**O que fazer.** Antes de escrever um número, meça de novo e anote ao lado de que dados e de que data ele veio. Palavras de quantidade (“quase”, “mais de”, “a maioria”) são números disfarçados: meça-as do mesmo jeito. E se uma imagem tem contas dentro, faça o mesmo script que a desenha fazer a conta. Ao lado de uma afirmação com fonte, copie também o alcance da fonte: quem mediu, em que população, quando e, para uma enquete, a pergunta que foi feita; uma palavra absoluta que a fonte não tem é tirada. O que você não encontrou é dito como seu (“não encontramos nenhum estudo”), e uma recomendação sem fonte é assinada (“recomendamos”).
+**O que fazer.** Antes de escrever um número, meça de novo e anote ao lado de que dados e de que data ele veio. Palavras de quantidade (“quase”, “mais de”, “a maioria”) são números disfarçados: meça-as do mesmo jeito. E se uma imagem tem contas dentro, faça o mesmo script que a desenha fazer a conta. Ao lado de uma afirmação com fonte, copie também o alcance da fonte: quem mediu, em que população, quando e, para uma enquete, a pergunta que foi feita; uma palavra absoluta que a fonte não tem é tirada. O que você não encontrou é dito como seu (“não encontramos nenhum estudo”), e uma recomendação sem fonte é assinada (“recomendamos”). Um número copiado de um texto gêmeo, ou contado por uma personagem inventada, é medido de novo nos dados deste próprio texto; um custo é somado a partir do registro de cada item, e não de uma tarifa única para todos.
 
 ### 50. Se duas explicações preveem a mesma coisa, seu exemplo não escolhe entre elas
 

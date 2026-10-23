@@ -4,7 +4,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 11. Retirar una gráfica no retira lo que afirmaba
 
-`from: 36ab089d` · `by: author`
+`from: 36fecfbc` · `by: ai`
 
 **La idea.** Si quitas algo porque el dato no era confiable, esa misma afirmación probablemente vive en otros textos, escrita con otras palabras.
 
@@ -12,11 +12,13 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 **Otro ejemplo.** Un plan de capítulos se renumeró de 7 a 15. Dos listas de otro documento siguieron apuntando al «7.4» y al «7.7» del plan viejo, que ahora eran otros temas. Al reemplazar un plan, los números viejos también son afirmaciones.
 
-**Pregunta detectora.** ¿Qué otros textos dicen lo mismo que lo que acabo de quitar?
+**Un ejemplo más.** Un proyecto llevaba su propia lista de lecciones, y una biblioteca la había adoptado en su propia lista. Ambas numeraban igual hasta la 44 y distinto desde la 45. Las instrucciones del proyecto y sus agentes revisores seguían citando «la 46», que en la biblioteca es otra lección. Salió solo cuando la dueña pidió una segunda revisión.
 
-**Señal de alarma.** «Ya quité la gráfica».
+**Pregunta detectora.** ¿Qué otros textos dicen lo mismo que lo que acabo de quitar? Cuando conviven dos numeraciones, ¿cada cita dice cuál lista usa?
 
-**Qué hacer.** Busca por tema, no por identificador. Los ecos no tienen nombre de variable.
+**Señal de alarma.** «Ya quité la gráfica» · «Los números son los mismos».
+
+**Qué hacer.** Busca por tema, no por identificador. Los ecos no tienen nombre de variable. Cuando conviven dos numeraciones, cita con un prefijo que diga de qué lista es («v2 #46», «biblioteca #46»), y busca toda cita del rango cambiado en todos los archivos, no solo en el que renumeraste (ver la 8).
 
 ### 37. Documenta lo que hay, no lo que quisieras que hubiera
 
@@ -34,7 +36,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 38. Lo que no sabes se marca, no se inventa
 
-`from: 93f49fe9` · `by: ai`
+`from: dc2fde6c` · `by: ai`
 
 **La idea.** Un documento oficial afirma todo con la misma autoridad. Un dato inventado, como un responsable, un horario o un tiempo de respuesta, se lee igual que uno real.
 
@@ -44,11 +46,13 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 **Un ejemplo más.** Alguien preguntó por una herramienta con un nombre que no le sonaba. Se tomó por una conocida con un nombre parecido, que se buscó y se explicó largamente. Se refería a un producto nuevo con ese nombre exacto; buscarlo tal como estaba escrito lo habría encontrado de inmediato.
 
-**Pregunta detectora.** ¿Este dato lo sé, o lo supongo porque suena razonable? Una causa, un nombre, una cifra: ¿lo vi, o es mi mejor suposición?
+**Variante.** El dato puede ser el estado actual de una herramienta, o lo que pasó antes. En dos días, dos afirmaciones sobre herramientas salieron de la memoria y resultaron falsas: que un comando de actualización reconstruía un índice completo (solo lee lo que cambió), y que las actualizaciones automáticas de un plugin estaban «probablemente» apagadas (el comando `doctor` del propio plugin decía que encendidas). Una mirada a cada herramienta lo habría respondido. Y cuando las reglas de un proyecto se pasaron a un formato nuevo, varios de sus ejemplos se reconstruyeron de memoria y no coincidían con lo que había pasado; uno contaba un error que nunca ocurrió. Se corrigieron abriendo el registro viejo.
 
-**Señal de alarma.** «Seguro es así» · «ha de ser por eso» · «han de referirse a…».
+**Pregunta detectora.** ¿Este dato lo sé, o lo supongo porque suena razonable? Una causa, un nombre, una cifra, lo que hace una herramienta, cómo está configurada: ¿lo vi, o es mi mejor suposición? ¿De qué registro copié este ejemplo?
 
-**Qué hacer.** Marca lo que falta de forma visible, como «Pendiente» en rojo, y pregunta a quien sí lo sabe. Una redacción neutra es mejor que una falsa. En un mensaje de commit, una causa que nadie vio en una salida se escribe como suposición («likely»). Un nombre que no reconoces se busca exactamente como está escrito; si no aparece nada, pregunta a cuál se refieren.
+**Señal de alarma.** «Seguro es así» · «ha de ser por eso» · «han de referirse a…» · «así pasó, más o menos».
+
+**Qué hacer.** Marca lo que falta de forma visible, como «Pendiente» en rojo, y pregunta a quien sí lo sabe. Una redacción neutra es mejor que una falsa. En un mensaje de commit, una causa que nadie vio en una salida se escribe como suposición («likely»). Un nombre que no reconoces se busca exactamente como está escrito; si no aparece nada, pregunta a cuál se refieren. Antes de decir qué hace una herramienta o cómo está configurada, haz la mirada más barata (su `doctor`, su `--help`, su configuración, una búsqueda) y di lo que mostró, o marca la afirmación como no revisada (ver la 29 y la 52). Un «correcto» de un revisor también es una suposición, salvo que lo haya mirado (ver la 28). Un ejemplo de lo que pasó se copia de su registro (el log, el commit), nunca se reconstruye.
 
 **No la confundas con.** La marca es para quien decide, no para el lector final: un «pendiente de confirmar» dentro de un texto publicado es otro dato que no debía estar ahí. Si el documento sale antes de confirmarlo, usa una redacción neutra que no afirme lo que falta, y deja el pendiente en el informe o el registro del proyecto.
 
@@ -82,31 +86,35 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 43. Relee de punta a punta después de muchas correcciones
 
-`from: 781d2fa2` · `by: author`
+`from: b956a885` · `by: ai`
 
 **La idea.** Tras varias rondas de arreglos puntuales, un documento puede contradecirse a sí mismo: cada corrección fue cierta en su apartado, pero nadie volvió a leer los demás.
 
 **Ejemplo.** Un apartado decía que sin conexión no se guarda nada, y las preguntas frecuentes seguían diciendo que lo capturado se conserva en el equipo.
 
-**Pregunta detectora.** ¿Cuántas correcciones lleva esto desde la última vez que alguien lo leyó completo?
+**Otro ejemplo.** Un proyecto final de un módulo de estadística llegó en tres partes. La segunda aceptaba como correcto «el segundo pago se quedó igual» con un valor p de 0.875; la tercera enseñaba que un valor p alto no prueba que no haya efecto. Ya corregido eso, la misma afirmación volvió en otros tres lugares: una frase de transición («al abrirlo, no cambió nada»), el título de un paso y lo que dice un personaje en una reunión simulada.
+
+**Pregunta detectora.** ¿Cuántas correcciones lleva esto desde la última vez que alguien lo leyó completo? ¿Alguna oración, incluidos los títulos y los diálogos, rompe una regla que este documento enseña?
 
 **Señal de alarma.** «Cada arreglo lo revisé en su lugar».
 
-**Qué hacer.** Al cerrar cada ronda, busca por tema todo lo que dice el documento sobre lo que corregiste.
+**Qué hacer.** Al cerrar cada ronda, busca por tema todo lo que dice el documento sobre lo que corregiste. Luego enumera las reglas que enseña el documento y busca cada una por tema, también en las partes que no tratan de ella: títulos, transiciones, ejemplos y diálogos.
 
 ### 51. Lo que a ti te parece obvio es lo primero que hay que enseñar
 
-`from: 1fed11d1` · `by: author`
+`from: c970d3ec` · `by: ai`
 
 **La idea.** Quien ya sabe no ve los pasos que da sin pensar. Por eso su primer ejemplo trae varias cosas nuevas a la vez, y quien empieza se pierde en la primera línea.
 
 **Ejemplo.** Un curso de programación para principiantes empezaba con una celda que traía seis cosas nuevas a la vez, y el plan nunca enseñaba qué es un tipo de dato ni que el `=` guarda y se lee de derecha a izquierda. La dueña del curso lo dijo en una frase: «asumes muchas cosas de los estudiantes». Después, tres lecciones decían «como arrastrar una fórmula», y ninguna lo había enseñado: decían «copiar la fórmula hacia abajo».
 
-**Pregunta detectora.** En mi primer ejemplo, ¿cuántas cosas son nuevas para alguien que no sabe nada? ¿Ya se explicó cada símbolo, cada palabra, cada nombre de botón y cada acción que pido?
+**Otro ejemplo.** En un módulo para principiantes, la misma palabra corta nombraba una celda de hoja de cálculo en un paso y el cuadradito de su esquina en otro. Los avisos propios de una práctica usaban una referencia de celda y el nombre de una herramienta de capturas antes de que el texto hubiera presentado cualquiera de los dos.
 
-**Señal de alarma.** «Eso lo entiende cualquiera» · «es solo una línea» · «es la palabra de siempre».
+**Pregunta detectora.** En mi primer ejemplo, ¿cuántas cosas son nuevas para alguien que no sabe nada? ¿Ya se explicó cada símbolo, cada palabra, cada nombre de botón y cada acción que pido? ¿Una palabra nombra dos cosas? ¿Un aviso nombra algo que aún no se enseñó?
 
-**Qué hacer.** Antes de escribir, lista lo que tu ejemplo da por sabido (símbolos, palabras, clics, cosas que el estudiante ya debería haber armado) y enséñalo primero: una idea nueva a la vez, cada símbolo explicado la primera vez que aparece. Busca cada palabra que coincide con el nombre de un botón, y cada acción que pides, como buscas un símbolo. Si se puede, deja que una revisión automática compare lo que usa cada ejemplo con lo que ya se enseñó.
+**Señal de alarma.** «Eso lo entiende cualquiera» · «es solo una línea» · «es la palabra de siempre» · «el aviso lo explica».
+
+**Qué hacer.** Antes de escribir, lista lo que tu ejemplo da por sabido (símbolos, palabras, clics, cosas que el estudiante ya debería haber armado) y enséñalo primero: una idea nueva a la vez, cada símbolo explicado la primera vez que aparece. Busca cada palabra que coincide con el nombre de un botón, y cada acción que pides, como buscas un símbolo. Si se puede, deja que una revisión automática compare lo que usa cada ejemplo con lo que ya se enseñó. Lee los avisos y pistas de la interfaz en el orden en que el estudiante los encuentra, y busca cada nombre que usan como buscas un símbolo. Da a cada cosa un solo nombre y mantenlo (ver la 2).
 
 ### 52. Sobre una herramienta que cambia rápido se escribe desde la práctica de hoy, no de memoria
 
@@ -182,7 +190,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
 
-`from: 8262f769` · `by: ai`
+`from: 2ffd5c1e` · `by: ai`
 
 **La idea.** Una pregunta deja de medir si la respuesta ya apareció: en una imagen, en la idea clave, en la explicación de otro ejercicio, en el título de un paso o en una lección anterior. Quien contesta bien pudo haberla leído.
 
@@ -190,11 +198,13 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 **Otro ejemplo.** Un ejercicio pedía escribir una fórmula signo por signo, con la fórmula mostrada justo arriba del recuadro y con el pegado permitido: medía copiar y pegar.
 
+**Un ejemplo más.** En un curso con interfaces dibujadas, cuatro componentes llevaban en su código fuente las cifras que pedía un ejercicio posterior. La revisión automática de respuestas filtradas nunca buscó ahí; las encontraron los revisores. En cinco de siete pasos de un módulo, la pregunta estaba justo debajo del texto que la respondía: un encabezado «Doble clic: abrir» encima de la pregunta «¿qué abre una carpeta?».
+
 **Pregunta detectora.** Esta cifra, imagen o frase, ¿la ve el estudiante antes de contestar, aquí o en una lección anterior? No solo la cifra exacta: también una aproximación («unas 25»), la conclusión escrita al pie de una imagen, un título, un «acabas de ver que…», o lo que muestra en pantalla el error más probable de un ejercicio anterior.
 
 **Señal de alarma.** «Es solo contexto» · «es solo el título» · «es el pie de la imagen».
 
-**Qué hacer.** Busca cada respuesta en todo lo que se ve antes de su pregunta, también en lo que aparece tras un primer intento fallido, en lo que imprime el código de partida al correrlo, en los archivos que se descargan y en lo que se puede contar en un dibujo. Escribe el título del paso y los objetivos al final, y léelos junto al resultado de cada predicción. Una revisión automática encuentra las cifras exactas; las aproximaciones y las frases con otras palabras solo las encuentra quien lee con la respuesta en mente. Cuando un ejercicio pida escribir lo que aparece en pantalla, bloquea el pegado y explica por qué.
+**Qué hacer.** Busca cada respuesta en todo lo que se ve antes de su pregunta, también en lo que aparece tras un primer intento fallido, en lo que imprime el código de partida al correrlo, en los archivos que se descargan y en lo que se puede contar en un dibujo. Escribe el título del paso y los objetivos al final, y léelos junto al resultado de cada predicción. Una revisión automática encuentra las cifras exactas; las aproximaciones y las frases con otras palabras solo las encuentra quien lee con la respuesta en mente. Cuando un ejercicio pida escribir lo que aparece en pantalla, bloquea el pegado y explica por qué. Extiende la revisión a cada archivo que dibuja la pantalla del estudiante, incluido el código de los componentes (ver la 16). En un paso que explica y luego pregunta, la explicación que da la respuesta va después de la pregunta, o la pregunta trata de un caso que la explicación no cubre.
 
 ### EDU-3. Una pregunta con dos respuestas defendibles no mide nada
 

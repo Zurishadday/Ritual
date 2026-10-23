@@ -10,7 +10,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 **Example.** A table "lost half its columns." A few minutes later it was complete: you were looking at it while another process was rebuilding it.
 
-**Another example.** A new image "wouldn't load" on the page. The file was fine: the test server couldn't see folders created after it started.
+**Another example.** A new image "wouldn't load" on the page. The file was fine: the test server couldn't see folders created after it started. A server that was being measured kept answering with the old code: stopping its task had left the previous process alive on the same port. And a `git log` between two versions of an installed plugin failed with "unknown revision": the local copy was shallow and held a single commit, and the history was only on the remote.
 
 **One more example.** A script "computed a text pattern wrong." The script was fine: the console the code was passed through turned every `\n` into a real line break before the script read it. And in a notebook where cells share memory, an error that should have shown up didn't: the variable was still stored from an earlier cell.
 
@@ -18,7 +18,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 **Warning sign.** "I already fixed it and it's still the same" · "this time I really did type it right."
 
-**What to do.** Take a second snapshot a few minutes later before you declare a disaster. If an instrument has already failed you the same way, replace it instead of watching it: a repeated slip isn't bad luck, it's the wrong tool. A console that transforms `\n` or `\\` along the way is no good for passing it code: the code goes in a file, written with a tool that doesn't touch it, and runs from there. And anything mechanical (a command that has already failed three times) gets blocked by a guard, not remembered.
+**What to do.** Take a second snapshot a few minutes later before you declare a disaster. If an instrument has already failed you the same way, replace it instead of watching it: a repeated slip isn't bad luck, it's the wrong tool. A console that transforms `\n` or `\\` along the way is no good for passing it code: the code goes in a file, written with a tool that doesn't touch it, and runs from there. And anything mechanical (a command that has already failed three times) gets blocked by a guard, not remembered. Before measuring a server, check which process holds its port. Before reading the history of a copy, check whether it is shallow (`git rev-parse --is-shallow-repository`), and if it is, ask the remote.
 
 ### 29. Check the command before handing it to someone else
 
@@ -42,7 +42,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 **Example.** A page was marked as reviewed because its test "finished without errors." The result went through a command that showed only the end, and the notice that the test had failed got lost along the way.
 
-**Another example.** A test suite automatically retried every test that failed. Tests that passed on the second try didn't count as failures, only as "flaky," and the cause stayed hidden: each step change asked the server for the page again. Without retries, the failure showed up and could be measured.
+**Another example.** A test suite automatically retried every test that failed. Tests that passed on the second try didn't count as failures, only as "flaky," and the cause stayed hidden: each step change asked the server for the page again. Without retries, the failure showed up and could be measured. In another suite, a check failed once and passed when repeated: the repeat overwrote the first failure's trace, and its cause was lost. And a suite ended with exit code 0 and no pass or fail counts: its full output had been saved inside the folder the test runner empties when it starts, so the tool that writes the verdict had wiped it.
 
 **One more example.** `npm test 2>&1 | tail -4 && git commit …`: a script failed to load, the test exited with an error, and the commit went through anyway, because the `&&` saw the exit code of `tail`, which is always zero. In another case, `Select-Object -First 1` cut a script off as soon as it had its first line, so it never reached its own cleanup, and a modified copy of a file stayed behind.
 
@@ -50,7 +50,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 **Warning sign.** "No error showed up on screen" · "the last few lines are enough." · "I chain it so it is a single command."
 
-**What to do.** Find the verdict line before changing a status. If you chain commands, make sure the first one's failure reaches the end. If the output has no verdict, that means "I don't know," not "it passed" (see lesson 1). And save the full output to a file and look for the verdict there: that way you don't have to decide in advance how much to read. In a shell, `set -o pipefail` makes a pipe fail when the test does; never cut short a script that cleans up after itself.
+**What to do.** Find the verdict line before changing a status. If you chain commands, make sure the first one's failure reaches the end. If the output has no verdict, that means "I don't know," not "it passed" (see lesson 1). And save the full output to a file and look for the verdict there: that way you don't have to decide in advance how much to read. In a shell, `set -o pipefail` makes a pipe fail when the test does; never cut short a script that cleans up after itself. Keep the file with the full output outside any folder the tool empties when it starts. Before you run a failed test again, copy the trace and the screenshot of the first failure to a place the next run doesn't touch.
 
 ### 53. Code goes through the editor, not through the shell's text handling
 

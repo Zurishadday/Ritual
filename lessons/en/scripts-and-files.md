@@ -54,7 +54,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **Example.** A help icon was added next to several titles, and the updates that located themselves by those titles stopped working.
 
-**Another example.** A review searched for the text "int(" to check whether someone converted a number, and it matched inside "print(": any line that printed something seemed to pass. What you search for has to be a whole word, not a piece of another one.
+**Another example.** A review searched for the text "int(" to check whether someone converted a number, and it matched inside "print(": any line that printed something seemed to pass. A count of keyboard shortcuts searched for "Ctrl+" followed by a letter, ignoring case, and counted Ctrl+Shift+V as "Ctrl+S": the S was the first letter of "Shift". What you search for has to be a whole word, not a piece of another one.
 
 **One more example.** A review took the last line the code printed as its answer. With a function that prints the number inside and doesn't return it, that line existed for another reason: the answer showed up on screen, even though the code never delivered it.
 
@@ -62,7 +62,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **Warning sign.** "I'll anchor on the title, it's unique."
 
-**What to do.** Use markers of your own, like an ID or a section comment. And when a change touches many blocks at once, check all of them, not just the first one.
+**What to do.** Use markers of your own, like an ID or a section comment. And when a change touches many blocks at once, check all of them, not just the first one. A count that comes from a search is checked in its matches, not only in its total: open three of the matches.
 
 ### 22. The second run is the one that finds the bug
 
@@ -72,11 +72,13 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **Example.** To check that a script changed nothing on its second run, the checksum of the same run was compared twice, and then two checksums taken from different file lists. Both comparisons said "same" or "different" without proving anything. The comparison that works takes the checksum, runs the script, and takes the checksum again, from the same files and in a single command.
 
-**Detector question.** Did I run my change on something that already had it applied? What other process touches this same text after me?
+**Another example.** A double-click launcher started two local servers on fixed ports and opened the browser. It was tested once, with everything closed, and it worked. It was run again to get a new version while the old one was still running: both new servers failed with "port already in use", and the browser stayed on the old version with nothing saying so (see lesson 27). Here the second run collided with processes and ports, not with files.
+
+**Detector question.** Did I run my change on something that already had it applied? What other process touches this same text after me? What happens if I start it again while the first run is still alive?
 
 **Warning sign.** "It ran fine, so it's done."
 
-**What to do.** Run it twice from the same starting point and compare the files: the second run must not change anything.
+**What to do.** Run it twice from the same starting point and compare the files: the second run must not change anything. Test a launcher by starting it again without closing the previous run. Before it starts anything, the launcher stops only its own processes (found by their process name or their window title, never by "whatever is on the port"), and warns if another program holds the port.
 
 ### 23. Position-based addresses expire
 
@@ -86,11 +88,13 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **Example.** A script inserted a title cell before cell 9 of a notebook, then edited "cell 9": it edited the cell it had just inserted.
 
-**Detector question.** Does this tool locate things by position, and did I just insert or delete something before it?
+**Another example.** A mark that points at something drawn (a box, an arrow, a highlight) is a position-based address too. A video built with code redrew a code cell with a new, wider design. The box around the result had `x = 150` typed by hand, from the old cell, and ended up across two columns of the result table. Whoever watched the full video saw it; the reviewer of still frames had passed it.
 
-**Warning sign.** "Cell 9 is the one I just looked at."
+**Detector question.** Does this tool locate things by position, and did I just insert or delete something before it? Does a mark come from what it marks, or from coordinates typed by hand?
 
-**What to do.** Locate the spot again after every insertion, and check the result by reviewing the full structure.
+**Warning sign.** "Cell 9 is the one I just looked at." · "Only the style changed, the marks are the same."
+
+**What to do.** Locate the spot again after every insertion, and check the result by reviewing the full structure. Have one function return the box of each drawn thing, and ask that function for every mark. After a redraw, search the code for loose position numbers.
 
 ### 24. Write with a safety net
 

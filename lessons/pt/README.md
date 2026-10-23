@@ -46,7 +46,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **34.** [Confie no sintoma de um achado de QA e meça a causa](tests-and-checks.md#34-confie-no-sintoma-de-um-achado-de-qa-e-meça-a-causa)
 - **55.** [Verde na sua máquina é o veredito de uma máquina só](tests-and-checks.md#55-verde-na-sua-máquina-é-o-veredito-de-uma-máquina-só)
 - **EDU-1.** [Se a resposta sai igual sem a habilidade, o exercício não a mede](tests-and-checks.md#edu-1-se-a-resposta-sai-igual-sem-a-habilidade-o-exercício-não-a-mede)
-- **EDU-4.** [Se dá para adivinhar a opção certa pela posição ou pelo tamanho, o quiz mede adivinhação](tests-and-checks.md#edu-4-se-dá-para-adivinhar-a-opção-certa-pela-posição-ou-pelo-tamanho-o-quiz-mede-adivinhação)
+- **EDU-4.** [Se dá para adivinhar a opção certa pela posição, pelo tamanho ou pela aparência, o quiz mede adivinhação](tests-and-checks.md#edu-4-se-dá-para-adivinhar-a-opção-certa-pela-posição-pelo-tamanho-ou-pela-aparência-o-quiz-mede-adivinhação)
 
 ## Scripts e arquivos
 

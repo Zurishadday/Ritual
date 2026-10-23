@@ -48,13 +48,13 @@ Ce qui s'applique quand un programme écrit, génère, transforme ou déplace de
 
 ### 21. Votre marqueur doit vous appartenir
 
-`from: e8ae4ba7` · `by: ai`
+`from: b201fbb7` · `by: ai`
 
 **L'idée.** Si vous repérez votre modification en cherchant un texte que l'utilisateur lit, comme un titre ou une étiquette, une autre amélioration se collera par-dessus et votre modification ne la retrouvera plus.
 
 **Exemple.** Une icône d'aide avait été ajoutée à côté de plusieurs titres, et les mises à jour qui se repéraient par ces titres ont cessé de fonctionner.
 
-**Autre exemple.** Une relecture cherchait le texte « int( » pour vérifier qu'on avait converti un nombre, et il correspondait à l'intérieur de « print( » : toute ligne qui affichait quelque chose semblait passer. Ce que vous cherchez doit être un mot entier, pas un morceau d'un autre mot.
+**Autre exemple.** Une relecture cherchait le texte « int( » pour vérifier qu'on avait converti un nombre, et il correspondait à l'intérieur de « print( » : toute ligne qui affichait quelque chose semblait passer. Un décompte de raccourcis clavier cherchait « Ctrl+ » suivi d'une lettre, sans tenir compte de la casse, et comptait Ctrl+Shift+V comme « Ctrl+S » : le S était la première lettre de « Shift ». Ce que vous cherchez doit être un mot entier, pas un morceau d'un autre mot.
 
 **Encore un exemple.** Une relecture prenait la dernière ligne imprimée par le code comme réponse. Avec une fonction qui affiche le nombre à l'intérieur sans le renvoyer, cette ligne existait pour une autre raison : la réponse apparaissait à l'écran, alors que le code ne la livrait jamais.
 
@@ -62,35 +62,39 @@ Ce qui s'applique quand un programme écrit, génère, transforme ou déplace de
 
 **Signal d'alarme.** « Je m'ancre sur le titre, il est unique. »
 
-**Que faire.** Utilisez des marqueurs à vous, comme un identifiant ou un commentaire de section. Et quand une modification touche plusieurs blocs à la fois, vérifiez-les tous, pas seulement le premier.
+**Que faire.** Utilisez des marqueurs à vous, comme un identifiant ou un commentaire de section. Et quand une modification touche plusieurs blocs à la fois, vérifiez-les tous, pas seulement le premier. Un décompte qui vient d'une recherche se vérifie dans ses correspondances, pas seulement dans son total : ouvrez-en trois.
 
 ### 22. La deuxième exécution est celle qui trouve le bogue
 
-`from: 56b0053e` · `by: ai`
+`from: 8a1c8a92` · `by: ai`
 
 **L'idée.** Une modification qui se répète sans rien casser doit être vérifiée en l'exécutant deux fois, et non une seule.
 
 **Exemple.** Pour vérifier qu'un script ne changeait rien à sa deuxième exécution, la somme de contrôle d'une même exécution a été comparée à elle-même, puis deux sommes prises à partir de listes de fichiers différentes. Les deux comparaisons disaient « identique » ou « différent » sans rien prouver. La comparaison qui fonctionne prend la somme, exécute le script et reprend la somme, à partir des mêmes fichiers et dans une seule commande.
 
-**Question détectrice.** Ai-je exécuté ma modification sur quelque chose qui l'avait déjà appliquée ? Quel autre processus touche ce même texte après moi ?
+**Autre exemple.** Un lanceur à double-clic démarrait deux serveurs locaux sur des ports fixes et ouvrait le navigateur. Il avait été testé une fois, tout étant fermé, et il marchait. On l'a relancé pour obtenir une nouvelle version alors que l'ancienne tournait encore : les deux nouveaux serveurs ont échoué avec « port already in use », et le navigateur est resté sur l'ancienne version sans que rien ne le signale (voir la leçon 27). Ici, la seconde exécution est entrée en collision avec des processus et des ports, et non avec des fichiers.
+
+**Question détectrice.** Ai-je exécuté ma modification sur quelque chose qui l'avait déjà appliquée ? Quel autre processus touche ce même texte après moi ? Que se passe-t-il si je le relance alors que la première exécution tourne encore ?
 
 **Signal d'alarme.** « Ça a bien tourné, donc c'est fini. »
 
-**Que faire.** Exécutez-le deux fois à partir du même point de départ et comparez les fichiers : la deuxième exécution ne doit rien modifier.
+**Que faire.** Exécutez-le deux fois à partir du même point de départ et comparez les fichiers : la deuxième exécution ne doit rien modifier. Testez un lanceur en le relançant sans fermer l'exécution précédente. Avant de démarrer quoi que ce soit, le lanceur n'arrête que ses propres processus (repérés par leur nom de processus ou le titre de leur fenêtre, jamais par « ce qui occupe le port »), et avertit si un autre programme occupe le port.
 
 ### 23. Les adresses fondées sur la position expirent
 
-`from: d94e6ad5` · `by: ai`
+`from: 9c3d3e62` · `by: ai`
 
 **L'idée.** Si vous insérez quelque chose avant « la cellule 9 », la cellule 9 est maintenant une autre cellule.
 
 **Exemple.** Un script a inséré une cellule de titre avant la cellule 9 d'un carnet, puis a modifié « la cellule 9 » : il a modifié la cellule qu'il venait d'insérer.
 
-**Question détectrice.** Cet outil repère-t-il les éléments par leur position, et viens-je d'insérer ou de supprimer quelque chose avant ?
+**Autre exemple.** Un repère qui pointe vers quelque chose de dessiné (une case, une flèche, une surbrillance) est aussi une adresse fondée sur la position. Une vidéo construite avec du code a redessiné une cellule de code avec un nouveau design, plus large. La case autour du résultat avait `x = 150` tapé à la main, depuis l'ancienne cellule, et s'est retrouvée à cheval sur deux colonnes du tableau de résultats. Celui qui a regardé la vidéo entière l'a vu ; le relecteur des images fixes était passé à côté.
 
-**Signal d'alarme.** « La cellule 9, c'est celle que je viens de regarder. »
+**Question détectrice.** Cet outil repère-t-il les éléments par leur position, et viens-je d'insérer ou de supprimer quelque chose avant ? Un repère vient-il de ce qu'il marque, ou de coordonnées tapées à la main ?
 
-**Que faire.** Repérez à nouveau l'emplacement après chaque insertion, et vérifiez le résultat en relisant la structure complète.
+**Signal d'alarme.** « La cellule 9, c'est celle que je viens de regarder. » · « Seul le style a changé, les repères sont les mêmes. »
+
+**Que faire.** Repérez à nouveau l'emplacement après chaque insertion, et vérifiez le résultat en relisant la structure complète. Faites renvoyer par une seule fonction la case de chaque élément dessiné, et demandez-lui chaque repère. Après un redessin, cherchez dans le code les numéros de position qui traînent.
 
 ### 24. Écrire avec un filet de sécurité
 

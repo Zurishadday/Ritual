@@ -18,7 +18,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 2. Deux choses qui portent le même nom ne sont pas la même chose
 
-`from: 36e0626d` · `by: ai`
+`from: 17c673f3` · `by: ai`
 
 **L'idée.** « Client actif », « date », « le chef », « le seuil » : le même mot cache souvent deux définitions. Quand deux rapports ne concordent pas, c'est presque toujours cela.
 
@@ -26,11 +26,13 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Autre exemple.** Une table de campagnes contenait les dépenses de toute l'entreprise, mais le chiffre d'affaires provenait d'un échantillon d'un achat sur cent. Les deux colonnes étaient étiquetées « pesos », et le retour sur investissement sortait négatif pour chaque campagne.
 
+**Encore un exemple.** Le coût de certains sous-agents était tiré d'un décompte de jetons présent dans le résumé de chacun, et il sortait beaucoup trop bas : ce décompte oubliait une partie de la consommation. En additionnant la consommation de chaque réponse de leurs transcriptions, on obtenait le vrai coût. Et un journal indiquait qu'un garde-fou avait laissé « 23 lignes » alors qu'il avait laissé 19 blocs.
+
 **Question détectrice.** Existe-t-il une règle vraie pour l'une des deux choses et fausse pour l'autre ? Et si je combine deux chiffres dans un même calcul, viennent-ils du même univers, de la même échelle et de la même période ?
 
 **Signal d'alarme.** « C'est la même date » · « la vue filtre déjà » · « ce sont tous les deux en pesos ».
 
-**Que faire.** Donnez à chaque variante un nom différent dans le code et à l'écran, même si c'est laid. Et avant de diviser ou de soustraire deux chiffres provenant de sources différentes, notez d'où vient chacun : si un résultat sort identique dans tous les cas (ils perdent tous, ils gagnent tous), soupçonnez l'échelle avant le métier.
+**Que faire.** Donnez à chaque variante un nom différent dans le code et à l'écran, même si c'est laid. Et avant de diviser ou de soustraire deux chiffres provenant de sources différentes, notez d'où vient chacun : si un résultat sort identique dans tous les cas (ils perdent tous, ils gagnent tous), soupçonnez l'échelle avant le métier. Quand un chiffre vient d'un champ ou d'un comptage, lisez comment il est calculé (sa documentation ou son code) et écrivez l'unité à côté du nombre : « 19 blocs », et non « 23 lignes ». Pour obtenir le chiffre d'une deuxième façon, voir la leçon 12.
 
 ### 3. La période en cours est toujours incomplète
 
@@ -94,7 +96,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 36. Mesurer avant d'écrire
 
-`from: 2265b4bd` · `by: ai`
+`from: 086f1f80` · `by: ai`
 
 **L'idée.** Chaque chiffre d'un document provient d'une mesure datée et sourcée, et non de la mémoire ou d'une version antérieure du document.
 
@@ -106,11 +108,13 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Un quatrième exemple : ce que la source dit à l'encontre.** Un paragraphe de README donnait le résultat favorable d'un test, avec chaque chiffre juste, alors que le fichier de résultats auquel il renvoyait disait que, sur les totaux, il n'y avait aucune différence. Le même jour, le paragraphe a été placé en tête de page et ses chiffres ont été repris dans des images pour une publication, chaque fois sans relire le fichier. Un relecteur extérieur l'a ouvert et a qualifié le titre de survente de son propre résultat nul.
 
+**Un cinquième exemple : un chiffre venu d'ailleurs.** Dans un cours, « la somme se chiffre en milliers » a été copiée d'une leçon jumelle qui utilisait un autre tableau ; sur le tableau de cette leçon, c'était faux. Le coût d'une génération vocale était donné comme le nombre de crédits multiplié par un prix par crédit, alors que chaque génération avait été facturée à son propre tarif. Et dans un cours, une apprenante inventée racontait son projet final avec des chiffres qui ne venaient pas des données de ce projet : celui qui avait fait le projet y verrait des nombres qui ne sont pas les siens.
+
 **Question détectrice.** De quelles données et de quelle date viennent ce chiffre, ou cette comparaison (« plus d'un millier », « plus de la moitié », « presque tous ») ? La phrase autour d'un chiffre sourcé dit-elle plus que la source : plus large (« tous », « aucun », « seulement », « la loi »), plus certaine, ou portant sur des preuves que je n'ai pas cherchées (« personne ne l'a mesuré », « les guides s'accordent ») ? Passe-t-il sous silence ce que la source dit à l'encontre ?
 
 **Signal d'alarme.** « C'est le chiffre qu'on avait déjà » · « ça sort à peu près ça » · « on voit bien qu'ils passent tous » · « c'est à peu près ce que dit la source » · Une affirmation déplacée vers un endroit plus visible (le haut d'une page, un graphique, une publication) sans être relue par rapport à sa source.
 
-**Que faire.** Avant d'écrire un chiffre, mesurez-le à nouveau et notez à côté quelles données et quelle date l'ont fourni. Les mots de quantité (« presque », « plus de », « la plupart ») sont des chiffres déguisés : mesurez-les de la même façon. Et si une image contient des calculs, faites en sorte que le même script qui la dessine fasse le calcul. À côté d'une affirmation sourcée, reprenez aussi la portée de la source : qui l'a mesurée, sur quelle population, à quelle date et, pour une enquête, la question posée ; un mot absolu que la source n'a pas est retiré. Ce que vous n'avez pas trouvé se dit en votre nom (« nous n'avons trouvé aucune étude »), et une recommandation sans source se signe (« nous recommandons »).
+**Que faire.** Avant d'écrire un chiffre, mesurez-le à nouveau et notez à côté quelles données et quelle date l'ont fourni. Les mots de quantité (« presque », « plus de », « la plupart ») sont des chiffres déguisés : mesurez-les de la même façon. Et si une image contient des calculs, faites en sorte que le même script qui la dessine fasse le calcul. À côté d'une affirmation sourcée, reprenez aussi la portée de la source : qui l'a mesurée, sur quelle population, à quelle date et, pour une enquête, la question posée ; un mot absolu que la source n'a pas est retiré. Ce que vous n'avez pas trouvé se dit en votre nom (« nous n'avons trouvé aucune étude »), et une recommandation sans source se signe (« nous recommandons »). Un chiffre copié d'un texte jumeau, ou raconté par un personnage inventé, est mesuré à nouveau sur les données de ce texte ; un coût se calcule à partir du relevé de chaque élément, et non d'un tarif unique pour tous.
 
 ### 50. Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles
 
