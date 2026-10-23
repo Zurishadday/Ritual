@@ -362,7 +362,7 @@ if (isMain(import.meta.url)) {
       else console.log(`· ${l.id} sent, still open: ${issue.url}`);
     }
     for (const l of s.stale) console.log(`! ${l.id}: stale draft, the lesson is already ${l.merged ? "merged" : l.data.local ? "local" : "sent"}; delete .ritual/local/share/${l.id}.md`);
-    for (const l of s.ready) console.log(`→ ${l.id} · ${l.title}: draft ready (node scripts/share.mjs check .ritual/local/share/${l.id}.md)`);
+    for (const l of s.ready) console.log(`→ ${l.id} · ${l.title}: draft ready, /ritual share ${l.id}`);
     if (s.triage.length) console.log(`→ ${s.triage.length} to triage (${s.triage.map((l) => l.id).join(", ")}): run /ritual share --pending`);
     process.exit(0);
   }
