@@ -141,8 +141,13 @@ export function ownLessons(project) {
 /** Where each own lesson stands: to triage (no decision yet), ready to send (a draft in .ritual/local/share/<id>.md),
  * kept here on purpose, sent, or merged into the library. */
 export function localStatus(lessons, project = ".") {
-  const out = { triage: [], ready: [], local: [], sent: [], merged: [] };
-  for (const l of lessons) out[l.merged ? "merged" : l.data.local ? "local" : l.data.shared ? "sent" : existsSync(path.join(project, ".ritual", "local", "share", `${l.id}.md`)) ? "ready" : "triage"].push(l);
+  const out = { triage: [], ready: [], local: [], sent: [], merged: [], stale: [] };
+  for (const l of lessons) {
+    const draft = existsSync(path.join(project, ".ritual", "local", "share", `${l.id}.md`));
+    const kind = l.merged ? "merged" : l.data.local ? "local" : l.data.shared ? "sent" : draft ? "ready" : "triage";
+    out[kind].push(l);
+    if (draft && kind !== "ready") out.stale.push(l); // a draft left over from an earlier send: never offered again
+  }
   return out;
 }
 
@@ -295,10 +300,11 @@ export function selftest() {
       "### P-4. Done", "", O, "", "Merged into 30.", "", "**The idea.** d", "",
       "### P-5. Drafted", "", O, "", "**The idea.** e", "",
     ].join("\n"));
-    writeFileSync(path.join(sandbox, ".ritual", "local", "share", "P-5.md"), "### Drafted\n");
+    for (const id of ["P-5", "P-1", "P-2", "P-4"]) writeFileSync(path.join(sandbox, ".ritual", "local", "share", `${id}.md`), "### Drafted\n"); // P-1, P-2 and P-4 are leftovers of an earlier send
     const st = localStatus(ownLessons(sandbox), sandbox);
     const ids = (x) => (x ?? []).map((l) => l.id).join();
     if ([st.sent, st.local, st.triage, st.merged, st.ready].map(ids).join("|") !== "P-1|P-2|P-3|P-4|P-5") failures.push(`localStatus: ${Object.entries(st).map(([k, v]) => `${k}=${ids(v)}`).join(" ")}`);
+    if (ids(st.stale) !== "P-1,P-2,P-4") failures.push(`a draft of a lesson already sent, merged or local is a stale draft, never ready: stale=${ids(st.stale)}`);
     if (statusLine(st) !== "Lessons here: 1 to triage (P-3) · 1 ready to send (P-5) · 1 only for this project · 1 sent · 1 merged into the library") failures.push(`statusLine: ${statusLine(st)}`);
   } finally { rmSync(sandbox, { recursive: true, force: true }); }
   const said = (body, author_association) => ({ body, author_association });
@@ -355,6 +361,7 @@ if (isMain(import.meta.url)) {
       } else if (issue.state === "closed") console.log(`· ${l.id} closed without merging: ${issue.url}. Read why; if it only fits here, write \`local: <why>\` in its data line`);
       else console.log(`· ${l.id} sent, still open: ${issue.url}`);
     }
+    for (const l of s.stale) console.log(`! ${l.id}: stale draft, the lesson is already ${l.merged ? "merged" : l.data.local ? "local" : "sent"}; delete .ritual/local/share/${l.id}.md`);
     for (const l of s.ready) console.log(`→ ${l.id} · ${l.title}: draft ready (node scripts/share.mjs check .ritual/local/share/${l.id}.md)`);
     if (s.triage.length) console.log(`→ ${s.triage.length} to triage (${s.triage.map((l) => l.id).join(", ")}): run /ritual share --pending`);
     process.exit(0);
