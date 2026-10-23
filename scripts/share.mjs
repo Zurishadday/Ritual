@@ -9,7 +9,8 @@
 //        node scripts/share.mjs status [project] [--apply]   where each of the project's own lessons stands on its way
 //                                                         to the library; with --apply, marks the accepted ones merged
 //        node scripts/share.mjs --selftest
-// A project's own lesson says where it stands in its data line: nothing (not shared yet), `shared: <YYYY-MM-DD or issue
+// A project's own lesson says where it stands in its data line: nothing (to triage, or ready to send once a draft sits in
+// .ritual/local/share/<id>.md), `shared: <YYYY-MM-DD or issue
 // link>` (sent), `local: <why it only fits here>` (stays), or «Merged into N.» once the library took it, so it is not
 // shown twice. The maintainer closes an accepted issue with «Ritual: merged into N.»; status reads only the
 // maintainer's comments, so nobody else can mark someone's lesson merged.
@@ -137,17 +138,23 @@ export function ownLessons(project) {
   return readdirSync(dir).filter((f) => f.endsWith(".md")).sort().flatMap((f) => readGroupFile(path.join(dir, f), groupOfFile(f)).lessons.map((l) => ({ ...l, file: path.join(dir, f) })));
 }
 
-/** Where each own lesson stands: not shared yet, sent, kept here on purpose, or merged into the library. */
-export function localStatus(lessons) {
-  const out = { unshared: [], sent: [], local: [], merged: [] };
-  for (const l of lessons) out[l.merged ? "merged" : l.data.local ? "local" : l.data.shared ? "sent" : "unshared"].push(l);
+/** Where each own lesson stands: to triage (no decision yet), ready to send (a draft in .ritual/local/share/<id>.md),
+ * kept here on purpose, sent, or merged into the library. */
+export function localStatus(lessons, project = ".") {
+  const out = { triage: [], ready: [], local: [], sent: [], merged: [], stale: [] };
+  for (const l of lessons) {
+    const draft = existsSync(path.join(project, ".ritual", "local", "share", `${l.id}.md`));
+    const kind = l.merged ? "merged" : l.data.local ? "local" : l.data.shared ? "sent" : draft ? "ready" : "triage";
+    out[kind].push(l);
+    if (draft && kind !== "ready") out.stale.push(l); // a draft left over from an earlier send: never offered again
+  }
   return out;
 }
 
-/** One line on the own lessons, for the ritual's summary: what is still waiting to be shared. */
+/** One line on the own lessons, for the ritual's summary: what still needs a decision and what only needs sending. */
 export function statusLine(s) {
-  const ids = (ls) => ls.map((l) => l.id).join(", ");
-  return `Lessons here: ${s.unshared.length} not shared yet${s.unshared.length ? ` (${ids(s.unshared)})` : ""} · ${s.sent.length} sent · ${s.local.length} only for this project · ${s.merged.length} merged into the library`;
+  const ids = (ls) => (ls.length ? ` (${ls.map((l) => l.id).join(", ")})` : "");
+  return `Lessons here: ${s.triage.length} to triage${ids(s.triage)} · ${s.ready.length} ready to send${ids(s.ready)} · ${s.local.length} only for this project · ${s.sent.length} sent · ${s.merged.length} merged into the library`;
 }
 
 const MAINTAINERS = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
@@ -280,15 +287,26 @@ export function selftest() {
   if (c.get("kind") !== "web") failures.push("the confirm link should carry the kind of project");
   if (c.get("template") !== "confirm-a-lesson.yml" || c.get("lesson") !== "WEB-1" || c.get("example") !== "Same thing in a booking form.") failures.push("the confirm link has wrong fields");
   // Own lessons on their way to the library: each status, the maintainer's mark, and marking one merged once.
-  const own = parseLessons([
-    "### P-1. Sent", "", "`origin: field · claude-opus-5-5 · 2026-10` · `shared: 2026-10-16`", "", "**The idea.** a", "",
-    "### P-2. Kept", "", "`origin: field · claude-opus-5-5 · 2026-10` · `local: it names this project's billing rules`", "", "**The idea.** b", "",
-    "### P-3. Waiting", "", "`origin: field · claude-opus-5-5 · 2026-10`", "", "**The idea.** c", "",
-    "### P-4. Done", "", "`origin: field · claude-opus-5-5 · 2026-10`", "", "Merged into 30.", "", "**The idea.** d", "",
-  ].join("\n"), "g").lessons;
-  const st = localStatus(own);
-  if ([st.sent, st.local, st.unshared, st.merged].map((x) => x.map((l) => l.id).join()).join("|") !== "P-1|P-2|P-3|P-4") failures.push(`localStatus: ${JSON.stringify(st, (k, v) => (k === "text" || k === "parts" ? undefined : v)).slice(0, 200)}`);
-  if (statusLine(st) !== "Lessons here: 1 not shared yet (P-3) · 1 sent · 1 only for this project · 1 merged into the library") failures.push(`statusLine: ${statusLine(st)}`);
+  // A fake project with one lesson of each kind: nothing yet, kept here, a draft waiting, sent, and merged.
+  const sandbox = mkdtempSync(path.join(os.tmpdir(), "ritual-status-"));
+  try {
+    const O = "`origin: field · claude-opus-5-5 · 2026-10`";
+    mkdirSync(path.join(sandbox, ".ritual", "lessons"), { recursive: true });
+    mkdirSync(path.join(sandbox, ".ritual", "local", "share"), { recursive: true });
+    writeFileSync(path.join(sandbox, ".ritual", "lessons", "g.md"), [
+      "# G", "", "### P-1. Sent", "", `${O} · \`shared: 2026-10-16\``, "", "**The idea.** a", "",
+      "### P-2. Kept", "", `${O} · \`local: it names this project's billing rules\``, "", "**The idea.** b", "",
+      "### P-3. Waiting", "", O, "", "**The idea.** c", "",
+      "### P-4. Done", "", O, "", "Merged into 30.", "", "**The idea.** d", "",
+      "### P-5. Drafted", "", O, "", "**The idea.** e", "",
+    ].join("\n"));
+    for (const id of ["P-5", "P-1", "P-2", "P-4"]) writeFileSync(path.join(sandbox, ".ritual", "local", "share", `${id}.md`), "### Drafted\n"); // P-1, P-2 and P-4 are leftovers of an earlier send
+    const st = localStatus(ownLessons(sandbox), sandbox);
+    const ids = (x) => (x ?? []).map((l) => l.id).join();
+    if ([st.sent, st.local, st.triage, st.merged, st.ready].map(ids).join("|") !== "P-1|P-2|P-3|P-4|P-5") failures.push(`localStatus: ${Object.entries(st).map(([k, v]) => `${k}=${ids(v)}`).join(" ")}`);
+    if (ids(st.stale) !== "P-1,P-2,P-4") failures.push(`a draft of a lesson already sent, merged or local is a stale draft, never ready: stale=${ids(st.stale)}`);
+    if (statusLine(st) !== "Lessons here: 1 to triage (P-3) · 1 ready to send (P-5) · 1 only for this project · 1 sent · 1 merged into the library") failures.push(`statusLine: ${statusLine(st)}`);
+  } finally { rmSync(sandbox, { recursive: true, force: true }); }
   const said = (body, author_association) => ({ body, author_association });
   if (acceptedAs([said("Thanks!", "OWNER"), said("Ritual: merged into 54.", "OWNER")]) !== "54") failures.push("the maintainer's mark gives the id");
   if (acceptedAs([said("Ritual: merged into 1.", "NONE"), said("Ritual: merged into 2.", "CONTRIBUTOR")]) !== null) failures.push("only a maintainer's comment can mark a lesson merged");
@@ -331,7 +349,7 @@ if (isMain(import.meta.url)) {
   if (cmd === "status") {
     const project = path.resolve(args.find((a) => !a.startsWith("--")) ?? process.env.CLAUDE_PROJECT_DIR ?? process.cwd());
     const apply = args.includes("--apply");
-    const s = localStatus(ownLessons(project));
+    const s = localStatus(ownLessons(project), project);
     console.log(statusLine(s));
     for (const l of s.sent) {
       let issue;
@@ -343,7 +361,9 @@ if (isMain(import.meta.url)) {
       } else if (issue.state === "closed") console.log(`· ${l.id} closed without merging: ${issue.url}. Read why; if it only fits here, write \`local: <why>\` in its data line`);
       else console.log(`· ${l.id} sent, still open: ${issue.url}`);
     }
-    for (const l of s.unshared) console.log(`→ ${l.id} · ${l.title}: not shared yet (/ritual share ${l.id})`);
+    for (const l of s.stale) console.log(`! ${l.id}: stale draft, the lesson is already ${l.merged ? "merged" : l.data.local ? "local" : "sent"}; delete .ritual/local/share/${l.id}.md`);
+    for (const l of s.ready) console.log(`→ ${l.id} · ${l.title}: draft ready, /ritual share ${l.id}`);
+    if (s.triage.length || s.ready.length > 1) console.log(`→ ${s.triage.length} to triage, ${s.ready.length} ready: run /ritual share --pending to go through them at once`);
     process.exit(0);
   }
   console.error("✕ usage: node scripts/share.mjs context [group] | check <file> [project] | confirm <id> <model> <YYYY-MM> <example-file> | status [project] [--apply] | --selftest");
