@@ -234,6 +234,17 @@ export function generateByModel(root = ROOT) {
 }
 
 /** @returns {{file: string, line: number, message: string, level: "error" | "warning"}[]} */
+/** The counts a README states against the library's: its first bold number is the core lessons, and each package row
+ * (| `web` | 5: …) starts with that package's. @returns {string[]} one message per count that is off. */
+export function readmeCounts(text, counts) {
+  const out = [];
+  const core = text.match(/\*\*(\d+)/)?.[1];
+  if (core && Number(core) !== counts.core) out.push(`says ${core} core lessons, the library has ${counts.core}`);
+  for (const [, slug, n] of text.matchAll(/^\| `([a-z]+)` \| (\d+)/gm))
+    if (Number(n) !== (counts.packages[slug] ?? 0)) out.push(`says \`${slug}\` has ${n} lessons, the library has ${counts.packages[slug] ?? 0}`);
+  return out;
+}
+
 export function check(root = ROOT) {
   const findings = [];
   const error = (file, line, message) => findings.push({ file, line, message, level: "error" });
@@ -291,6 +302,11 @@ export function check(root = ROOT) {
   }
   const byModel = path.join(dir, "BY-MODEL.md");
   if ((existsSync(byModel) ? readFileSync(byModel, "utf8").replace(/\r\n/g, "\n") : "").trim() !== generateByModel(root).trim()) error("lessons/BY-MODEL.md", 0, "the page of mistakes by model is out of date: run `node scripts/lessons.mjs --index`");
+  const live = original.lessons.filter((l) => !l.merged);
+  const counts = { core: live.filter((l) => /^\d+$/.test(l.id)).length, packages: {} };
+  for (const l of live) if (!/^\d+$/.test(l.id)) for (const p of (l.data.packages ?? "").split(",").map((s) => s.trim()).filter(Boolean)) counts.packages[p] = (counts.packages[p] ?? 0) + 1;
+  for (const f of readdirSync(root).filter((f) => /^README(\.[\w-]+)?\.md$/.test(f)))
+    for (const m of readmeCounts(readFileSync(path.join(root, f), "utf8"), counts)) error(f, 0, `${m}: update every README`);
   return findings;
 }
 
@@ -489,6 +505,13 @@ function assemble(files) {
 
 export function selftest() {
   const failures = [];
+  // The counts the READMEs state follow the library: twice a count stayed behind (55 core, 67 in all) after lessons went in.
+  const counts = { core: 55, packages: { web: 5, ai: 2 } };
+  const readme = (core, ai) => `# R\n\nIt ships **${core} field lessons**, each born from a real mistake.\n\n| \`web\` | 5: x |\n| \`ai\` | ${ai}: y |\n| \`apps\`, \`crm\` | On the way. |\n`;
+  if (readmeCounts(readme(55, 2), counts).length) failures.push(`READMEs with the right counts should pass: ${readmeCounts(readme(55, 2), counts).join(" | ")}`);
+  const stale = readmeCounts(readme(54, 3), counts).join(" | ");
+  if (!stale.includes("54") || !stale.includes("`ai`")) failures.push(`a stale core count and a stale package count should both fail: ${stale || "nothing"}`);
+  if (readmeCounts("Trae **61 lecciones de campo**\n\n| `web` | 5 条：x |", counts).join().includes("`web`") === true) failures.push("a package count followed by a word of the language is read as the number");
   const run = (files, also) => { const tmp = assemble(files); try { return also ? also(tmp) : check(tmp); } finally { rmSync(tmp, { recursive: true, force: true }); } };
   const base = run(BASE);
   if (base.length) failures.push(`the case that must pass has ${base.length} finding(s):\n` + base.map((h) => `    ${h.level} ${h.file}:${h.line} ${h.message}`).join("\n"));
