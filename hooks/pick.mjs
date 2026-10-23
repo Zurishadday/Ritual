@@ -213,8 +213,10 @@ export function deliver(ritual, sessionId, state, lessons) {
 
 /** The first tool call after a request waits for that request's pick (`state.awaiting`, set when the request queued it),
  * so its lessons can stop the step instead of arriving with its result: context given in PreToolUse reaches Claude only
- * after the tool ran. Measured on 2026-10-16 over 1,171 requests that used a tool: the median wait is 3 s and 44% wait
- * nothing; a chat with no tool call never waits. @returns {Promise<null | {ms: number, done: object | null}>} null
+ * after the tool ran. The 3 s median estimated on 2026-10-16 (pick times against old transcripts) did not hold: measured
+ * over 90 requests of one working session (2026-10-17 to 10-23) the median wait is 11.8 s and 9% wait nothing, because
+ * Claude's first step comes almost at once and a pick takes ~16 s, 10-14 of them Claude Code starting up. A chat with no
+ * tool call never waits. @returns {Promise<null | {ms: number, done: object | null}>} null
  * when this call is not that first step; else how long it waited and the finished pick, or null if it never came. */
 export async function awaitRequest(state, { wait = WAIT_MS, poll = 200 } = {}) {
   const pending = state.awaiting;
