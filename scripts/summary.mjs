@@ -131,7 +131,7 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   if (openRows.length > 10) lines.push(`  … ${openRows.length - 10} more in .ritual/candidates.md`);
   // The project's own lessons on their way to the library: none should stay here by being forgotten.
   const own = ownLessons(project);
-  if (own.length) lines.push("", `${statusLine(localStatus(own))} (shared ones checked with share.mjs status)`);
+  if (own.length) lines.push("", `${statusLine(localStatus(own, project))} (shared ones checked with share.mjs status)`);
   return lines.join("\n");
 }
 
@@ -252,7 +252,7 @@ export function selftest() {
     if (long.includes("Lessons here")) bad.push("a project without own lessons gets no line about them");
     mkdirSync(path.join(tmp, ".ritual", "lessons"), { recursive: true });
     writeFileSync(path.join(tmp, ".ritual", "lessons", "console-and-tools.md"), "# C\n\n### P-1. One\n\n`origin: field · claude-opus-5-5 · 2026-10`\n\n**The idea.** x\n\n### P-2. Two\n\n`origin: field · claude-opus-5-5 · 2026-10` · `shared: 2026-10-16`\n\n**The idea.** y\n");
-    if (!summary(tmp, { session: null }).includes("Lessons here: 1 not shared yet (P-1) · 1 sent")) bad.push(`the summary must name the own lessons not shared yet: ${summary(tmp, { session: null }).split("\n").at(-1)}`);
+    if (!summary(tmp, { session: null }).includes("Lessons here: 1 to triage (P-1) · 0 ready to send · 0 only for this project · 1 sent")) bad.push(`the summary must name the own lessons not shared yet: ${summary(tmp, { session: null }).split("\n").at(-1)}`);
 
     // Two sessions log into the same project (two people, two worktrees): each ritual reviews and marks only its own.
     appendLine(path.join(tmp, ".ritual", "local", "log.jsonl"), { type: "command", session: "aaaa1111-a", command: "npm run build", error: "Exit code 1\nmine to review" });
