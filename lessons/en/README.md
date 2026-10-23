@@ -13,6 +13,9 @@
 - **51.** [What looks obvious to you is the first thing to teach](writing-and-docs.md#51-what-looks-obvious-to-you-is-the-first-thing-to-teach)
 - **52.** [Write about a fast-moving tool from today's practice, not from memory](writing-and-docs.md#52-write-about-a-fast-moving-tool-from-todays-practice-not-from-memory)
 - **54.** ["The X at the start and the close": every translator picks the same wrong reading](writing-and-docs.md#54-the-x-at-the-start-and-the-close-every-translator-picks-the-same-wrong-reading)
+- **58.** [An instruction made of many pieces is seen before it is assembled](writing-and-docs.md#58-an-instruction-made-of-many-pieces-is-seen-before-it-is-assembled)
+- **AI-1.** [If you restrict where the model may write, it writes wherever you let it](writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it)
+- **AI-2.** [A rule written as a checklist gets executed as a checklist, even after the other person answered](writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered)
 - **EDU-2.** [What learners see before answering can't contain the answer](writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer)
 - **EDU-3.** [A question with two defensible answers measures nothing](writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing)
 - **EDU-5.** [A hint points at the cause of the mistake, not at the answer](writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer)
@@ -54,6 +57,8 @@
 - **24.** [Write with a safety net](scripts-and-files.md#24-write-with-a-safety-net)
 - **25.** [A setting is not a status, and an alert is not a guarantee](scripts-and-files.md#25-a-setting-is-not-a-status-and-an-alert-is-not-a-guarantee)
 - **48.** [If a file comes from a generator, the fix goes in the generator](scripts-and-files.md#48-if-a-file-comes-from-a-generator-the-fix-goes-in-the-generator)
+- **56.** [An incremental update is not a rebuild: read what it drops](scripts-and-files.md#56-an-incremental-update-is-not-a-rebuild-read-what-it-drops)
+- **61.** [A helper that guesses intent from the shape of its arguments](scripts-and-files.md#61-a-helper-that-guesses-intent-from-the-shape-of-its-arguments)
 - **WEB-1.** [A damaged store must not take the next record down with it](scripts-and-files.md#web-1-a-damaged-store-must-not-take-the-next-record-down-with-it)
 
 ## Interface and design
@@ -67,6 +72,8 @@
 - **45.** [Someone walks the error path too](interface-and-design.md#45-someone-walks-the-error-path-too)
 - **46.** [What runs on every request can't grow with the content](interface-and-design.md#46-what-runs-on-every-request-cant-grow-with-the-content)
 - **49.** [A general rule must not silently beat the specific ones](interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones)
+- **57.** [A key arrives differently on each system](interface-and-design.md#57-a-key-arrives-differently-on-each-system)
+- **59.** [An event from something already replaced must not act](interface-and-design.md#59-an-event-from-something-already-replaced-must-not-act)
 - **VIDEO-1.** [In a video, each action lands when the narration names it](interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it)
 - **VIDEO-2.** [In a video, what changes without showing gets marked](interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked)
 - **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)
@@ -80,6 +87,7 @@
 - **29.** [Check the command before handing it to someone else](console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else)
 - **44.** [What you cut from the output can be the verdict](console-and-tools.md#44-what-you-cut-from-the-output-can-be-the-verdict)
 - **53.** [Code goes through the editor, not through the shell's text handling](console-and-tools.md#53-code-goes-through-the-editor-not-through-the-shells-text-handling)
+- **60.** [What travels as a process argument has a ceiling you don't see until it grows](console-and-tools.md#60-what-travels-as-a-process-argument-has-a-ceiling-you-dont-see-until-it-grows)
 
 ## Git and process
 

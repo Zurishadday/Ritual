@@ -140,6 +140,34 @@ What applies when a person is going to see or use what you build: screens, compo
 
 **What to do.** Let the general rule touch only what's its own (the focus outline, not the shape). If it should win on purpose, write that down next to it. And test it on the most different piece, not only the common one.
 
+### 57. A key arrives differently on each system
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: tests-and-checks`
+
+**The idea.** What a program receives from a key depends on the system and the keyboard layout. On Windows, AltGr arrives as Ctrl and Alt together; on a Mac, many symbols are typed with Option; the same key position types another symbol on another layout. Code that filters keys by their modifiers, tested only with the key the test sends, rejects people who did it right.
+
+**Example.** A web exercise asked learners to type symbols one by one, and ignored every key that came with Ctrl, so shortcuts would not count. On a Spanish-layout keyboard on Windows, @ is typed with AltGr, which arrives as Ctrl and Alt: nobody on that setup could finish. The test sent @ with no modifier and passed. A reviewer found it reading the code.
+
+**Detector question.** Did I test this key the way it arrives on Windows, on a Mac and on another layout, with its modifiers, or only the way the test sends it?
+
+**Warning sign.** "In the test it goes through."
+
+**What to do.** Before filtering a key by its modifiers, list how it arrives on each system (AltGr: Ctrl and Alt on Windows, which `getModifierState("AltGraph")` tells apart; Option: `altKey`; Command: `metaKey`), or accept the key when `event.key` is the expected character, whatever came with it. Write the test with the event each system sends, not with the bare character (see lesson 13). What can't be simulated (a shortcut the system keeps for itself) gets another path on the same screen, and a person tries it on a real machine.
+
+### 59. An event from something already replaced must not act
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** When something can be started again before the previous one finishes (a microphone, a search, a connection, a timer), the late callback of the previous one arrives while the new one is running. If it does not check that it is still the current one, it acts on the new state: it restarts, sends or overwrites.
+
+**Example.** A dictation button started a speech recognizer; on its "end" event it either sent the text or, if listening was still on, restarted. Between "done" and that event there was half a second with the button already back to "talk". A quick click started a new recognizer, and the old one's end event saw "still listening" and restarted itself. The microphone stayed on while the other side's synthesized voice answered, and transcribed it as if the person had said it.
+
+**Detector question.** If this is started again before the previous one finishes, can the previous one's late callback act on the new one? What stops it from being started again while the previous one is still closing?
+
+**Warning sign.** "When it ends, it checks the flag and decides".
+
+**What to do.** Every callback first checks that its instance is still the current one (`if (current !== me) return`), and the control stays disabled (or `aria-disabled`, see lesson WEB-4) while the previous one finishes closing. To test it, double-click, or fire two searches in a row where the first is slower.
+
 ### VIDEO-1. In a video, each action lands when the narration names it
 
 `origin: field · claude-opus-5-5 · 2026-10` · `groups: writing-and-docs` · `packages: video`

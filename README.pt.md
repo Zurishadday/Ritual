@@ -18,7 +18,7 @@ Um plugin do Claude Code que transforma cada erro em lição, cada lição em re
 
 Outras ferramentas anotam o que foi aprendido; esta vai até o fim e confere, porque uma regra que existe só em texto é esquecida numa sessão longa, e uma que se confere sozinha não.
 
-Ele traz **55 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
+Ele traz **61 lições de campo**, cada uma nascida de um erro real; **pacotes por tipo de projeto**, cujas lições vêm de observar um modelo construir algo e quebrá-lo; e **um comando**, `/ritual`, que transforma os erros da sua sessão em lições suas, e suas lições em regras que se aplicam sozinhas.
 
 **Medido:** uma tarefa web que o Ritual nunca aprendeu, construída quatro vezes sem o Ritual e quatro com ele, com cada construção revisada às cegas. Os erros decididos durante a escrita (o caminho de erro, o foco do teclado, um arquivo de dados danificado), um grupo definido antes das execuções, apareceram 11 vezes sem o Ritual e uma vez com suas lições desde o início, como ele é distribuído (5 vezes com o fechamento também ativo). Os erros que só aparecem ao executar não diminuíram, nem os erros novos, nem o total, pela regra definida antes das execuções: o Ritual evita os erros para os quais tem uma lição, enquanto o código é escrito. Uma construção com o Ritual e sem nenhuma revisão terminou com não mais erros do pacote do que uma construção sem o Ritual depois de revisão e correção (3,5 contra 4,5 em média, dentro da variação), por $0.61 contra $2.64. Uma tarefa, quatro construções por grupo, um modelo: os dados e o método estão em [simulações](simulations/clinic/RESULTS.md).
 
@@ -133,7 +133,8 @@ Sobre os grupos ficam os **pacotes** por tipo de projeto: lições que só valem
 | `web` | 5: perda de dados salvos quando são danificados, robôs num formulário público, o recurso de contingência sem JavaScript, o foco no envio e login sem limite de tentativas. |
 | `education` | 5: exercício aprovado sem a habilidade, resposta visível antes da pergunta, duas respostas defensáveis, adivinhar pela posição ou pelo tamanho, e dica que entrega a resposta. |
 | `video` | 2: cada ação cai quando a narração a nomeia, e o que muda sem aparecer é marcado. |
-| `apps`, `crm`, `ai` | A caminho, com o mesmo método. |
+| `ai` | 2: o que um prompt proíbe em um campo acaba escrito em outro, e uma checklist dentro de um prompt é perguntada item por item mesmo depois de a pessoa já ter respondido. |
+| `apps`, `crm` | A caminho, com o mesmo método. |
 | O seu | Um tipo de projeto que ainda não tem (móvel, dados, jogos…) começa com a sua primeira lição: veja [onde vai uma lição](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Toda lição tem cinco partes, sempre as cinco: **a ideia**, um **exemplo** real e anônimo, a **pergunta detectora** que separa o caso que se aplica do que não se aplica, o **sinal de alerta** (a frase que você diz a si mesmo logo antes de cometer o erro de novo) e **o que fazer**. E um número que nunca muda: uma lição redundante é marcada como fundida em outra, nunca apagada. O formato completo está em [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).

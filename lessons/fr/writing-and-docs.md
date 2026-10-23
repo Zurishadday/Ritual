@@ -138,6 +138,48 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Que faire.** Rendez la coupure visible. Comptez-la (« deux morceaux : … »), donnez à chaque élément son propre article (« les leçons du début, et la clôture »), ou placez d'abord l'élément court (« la clôture, et les leçons du début »). Une note sur une liste se place hors de celle-ci, dans sa propre proposition. Relisez ensuite la traduction de cette phrase pour vérifier qu'elle porte la lecture voulue.
 
+### 58. Une consigne faite de plusieurs morceaux se voit avant d'être assemblée
+
+`from: 2875c4ef` · `by: ai`
+
+**L'idée.** Quand ce que vous enseignez s'assemble à partir de plusieurs morceaux (une formule à cinq arguments, une commande avec plusieurs options), les dicter l'un après l'autre pendant qu'ils sont tapés fait perdre l'apprenant : il doit comprendre chaque morceau et l'assemblage en même temps. D'abord chaque morceau est montré en train de faire son travail dans les données, avec son nom et son sens bien visibles ; ensuite, il est assemblé.
+
+**Exemple.** Une vidéo de tutoriel pour une formule à deux conditions dictait chaque plage et chaque condition au moment où elle était tapée. Le responsable : chaque paramètre n'était pas compris, et avec beaucoup de paramètres on se perd. Refaite avec la question énoncée en mots, chaque morceau peint dans les données avec sa couleur, le comptage fait à la main, la formule construite par morceaux avec les mêmes couleurs, et la seule nouveauté à la fin, elle a bien mieux fonctionné.
+
+**Question détectrice.** Avant que le premier caractère soit tapé, l'apprenant a-t-il vu dans les données ce que fait chaque morceau ? Chaque morceau porte-t-il son nom et son sens bien visibles, pas seulement sa couleur ?
+
+**Signal d'alarme.** « La voix nomme chaque argument au fur et à mesure qu'il apparaît. »
+
+**Que faire.** D'abord la question en mots. Ensuite chaque morceau montré dans les données, une couleur par morceau, avec son nom et ce qu'il signifie à côté. Puis le résultat calculé à la main. Seulement après, la consigne, construite par parties avec les mêmes couleurs et une pause entre les parties, la nouveauté en dernier. Ce n'est pas la même chose que la leçon 51 : ici chaque morceau peut déjà être connu, ce qui échoue, c'est l'ordre.
+
+### AI-1. Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez
+
+`from: abeb61b2` · `by: ai`
+
+**L'idée.** Quand le prompt ou le code interdit un champ de sortie dans lequel le modèle a pourtant quelque chose à dire, le modèle ne reste pas silencieux : il le met dans le champ que vous avez autorisé, même si cela n'y a pas sa place. Chaque champ doit dire ce qu'il peut contenir, et que le laisser vide est acceptable (voir la leçon 38).
+
+**Exemple.** Un assistant en direct avait trois zones : les avertissements, les faits sur le client, et la phrase à dire ensuite. Le prompt disait « pendant les 2 premières minutes, utilise seulement les avertissements », et le code supprimait tout le reste. Le modèle voulait suggérer une question et l'a mise dans la zone des avertissements (« N'en dis pas plus : demande "Qu'est-ce que vous voulez en tirer ?" »). Quand il a envoyé la phrase dans sa propre zone, le code l'a supprimée et le panneau est resté vide. La personne l'a signalé avec une capture d'écran.
+
+**Question détectrice.** Si le modèle a quelque chose à dire et que le bon champ est interdit en ce moment, où le mettra-t-il ? Chaque champ dit-il ce qui y va et ce qui n'y va pas, et qu'il peut rester vide ? Le code supprime-t-il des choses que le prompt ne sait pas être supprimées ?
+
+**Signal d'alarme.** « Dans cette phase, qu'il utilise seulement le champ X. »
+
+**Que faire.** Définissez chaque champ par son contenu (« avertissements uniquement ; jamais une phrase à dire »), pas par le moment. Si une phase ne doit pas montrer quelque chose, le prompt et le code doivent dire la même chose (voir la leçon 9). Testez avec un cas où le modèle a bien quelque chose à dire dans le champ interdit.
+
+### AI-2. Une règle écrite en liste de contrôle s'exécute comme une liste, même après que l'autre personne a répondu
+
+`from: 23040433` · `by: ai`
+
+**L'idée.** Si le prompt énumère ce qui doit être couvert (les points d'une ouverture, les champs d'un formulaire), le modèle les demande un par un même quand la personne les a déjà donnés autrement, et cesse de répondre à ce qu'elle vient de dire.
+
+**Exemple.** Un assistant commercial devait couvrir quatre points d'ouverture dans la première minute ; l'un était « ce qu'ils veulent tirer de l'appel ». Le client venait de dire « je suis en comptabilité et je voulais voir ce que c'est que ce truc de données ». L'assistant a suggéré « Si ce n'est pas pour vous, dites-le-moi. Qu'est-ce que vous aimeriez tirer d'aujourd'hui ? » : il a ignoré ce que le client disait et a demandé quelque chose déjà répondu. La personne l'a remarqué (« ça ne correspond pas à ce que le client me demande en ce moment »).
+
+**Question détectrice.** Si la personne a déjà donné ce point autrement, le prompt dit-il au modèle de le compter comme couvert ? La réponse s'appuie-t-elle sur la dernière chose que la personne a dite, ou passe-t-elle au point suivant de la liste ?
+
+**Signal d'alarme.** « Qu'il couvre les quatre points. »
+
+**Que faire.** À côté de chaque liste, écrivez : « un point dit autrement est déjà couvert », « ce qui manque entre comme une transition dans la réponse qui suit le fil » et « ne jamais ignorer la dernière chose qu'elle a dite ». Testez avec une vraie conversation où la personne répond à un point avant qu'on le lui demande.
+
 ### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
 
 `from: 8262f769` · `by: ai`

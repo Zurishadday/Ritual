@@ -134,6 +134,34 @@ Ce qui s'applique quand un programme écrit, génère, transforme ou déplace de
 
 **Que faire.** Avant de corriger un fichier, découvrez d'où il vient. Corrigez la source (le modèle, le script, la contribution) et régénérez ; si vous devez corriger la sortie, corrigez aussi la source dans la même étape. Celui qui relit une sortie générée dit ce qui a changé pour que ce soit reporté dans la source. Et avant de reconstruire un fichier à partir de ses sources, comparez-le avec ce qui va en sortir : tout ce qui diffère est une correction qui serait perdue.
 
+### 56. Une mise à jour incrémentale n'est pas une reconstruction : lisez ce qu'elle supprime
+
+`from: 9ffb2735` · `by: ai`
+
+**L'idée.** Une mise à jour qui ne traite que ce qui a changé ne donne pas le même résultat qu'une reconstruction complète. Quand elle remplace tout ce qui vient d'un fichier relu, elle supprime aussi ce que d'autres fichiers avaient apporté aux mêmes entrées. Avant d'accepter qu'une chose disparaisse, listez ce qui est perdu et d'où cela venait.
+
+**Exemple.** Un graphe de connaissances d'un dépôt a été mis à jour avec seulement les fichiers modifiés. Un garde-fou contre la réduction l'a arrêté deux fois. D'abord, des nœuds qui ne partageaient qu'une étiquette ont été fusionnés en un seul (voir la leçon 2). Ensuite, le remplacement des nœuds d'un fichier relu a aussi supprimé les nœuds vers lesquels pointaient d'autres fichiers : dix entrées qui auraient dû afficher leur propre titre affichaient à la place l'étiquette générique d'un ancien nœud.
+
+**Question détectrice.** Qu'est-ce qui existait avant et n'existe plus, et de quel fichier venait chaque chose perdue ?
+
+**Signal d'alarme.** « C'est la même exécution, seulement avec les nouveaux fichiers. »
+
+**Que faire.** Comparez avant et après par identifiant, et gardez la liste de ce qui a été perdu avec son fichier source. Forcez l'écriture seulement si chaque perte est expliquée par une modification de son propre fichier source, et corrigez le script qui fusionne, pas la sortie. Une reconstruction complète passe par la même comparaison (voir la leçon 48).
+
+### 61. Une fonction d'aide qui devine l'intention d'après la forme de ses arguments
+
+`from: 4248a8c5` · `by: ai`
+
+**L'idée.** Une fonction qui décide quoi faire selon qu'un argument a été passé (avec un corps elle fait un POST, sans corps un GET ; avec un identifiant elle met à jour, sans elle insère) transforme un oubli en une opération différente, sans aucune erreur.
+
+**Exemple.** Une fonction d'aide côté interface, pour appeler le serveur, envoyait POST quand elle recevait des données et GET quand elle n'en recevait pas. Un nouveau point d'accès était en POST mais n'avait besoin d'aucune donnée ; il a été appelé sans rien, est parti en GET, et le serveur a répondu « méthode non autorisée ». L'écran n'affichait qu'une courte ligne d'erreur, et le problème n'a été remarqué qu'en testant dans le navigateur.
+
+**Question détectrice.** Cette fonction change-t-elle d'opération selon un argument facultatif ? Si je le laisse de côté parce que je n'en ai pas besoin, fait-elle silencieusement autre chose ?
+
+**Signal d'alarme.** « Celui-ci ne prend pas de données, je l'appelle sans rien. »
+
+**Que faire.** Rendez l'opération explicite (`api.post(path)`, `save(x, create=True)`), ou faites que la valeur par défaut soit le cas sûr. Tant que la fonction ambiguë existe, relisez chaque appel qui omet cet argument.
+
 ### WEB-1. Un stockage endommagé ne doit pas entraîner l'enregistrement suivant avec lui
 
 `from: e896b1e3` · `by: ai`

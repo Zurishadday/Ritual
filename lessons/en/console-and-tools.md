@@ -65,3 +65,17 @@ What applies when you run commands, servers, tests, or captures, and when the to
 **Warning sign.** "It's a quick replace, I'll do it in one command" · "several replacements at once is faster".
 
 **What to do.** Change code with the editor's own edit and write tools. When a change has to be scripted, write the script to a file and run it with an interpreter that reads and writes UTF-8 and has plain string literals (`node fix.mjs`, `python -I fix.py`). Then look at the diff: a change that touched more lines than you meant, or characters you didn't touch, is the shell's.
+
+### 60. What travels as a process argument has a ceiling you don't see until it grows
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: scripts-and-files`
+
+**The idea.** A library that launches another program may pass your text to it as command-line arguments. The operating system caps that line (on Windows, about 32 thousand characters), and the error you get when you cross it almost never says so.
+
+**Example.** A server called a language model through a library that starts a command-line tool and hands it a long setup text as a flag. With short texts it worked. One role's setup text included a rules file several pages long: on Windows it failed with "the filename or extension is too long", and the library reported it as "tool not found". It was fixed by passing that text in a temporary file.
+
+**Detector question.** This text that grows with the content (a setup text, a list, a query): how does it reach the other process — command line, environment variable, URL? What happens when it is ten times longer?
+
+**Warning sign.** "It already worked with the short example".
+
+**What to do.** Whatever can grow travels in a file, through standard input or in a request body, never as arguments, environment variables or the URL. Test once with the longest text you expect, on the strictest system it will run on.

@@ -134,6 +134,34 @@ O que vale quando um programa escreve, gera, transforma ou move arquivos e dados
 
 **O que fazer.** Antes de corrigir um arquivo, descubra de onde ele vem. Corrija a fonte (o template, o script, a entrega) e regenere; se for preciso corrigir a saída, corrija a fonte também no mesmo passo. Quem revisa uma saída gerada diz o que mudou para que a mudança seja levada para a fonte. E antes de reconstruir um arquivo a partir das suas fontes, compare-o com o que vai sair: tudo o que for diferente é uma correção que se perderia.
 
+### 56. Uma atualização incremental não é uma reconstrução: leia o que ela descarta
+
+`from: 9ffb2735` · `by: ai`
+
+**A ideia.** Uma atualização que processa só o que mudou não dá o mesmo resultado de uma reconstrução completa. Quando ela substitui tudo o que veio de um arquivo relido, também remove o que outros arquivos contribuíram para as mesmas entradas. Antes de aceitar que algo desapareceu, liste o que se perdeu e de onde veio.
+
+**Exemplo.** Um grafo de conhecimento de um repositório foi atualizado só com os arquivos alterados. Uma trava contra encolhimento a parou duas vezes. Primeiro, nós que só tinham um rótulo em comum foram fundidos num só (ver a lição 2). Depois, ao substituir os nós de um arquivo relido, também foram removidos os nós para os quais outros arquivos apontavam: dez entradas que deveriam mostrar o próprio título passaram a mostrar o rótulo genérico de um nó antigo.
+
+**Pergunta detectora.** O que existia antes e hoje não existe mais, e de qual arquivo veio cada coisa perdida?
+
+**Sinal de alerta.** “É a mesma execução, só que com os arquivos novos.”
+
+**O que fazer.** Compare antes e depois pelo identificador e salve a lista do que se perdeu, com o arquivo de origem de cada item. Force a gravação só se cada perda for explicada por uma mudança no próprio arquivo de origem, e ponha a correção no script que faz a fusão, não na saída. Uma reconstrução completa faz a mesma comparação (ver a lição 48).
+
+### 61. Um auxiliar que adivinha a intenção pela forma dos argumentos
+
+`from: 4248a8c5` · `by: ai`
+
+**A ideia.** Uma função que decide o que fazer conforme um argumento foi passado ou não (com corpo é POST, sem corpo é GET; com um id atualiza, sem ele insere) transforma uma omissão numa operação diferente, sem erro.
+
+**Exemplo.** Um auxiliar do front-end para chamar o servidor enviava POST quando recebia dados e GET quando não recebia. Um novo endpoint era POST mas não precisava de dados; ele foi chamado sem nenhum, saiu como GET, e o servidor respondeu “method not allowed”. A tela mostrava só uma linha curta de erro, e o problema só foi notado ao testar no navegador.
+
+**Pergunta detectora.** Esta função muda de operação conforme um argumento opcional? Se eu deixo esse argumento de fora por não precisar dele, ela faz silenciosamente outra coisa?
+
+**Sinal de alerta.** “Este não recebe dados, eu chamo sem nada”.
+
+**O que fazer.** Torne a operação explícita (`api.post(path)`, `save(x, create=True)`), ou faça do padrão o caso seguro. Enquanto o auxiliar ambíguo existir, revise cada chamada que omite esse argumento.
+
 ### WEB-1. Um armazenamento danificado não pode levar o próximo registro junto
 
 `from: e896b1e3` · `by: ai`

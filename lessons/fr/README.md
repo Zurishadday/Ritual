@@ -15,6 +15,9 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **51.** [Ce qui vous paraît évident est la première chose à enseigner](writing-and-docs.md#51-ce-qui-vous-paraît-évident-est-la-première-chose-à-enseigner)
 - **52.** [Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire](writing-and-docs.md#52-écrire-sur-un-outil-qui-évolue-vite-à-partir-de-la-pratique-daujourdhui-pas-de-mémoire)
 - **54.** [« Le X au début et à la fin » : tous les traducteurs choisissent la même mauvaise lecture](writing-and-docs.md#54--le-x-au-début-et-à-la-fin---tous-les-traducteurs-choisissent-la-même-mauvaise-lecture)
+- **58.** [Une consigne faite de plusieurs morceaux se voit avant d'être assemblée](writing-and-docs.md#58-une-consigne-faite-de-plusieurs-morceaux-se-voit-avant-dêtre-assemblée)
+- **AI-1.** [Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez](writing-and-docs.md#ai-1-si-vous-restreignez-lendroit-où-le-modèle-peut-écrire-il-écrit-là-où-vous-le-laissez)
+- **AI-2.** [Une règle écrite en liste de contrôle s'exécute comme une liste, même après que l'autre personne a répondu](writing-and-docs.md#ai-2-une-règle-écrite-en-liste-de-contrôle-sexécute-comme-une-liste-même-après-que-lautre-personne-a-répondu)
 - **EDU-2.** [Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse](writing-and-docs.md#edu-2-ce-que-lapprenant-voit-avant-de-répondre-ne-peut-pas-contenir-la-réponse)
 - **EDU-3.** [Une question à deux réponses défendables ne mesure rien](writing-and-docs.md#edu-3-une-question-à-deux-réponses-défendables-ne-mesure-rien)
 - **EDU-5.** [Un indice pointe vers la cause de l'erreur, pas vers la réponse](writing-and-docs.md#edu-5-un-indice-pointe-vers-la-cause-de-lerreur-pas-vers-la-réponse)
@@ -56,6 +59,8 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **24.** [Écrire avec un filet de sécurité](scripts-and-files.md#24-écrire-avec-un-filet-de-sécurité)
 - **25.** [Un réglage n'est pas un statut, et une alerte n'est pas une garantie](scripts-and-files.md#25-un-réglage-nest-pas-un-statut-et-une-alerte-nest-pas-une-garantie)
 - **48.** [Si un fichier vient d'un générateur, la correction va dans le générateur](scripts-and-files.md#48-si-un-fichier-vient-dun-générateur-la-correction-va-dans-le-générateur)
+- **56.** [Une mise à jour incrémentale n'est pas une reconstruction : lisez ce qu'elle supprime](scripts-and-files.md#56-une-mise-à-jour-incrémentale-nest-pas-une-reconstruction--lisez-ce-quelle-supprime)
+- **61.** [Une fonction d'aide qui devine l'intention d'après la forme de ses arguments](scripts-and-files.md#61-une-fonction-daide-qui-devine-lintention-daprès-la-forme-de-ses-arguments)
 - **WEB-1.** [Un stockage endommagé ne doit pas entraîner l'enregistrement suivant avec lui](scripts-and-files.md#web-1-un-stockage-endommagé-ne-doit-pas-entraîner-lenregistrement-suivant-avec-lui)
 
 ## Interface et design
@@ -69,6 +74,8 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **45.** [Quelqu'un parcourt aussi le chemin d'erreur](interface-and-design.md#45-quelquun-parcourt-aussi-le-chemin-derreur)
 - **46.** [Ce qui s'exécute à chaque requête ne peut pas grandir avec le contenu](interface-and-design.md#46-ce-qui-sexécute-à-chaque-requête-ne-peut-pas-grandir-avec-le-contenu)
 - **49.** [Une règle générale ne doit pas écraser en silence les règles spécifiques](interface-and-design.md#49-une-règle-générale-ne-doit-pas-écraser-en-silence-les-règles-spécifiques)
+- **57.** [Une touche n'arrive pas de la même façon sur chaque système](interface-and-design.md#57-une-touche-narrive-pas-de-la-même-façon-sur-chaque-système)
+- **59.** [Un événement venant de quelque chose déjà remplacé ne doit pas agir](interface-and-design.md#59-un-événement-venant-de-quelque-chose-déjà-remplacé-ne-doit-pas-agir)
 - **VIDEO-1.** [Dans une vidéo, chaque action tombe au moment où la narration la nomme](interface-and-design.md#video-1-dans-une-vidéo-chaque-action-tombe-au-moment-où-la-narration-la-nomme)
 - **VIDEO-2.** [Dans une vidéo, ce qui change sans être montré est signalé](interface-and-design.md#video-2-dans-une-vidéo-ce-qui-change-sans-être-montré-est-signalé)
 - **WEB-2.** [Un formulaire public reçoit des robots dès le premier jour](interface-and-design.md#web-2-un-formulaire-public-reçoit-des-robots-dès-le-premier-jour)
@@ -82,6 +89,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **29.** [Vérifier la commande avant de la transmettre à quelqu'un d'autre](console-and-tools.md#29-vérifier-la-commande-avant-de-la-transmettre-à-quelquun-dautre)
 - **44.** [Ce que vous retirez de la sortie peut être le verdict](console-and-tools.md#44-ce-que-vous-retirez-de-la-sortie-peut-être-le-verdict)
 - **53.** [Le code passe par l'éditeur, pas par le traitement de texte du shell](console-and-tools.md#53-le-code-passe-par-léditeur-pas-par-le-traitement-de-texte-du-shell)
+- **60.** [Ce qui passe en argument d'un processus a un plafond qu'on ne voit qu'en grandissant](console-and-tools.md#60-ce-qui-passe-en-argument-dun-processus-a-un-plafond-quon-ne-voit-quen-grandissant)
 
 ## Git et processus
 

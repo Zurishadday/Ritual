@@ -15,6 +15,9 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **51.** [O que parece óbvio para você é a primeira coisa a ensinar](writing-and-docs.md#51-o-que-parece-óbvio-para-você-é-a-primeira-coisa-a-ensinar)
 - **52.** [Escreva sobre uma ferramenta que muda rápido a partir da prática de hoje, não da memória](writing-and-docs.md#52-escreva-sobre-uma-ferramenta-que-muda-rápido-a-partir-da-prática-de-hoje-não-da-memória)
 - **54.** [“O X no início e no fechamento”: todo tradutor escolhe a mesma leitura errada](writing-and-docs.md#54-o-x-no-início-e-no-fechamento-todo-tradutor-escolhe-a-mesma-leitura-errada)
+- **58.** [Uma instrução feita de várias peças é vista antes de ser montada](writing-and-docs.md#58-uma-instrução-feita-de-várias-peças-é-vista-antes-de-ser-montada)
+- **AI-1.** [Se você restringe onde o modelo pode escrever, ele escreve onde você deixar](writing-and-docs.md#ai-1-se-você-restringe-onde-o-modelo-pode-escrever-ele-escreve-onde-você-deixar)
+- **AI-2.** [Uma regra escrita como lista de verificação é executada como lista de verificação, mesmo depois de a outra pessoa ter respondido](writing-and-docs.md#ai-2-uma-regra-escrita-como-lista-de-verificação-é-executada-como-lista-de-verificação-mesmo-depois-de-a-outra-pessoa-ter-respondido)
 - **EDU-2.** [O que o estudante vê antes de responder não pode conter a resposta](writing-and-docs.md#edu-2-o-que-o-estudante-vê-antes-de-responder-não-pode-conter-a-resposta)
 - **EDU-3.** [Uma pergunta com duas respostas defensáveis não mede nada](writing-and-docs.md#edu-3-uma-pergunta-com-duas-respostas-defensáveis-não-mede-nada)
 - **EDU-5.** [Uma dica aponta para a causa do erro, não para a resposta](writing-and-docs.md#edu-5-uma-dica-aponta-para-a-causa-do-erro-não-para-a-resposta)
@@ -56,6 +59,8 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **24.** [Escreva com rede de segurança](scripts-and-files.md#24-escreva-com-rede-de-segurança)
 - **25.** [Uma configuração não é um status, e um alerta não é uma garantia](scripts-and-files.md#25-uma-configuração-não-é-um-status-e-um-alerta-não-é-uma-garantia)
 - **48.** [Se um arquivo vem de um gerador, a correção vai no gerador](scripts-and-files.md#48-se-um-arquivo-vem-de-um-gerador-a-correção-vai-no-gerador)
+- **56.** [Uma atualização incremental não é uma reconstrução: leia o que ela descarta](scripts-and-files.md#56-uma-atualização-incremental-não-é-uma-reconstrução-leia-o-que-ela-descarta)
+- **61.** [Um auxiliar que adivinha a intenção pela forma dos argumentos](scripts-and-files.md#61-um-auxiliar-que-adivinha-a-intenção-pela-forma-dos-argumentos)
 - **WEB-1.** [Um armazenamento danificado não pode levar o próximo registro junto](scripts-and-files.md#web-1-um-armazenamento-danificado-não-pode-levar-o-próximo-registro-junto)
 
 ## Interface e design
@@ -69,6 +74,8 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **45.** [Alguém também percorre o caminho do erro](interface-and-design.md#45-alguém-também-percorre-o-caminho-do-erro)
 - **46.** [O que roda a cada requisição não pode crescer com o conteúdo](interface-and-design.md#46-o-que-roda-a-cada-requisição-não-pode-crescer-com-o-conteúdo)
 - **49.** [Uma regra geral não pode vencer em silêncio as específicas](interface-and-design.md#49-uma-regra-geral-não-pode-vencer-em-silêncio-as-específicas)
+- **57.** [Uma tecla chega de forma diferente em cada sistema](interface-and-design.md#57-uma-tecla-chega-de-forma-diferente-em-cada-sistema)
+- **59.** [Um evento de algo já substituído não pode agir](interface-and-design.md#59-um-evento-de-algo-já-substituído-não-pode-agir)
 - **VIDEO-1.** [Em um vídeo, cada ação cai quando a narração a nomeia](interface-and-design.md#video-1-em-um-vídeo-cada-ação-cai-quando-a-narração-a-nomeia)
 - **VIDEO-2.** [Em um vídeo, o que muda sem aparecer é marcado](interface-and-design.md#video-2-em-um-vídeo-o-que-muda-sem-aparecer-é-marcado)
 - **WEB-2.** [Um formulário público recebe robôs desde o primeiro dia](interface-and-design.md#web-2-um-formulário-público-recebe-robôs-desde-o-primeiro-dia)
@@ -82,6 +89,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **29.** [Confira o comando antes de entregá-lo a alguém](console-and-tools.md#29-confira-o-comando-antes-de-entregá-lo-a-alguém)
 - **44.** [O que você corta da saída pode ser o veredito](console-and-tools.md#44-o-que-você-corta-da-saída-pode-ser-o-veredito)
 - **53.** [O código passa pelo editor, não pelo tratamento de texto do shell](console-and-tools.md#53-o-código-passa-pelo-editor-não-pelo-tratamento-de-texto-do-shell)
+- **60.** [O que viaja como argumento de processo tem um limite que você só vê quando o conteúdo cresce](console-and-tools.md#60-o-que-viaja-como-argumento-de-processo-tem-um-limite-que-você-só-vê-quando-o-conteúdo-cresce)
 
 ## Git e processo
 

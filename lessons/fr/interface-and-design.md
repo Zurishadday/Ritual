@@ -141,6 +141,34 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 **Que faire.** Laissez la règle générale ne toucher que ce qui lui appartient (le contour de focus, pas la forme). Si elle doit l'emporter volontairement, écrivez-le à côté. Et testez-la sur l'élément le plus différent, pas seulement sur le plus courant.
 
+### 57. Une touche n'arrive pas de la même façon sur chaque système
+
+`from: 13762f96` · `by: ai`
+
+**L'idée.** Ce qu'un programme reçoit d'une touche dépend du système et de la disposition du clavier. Sous Windows, AltGr arrive comme Ctrl et Alt à la fois ; sur un Mac, beaucoup de symboles se tapent avec Option ; la même position de touche tape un autre symbole sur une autre disposition. Un code qui filtre les touches selon leurs modificateurs, testé seulement avec la touche que le test envoie, rejette les personnes qui ont bien fait.
+
+**Exemple.** Un exercice web demandait aux apprenants de taper des symboles un par un, et ignorait toute touche accompagnée de Ctrl, pour que les raccourcis ne comptent pas. Sur un clavier de disposition espagnole sous Windows, @ se tape avec AltGr, qui arrive comme Ctrl et Alt : personne avec ce matériel ne pouvait terminer. Le test envoyait @ sans modificateur et passait. Un relecteur l'a trouvé en lisant le code.
+
+**Question détectrice.** Ai-je testé cette touche comme elle arrive sous Windows, sur un Mac et sur une autre disposition, avec ses modificateurs, ou seulement comme le test l'envoie ?
+
+**Signal d'alarme.** « Dans le test, ça passe. »
+
+**Que faire.** Avant de filtrer une touche selon ses modificateurs, listez comment elle arrive sur chaque système (AltGr : Ctrl et Alt sous Windows, ce que `getModifierState("AltGraph")` permet de distinguer ; Option : `altKey` ; Command : `metaKey`), ou acceptez la touche quand `event.key` est le caractère attendu, quels que soient les modificateurs reçus. Écrivez le test avec l'événement que chaque système envoie, pas avec le seul caractère (voir la leçon 13). Ce qui ne peut pas être simulé (un raccourci que le système se réserve) reçoit une autre voie sur le même écran, et une personne l'essaie sur une vraie machine.
+
+### 59. Un événement venant de quelque chose déjà remplacé ne doit pas agir
+
+`from: 7847058f` · `by: ai`
+
+**L'idée.** Quand quelque chose peut être relancé avant que le précédent ait fini (un micro, une recherche, une connexion, un minuteur), le rappel tardif de l'ancien arrive pendant que le nouveau tourne. S'il ne vérifie pas qu'il est toujours l'instance en cours, il agit sur l'état nouveau : il redémarre, envoie ou écrase.
+
+**Exemple.** Un bouton de dictée lançait un moteur de reconnaissance vocale ; à son événement « fin », il envoyait le texte ou, si l'écoute était encore active, il redémarrait. Entre « terminé » et cet événement, il s'écoulait une demi-seconde pendant laquelle le bouton était déjà revenu à « parler ». Un clic rapide a lancé un nouveau moteur, et l'événement de fin de l'ancien a constaté « écoute encore active » et s'est relancé. Le micro est resté allumé pendant que la voix de synthèse de l'autre côté répondait, et l'a transcrite comme si la personne l'avait dite.
+
+**Question détectrice.** Si ceci est relancé avant que le précédent ait fini, le rappel tardif du précédent peut-il agir sur le nouveau ? Qu'est-ce qui empêche de le relancer pendant que le précédent est encore en train de se fermer ?
+
+**Signal d'alarme.** « Quand ça se termine, ça vérifie le drapeau et décide »
+
+**Que faire.** Chaque rappel vérifie d'abord qu'il est toujours l'instance en cours (`if (current !== me) return`), et le contrôle reste désactivé (ou `aria-disabled`, voir la leçon WEB-4) pendant que le précédent finit de se fermer. Pour le tester, double-cliquez, ou lancez deux recherches à la suite dont la première est plus lente.
+
 ### VIDEO-1. Dans une vidéo, chaque action tombe au moment où la narration la nomme
 
 `from: 93ac042f` · `by: ai`

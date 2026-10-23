@@ -65,3 +65,17 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 **Signal d'alarme.** « C'est un simple remplacement, je le fais en une seule commande » · « plusieurs remplacements d'un coup, c'est plus rapide ».
 
 **Que faire.** Modifiez le code avec les outils d'édition et d'écriture de l'éditeur. Quand une modification doit être scriptée, écrivez le script dans un fichier et lancez-le avec un interpréteur qui lit et écrit en UTF-8 et dont les littéraux de chaînes sont simples (`node fix.mjs`, `python -I fix.py`). Puis regardez le diff : une modification qui a touché plus de lignes que prévu, ou des caractères que vous n'aviez pas touchés, vient du shell.
+
+### 60. Ce qui passe en argument d'un processus a un plafond qu'on ne voit qu'en grandissant
+
+`from: c0be3e59` · `by: ai`
+
+**L'idée.** Une bibliothèque qui lance un autre programme peut lui transmettre votre texte sous forme d'arguments de ligne de commande. Le système d'exploitation plafonne cette ligne (sous Windows, environ 32 000 caractères), et l'erreur que vous obtenez en dépassant ce plafond ne le dit presque jamais.
+
+**Exemple.** Un serveur appelait un modèle de langage à travers une bibliothèque qui lance un outil en ligne de commande et lui transmet un long texte de configuration sous forme d'option. Avec de courts textes, cela marchait. Le texte de configuration d'un rôle incluait un fichier de règles de plusieurs pages : sous Windows, cela échouait avec « le nom de fichier ou l'extension est trop long », et la bibliothèque l'a signalé comme « outil introuvable ». Cela a été corrigé en passant ce texte par un fichier temporaire.
+
+**Question détectrice.** Ce texte qui grandit avec le contenu (un texte de configuration, une liste, une requête) : comment atteint-il l'autre processus — ligne de commande, variable d'environnement, URL ? Que se passe-t-il s'il est dix fois plus long ?
+
+**Signal d'alarme.** « Ça marchait déjà avec l'exemple court. »
+
+**Que faire.** Tout ce qui peut grandir voyage dans un fichier, par l'entrée standard ou dans le corps d'une requête, jamais en arguments, en variables d'environnement ni dans l'URL. Testez une fois avec le plus long texte que vous attendez, sur le système le plus strict où il tournera.

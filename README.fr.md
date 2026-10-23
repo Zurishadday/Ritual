@@ -18,7 +18,7 @@ Un plugin pour Claude Code qui transforme chaque erreur en leçon, chaque leçon
 
 D'autres outils notent ce qui a été appris ; Ritual va plus loin et le vérifie, car une règle qui n'existe que sous forme de texte finit par être oubliée au milieu d'une longue session, alors qu'une règle qui se vérifie elle-même ne l'est pas.
 
-Il livre **55 leçons de terrain**, chacune née d'une vraie erreur ; des **paquets par type de projet**, dont les leçons viennent de l'observation d'un modèle en train de construire quelque chose puis de le casser ; et **une seule commande**, `/ritual`, qui transforme les erreurs de votre session en vos propres leçons, et vos leçons en règles qui s'appliquent d'elles-mêmes.
+Il livre **61 leçons de terrain**, chacune née d'une vraie erreur ; des **paquets par type de projet**, dont les leçons viennent de l'observation d'un modèle en train de construire quelque chose puis de le casser ; et **une seule commande**, `/ritual`, qui transforme les erreurs de votre session en vos propres leçons, et vos leçons en règles qui s'appliquent d'elles-mêmes.
 
 **Mesuré :** sur une tâche web que Ritual n'a jamais apprise, quatre constructions faites sans Ritual et quatre avec, chacune relue à l'aveugle. Les erreurs qui se décident pendant l'écriture (le chemin d'erreur, le focus du clavier, un fichier de données endommagé), un groupe fixé avant les essais, sont apparues 11 fois sans Ritual et une fois avec ses leçons au départ, telles qu'elles sont livrées (5 fois avec la clôture activée aussi). Les erreurs qui ne se voient qu'en exécutant n'ont pas baissé, ni les nouvelles erreurs, ni le total, selon la règle fixée avant les essais : Ritual évite les erreurs pour lesquelles il a une leçon, pendant l'écriture du code. Une construction avec Ritual et sans relecture s'est terminée avec pas plus d'erreurs du paquet qu'une construction sans Ritual après relecture et correction (3,5 contre 4,5 en moyenne, dans la dispersion), pour $0.61 contre $2.64. Une tâche, quatre constructions par bras, un seul modèle : les données et la méthode sont dans [simulations](simulations/clinic/RESULTS.md).
 
@@ -133,7 +133,8 @@ Au-dessus des groupes se trouvent les **paquets** par type de projet : des leço
 | `web` | 5 : perte des données sauvegardées en cas d'altération, les robots sur un formulaire public, le repli sans JavaScript, le focus sur l'envoi et une connexion sans limite de tentatives. |
 | `education` | 5 : un exercice réussi sans la compétence, la réponse visible avant la question, deux réponses défendables, deviner par la position ou la longueur, et un indice qui donne la réponse. |
 | `video` | 2 : chaque action tombe au moment où la narration la nomme, et ce qui change sans être montré est signalé. |
-| `apps`, `crm`, `ai` | En préparation, avec la même méthode. |
+| `ai` | 2 : ce qu'un prompt interdit dans un champ finit écrit dans un autre, et une liste de contrôle dans un prompt se fait poser point par point, même après que la personne a déjà répondu. |
+| `apps`, `crm` | En préparation, avec la même méthode. |
 | Le vôtre | Un type de projet qui manque (mobile, données, jeux…) commence par sa première leçon : voir [où va une leçon](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Chaque leçon a cinq parties, toujours les cinq : **l'idée**, un **exemple** réel et anonyme, la **question détectrice** qui sépare le cas qui s'applique de celui qui ne s'applique pas, le **signal d'alarme** (la phrase que vous vous dites juste avant de refaire l'erreur) et **que faire**. Et un numéro qui ne change jamais : une leçon redondante est marquée comme fusionnée dans une autre, jamais supprimée. Le format complet se trouve dans [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).

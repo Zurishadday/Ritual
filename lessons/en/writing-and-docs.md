@@ -138,6 +138,48 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **What to do.** Make the split visible. Count it ("two pieces: …"), give each item its own article ("the lessons at the start, and the close"), or put the short item first ("the close, and the lessons at the start"). A note about a list goes outside it, in its own clause. Then read the translation of that sentence for the reading you meant.
 
+### 58. An instruction made of many pieces is seen before it is assembled
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: interface-and-design`
+
+**The idea.** When what you teach is assembled from several pieces (a formula with five arguments, a command with several options), dictating them one after another while they are typed loses the learner: they must understand each piece and the assembly at once. First each piece is shown doing its job in the data, with its name and meaning in view; then it is assembled.
+
+**Example.** A tutorial video for a formula with two conditions dictated each range and each condition while it was typed. The owner: each parameter wasn't understood, and with many parameters one gets lost. Remade with the question in words, each piece painted in the data with its colour, the count done by hand, the formula built in pieces with the same colours, and the only new thing at the end, it worked much better.
+
+**Detector question.** Before the first character is typed, has the learner seen in the data what each piece does? Does each piece carry its name and what it means in view, not only its colour?
+
+**Warning sign.** "The voice names each argument as it appears."
+
+**What to do.** First the question in words. Then each piece shown in the data, one colour each, with its name and what it means beside it. Then the result worked out by hand. Only then the instruction, built in parts with the same colours and a pause between parts, with the new thing last. Not the same as lesson 51: here every piece may already be known, and what fails is the order.
+
+### AI-1. If you restrict where the model may write, it writes wherever you let it
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: interface-and-design` · `packages: ai`
+
+**The idea.** When the prompt or the code forbids an output field that the model does have something to say in, the model does not stay quiet: it puts it in the field you did allow, even if it does not belong there. Each field must say what it may contain and that leaving it empty is fine (see lesson 38).
+
+**Example.** A live assistant had three zones: warnings, facts about the client, and the line to say next. The prompt said "in the first 2 minutes, only use warnings", and the code dropped everything else. The model wanted to suggest a question and put it in the warnings zone ("Don't explain more: ask 'what would you like to get out of this?'"). When it did send the line in its own zone, the code dropped it and the panel stayed empty. The person reported it with a screenshot.
+
+**Detector question.** If the model has something to say and the right field is forbidden right now, where will it put it? Does each field say what fits and what doesn't, and that it may stay empty? Does the code drop something the prompt doesn't know gets dropped?
+
+**Warning sign.** "In that phase, have it use only field X".
+
+**What to do.** Define each field by its content ("warnings only; never a line to say"), not by the moment. If a phase should not show something, the prompt and the code must say the same thing (see lesson 9). Test with a case where the model does have something to say in the forbidden field.
+
+### AI-2. A rule written as a checklist gets executed as a checklist, even after the other person answered
+
+`origin: field · claude-opus-5-5 · 2026-10` · `packages: ai`
+
+**The idea.** If the prompt lists what must be covered (the points of an opening, the fields of a form), the model asks for them one by one even when the person already gave them in other words, and stops responding to what they just said.
+
+**Example.** A sales assistant had to cover four opening points in the first minute; one was "what they want to get out of the call". The client had just said "I'm in accounting and wanted to see what this data thing is about". The assistant suggested "If it's not for you, just tell me. What would you like to get out of today?": it ignored what the client said and asked something already answered. The person noticed ("it doesn't fit what the client is asking me right now").
+
+**Detector question.** If the person already gave this point in other words, does the prompt tell the model to count it as covered? Does the reply build on the last thing the person said, or jump to the next item on the list?
+
+**Warning sign.** "Have it cover the four points".
+
+**What to do.** Next to every list, write: "a point said in other words is already covered", "whatever is missing goes in as a bridge inside the reply that follows the thread" and "never ignore the last thing they said". Test it with a real conversation where the person answers a point before being asked.
+
 ### EDU-2. What learners see before answering can't contain the answer
 
 `origin: field · ~opus · 2026-10` · `packages: education` · `seen: claude-opus-5-5 2026-10`

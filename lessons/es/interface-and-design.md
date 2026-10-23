@@ -141,6 +141,34 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 **Qué hacer.** Que la regla general toque solo lo suyo (el contorno del foco, no la forma). Si debe ganar a propósito, escríbelo junto a ella. Y pruébala en la pieza más distinta, no solo en la común.
 
+### 57. Una tecla llega distinta en cada sistema
+
+`from: 13762f96` · `by: ai`
+
+**La idea.** Lo que un programa recibe de una tecla depende del sistema y de la distribución del teclado. En Windows, AltGr llega como Ctrl y Alt juntos; en un Mac, muchos símbolos se escriben con Opción; la misma posición de tecla escribe otro símbolo en otra distribución. El código que filtra teclas por sus modificadores, probado solo con la tecla que envía la prueba, rechaza a quien lo hizo bien.
+
+**Ejemplo.** Un ejercicio web pedía a quien aprendía escribir símbolos uno por uno, e ignoraba toda tecla que llegara con Ctrl, para que los atajos no contaran. En un teclado con distribución española en Windows, la @ se escribe con AltGr, que llega como Ctrl y Alt: nadie con esa configuración podía terminar. La prueba envió @ sin modificador y pasó. Lo encontró un revisor leyendo el código.
+
+**Pregunta detectora.** ¿Probé esta tecla como llega en Windows, en un Mac y en otra distribución, con sus modificadores, o solo como la envía la prueba?
+
+**Señal de alarma.** «En la prueba pasa».
+
+**Qué hacer.** Antes de filtrar una tecla por sus modificadores, lista cómo llega en cada sistema (AltGr: Ctrl y Alt en Windows, que `getModifierState("AltGraph")` distingue; Opción: `altKey`; Comando: `metaKey`), o acepta la tecla cuando `event.key` es el carácter esperado, venga con lo que venga. Escribe la prueba con el evento que envía cada sistema, no con el carácter suelto (ver la lección 13). Lo que no se puede simular (un atajo que el sistema se reserva para sí) tiene otra vía en la misma pantalla, y una persona lo prueba en una máquina real.
+
+### 59. Un evento de algo ya reemplazado no debe actuar
+
+`from: 7847058f` · `by: ai`
+
+**La idea.** Cuando algo puede volver a iniciarse antes de que termine el anterior (un micrófono, una búsqueda, una conexión, un temporizador), el callback tardío del anterior llega mientras el nuevo está corriendo. Si no comprueba que sigue siendo el actual, actúa sobre el estado nuevo: reinicia, envía o sobrescribe.
+
+**Ejemplo.** Un botón de dictado iniciaba un reconocedor de voz; en su evento de «terminó» enviaba el texto o, si la escucha seguía activa, lo reiniciaba. Entre «terminado» y ese evento había medio segundo con el botón ya de vuelta en «hablar». Un clic rápido inició un reconocedor nuevo, y el evento de fin del viejo vio «sigue escuchando» y se reinició. El micrófono quedó encendido mientras la voz sintetizada del otro lado respondía, y la transcribió como si la persona la hubiera dicho.
+
+**Pregunta detectora.** Si esto se vuelve a iniciar antes de que termine el anterior, ¿el callback tardío del anterior puede actuar sobre el nuevo? ¿Qué impide que se vuelva a iniciar mientras el anterior todavía se está cerrando?
+
+**Señal de alarma.** «Cuando termina, revisa la bandera y decide».
+
+**Qué hacer.** Cada callback primero comprueba que su instancia sigue siendo la actual (`if (current !== me) return`), y el control queda deshabilitado (o `aria-disabled`, ver la lección WEB-4) mientras el anterior termina de cerrarse. Para probarlo, haz doble clic, o lanza dos búsquedas seguidas en las que la primera sea más lenta.
+
 ### VIDEO-1. En un video, cada acción cae cuando la narración la nombra
 
 `from: 93ac042f` · `by: ai`

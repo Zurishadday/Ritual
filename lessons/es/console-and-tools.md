@@ -65,3 +65,17 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 **Señal de alarma.** «Es un reemplazo rápido, lo hago en un solo comando» · «varios reemplazos a la vez es más rápido».
 
 **Qué hacer.** Cambia el código con las herramientas de editar y escribir del propio editor. Cuando el cambio tenga que hacerse con un script, escribe el script en un archivo y córrelo con un intérprete que lea y escriba UTF-8 y tenga literales de cadena simples (`node fix.mjs`, `python -I fix.py`). Luego revisa el diff: un cambio que tocó más líneas de las que querías, o caracteres que no tocaste, es culpa de la consola.
+
+### 60. Lo que viaja como argumento de un proceso tiene un techo que no se ve hasta que crece
+
+`from: c0be3e59` · `by: ai`
+
+**La idea.** Una biblioteca que lanza otro programa puede pasarle tu texto como argumentos de línea de comandos. El sistema operativo limita esa línea (en Windows, unos 32 000 caracteres), y el error que obtienes al cruzarla casi nunca lo dice.
+
+**Ejemplo.** Un servidor llamaba a un modelo de lenguaje mediante una biblioteca que inicia una herramienta de línea de comandos y le pasa un texto de configuración largo como opción. Con textos cortos funcionaba. El texto de configuración de un rol incluía un archivo de reglas de varias páginas: en Windows fallaba con «el nombre de archivo o la extensión es demasiado largo», y la biblioteca lo reportaba como «herramienta no encontrada». Se arregló pasando ese texto en un archivo temporal.
+
+**Pregunta detectora.** Este texto que crece con el contenido (un texto de configuración, una lista, una consulta): ¿cómo llega al otro proceso, por línea de comandos, variable de entorno o URL? ¿Qué pasa cuando es diez veces más largo?
+
+**Señal de alarma.** «Ya funcionaba con el ejemplo corto».
+
+**Qué hacer.** Todo lo que pueda crecer viaja en un archivo, por la entrada estándar o en el cuerpo de una petición, nunca como argumentos, variables de entorno ni en la URL. Prueba una vez con el texto más largo que esperas, en el sistema más estricto donde vaya a correr.

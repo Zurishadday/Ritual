@@ -134,6 +134,34 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 **Qué hacer.** Antes de corregir un archivo, averigua de dónde sale. Corrige la fuente (la plantilla, el script, la entrega) y vuelve a generar; si tienes que corregir la salida, corrige también la fuente en el mismo paso. Quien revisa algo generado avisa qué cambió para que pase a la fuente. Y antes de rehacer un archivo desde sus fuentes, compáralo con lo que va a salir: lo que difiera es un arreglo que se perdería.
 
+### 56. Una actualización incremental no es reconstruir todo: revisa lo que elimina
+
+`from: 9ffb2735` · `by: ai`
+
+**La idea.** Una actualización que procesa solo lo que cambió no da el mismo resultado que una reconstrucción completa. Cuando reemplaza todo lo que vino de un archivo releído, también elimina lo que otros archivos aportaron a esas mismas entradas. Antes de aceptar que algo desaparece, lista lo que se pierde y de qué archivo venía.
+
+**Ejemplo.** Un grafo de conocimiento de un repositorio se actualizó solo con los archivos cambiados. Un guardia que impide que el grafo se encoja lo detuvo dos veces. Primero, nodos que solo compartían una etiqueta se fundieron en uno (ver la lección 2). Luego, al reemplazar los nodos de un archivo releído, también se borraron los nodos a los que apuntaban otros archivos: diez entradas que debían mostrar su propio título mostraban la etiqueta genérica de un nodo viejo.
+
+**Pregunta detectora.** ¿Qué había antes y ya no está, y de qué archivo venía cada cosa perdida?
+
+**Señal de alarma.** «Es la misma corrida, solo que con los archivos nuevos».
+
+**Qué hacer.** Compara antes y después por identificador, y guarda la lista de lo perdido con su archivo de origen. Fuerza la escritura solo si cada pérdida se explica por un cambio en su propio archivo de origen, y pon el arreglo en el script que fusiona, no en la salida. Una reconstrucción completa hace la misma comparación (ver la lección 48).
+
+### 61. Una función auxiliar que adivina la intención por la forma de sus argumentos
+
+`from: 4248a8c5` · `by: ai`
+
+**La idea.** Una función que decide qué hacer según si se le pasó un argumento (con cuerpo es POST, sin cuerpo es GET; con un id actualiza, sin id inserta) convierte una omisión en otra operación, sin ningún error.
+
+**Ejemplo.** Una función auxiliar del front-end para llamar al servidor enviaba POST cuando recibía datos y GET cuando no. Un nuevo endpoint era POST pero no necesitaba datos; se llamó sin ninguno, salió como GET, y el servidor respondió «método no permitido». La pantalla solo mostró una línea breve de error, y se notó recién al probar en el navegador.
+
+**Pregunta detectora.** ¿Esta función cambia de operación según un argumento opcional? Si lo omito porque no lo necesito, ¿hace en silencio otra cosa?
+
+**Señal de alarma.** «Este no recibe datos, lo llamo sin nada».
+
+**Qué hacer.** Haz explícita la operación (`api.post(path)`, `save(x, create=True)`), o haz que el valor por defecto sea el caso seguro. Mientras exista la función auxiliar ambigua, revisa cada llamada que omite ese argumento.
+
 ### WEB-1. Un almacenamiento dañado no debe arrastrar consigo el registro siguiente
 
 `from: e896b1e3` · `by: ai`

@@ -138,6 +138,48 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 **Qué hacer.** Haz visible la separación. Cuéntala («dos piezas: …»), dale a cada elemento su propio artículo («las lecciones al inicio, y el cierre»), o pon primero el elemento corto («el cierre, y las lecciones al inicio»). Una nota sobre una lista va fuera de ella, en su propia cláusula. Luego lee la traducción de esa frase para ver si dice la lectura que querías.
 
+### 58. Una instrucción hecha de muchas piezas se ve antes de armarla
+
+`from: 2875c4ef` · `by: ai`
+
+**La idea.** Cuando lo que enseñas se arma con varias piezas (una fórmula con cinco argumentos, un comando con varias opciones), dictarlas una tras otra mientras se escriben hace que quien aprende se pierda: tiene que entender cada pieza y el armado a la vez. Primero cada pieza se muestra haciendo su trabajo en los datos, con su nombre y su significado a la vista; luego se arma.
+
+**Ejemplo.** Un video tutorial de una fórmula con dos condiciones dictaba cada rango y cada condición mientras se escribía. El responsable: no se entendía cada parámetro, y con muchos se pierde uno. Rehecho con la pregunta en palabras, cada pieza pintada en los datos con su color, el conteo hecho a mano, la fórmula armada en piezas con los mismos colores, y lo único nuevo al final, funcionó mucho mejor.
+
+**Pregunta detectora.** Antes de escribir el primer carácter, ¿quien aprende ya vio en los datos qué hace cada pieza? ¿Cada pieza lleva a la vista su nombre y su significado, no solo su color?
+
+**Señal de alarma.** «La voz nombra cada argumento según aparece».
+
+**Qué hacer.** Primero la pregunta en palabras. Luego cada pieza mostrada en los datos, un color para cada una, con su nombre y lo que significa al lado. Después el resultado calculado a mano. Solo entonces la instrucción, armada en partes con los mismos colores y una pausa entre partes, con lo nuevo al final. No es lo mismo que la lección 51: aquí cada pieza puede ya ser conocida, y lo que falla es el orden.
+
+### AI-1. Si restringes dónde puede escribir el modelo, escribe donde lo dejes
+
+`from: abeb61b2` · `by: ai`
+
+**La idea.** Cuando el prompt o el código prohíbe un campo de salida en el que el modelo sí tiene algo que decir, el modelo no se calla: lo pone en el campo que sí dejaste, aunque no le corresponda. Cada campo debe decir qué puede contener y que dejarlo vacío está bien (ver la lección 38).
+
+**Ejemplo.** Un asistente en vivo tenía tres zonas: advertencias, datos sobre el cliente y la frase que viene a continuación. El prompt decía «en los primeros 2 minutos, usa solo advertencias», y el código descartaba todo lo demás. El modelo quiso sugerir una pregunta y la puso en la zona de advertencias («No expliques más: pregunta “¿qué te gustaría sacar de esto?”»). Cuando sí envió la frase en su propia zona, el código la descartó y el panel quedó vacío. La persona lo reportó con una captura de pantalla.
+
+**Pregunta detectora.** Si el modelo tiene algo que decir y el campo correcto está prohibido en este momento, ¿dónde lo pondrá? ¿Cada campo dice qué cabe y qué no, y que puede quedar vacío? ¿El código descarta algo que el prompt no sabe que se descarta?
+
+**Señal de alarma.** «En esa fase, que use solo el campo X».
+
+**Qué hacer.** Define cada campo por su contenido («solo advertencias; nunca una frase para decir»), no por el momento. Si una fase no debe mostrar algo, el prompt y el código tienen que decir lo mismo (ver la lección 9). Prueba con un caso en el que el modelo sí tenga algo que decir en el campo prohibido.
+
+### AI-2. Una regla escrita como lista se ejecuta como lista, aun después de que la otra persona respondió
+
+`from: 23040433` · `by: ai`
+
+**La idea.** Si el prompt enumera lo que hay que cubrir (los puntos de una apertura, los campos de un formulario), el modelo pide cada uno por turno aunque la persona ya lo haya dado con otras palabras, y deja de responder a lo que acaba de decir.
+
+**Ejemplo.** Un asistente de ventas tenía que cubrir cuatro puntos de apertura en el primer minuto; uno era «qué quiere sacar de la llamada». El cliente acababa de decir «estoy en contabilidad y quería ver de qué va esto de los datos». El asistente sugirió «Si no es para ti, solo dime. ¿Qué te gustaría sacar hoy?»: ignoró lo que dijo el cliente y preguntó algo ya contestado. La persona lo notó («no encaja con lo que el cliente me está preguntando ahora»).
+
+**Pregunta detectora.** Si la persona ya dio este punto con otras palabras, ¿el prompt le dice al modelo que lo cuente como cubierto? ¿La respuesta se apoya en lo último que dijo la persona, o salta al siguiente punto de la lista?
+
+**Señal de alarma.** «Que cubra los cuatro puntos».
+
+**Qué hacer.** Junto a cada lista, escribe: «un punto dicho con otras palabras ya está cubierto», «lo que falte entra como un puente dentro de la respuesta que sigue el hilo» y «nunca ignores lo último que dijeron». Pruébalo con una conversación real en la que la persona responda un punto antes de que se lo pregunten.
+
 ### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
 
 `from: 8262f769` · `by: ai`

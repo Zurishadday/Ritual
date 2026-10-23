@@ -134,6 +134,34 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 **What to do.** Before fixing a file, find out where it comes from. Fix the source (the template, the script, the submission) and regenerate; if you have to fix the output, fix the source too in the same step. Whoever reviews generated output says what changed so it gets moved into the source. And before rebuilding a file from its sources, compare it with what's going to come out: anything that differs is a fix that would be lost.
 
+### 56. An incremental update is not a rebuild: read what it drops
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** An update that processes only what changed does not give the same result as a full rebuild. When it replaces everything that came from a re-read file, it also removes what other files contributed to the same entries. Before accepting that something disappears, list what is lost and where it came from.
+
+**Example.** A knowledge graph of a repository was updated with only the changed files. A guard against shrinking stopped it twice. First, nodes that only shared a label were merged into one (see lesson 2). Then, replacing the nodes of a re-read file also removed the nodes other files pointed to: ten entries that should have shown their own titles showed the generic label of an old node instead.
+
+**Detector question.** What was there before and is gone now, and which file did each lost thing come from?
+
+**Warning sign.** "It's the same run, only with the new files."
+
+**What to do.** Compare before and after by identifier and save the list of what was lost with its source file. Force the write only if each loss is explained by a change in its own source file, and put the fix in the script that merges, not in the output. A full rebuild gets the same comparison (see lesson 48).
+
+### 61. A helper that guesses intent from the shape of its arguments
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: interface-and-design`
+
+**The idea.** A function that decides what to do based on whether an argument was passed (with a body it is POST, without one GET; with an id it updates, without one it inserts) turns an omission into a different operation, with no error.
+
+**Example.** A front-end helper for calling the server sent POST when it got data and GET when it did not. A new endpoint was POST but needed no data; it was called without any, went out as GET, and the server answered "method not allowed". The screen only showed a short error line, and it was noticed only when testing in the browser.
+
+**Detector question.** Does this function switch operation on an optional argument? If I leave it out because I don't need it, does it silently do something else?
+
+**Warning sign.** "This one takes no data, I'll call it with nothing".
+
+**What to do.** Make the operation explicit (`api.post(path)`, `save(x, create=True)`), or make the default the safe case. While the ambiguous helper exists, review every call that omits that argument.
+
 ### WEB-1. A damaged store must not take the next record down with it
 
 `origin: lab · claude-sonnet-5-5 · 2026-10` · `packages: web`

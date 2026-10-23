@@ -18,7 +18,7 @@ Un plugin de Claude Code que convierte cada error en una lección, cada lección
 
 Otras herramientas anotan lo aprendido; Ritual llega hasta comprobarlo, porque una regla que solo vive en texto se olvida en una sesión larga, y una que se comprueba sola, no.
 
-Trae **55 lecciones de campo**, cada una nacida de un error real; **paquetes por tipo de proyecto**, cuyas lecciones salen de ver a un modelo construir algo y romperse; y **un comando**, `/ritual`, que convierte los errores de tu sesión en lecciones tuyas, y tus lecciones en reglas que se cumplen solas.
+Trae **61 lecciones de campo**, cada una nacida de un error real; **paquetes por tipo de proyecto**, cuyas lecciones salen de ver a un modelo construir algo y romperse; y **un comando**, `/ritual`, que convierte los errores de tu sesión en lecciones tuyas, y tus lecciones en reglas que se cumplen solas.
 
 **Medido:** una tarea web que Ritual nunca aprendió, construida cuatro veces sin Ritual y cuatro con Ritual, y cada construcción revisada a ciegas. Los errores que se deciden mientras se escribe (la ruta de error, el foco del teclado, un archivo de datos dañado), un grupo definido antes de las ejecuciones, aparecieron 11 veces sin Ritual y una vez con sus lecciones desde el principio, tal como se publica (5 veces con el cierre también activado). Los errores que solo se ven al ejecutar no bajaron, ni tampoco los errores nuevos ni el total, según la regla fijada antes de las ejecuciones: Ritual detiene los errores de los que tiene una lección, mientras se escribe el código. Una construcción con Ritual y sin ninguna revisión no terminó con más errores del paquete que una construcción sin Ritual después de revisión y arreglo (3.5 contra 4.5 en promedio, dentro de la dispersión), por $0.61 contra $2.64. Una tarea, cuatro construcciones por grupo, un modelo: los datos y el método están en [simulaciones](simulations/clinic/RESULTS.md).
 
@@ -133,7 +133,8 @@ Encima de los grupos van los **paquetes** por tipo de proyecto: lecciones que so
 | `web` | 5: lo que se pierde cuando se dañan los datos guardados, los robots en un formulario público, el respaldo sin JavaScript, el foco al enviar y un inicio de sesión sin límite de intentos. |
 | `education` | 5: un ejercicio que se aprueba sin la habilidad, la respuesta visible antes de la pregunta, dos respuestas defendibles, adivinar por el lugar o el largo, y una pista que regala la respuesta. |
 | `video` | 2: cada acción cae cuando la narración la nombra, y lo que cambia sin mostrarse se marca. |
-| `apps`, `crm`, `ai` | En camino, con el mismo método. |
+| `ai` | 2: lo que un prompt prohíbe en un campo acaba escrito en otro, y una lista de comprobación dentro de un prompt se repasa punto por punto aunque la persona ya hubiera respondido. |
+| `apps`, `crm` | En camino, con el mismo método. |
 | El tuyo | Un tipo de proyecto que falte (móvil, datos, juegos…) empieza con su primera lección: mira [dónde va una lección](lessons/TEMPLATE.md#where-a-lesson-goes). |
 
 Cada lección tiene cinco partes, siempre las cinco: **la idea**, un **ejemplo** real y anónimo, la **pregunta detectora** que separa el caso que aplica del que no, la **señal de alarma** (la frase que uno se dice justo antes de cometerlo otra vez) y **qué hacer**. Y un número que no cambia nunca: una lección que sobra se marca como fusionada en otra, no se borra. El formato completo está en [`lessons/TEMPLATE.md`](lessons/TEMPLATE.md).

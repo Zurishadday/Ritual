@@ -65,3 +65,17 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 **Sinal de alerta.** “É só um replace rápido, faço num comando só” · “trocar vários de uma vez é mais rápido”.
 
 **O que fazer.** Mude o código com as ferramentas de editar e gravar do próprio editor. Quando a mudança precisar ser feita por script, escreva o script num arquivo e rode-o com um interpretador que lê e grava UTF-8 e tem literais de string simples (`node fix.mjs`, `python -I fix.py`). Depois, olhe o diff: uma mudança que tocou mais linhas do que você queria, ou caracteres que você não tocou, é culpa do shell.
+
+### 60. O que viaja como argumento de processo tem um limite que você só vê quando o conteúdo cresce
+
+`from: c0be3e59` · `by: ai`
+
+**A ideia.** Uma biblioteca que inicia outro programa pode passar o seu texto a ele como argumentos de linha de comando. O sistema operacional limita essa linha (no Windows, cerca de 32 mil caracteres), e o erro que aparece ao ultrapassá-la quase nunca diz isso.
+
+**Exemplo.** Um servidor chamava um modelo de linguagem por meio de uma biblioteca que inicia uma ferramenta de linha de comando e lhe entrega um texto de configuração longo como uma flag. Com textos curtos funcionava. O texto de configuração de um dos papéis incluía um arquivo de regras com várias páginas: no Windows falhou com “o nome do arquivo ou a extensão é muito longo”, e a biblioteca relatou isso como “ferramenta não encontrada”. Foi corrigido passando esse texto num arquivo temporário.
+
+**Pergunta detectora.** Este texto que cresce com o conteúdo (um texto de configuração, uma lista, uma consulta): como ele chega ao outro processo — linha de comando, variável de ambiente, URL? O que acontece quando ele fica dez vezes mais longo?
+
+**Sinal de alerta.** “Já funcionava com o exemplo curto”.
+
+**O que fazer.** Tudo o que pode crescer viaja num arquivo, pela entrada padrão ou no corpo de uma requisição, nunca como argumentos, variáveis de ambiente ou na URL. Teste uma vez com o texto mais longo que você espera, no sistema mais restritivo em que ele vai rodar.
