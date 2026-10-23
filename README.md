@@ -16,7 +16,7 @@ A Claude Code plugin that turns every mistake into a lesson, every lesson into a
 
 Other tools write down what was learned; Ritual goes as far as checking it, because a rule that only lives in text gets forgotten in a long session, and one that checks itself does not.
 
-It ships **61 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from watching a model build something and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
+It ships **61 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from real mistakes in that kind of project or from watching a model build one and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
 
 **Measured:** a web task Ritual never learned from, built four times without Ritual and four with it, every build reviewed blind. The mistakes that get decided while writing (the error path, keyboard focus, a damaged data file), a group set before the runs, showed up 11 times without Ritual and once with its lessons at the start, as it ships (5 times with the close on too). The mistakes only seen by running did not drop, nor did new mistakes or the total, by the rule set before the runs: Ritual stops the mistakes it has a lesson for, while the code is being written. A build with Ritual and no review ended with no more of the package's mistakes than a build without Ritual after a review and a fix (3.5 against 4.5 on average, within the spread), for $0.61 against $2.64. One task, four builds per arm, one model: the data and the method are in [simulations](simulations/clinic/RESULTS.md).
 
@@ -153,9 +153,9 @@ Each lesson says where it came from, and with which model and in which month it 
 > [!NOTE]
 > Ritual runs on Claude, and a mistake one model makes another may not. That's why every lesson records its model: a lesson that only happened with another model is checked with Claude before anyone gets its question, and when a newer Claude no longer makes a mistake, the data shows it. See [which models made which mistakes](lessons/BY-MODEL.md).
 
-## Package lessons come from simulations
+## Where package lessons come from
 
-Lessons per kind of project are not made up. One model builds a realistic task without Ritual; another model, in another session, runs what was built and records what broke, with evidence. Every task runs twice: what breaks both times is a lesson; what breaks once stays a candidate. When a new model comes out, the tasks run again, and a lesson that no longer breaks is demoted, with data. The method is in [`simulations/`](simulations/README.md).
+Lessons per kind of project are not made up. Those of `education`, `video` and `ai` come from real mistakes, as the core ones do. Those of `web` come from simulations: one model builds a realistic task without Ritual; another model, in another session, runs what was built and records what broke, with evidence. Every task runs twice: what breaks both times is a lesson; what breaks once stays a candidate. When a new model comes out, the tasks run again, and a lesson that no longer breaks is demoted, with data. The method is in [`simulations/`](simulations/README.md).
 
 The first one was a website for a bike repair shop with a contact form and an admin page. Sonnet built it twice, and both versions escaped HTML properly, kept requests inside the public folder and held up under 300 messages at once. Even so, both silently lost the message that arrived after a cut-off write, both accepted hundreds of messages from a bot with no way to clean them up, and one said its test passed when it failed one time in ten. Every finding is in [`simulations/web/runs/`](simulations/web/runs/2026-10-sonnet-2/FINDINGS.md) with its evidence, next to the code as it was left.
 
