@@ -22,7 +22,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 9. One state lives in several records: move them together
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `groups: interface-and-design`
 
 **The idea.** Closing a pending item usually involves three places: the pending-items list, the test that watches it, and the document that describes it. If you move one, the others contradict it.
 

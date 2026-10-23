@@ -8,7 +8,7 @@
     "tests-and-checks": ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/test/**", "**/__tests__/**", "**/e2e/**", "**/cypress/**"],
     "numbers-and-data": ["**/*.sql", "**/*.ipynb", "**/*.csv", "**/*.parquet", "**/queries/**", "**/consultas/**", "**/models/**", "**/analytics/**", "**/notebooks/**"],
     "writing-and-docs": ["**/*.md", "**/*.mdx", "**/*.rst", "**/*.txt", "**/docs/**", "**/content/**"],
-    "scripts-and-files": ["**/scripts/**", "**/*.sh", "**/*.ps1", "**/*.mjs", "**/*.cjs", "**/Makefile", "**/*.yml", "**/*.yaml", "**/*.toml"],
+    "scripts-and-files": ["**/scripts/**", "**/*.sh", "**/*.ps1", "**/*.bat", "**/*.cmd", "**/*.mjs", "**/*.cjs", "**/Makefile", "**/*.yml", "**/*.yaml", "**/*.toml"],
     "interface-and-design": ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/*.svelte", "**/*.astro", "**/*.css", "**/*.scss", "**/*.html", "**/components/**", "**/pages/**", "**/app/**", "**/views/**", "**/templates/**"]
   }
 }

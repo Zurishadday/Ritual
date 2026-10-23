@@ -5,6 +5,7 @@
 // Usage: node scripts/maintain.mjs issue <N>                         reads a `lesson` or `confirmation` issue with gh
 //        node scripts/maintain.mjs add <file> <origin> [id]          adds a checked lesson to lessons/en/ (next id if none)
 //        node scripts/maintain.mjs seen <id> <model> <YYYY-MM>       adds a confirmation to a lesson's `seen:`
+//        node scripts/maintain.mjs groups <id> <group>             the lesson also shows when the work is in that group
 //        node scripts/maintain.mjs triage                            every open lesson and confirmation issue at once:
 //                                                                    confirmations by lesson, likely duplicates, unsafe ones
 //        node scripts/maintain.mjs --selftest
@@ -89,7 +90,20 @@ export function addSeen(fileText, id, model, month) {
   return text.replace(head[0], head[0].slice(0, -line.length) + next);
 }
 
-const isClaude = (model) => /^~?(claude|opus|sonnet|haiku|fable)/i.test(model ?? "");
+/** Adds a group to a lesson's `groups:` (once), right after its origin, so its question also shows when the work is in
+ * that group. Like `seen:`, the data line is not part of the fingerprint. */
+export function addGroup(fileText, id, group) {
+  const text = fileText.replace(/\r\n/g, "\n");
+  const head = text.match(new RegExp(`^### ${escape(id)}\\. .+\\n\\n(.+)$`, "m"));
+  if (!head) throw new Error(`lesson ${id} not found`);
+  const line = head[1];
+  const groups = line.match(/`groups: ([^`]+)`/);
+  if (groups && list(groups[1]).includes(group)) return text;
+  const next = groups ? line.replace(groups[0], `\`groups: ${groups[1]}, ${group}\``) : line.replace(/^(`origin: [^`]+`)/, `$1 · \`groups: ${group}\``);
+  return text.replace(head[0], head[0].slice(0, -line.length) + next);
+}
+
+const isClaude =(model) => /^~?(claude|opus|sonnet|haiku|fable)/i.test(model ?? "");
 
 /** Shared words between two lessons' title, idea and detector question, over the smaller set: a hint that they may be
  * the same mistake. Claude decides by meaning; this only says where to look first. */
@@ -201,6 +215,13 @@ export function selftest() {
   if (!twice.includes("`seen: claude-opus-5-5 2026-10, gpt-5 2026-11`")) bad.push("addSeen should append to an existing seen");
   if (addSeen(twice, "48", "gpt-5", "2026-11") !== twice) bad.push("addSeen must not repeat an entry");
   if (addSeen(file, "6", "x", "2026-10").includes("`seen: x 2026-10`\n\n**The idea.** y")) bad.push("addSeen touched the wrong lesson");
+  // A lesson that lives in one group also shows in another: `groups:` goes right after the origin, and grows once.
+  const g1 = addGroup(once, "48", "interface-and-design");
+  if (!g1.includes("`origin: field · ~sonnet · 2026-09` · `groups: interface-and-design` · `seen: claude-opus-5-5 2026-10`")) bad.push(`addGroup first: ${g1.slice(60, 220)}`);
+  const g2 = addGroup(g1, "48", "console-and-tools");
+  if (!g2.includes("`groups: interface-and-design, console-and-tools` · `seen:")) bad.push("addGroup should append to an existing groups");
+  if (addGroup(g2, "48", "console-and-tools") !== g2) bad.push("addGroup must not repeat a group");
+  if (parseLessons(g2, "scripts-and-files").lessons[1].data.groups !== "interface-and-design, console-and-tools") bad.push("addGroup's line must parse as groups");
   if (!isClaude("~opus") || !isClaude("claude-sonnet-5-5") || isClaude("gpt-5")) bad.push("isClaude");
   // Triage: confirmations grouped by lesson with their commands, a duplicate pair found, an unsafe lesson flagged.
   const confirm = (n, id, model, example = "It happened too.") => ({ number: n, title: `Confirm lesson ${id}`, labels: [{ name: "confirmation" }], body: `### Lesson number\n\n${id}\n\n### Model\n\n${model}\n\n### Month it happened\n\n2026-11\n\n### Kind of project\n\nweb\n\n### Your example\n\n${example}\n\n### Did Ritual's question show up before the mistake?\n\n_No response_` });
@@ -282,11 +303,21 @@ if (isMain(import.meta.url)) {
     console.log(`✓ lesson ${id}: seen ${model} ${month}`);
     process.exit(0);
   }
+  if (cmd === "groups" && args.length === 2) {
+    const [id, group] = args;
+    const l = readLessons().lessons.find((x) => x.id === id);
+    if (!l) { console.log(`✕ lesson ${id} does not exist`); process.exit(1); }
+    if (!TAXONOMY.groups.some((g) => g.slug === group) || group === l.group) { console.log(`✕ «${group}» is not a group, or is the lesson's own`); process.exit(1); }
+    const target = path.join(ROOT, l.file);
+    writeFileSync(target, addGroup(readFileSync(target, "utf8"), id, group));
+    console.log(`✓ lesson ${id}: also shows in ${group}`);
+    process.exit(0);
+  }
   if (cmd === "triage") {
     const issues = JSON.parse(execFileSync("gh", ["issue", "list", "--repo", "Zurishadday/Ritual", "--state", "open", "--limit", "500", "--json", "number,title,labels,body"], { encoding: "utf8" }));
     console.log(triageText(triage(issues, readLessons().lessons)));
     process.exit(0);
   }
-  console.error("✕ usage: node scripts/maintain.mjs issue <N> | add <file> <origin> [id] | seen <id> <model> <YYYY-MM> | triage | --selftest");
+  console.error("✕ usage: node scripts/maintain.mjs issue <N> | add <file> <origin> [id] | seen <id> <model> <YYYY-MM> | groups <id> <group> | triage | --selftest");
   process.exit(1);
 }

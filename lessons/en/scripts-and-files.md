@@ -66,7 +66,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 22. The second run is the one that finds the bug
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `groups: console-and-tools`
 
 **The idea.** A change that repeats without breaking anything has to be checked by running it twice, not once.
 
@@ -80,7 +80,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 23. Position-based addresses expire
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `groups: interface-and-design`
 
 **The idea.** If you insert something before "cell 9," cell 9 is now a different cell.
 

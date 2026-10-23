@@ -203,6 +203,9 @@ export function selftest() {
     [{ tool_name: "Edit", tool_input: { file_path: "C:/p/.ritual/lessons/console-and-tools.md" }, cwd: "C:/p" }, "writing-and-docs"],
     [{ tool_name: "Write", tool_input: { file_path: "C:/p/.claude/agents/reviewer.md" }, cwd: "C:/p" }, "writing-and-docs"],
     [{ tool_name: "Write", tool_input: { file_path: "C:/p/.github/workflows/test.yml" }, cwd: "C:/p" }, "scripts-and-files"],
+    // Windows launchers are scripts too: a .bat that starts a server matched no group, so its lessons never showed.
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/start.bat" }, cwd: "C:/p" }, "scripts-and-files"],
+    [{ tool_name: "Write", tool_input: { file_path: "C:/p/tools/run.cmd" }, cwd: "C:/p" }, "scripts-and-files"],
     // Outside the project, or with a base that does not match: the full path is used.
     [{ tool_name: "Write", tool_input: { file_path: "D:/otro/src/components/Boton.tsx" }, cwd: "C:/p" }, "interface-and-design"],
     [{ tool_name: "Write", tool_input: { file_path: "/tmp/x/tests/a.test.ts" }, cwd: "C:/p" }, "tests-and-checks"],
