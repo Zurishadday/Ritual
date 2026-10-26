@@ -4,17 +4,19 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 1. “Não consegui ler” não é “não há nada”
 
-`from: fe96d871` · `by: ai`
+`from: 01957441` · `by: ai`
 
 **A ideia.** Todo dado tem três estados: eu tenho, realmente não havia nada, e eu não sei. Os dois últimos são desenhados do mesmo jeito num gráfico, como zero, e significam o oposto.
 
 **Exemplo.** Uma consulta falha por causa de uma permissão expirada, e o painel mostra “0 vendas” para a região. Ninguém questiona: um zero parece um dado.
 
-**Pergunta detectora.** O número que estou prestes a mostrar, ou o “está tudo bem” em que estou prestes a acreditar, pode vir de uma consulta que falhou, de uma tabela vazia, de uma permissão negada ou de uma saída que não li por completo (ver a lição 44)?
+**Outro exemplo.** Um avaliador de IA de ligações de venda para treino disse que a pessoa tinha inventado a história de um cliente anterior, e listou “preenche lacunas com provas que não existem” entre os hábitos dela. O cliente era real; a história só não estava no manual que o avaliador leu. Depois, outro juiz de IA marcou como inventado um número que estava no próprio arquivo de perfil da pessoa, arquivo que ele nunca abriu. Nas duas vezes a pessoa teve de corrigir: “não está na minha referência” tinha sido avaliado como “falso”.
 
-**Sinal de alerta.** “Se falhar, eu coloco zero e sigo em frente.”
+**Pergunta detectora.** O número que estou prestes a mostrar, ou o “está tudo bem” em que estou prestes a acreditar, pode vir de uma consulta que falhou, de uma tabela vazia, de uma permissão negada ou de uma saída que não li por completo (ver a lição 44)? E o que estou prestes a chamar de falso é mesmo falso, ou só está faltando na fonte que li?
 
-**O que fazer.** Se a leitura falhar, mostre o erro no próprio cartão, e não uma lacuna nem um zero. E um contador que diz “0 problemas” só é confiável se antes encontrou um problema que você plantou de propósito.
+**Sinal de alerta.** “Se falhar, eu coloco zero e sigo em frente.” · “Não está no manual, então foi inventado.”
+
+**O que fazer.** Se a leitura falhar, mostre o erro no próprio cartão, e não uma lacuna nem um zero. E um contador que diz “0 problemas” só é confiável se antes encontrou um problema que você plantou de propósito. As instruções de um juiz listam todas as fontes que contam e dizem o que fazer com um fato que não está em nenhuma delas: marcá-lo como “não verificado” e perguntar, nunca avaliá-lo como falso. Um fato que a pessoa confirma entra na referência logo. Marcar o que você não sabe ao escrever é a lição 38.
 
 ### 2. Duas coisas com o mesmo nome não são a mesma coisa
 
@@ -120,7 +122,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 50. Se duas explicações preveem a mesma coisa, seu exemplo não escolhe entre elas
 
-`from: 9148c81d` · `by: ai`
+`from: db3075db` · `by: ai`
 
 **A ideia.** Um exemplo só confirma a sua explicação se a explicação rival daria um resultado diferente. Se as duas preveem o mesmo, o exemplo faz você acreditar na que lhe ocorreu primeiro.
 
@@ -128,11 +130,13 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Outro exemplo.** Um vídeo de demonstração gerado dizia “funcionou porque você removeu os espaços antes”, mas nenhuma das células da sua planilha de exemplo tinha espaços extras: sem remover, a substituição dava o mesmo resultado. Um revisor apontou isso. Uma célula com espaço no fim, que só bate depois de remover os espaços, fez os dados mostrarem a causa, e um assert no script que monta a demonstração agora falha se ela deixar de mostrá-la.
 
-**Pergunta detectora.** Que outra explicação daria este mesmo resultado? Meu exemplo a descarta? Se o passo que considero responsável for pulado, o resultado muda?
+**Mais um exemplo.** Um turno de um assistente de IA levou 16 segundos no início de uma chamada e 55 no fim. A culpa foi atribuída à conversa, que era enviada inteira a cada turno e que cresce; a mensagem foi cortada pela metade, e o tempo não mudou. Ao longo da mesma chamada, a carga da máquina também tinha crescido: um benchmark pesado usava o processador. Uma execução posterior, com outro modelo e uma máquina mais tranquila, levou 21 segundos constantes, mas mudou duas coisas ao mesmo tempo, então ainda não diz qual foi a causa.
+
+**Pergunta detectora.** Que outra explicação daria este mesmo resultado? Meu exemplo a descarta? Se o passo que considero responsável for pulado, o resultado muda? Antes de corrigir uma causa que cresce com o tempo: o que mais cresce no mesmo tempo?
 
 **Sinal de alerta.** “Os números confirmam.”
 
-**O que fazer.** Antes de ensinar ou reportar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se você não consegue separá-las, diga que o exemplo é compatível com as duas. Quando o código monta o exemplo (uma demonstração, um conjunto de dados de amostra), deixe nele um assert que falhe se a explicação rival der o mesmo resultado.
+**O que fazer.** Antes de ensinar ou relatar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se não conseguir separá-las, diga que o exemplo é compatível com as duas. Quando o código monta o exemplo (uma demonstração, um conjunto de dados de amostra), deixe nele um assert que falhe se a explicação rival der o mesmo resultado. Antes de corrigir, meça variando só a variável suspeita (a mesma mensagem, longa e curta, na máquina no mesmo estado), anote o que mais estava rodando e meça de novo depois da correção (ver a lição 34).
 
 ### AI-3. Um modelo ajustado também aprende as bordas e o fundo de seus exemplos
 

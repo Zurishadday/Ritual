@@ -4,17 +4,19 @@ Lo que aplica cuando un programa escribe, genera, transforma o mueve archivos y 
 
 ### 6. La definición de negocio vive en un solo lugar
 
-`from: 5286faa8` · `by: author`
+`from: 4a309d46` · `by: ai`
 
 **La idea.** Si la regla de «qué cuenta como activo» se repite en cada consulta, las copias van a divergir. No es si acaso, sino cuándo.
 
 **Ejemplo.** Un validador tenía escrito a mano que existían 43 elementos de referencia. Cuando el documento llegó a 47, rechazaba como inexistentes los cuatro nuevos. Ahora cuenta los del documento.
 
-**Pregunta detectora.** Si cambio esta definición, ¿cuántos archivos tengo que tocar? Si es más de uno, la regla no está puesta.
+**Otro ejemplo.** Un simulador de prácticas de conversaciones con clientes hacía en secreto que uno de cada tres clientes «no encajara», con una lista de razones escrita en su código; después, un evaluador calificaba a la persona que practicaba según el manual de ventas. Una de las razones del código no estaba en la regla del manual. El cliente simulado se negaba a comprar por ella, y el evaluador culpaba a la persona por no haber descartado al cliente. El veredicto medía la distancia entre dos copias de la regla, y la persona concluyó que el simulador estaba hecho para que nadie pudiera vender.
 
-**Señal de alarma.** «Lo pongo aquí también, total es una línea» · «ese número no va a cambiar».
+**Pregunta detectora.** Si cambio esta definición, ¿cuántos archivos tengo que tocar? Si es más de uno, la regla no está en un solo lugar. ¿El código que arma un caso y el que lo juzga leen la regla del mismo lugar?
 
-**Qué hacer.** Pon la definición en un punto que todas las consultas crucen, y haz que todas consuman de ahí. Un número escrito a mano que copia un dato de otro lugar también es una definición repetida.
+**Señal de alarma.** «Lo pongo aquí también, total es una línea» · «ese número no va a cambiar» · «esta lista es solo para generar casos».
+
+**Qué hacer.** Pon la definición en un punto que todas las consultas crucen, y haz que todas consuman de ahí. Un número escrito a mano que copia un dato de otro lugar también es una definición repetida. Un generador de casos y su juez leen el mismo archivo de reglas, y una prueba falla si el generador produce una condición que ese archivo no conoce. Antes de culpar a quien fue juzgado, revisa el caso contra la regla oficial.
 
 **No la confundas con.** Repetir una explicación a propósito, en un material para aprender, no es copiar una definición. Lo que no se copia es la regla que calcula el dato.
 

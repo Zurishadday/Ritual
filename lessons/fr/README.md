@@ -47,6 +47,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **28.** [Celui qui exécute et celui qui vérifie sont deux personnes différentes](tests-and-checks.md#28-celui-qui-exécute-et-celui-qui-vérifie-sont-deux-personnes-différentes)
 - **34.** [Croire le symptôme d'un constat QA et mesurer la cause](tests-and-checks.md#34-croire-le-symptôme-dun-constat-qa-et-mesurer-la-cause)
 - **55.** [Le vert sur votre machine n'est que le verdict d'une seule machine](tests-and-checks.md#55-le-vert-sur-votre-machine-nest-que-le-verdict-dune-seule-machine)
+- **71.** [Une note moyenne laisse passer l'unique erreur qui compte](tests-and-checks.md#71-une-note-moyenne-laisse-passer-lunique-erreur-qui-compte)
 - **EDU-1.** [Si la réponse est la même sans la compétence, l'exercice ne la mesure pas](tests-and-checks.md#edu-1-si-la-réponse-est-la-même-sans-la-compétence-lexercice-ne-la-mesure-pas)
 - **EDU-4.** [Si l'on peut deviner la bonne option à sa place, à sa longueur ou à son apparence, le quiz mesure la devinette](tests-and-checks.md#edu-4-si-lon-peut-deviner-la-bonne-option-à-sa-place-à-sa-longueur-ou-à-son-apparence-le-quiz-mesure-la-devinette)
 
@@ -98,6 +99,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **53.** [Le code passe par l'éditeur, pas par le traitement de texte du shell](console-and-tools.md#53-le-code-passe-par-léditeur-pas-par-le-traitement-de-texte-du-shell)
 - **60.** [Ce qui passe en argument d'un processus a un plafond qu'on ne voit qu'en grandissant](console-and-tools.md#60-ce-qui-passe-en-argument-dun-processus-a-un-plafond-quon-ne-voit-quen-grandissant)
 - **62.** [Arrêter un travail en arrière-plan, c'est arrêter ce qui le lance, puis prouver qu'il ne reste rien](console-and-tools.md#62-arrêter-un-travail-en-arrière-plan-cest-arrêter-ce-qui-le-lance-puis-prouver-quil-ne-reste-rien)
+- **69.** [Un processus lancé depuis un outil de courte durée meurt quand l'outil se termine](console-and-tools.md#69-un-processus-lancé-depuis-un-outil-de-courte-durée-meurt-quand-loutil-se-termine)
 
 ## Git et processus
 
@@ -108,3 +110,4 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **40.** [Le journal dit ce qui reste et pourquoi, pas une chronique des erreurs](git-and-process.md#40-le-journal-dit-ce-qui-reste-et-pourquoi-pas-une-chronique-des-erreurs)
 - **47.** [Ce qui est travaillé en parallèle entre en collision dans ce qui est partagé](git-and-process.md#47-ce-qui-est-travaillé-en-parallèle-entre-en-collision-dans-ce-qui-est-partagé)
 - **65.** [Une règle sur la manière de travailler n'a pas d'exception pour les petites étapes](git-and-process.md#65-une-règle-sur-la-manière-de-travailler-na-pas-dexception-pour-les-petites-étapes)
+- **70.** [Une demande ouverte dérive vers ce qui est le plus facile à critiquer : le but et le périmètre vont dans la consigne](git-and-process.md#70-une-demande-ouverte-dérive-vers-ce-qui-est-le-plus-facile-à-critiquer--le-but-et-le-périmètre-vont-dans-la-consigne)

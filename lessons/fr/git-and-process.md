@@ -111,3 +111,17 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 **Signal d'alarme.** « Je jette d'abord un coup d'œil, et je délègue ensuite. » · « c'est trop court pour valoir la peine de déléguer ».
 
 **Que faire.** Classez l'étape selon sa nature, pas selon sa taille : si elle est mécanique, elle suit la règle dès la première commande. Si une exception se justifie vraiment, dites-le avant de la faire et laissez l'utilisateur décider.
+
+### 70. Une demande ouverte dérive vers ce qui est le plus facile à critiquer : le but et le périmètre vont dans la consigne
+
+`from: 129f524c` · `by: ai`
+
+**L'idée.** Quand on demande à un relecteur (une personne ou un agent) « qu'est-ce qui nous manque ? » ou « où est le plus gros levier ? », il répond sur ce qui se voit ou se critique le plus facilement depuis sa place, et non sur ce que vous vouliez améliorer. Si le but n'existe que dans votre tête, le relecteur n'a aucun moyen de savoir qu'il l'a laissé de côté.
+
+**Exemple.** Le propriétaire d'un assistant en direct pour les appels commerciaux voulait améliorer ce que dit le vendeur pendant l'appel. Quatre relectures ont été lancées avec la question ouverte « où est le plus gros levier pour vendre davantage ? ». Trois d'entre elles sont allées vers ce qui se passe avant et après l'appel (prise de rendez-vous, suivi, paiements) : des conseils valables, mais ce n'était pas ce qui était cherché. Le propriétaire l'a dit : elles portaient sur tout sauf ce que le propriétaire voulait améliorer. Un second tour, avec le périmètre écrit (« seulement ce qu'il faut dire pendant l'appel ; rien sur le tunnel de vente ni sur le suivi »), a apporté exactement ce qui manquait.
+
+**Question détectrice.** Si ce relecteur me propose dix excellentes idées sur autre chose, ma consigne l'aurait-elle empêché ? Ai-je écrit ce qui est hors périmètre ?
+
+**Signal d'alarme.** « Je leur laisse une liberté totale, pour qu'ils voient ce qu'on n'a pas vu. »
+
+**Que faire.** Écrivez dans la consigne le but de la personne qui a demandé le travail, dans ses mots, plus une ligne sur ce qui est hors périmètre. Si vous voulez laisser une liberté pour trouver les angles morts, accordez-la à l'intérieur de ce périmètre, et réservez une seule ligne pour tout ce qui serait trouvé en dehors.

@@ -93,3 +93,17 @@ What applies when you run commands, servers, tests, or captures, and when the to
 **Warning sign.** "I killed the process, it's stopped."
 
 **What to do.** Close the whole tree from the launcher (`taskkill /t /f` on Windows, kill the process group on Unix). Then search running processes by command line for anything left from that job, and check the resource (GPU, port, file lock) until it is free; say "stopped" only after that check (see lesson 38). By design, give the job a clean stop (a `STOP` file it checks before each step), and make the launcher stop when a step is killed instead of moving on to the next one.
+
+### 69. A process you start from a short-lived tool dies when the tool ends
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: git-and-process`
+
+**The idea.** A server or a long-running program launched from a command that finishes (an assistant's tool call, a CI step, a remote session) usually becomes a child of that command. When the command ends, the tool or runner usually closes everything it started (its process group, its job, its session). You saw it start and answer; a minute later it is gone, and nothing tells you.
+
+**Example.** A person's local app was still running an old version. To give them the new one, the app's start script was relaunched from the assistant's command tool, the server was seen answering on its port, and the person was told "it's now on the new version". The tool call ended, the system closed the processes it had opened, and the person was left with no app at all. It surfaced half an hour later, when an agent found nothing listening on the ports.
+
+**Detector question.** Whose child is what I just started, and does it stay alive when that parent ends? Did I check it after the tool finished, or only while it was running?
+
+**Warning sign.** "I restarted it, it answers on the port."
+
+**What to do.** What a person uses every day, they start themselves, with their own shortcut or service. If you must start it, detach it from the parent (a background mode that survives the command, a system service) and check in a separate call, afterwards, that it is still alive. If you can't guarantee it, don't say it's done: ask them to open it. Stopping such work is lesson 62; starting it twice, lesson 22.

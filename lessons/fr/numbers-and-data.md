@@ -4,17 +4,19 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 1. « Je n'ai pas pu le lire » n'est pas « il n'y a rien »
 
-`from: fe96d871` · `by: ai`
+`from: 01957441` · `by: ai`
 
 **L'idée.** Chaque donnée a trois états : je l'ai, il n'y avait vraiment rien, et je ne sais pas. Les deux derniers se dessinent de la même façon sur un graphique, comme un zéro, alors qu'ils signifient le contraire.
 
 **Exemple.** Une requête échoue à cause d'une autorisation expirée, et le tableau de bord affiche « 0 ventes » pour la région. Personne ne s'en étonne : un zéro a l'air d'une donnée.
 
-**Question détectrice.** Le chiffre que je m'apprête à afficher, ou le « tout va bien » que je m'apprête à croire, pourrait-il venir d'une requête échouée, d'une table vide, d'une autorisation refusée, ou d'un résultat que je n'ai pas lu en entier (voir la leçon 44) ?
+**Autre exemple.** Un évaluateur IA d'appels commerciaux d'entraînement a affirmé que la personne avait inventé l'histoire d'un ancien client, et l'a notée parmi ses habitudes : « combler les vides avec une preuve qui n'existe pas ». Le client était réel ; l'histoire n'était simplement pas dans le manuel que l'évaluateur avait lu. Plus tard, un autre juge IA a signalé comme inventé un chiffre qui figurait dans le fichier de profil de la personne, fichier qu'il n'avait jamais ouvert. Dans les deux cas, la personne a dû corriger : « absent de ma référence » avait été noté comme « faux ».
 
-**Signal d'alarme.** « Si ça échoue, je mets zéro et je passe à autre chose. »
+**Question détectrice.** Le chiffre que je m'apprête à afficher, ou le « tout va bien » que je m'apprête à croire, pourrait-il venir d'une requête échouée, d'une table vide, d'une autorisation refusée, ou d'un résultat que je n'ai pas lu en entier (voir la leçon 44) ? Et ce que je m'apprête à déclarer faux est-il vraiment faux, ou seulement absent de la source que j'ai lue ?
 
-**Que faire.** Si la lecture échoue, affichez l'erreur sur la carte elle-même, et non un vide ou un zéro. Et un compteur qui affiche « 0 problème » n'est digne de confiance que s'il a d'abord trouvé un problème que vous aviez placé exprès.
+**Signal d'alarme.** « Si ça échoue, je mets zéro et je passe à autre chose. » · « Ce n'est pas dans le manuel, donc c'était inventé. »
+
+**Que faire.** Si la lecture échoue, affichez l'erreur sur la carte elle-même, et non un vide ou un zéro. Et un compteur qui affiche « 0 problème » n'est digne de confiance que s'il a d'abord trouvé un problème que vous aviez placé exprès. Les consignes d'un juge listent chaque source qui compte et disent quoi faire d'un fait trouvé dans aucune d'elles : le marquer « non vérifié » et demander, sans jamais le noter comme faux. Un fait que la personne confirme entre tout de suite dans la référence. Marquer ce qu'on ne sait pas au moment d'écrire, c'est la leçon 38.
 
 ### 2. Deux choses qui portent le même nom ne sont pas la même chose
 
@@ -120,7 +122,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 50. Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles
 
-`from: 9148c81d` · `by: ai`
+`from: db3075db` · `by: ai`
 
 **L'idée.** Un exemple ne confirme votre explication que si l'explication rivale donnerait un résultat différent. Si les deux prédisent la même chose, l'exemple vous laisse croire celle qui vous est venue en premier à l'esprit.
 
@@ -128,11 +130,13 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Autre exemple.** Une vidéo de démonstration générée disait « ça a marché parce que vous avez d'abord supprimé les espaces », mais aucune cellule de sa feuille d'exemple ne contenait d'espaces superflus : sans suppression, le remplacement donnait le même résultat. Un relecteur l'a signalé. Une cellule avec un espace final, qui ne correspond qu'après suppression des espaces, a fait apparaître la cause dans les données, et une assertion dans le script qui construit la démo échoue désormais si elle cesse de la montrer.
 
-**Question détectrice.** Quelle autre explication donnerait ce même résultat ? Mon exemple l'écarte-t-il ? Si l'étape à laquelle j'attribue ce résultat est sautée, celui-ci change-t-il ?
+**Encore un exemple.** Le tour d'un assistant IA a pris 16 secondes au début d'un appel, et 55 à la fin. On en a accusé la conversation, envoyée en entier à chaque tour et qui grandit ; le message a été coupé en deux et le temps n'a pas bougé. Pendant le même appel, la charge de la machine avait elle aussi augmenté : un benchmark lourd utilisait son processeur. Une exécution ultérieure, avec un autre modèle et une machine plus calme, a pris un temps stable de 21 secondes, mais elle changeait deux choses à la fois : elle ne dit donc toujours pas laquelle était la cause.
+
+**Question détectrice.** Quelle autre explication donnerait ce même résultat ? Mon exemple l'écarte-t-il ? Si l'étape à laquelle j'attribue ce résultat est sautée, celui-ci change-t-il ? Avant de corriger une cause qui grandit avec le temps : qu'est-ce qui d'autre grandit pendant le même temps ?
 
 **Signal d'alarme.** « Les chiffres le confirment. »
 
-**Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux. Quand du code construit l'exemple (une démo, un jeu de données d'exemple), laissez-y une assertion qui échoue si l'explication rivale donnerait le même résultat.
+**Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux. Quand du code construit l'exemple (une démo, un jeu de données d'exemple), laissez-y une assertion qui échoue si l'explication rivale donnerait le même résultat. Avant de corriger, mesurez en ne changeant que la variable soupçonnée (le même message, long et court, sur la machine dans le même état), notez ce qui d'autre tournait, et mesurez à nouveau après la correction (leçon 34).
 
 ### AI-3. Un modèle affiné apprend aussi les bords et le bruit de fond de ses exemples
 

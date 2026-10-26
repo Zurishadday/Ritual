@@ -47,6 +47,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **28.** [Quien ejecuta y quien verifica son personas distintas](tests-and-checks.md#28-quien-ejecuta-y-quien-verifica-son-personas-distintas)
 - **34.** [A un hallazgo de QA créele el síntoma y mide la causa](tests-and-checks.md#34-a-un-hallazgo-de-qa-créele-el-síntoma-y-mide-la-causa)
 - **55.** [El verde en tu máquina es el veredicto de una sola máquina](tests-and-checks.md#55-el-verde-en-tu-máquina-es-el-veredicto-de-una-sola-máquina)
+- **71.** [Una puntuación promedio deja pasar el único error que importa](tests-and-checks.md#71-una-puntuación-promedio-deja-pasar-el-único-error-que-importa)
 - **EDU-1.** [Si la respuesta sale igual sin la habilidad, el ejercicio no la mide](tests-and-checks.md#edu-1-si-la-respuesta-sale-igual-sin-la-habilidad-el-ejercicio-no-la-mide)
 - **EDU-4.** [Si adivinas la correcta por su lugar, su largo o su aspecto, el quiz mide la suerte](tests-and-checks.md#edu-4-si-adivinas-la-correcta-por-su-lugar-su-largo-o-su-aspecto-el-quiz-mide-la-suerte)
 
@@ -98,6 +99,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **53.** [El código pasa por el editor, no por el manejo de texto de la consola](console-and-tools.md#53-el-código-pasa-por-el-editor-no-por-el-manejo-de-texto-de-la-consola)
 - **60.** [Lo que viaja como argumento de un proceso tiene un techo que no se ve hasta que crece](console-and-tools.md#60-lo-que-viaja-como-argumento-de-un-proceso-tiene-un-techo-que-no-se-ve-hasta-que-crece)
 - **62.** [Parar un trabajo en segundo plano es parar lo que lo lanza, y luego comprobar que no queda nada](console-and-tools.md#62-parar-un-trabajo-en-segundo-plano-es-parar-lo-que-lo-lanza-y-luego-comprobar-que-no-queda-nada)
+- **69.** [Un proceso que lanzas desde una herramienta de vida corta muere cuando la herramienta termina](console-and-tools.md#69-un-proceso-que-lanzas-desde-una-herramienta-de-vida-corta-muere-cuando-la-herramienta-termina)
 
 ## Git y proceso
 
@@ -108,3 +110,4 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **40.** [El registro dice qué quedó y por qué, no la crónica de tropiezos](git-and-process.md#40-el-registro-dice-qué-quedó-y-por-qué-no-la-crónica-de-tropiezos)
 - **47.** [Lo que se trabaja en paralelo se cruza en lo compartido](git-and-process.md#47-lo-que-se-trabaja-en-paralelo-se-cruza-en-lo-compartido)
 - **65.** [Una regla sobre cómo trabajar no tiene excepción para los pasos chicos](git-and-process.md#65-una-regla-sobre-cómo-trabajar-no-tiene-excepción-para-los-pasos-chicos)
+- **70.** [Un encargo abierto deriva hacia lo más fácil de criticar: el objetivo y el alcance van en el encargo](git-and-process.md#70-un-encargo-abierto-deriva-hacia-lo-más-fácil-de-criticar-el-objetivo-y-el-alcance-van-en-el-encargo)

@@ -93,3 +93,17 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 **Sinal de alerta.** “Matei o processo, ele está parado.”
 
 **O que fazer.** Feche a árvore inteira a partir do lançador (`taskkill /t /f` no Windows, matar o grupo de processos no Unix). Depois, procure entre os processos em execução, pela linha de comando, qualquer coisa que tenha sobrado daquele trabalho, e confira o recurso (GPU, porta, trava de arquivo) até que esteja livre; diga “parado” só depois dessa verificação (ver a lição 38). Na concepção, dê ao trabalho uma parada limpa (um arquivo `STOP` que ele verifica antes de cada etapa), e faça o lançador parar quando uma etapa for morta, em vez de passar para a seguinte.
+
+### 69. Um processo iniciado por uma ferramenta de vida curta morre quando a ferramenta termina
+
+`from: 7870a42f` · `by: ai`
+
+**A ideia.** Um servidor ou um programa de longa duração iniciado a partir de um comando que termina (uma chamada de ferramenta de um assistente, uma etapa de CI, uma sessão remota) costuma virar filho desse comando. Quando o comando termina, a ferramenta ou o executor normalmente fecha tudo o que ele abriu (o grupo de processos, o job, a sessão). Você viu o processo iniciar e responder; um minuto depois ele já não está lá, e nada avisa.
+
+**Exemplo.** O aplicativo local de uma pessoa ainda rodava uma versão antiga. Para entregar a nova, o script de início do aplicativo foi relançado a partir da ferramenta de comando do assistente; viu-se o servidor respondendo na sua porta, e a pessoa foi informada de que “agora está na versão nova”. A chamada da ferramenta terminou, o sistema fechou os processos que ela tinha aberto, e a pessoa ficou sem aplicativo nenhum. O problema apareceu meia hora depois, quando um agente não encontrou nada escutando nas portas.
+
+**Pergunta detectora.** De quem é filho o que acabei de iniciar, e ele continua vivo quando esse pai termina? Eu conferi depois que a ferramenta terminou, ou só enquanto ela rodava?
+
+**Sinal de alerta.** “Reiniciei, ele responde na porta.”
+
+**O que fazer.** O que uma pessoa usa todo dia, ela mesma inicia, com o próprio atalho ou serviço. Se for preciso iniciá-lo, desprenda-o do processo pai (um modo em segundo plano que sobrevive ao comando, um serviço do sistema) e confira, numa chamada separada, depois, que ele continua vivo. Se não puder garantir isso, não diga que está pronto: peça à pessoa que o abra. Parar esse tipo de trabalho é a lição 62; iniciá-lo duas vezes, a lição 22.

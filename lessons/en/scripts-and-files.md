@@ -4,17 +4,19 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 6. The business definition lives in one place
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** If the rule for "what counts as active" is repeated in every query, the copies will drift apart. It's not a question of if, but when.
 
 **Example.** A validator had the count of reference items typed in by hand as 43. When the document grew to 47, it rejected the four new ones as nonexistent. Now it counts the items in the document itself.
 
-**Detector question.** If I change this definition, how many files do I have to touch? If it's more than one, the rule isn't set up in one place.
+**Another example.** A practice simulator of customer conversations secretly made one in three customers "not a fit", with a list of reasons written in its code; an evaluator then graded the person practicing against the sales manual. One reason in the code was not in the manual's rule. The simulated customer refused to buy for it, and the evaluator blamed the person for not ruling the customer out. The verdict measured the gap between two copies of the rule, and the person concluded the simulator was built so nobody could sell.
 
-**Warning sign.** "I'll put it here too, it's just one line" · "that number won't change".
+**Detector question.** If I change this definition, how many files do I have to touch? If it's more than one, the rule isn't set up in one place. Do the code that builds a case and the code that judges it read the rule from the same place?
 
-**What to do.** Put the definition in one spot that every query goes through, and have all of them read from there. A hand-typed number that copies a value from somewhere else is also a repeated definition.
+**Warning sign.** "I'll put it here too, it's just one line" · "that number won't change" · "this list is only for generating cases".
+
+**What to do.** Put the definition in one spot that every query goes through, and have all of them read from there. A hand-typed number that copies a value from somewhere else is also a repeated definition. A generator of cases and its judge read the same rules file, and a test fails if the generator produces a condition that file doesn't know. Before blaming whoever was judged, check the case against the official rule.
 
 **Not to be confused with.** Repeating an explanation on purpose, in learning material, is not copying a definition. What you shouldn't copy is the rule that computes the value.
 

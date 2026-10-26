@@ -45,6 +45,7 @@
 - **28.** [Whoever runs it and whoever verifies it are different people](tests-and-checks.md#28-whoever-runs-it-and-whoever-verifies-it-are-different-people)
 - **34.** [Trust the symptom in a QA finding and measure the cause](tests-and-checks.md#34-trust-the-symptom-in-a-qa-finding-and-measure-the-cause)
 - **55.** [Green on your machine is one machine's verdict](tests-and-checks.md#55-green-on-your-machine-is-one-machines-verdict)
+- **71.** [An average score lets through the one error that matters](tests-and-checks.md#71-an-average-score-lets-through-the-one-error-that-matters)
 - **EDU-1.** [If the answer comes out the same without the skill, the exercise doesn't measure it](tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it)
 - **EDU-4.** [If you can guess the right option by its place, its length or its look, the quiz measures guessing](tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing)
 
@@ -96,6 +97,7 @@
 - **53.** [Code goes through the editor, not through the shell's text handling](console-and-tools.md#53-code-goes-through-the-editor-not-through-the-shells-text-handling)
 - **60.** [What travels as a process argument has a ceiling you don't see until it grows](console-and-tools.md#60-what-travels-as-a-process-argument-has-a-ceiling-you-dont-see-until-it-grows)
 - **62.** [Stopping background work means stopping whatever launches it, then proving nothing is left](console-and-tools.md#62-stopping-background-work-means-stopping-whatever-launches-it-then-proving-nothing-is-left)
+- **69.** [A process you start from a short-lived tool dies when the tool ends](console-and-tools.md#69-a-process-you-start-from-a-short-lived-tool-dies-when-the-tool-ends)
 
 ## Git and process
 
@@ -106,3 +108,4 @@
 - **40.** [The log says what was left and why, not a chronicle of missteps](git-and-process.md#40-the-log-says-what-was-left-and-why-not-a-chronicle-of-missteps)
 - **47.** [What's worked on in parallel collides in what's shared](git-and-process.md#47-whats-worked-on-in-parallel-collides-in-whats-shared)
 - **65.** [A rule about how to work has no exception for small steps](git-and-process.md#65-a-rule-about-how-to-work-has-no-exception-for-small-steps)
+- **70.** [An open-ended brief drifts to what is easiest to criticize: the goal and the scope belong in the brief](git-and-process.md#70-an-open-ended-brief-drifts-to-what-is-easiest-to-criticize-the-goal-and-the-scope-belong-in-the-brief)

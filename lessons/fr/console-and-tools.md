@@ -93,3 +93,17 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 **Signal d'alarme.** « J'ai tué le processus, il est arrêté. »
 
 **Que faire.** Fermez tout l'arbre depuis le lanceur (`taskkill /t /f` sous Windows, tuez le groupe de processus sous Unix). Puis cherchez dans les processus en cours, par ligne de commande, ce qui reste de ce travail, et vérifiez la ressource (GPU, port, verrou de fichier) jusqu'à ce qu'elle soit libre ; ne dites « arrêté » qu'après cette vérification (voir la leçon 38). Par conception, donnez au travail un arrêt propre (un fichier `STOP` qu'il vérifie avant chaque étape), et faites en sorte que le lanceur s'arrête quand une étape est tuée au lieu de passer à la suivante.
+
+### 69. Un processus lancé depuis un outil de courte durée meurt quand l'outil se termine
+
+`from: 7870a42f` · `by: ai`
+
+**L'idée.** Un serveur ou un programme de longue durée lancé depuis une commande qui se termine (l'outil de commande d'un assistant, une étape de CI, une session distante) devient en général l'enfant de cette commande. Quand la commande se termine, l'outil ou le lanceur ferme en général tout ce qu'il a démarré (son groupe de processus, son job, sa session). Vous l'avez vu démarrer et répondre ; une minute plus tard, il a disparu, et rien ne vous le signale.
+
+**Exemple.** L'application locale d'une personne tournait encore sur une ancienne version. Pour lui donner la nouvelle, le script de démarrage de l'application a été relancé depuis l'outil de commande de l'assistant, le serveur a été vu en train de répondre sur son port, et la personne a été prévenue : « c'est maintenant sur la nouvelle version ». La commande s'est terminée, le système a fermé les processus qu'elle avait ouverts, et la personne n'avait plus d'application du tout. Le problème n'est apparu qu'une demi-heure plus tard, quand un agent a constaté que plus rien n'écoutait sur les ports.
+
+**Question détectrice.** De quel parent est enfant ce que je viens de lancer, et reste-t-il vivant quand ce parent se termine ? L'ai-je vérifié après la fin de l'outil, ou seulement pendant qu'il tournait ?
+
+**Signal d'alarme.** « Je l'ai relancé, il répond sur le port. »
+
+**Que faire.** Ce qu'une personne utilise chaque jour, elle le démarre elle-même, avec son propre raccourci ou son propre service. Si vous devez le lancer, détachez-le de son parent (un mode d'arrière-plan qui survit à la commande, un service système), et vérifiez dans un appel séparé, ensuite, qu'il est toujours vivant. Si vous ne pouvez pas le garantir, ne dites pas que c'est fait : demandez à la personne de l'ouvrir. Arrêter ce genre de travail relève de la leçon 62 ; le lancer deux fois, de la leçon 22.

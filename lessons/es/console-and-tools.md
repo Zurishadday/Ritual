@@ -93,3 +93,17 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 **Señal de alarma.** «Maté el proceso, ya está detenido».
 
 **Qué hacer.** Cierra todo el árbol desde el lanzador (`taskkill /t /f` en Windows, matar el grupo de procesos en Unix). Luego busca en los procesos en ejecución, por línea de comandos, cualquier cosa que quede de ese trabajo, y revisa el recurso (GPU, puerto, bloqueo de archivo) hasta que esté libre; di «detenido» solo después de esa comprobación (ver la 38). Por diseño, dale al trabajo una parada limpia (un archivo `STOP` que revisa antes de cada paso), y haz que el lanzador se detenga cuando se mate un paso, en lugar de pasar al siguiente.
+
+### 69. Un proceso que lanzas desde una herramienta de vida corta muere cuando la herramienta termina
+
+`from: 7870a42f` · `by: ai`
+
+**La idea.** Un servidor o un programa de larga duración lanzado desde un comando que termina (la llamada de una herramienta de un asistente, un paso de CI, una sesión remota) suele quedar como hijo de ese comando. Cuando el comando termina, la herramienta o el ejecutor suele cerrar todo lo que arrancó (su grupo de procesos, su trabajo o su sesión). Lo viste arrancar y responder; un minuto después ya no está, y nada te avisa.
+
+**Ejemplo.** La app local de una persona seguía corriendo una versión vieja. Para darle la nueva, se relanzó el script de inicio de la app desde la herramienta de comandos del asistente; se vio el servidor respondiendo en su puerto, y se le dijo a la persona «ya está en la versión nueva». La llamada de la herramienta terminó, el sistema cerró los procesos que había abierto, y la persona se quedó sin app. Se notó media hora después, cuando un agente no encontró nada escuchando en los puertos.
+
+**Pregunta detectora.** ¿De quién es hijo lo que acabo de arrancar, y sigue vivo cuando ese padre termina? ¿Lo revisé después de que terminó la herramienta, o solo mientras corría?
+
+**Señal de alarma.** «Lo reinicié, responde en el puerto».
+
+**Qué hacer.** Lo que una persona usa a diario, lo arranca ella misma, con su propio acceso directo o servicio. Si tienes que arrancarlo, sepáralo del padre (un modo de segundo plano que sobreviva al comando, un servicio del sistema) y revisa en una llamada aparte, después, que siga vivo. Si no puedes garantizarlo, no digas que está listo: pide que lo abran ellos. Detener este tipo de trabajo es ver la 62; arrancarlo dos veces, ver la 22.

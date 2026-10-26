@@ -4,17 +4,19 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 1. "I couldn't read it" is not "there's nothing"
 
-`origin: field · ~opus · 2026-08` · `groups: tests-and-checks`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** Every data point has three states: I have it, there really was nothing, and I don't know. The last two get drawn the same way on a chart, as a zero, and they mean the opposite.
 
 **Example.** A query fails because of an expired permission, and the dashboard shows "0 sales" for the region. Nobody questions it: a zero looks like data.
 
-**Detector question.** Could the number I'm about to show, or the "everything's fine" I'm about to believe, come from a query that failed, an empty table, a denied permission, or an output I didn't read in full (see lesson 44)?
+**Another example.** An AI evaluator of practice sales calls said the person had invented a past customer's story, and listed "fills gaps with proof that doesn't exist" among their habits. The customer was real; the story just wasn't in the manual the evaluator read. Later another AI judge flagged as invented a figure that was in the person's own profile file, which it never opened. Both times the person had to correct it: "not in my reference" had been graded as "false".
 
-**Warning sign.** "If it fails, I'll just set it to zero and move on."
+**Detector question.** Could the number I'm about to show, or the "everything's fine" I'm about to believe, come from a query that failed, an empty table, a denied permission, or an output I didn't read in full (see lesson 44)? And is what I'm about to call false really false, or only missing from the source I read?
 
-**What to do.** If the read fails, show the error on the card itself, not a gap or a zero. And a counter that says "0 problems" is only trustworthy if it first found a problem you planted on purpose.
+**Warning sign.** "If it fails, I'll just set it to zero and move on." · "It's not in the manual, so it was made up."
+
+**What to do.** If the read fails, show the error on the card itself, not a gap or a zero. And a counter that says "0 problems" is only trustworthy if it first found a problem you planted on purpose. A judge's instructions list every source that counts and say what to do with a fact found in none of them: mark it "unverified" and ask, never grade it as false. A fact the person confirms goes into the reference right away. Marking what you don't know when you write is lesson 38.
 
 ### 2. Two things with the same name are not the same thing
 
@@ -128,11 +130,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **Another example.** A generated demo video said "it worked because you trimmed first", but none of the cells in its sample sheet had extra spaces: without trimming, the replace gave the same result. A reviewer flagged it. A cell with a trailing space, which only matches after trimming, made the data show the cause, and an assert in the script that builds the demo now fails if it stops showing it.
 
-**Detector question.** What other explanation would give this same result? Does my example rule it out? If the step I credit is skipped, does the result change?
+**One more example.** An AI assistant's turn took 16 seconds at the start of a call and 55 at the end. It was blamed on the conversation, sent whole every turn, which grows; the message was cut in half and the time did not move. Over the same call the machine's load had grown too: a heavy benchmark was using its processor. A later run with another model and a quieter machine took a steady 21 seconds, but it changed two things at once, so it still does not say which one was the cause.
+
+**Detector question.** What other explanation would give this same result? Does my example rule it out? If the step I credit is skipped, does the result change? Before fixing a cause that grows over time: what else grows over the same time?
 
 **Warning sign.** "The numbers confirm it."
 
-**What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both. When code builds the example (a demo, a sample dataset), leave an assert in it that fails if the rival would give the same result.
+**What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both. When code builds the example (a demo, a sample dataset), leave an assert in it that fails if the rival would give the same result. Before fixing, measure with only the suspected variable changed (the same message, long and short, on the machine in the same state), note what else was running, and measure again after the fix (lesson 34).
 
 ### AI-3. A fine-tuned model also learns the edges and the background of its examples
 

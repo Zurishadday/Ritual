@@ -156,6 +156,20 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **What to do.** Name the machines the work runs on and get a verdict from each: read CI to its end after a push (each job, not the first green), run on the server or a copy of it, or ask for the user's result. A failure on one of them is real even if it never shows here: reproduce it here by forcing the difference (a fixed date, a fast clock, a case-sensitive path) before fixing it, and fix the assumption, not the machine.
 
+### 71. An average score lets through the one error that matters
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** A check that scores the whole output with one average (similarity %, share of correct words, share of matching rows) can approve an output that is wrong in exactly the item that mattered. When almost everything is right, the average stays high even if the key part is wrong.
+
+**Example.** Each phrase of a synthetic-voice narration was accepted by transcribing the audio and requiring at least 90 % similarity with the script. A test phrase contained a spreadsheet function name in capitals. The voice mispronounced it in both takes, and both passed at 93 % because the other fourteen words were right. The user caught it by listening. By the same arithmetic, a phrase with its last word cut off would pass too; that case was not tried.
+
+**Detector question.** Does my check fold everything into one number? Did I try it on an output where only the key item is wrong (one term, the last word, one number) and see it rejected?
+
+**Warning sign.** "It passed at 93 %, it's fine" · "a 90 % threshold already leaves room for small errors".
+
+**What to do.** Before trusting the threshold, build the one-error case in the place that matters and see whether it is rejected (lesson 13). If it is not, check separately what cannot fail: rare terms, numbers, the ending. And if the input contains something the tool cannot handle (acronyms, formulas, symbols), convert or reject it before generating.
+
 ### EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it
 
 `origin: field · ~opus · 2026-10` · `packages: education` · `seen: claude-opus-5-5 2026-10`

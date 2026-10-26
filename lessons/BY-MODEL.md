@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 46 | 5 | 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
-| `claude-opus-5-5` | 24 | 11 | 2, 9, 13, 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, AI-1, AI-2, AI-3, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
+| `claude-opus-5-5` | 27 | 13 | 1, 2, 6, 9, 13, 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, AI-1, AI-2, AI-3, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-fable-5-1` | 0 | 1 | 44 |
@@ -20,7 +20,9 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 
 The most general mistakes: different models made them.
 
+- [1. "I couldn't read it" is not "there's nothing"](en/numbers-and-data.md#1-i-couldnt-read-it-is-not-theres-nothing) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [2. Two things with the same name are not the same thing](en/numbers-and-data.md#2-two-things-with-the-same-name-are-not-the-same-thing) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
+- [6. The business definition lives in one place](en/scripts-and-files.md#6-the-business-definition-lives-in-one-place) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) · `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
 - [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
@@ -42,12 +44,12 @@ The most general mistakes: different models made them.
 
 | Lesson | Models |
 |---|---|
-| [1. "I couldn't read it" is not "there's nothing"](en/numbers-and-data.md#1-i-couldnt-read-it-is-not-theres-nothing) | `~opus` 2026-08 |
+| [1. "I couldn't read it" is not "there's nothing"](en/numbers-and-data.md#1-i-couldnt-read-it-is-not-theres-nothing) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [2. Two things with the same name are not the same thing](en/numbers-and-data.md#2-two-things-with-the-same-name-are-not-the-same-thing) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [3. The current period is always incomplete](en/numbers-and-data.md#3-the-current-period-is-always-incomplete) | `~opus` 2026-08 |
 | [4. A field the source overwrites is not history](en/numbers-and-data.md#4-a-field-the-source-overwrites-is-not-history) | `~opus` 2026-08 |
 | [5. A perfect result is a warning, not a win](en/numbers-and-data.md#5-a-perfect-result-is-a-warning-not-a-win) | `~opus` 2026-08 |
-| [6. The business definition lives in one place](en/scripts-and-files.md#6-the-business-definition-lives-in-one-place) | `~opus` 2026-08 |
+| [6. The business definition lives in one place](en/scripts-and-files.md#6-the-business-definition-lives-in-one-place) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [7. Read what was published, not the intent](en/scripts-and-files.md#7-read-what-was-published-not-the-intent) | `~opus` 2026-08 |
 | [8. List the consumers, don't remember them](en/git-and-process.md#8-list-the-consumers-dont-remember-them) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
@@ -110,6 +112,9 @@ The most general mistakes: different models made them.
 | [66. A new script inherits the setup the project already uses](en/scripts-and-files.md#66-a-new-script-inherits-the-setup-the-project-already-uses) | `claude-opus-5-5` 2026-10 |
 | [67. A value tuned on one sample does not fit every sample](en/scripts-and-files.md#67-a-value-tuned-on-one-sample-does-not-fit-every-sample) | `claude-opus-5-5` 2026-10 |
 | [68. A step that reads past an edge goes before the step that cuts it](en/scripts-and-files.md#68-a-step-that-reads-past-an-edge-goes-before-the-step-that-cuts-it) | `claude-opus-5-5` 2026-10 |
+| [69. A process you start from a short-lived tool dies when the tool ends](en/console-and-tools.md#69-a-process-you-start-from-a-short-lived-tool-dies-when-the-tool-ends) | `claude-opus-5-5` 2026-10 |
+| [70. An open-ended brief drifts to what is easiest to criticize: the goal and the scope belong in the brief](en/git-and-process.md#70-an-open-ended-brief-drifts-to-what-is-easiest-to-criticize-the-goal-and-the-scope-belong-in-the-brief) | `claude-opus-5-5` 2026-10 |
+| [71. An average score lets through the one error that matters](en/tests-and-checks.md#71-an-average-score-lets-through-the-one-error-that-matters) | `claude-opus-5-5` 2026-10 |
 | [AI-1. If you restrict where the model may write, it writes wherever you let it](en/writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it) | `claude-opus-5-5` 2026-10 |
 | [AI-2. A rule written as a checklist gets executed as a checklist, even after the other person answered](en/writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered) | `claude-opus-5-5` 2026-10 |
 | [AI-3. A fine-tuned model also learns the edges and the background of its examples](en/numbers-and-data.md#ai-3-a-fine-tuned-model-also-learns-the-edges-and-the-background-of-its-examples) | `claude-opus-5-5` 2026-10 |

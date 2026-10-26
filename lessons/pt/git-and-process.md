@@ -111,3 +111,17 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 **Sinal de alerta.** “Primeiro dou uma olhada rápida e delego depois” · “isto é curto demais para valer a pena delegar”.
 
 **O que fazer.** Classifique o passo pelo tipo, e não pelo tamanho: se for mecânico, ele segue o caminho que a regra diz desde o primeiro comando. Se uma exceção fizer sentido de fato, diga isso antes de fazê-la e deixe o usuário decidir.
+
+### 70. Um pedido aberto deriva para o que é mais fácil de criticar: o objetivo e o escopo devem estar no pedido
+
+`from: 129f524c` · `by: ai`
+
+**A ideia.** Quando você pede a um revisor (uma pessoa ou um agente) “o que estamos deixando de fora?” ou “onde está a maior alavanca?”, ele responde o que é mais fácil de ver ou criticar a partir do lugar em que está, e não o que você queria melhorar. Se o objetivo só existe na sua cabeça, o revisor não tem como saber que deixou isso de fora.
+
+**Exemplo.** O dono de um assistente ao vivo para ligações de vendas queria melhorar o que o vendedor diz durante a ligação. Foram lançadas quatro revisões com a pergunta aberta “onde está a maior alavanca para vender mais?”. Três delas foram para o que acontece antes e depois da ligação (agendamento, acompanhamento, pagamentos): conselhos válidos, mas não o que se buscava. O dono disse isso: elas se concentraram em tudo, exceto no que ele queria melhorar. Uma segunda rodada, com o escopo escrito (“só o que dizer dentro da ligação; nada sobre o funil ou o acompanhamento”), trouxe exatamente o que faltava.
+
+**Pergunta detectora.** Se este revisor me trouxer dez ótimas ideias sobre outra coisa, meu pedido teria evitado isso? Escrevi o que está fora do escopo?
+
+**Sinal de alerta.** “Vou dar total liberdade para que eles vejam o que ainda não vimos.”
+
+**O que fazer.** Escreva no pedido o objetivo de quem pediu o trabalho, nas palavras dessa pessoa, mais uma linha com o que está fora do escopo. Se você quiser liberdade para encontrar pontos cegos, conceda-a dentro desse escopo, e deixe uma única linha para o que for achado fora dele.

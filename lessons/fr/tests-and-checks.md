@@ -156,6 +156,20 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Que faire.** Nommez les machines où le travail tourne et obtenez un verdict de chacune : lisez la CI jusqu'au bout après un push (chaque job, pas seulement le premier vert), lancez sur le serveur ou sur une copie de celui-ci, ou demandez le résultat à l'utilisateur. Un échec sur l'une d'elles est réel, même s'il n'apparaît jamais ici : reproduisez-le ici en forçant la différence (une date fixe, une horloge rapide, un chemin sensible à la casse) avant de le corriger, et corrigez l'hypothèse, pas la machine.
 
+### 71. Une note moyenne laisse passer l'unique erreur qui compte
+
+`from: 2cddfa4e` · `by: ai`
+
+**L'idée.** Un contrôle qui note toute la sortie par une moyenne (pourcentage de similitude, part de mots justes, part de lignes concordantes) peut approuver une sortie fausse précisément sur l'élément qui importait. Quand presque tout est juste, la moyenne reste haute même si la partie essentielle est fausse.
+
+**Exemple.** Chaque phrase d'une narration en voix de synthèse était acceptée en transcrivant l'audio et en exigeant au moins 90 % de similitude avec le texte. Une phrase de test contenait un nom de fonction de tableur en capitales. La voix l'a mal prononcé dans les deux prises, et les deux ont passé avec 93 %, parce que les quatorze autres mots étaient justes. L'utilisateur l'a repéré à l'écoute. Avec le même calcul, une phrase dont le dernier mot est coupé passerait aussi ; ce cas n'a pas été essayé.
+
+**Question détectrice.** Mon contrôle ramène-t-il tout à un seul chiffre ? Ai-je essayé une sortie où seul l'élément clé est faux (un terme, le dernier mot, un nombre) et vérifié qu'elle est rejetée ?
+
+**Signal d'alarme.** « Il a passé avec 93 %, c'est bon. » · « un seuil à 90 % laisse déjà de la place pour les petites erreurs ».
+
+**Que faire.** Avant de faire confiance au seuil, construisez le cas à une seule erreur à l'endroit qui compte, et vérifiez s'il est rejeté (leçon 13). Sinon, vérifiez séparément ce qui ne peut pas échouer : les termes rares, les nombres, la fin. Et si l'entrée contient quelque chose que l'outil ne sait pas traiter (sigles, formules, symboles), convertissez-le ou rejetez-le avant de générer.
+
 ### EDU-1. Si la réponse est la même sans la compétence, l'exercice ne la mesure pas
 
 `from: 164808ab` · `by: ai`

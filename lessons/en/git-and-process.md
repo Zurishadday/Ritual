@@ -111,3 +111,17 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 **Warning sign.** "I'll take a quick look first and delegate after" · "this is too short to be worth delegating".
 
 **What to do.** Classify the step by its kind, not its size: if it is mechanical, it goes the way the rule says from the first command. If an exception really makes sense, say so before doing it and let the user decide.
+
+### 70. An open-ended brief drifts to what is easiest to criticize: the goal and the scope belong in the brief
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: tests-and-checks`
+
+**The idea.** When you ask a reviewer (a person or an agent) "what are we missing?" or "where is the biggest lever?", they answer what is easiest to see or criticize from where they stand, not what you wanted to improve. If the goal only lives in your head, the reviewer has no way to know they left it.
+
+**Example.** The owner of a live assistant for sales calls wanted to improve what the seller says during the call. Four reviews were launched with the open question "where is the biggest lever to sell more?". Three of them went to what happens before and after the call (scheduling, follow-up, payments): valid advice, but not what was being sought. The owner said so: they focused on everything except what the owner wanted to improve. A second round, with the scope written down ("only what to say inside the call; nothing about the funnel or follow-up"), brought exactly what was missing.
+
+**Detector question.** If this reviewer brings me ten excellent ideas about something else, would my brief have prevented it? Did I write what is out of scope?
+
+**Warning sign.** "I'll give them total freedom so they see what we haven't."
+
+**What to do.** Write in the brief the goal of whoever asked for the work, in their words, plus one line of what is out of scope. If you want freedom to find blind spots, grant it inside that scope, and leave a single line for anything found outside it.

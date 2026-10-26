@@ -156,6 +156,20 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Qué hacer.** Nombra las máquinas donde corre el trabajo y consigue un veredicto de cada una: lee CI hasta el final después de cada push (cada job, no solo el primero en verde), corre en el servidor o en una copia de él, o pide el resultado del usuario. Una falla en una de ellas es real aunque aquí nunca aparezca: reprodúcela aquí forzando la diferencia (una fecha fija, un reloj rápido, una ruta sensible a mayúsculas) antes de arreglarla, y arregla el supuesto, no la máquina.
 
+### 71. Una puntuación promedio deja pasar el único error que importa
+
+`from: 2cddfa4e` · `by: ai`
+
+**La idea.** Una verificación que califica toda la salida con un solo promedio (porcentaje de similitud, proporción de palabras correctas, proporción de filas que coinciden) puede aprobar una salida que está mal justo en el elemento que importaba. Cuando casi todo está bien, el promedio se mantiene alto aunque la parte clave esté mal.
+
+**Ejemplo.** Cada frase de una narración con voz sintética se aceptaba transcribiendo el audio y exigiendo al menos 90 % de similitud con el guion. Una frase de prueba traía en mayúsculas el nombre de una función de hoja de cálculo. La voz lo pronunció mal en las dos tomas, y ambas pasaron con 93 % porque las otras catorce palabras estaban bien. El usuario lo notó escuchando. Con la misma aritmética, una frase a la que le faltara la última palabra también pasaría; ese caso no se probó.
+
+**Pregunta detectora.** ¿Mi verificación reduce todo a un solo número? ¿Probé con una salida donde solo falle el elemento clave (un término, la última palabra, un número) y vi que se rechazaba?
+
+**Señal de alarma.** «Pasó con 93 %, está bien» · «un umbral de 90 % ya deja margen para errores chicos».
+
+**Qué hacer.** Antes de confiar en el umbral, arma el caso de un solo error en el lugar que importa y mira si se rechaza (ver la 13). Si no se rechaza, verifica por separado lo que no puede fallar: los términos raros, los números, el final. Y si la entrada trae algo que la herramienta no maneja (siglas, fórmulas, símbolos), conviértelo o recházalo antes de generar.
+
 ### EDU-1. Si la respuesta sale igual sin la habilidad, el ejercicio no la mide
 
 `from: 164808ab` · `by: ai`

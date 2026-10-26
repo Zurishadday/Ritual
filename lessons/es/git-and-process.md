@@ -111,3 +111,17 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 **Señal de alarma.** «Primero le echo un vistazo y luego lo delego» · «esto es muy corto como para delegarlo».
 
 **Qué hacer.** Clasifica el paso por su tipo, no por su tamaño: si es mecánico, va como dice la regla desde el primer comando. Si una excepción de verdad tiene sentido, dilo antes de hacerla y deja que el usuario decida.
+
+### 70. Un encargo abierto deriva hacia lo más fácil de criticar: el objetivo y el alcance van en el encargo
+
+`from: 129f524c` · `by: ai`
+
+**La idea.** Cuando le preguntas a un revisor (una persona o un agente) «¿qué nos falta?» o «¿dónde está la mayor palanca?», responde lo que se ve o se critica más fácil desde donde está, no lo que querías mejorar. Si el objetivo solo vive en tu cabeza, el revisor no tiene manera de saber que lo dejó fuera.
+
+**Ejemplo.** El dueño de un asistente en vivo para llamadas de venta quería mejorar lo que dice el vendedor durante la llamada. Se lanzaron cuatro revisiones con la pregunta abierta «¿dónde está la mayor palanca para vender más?». Tres se fueron a lo que pasa antes y después de la llamada (agendar, dar seguimiento, cobros): consejo válido, pero no lo que se buscaba. El dueño lo dijo: se enfocaron en todo menos en lo que el dueño quería mejorar. Una segunda ronda, con el alcance escrito («solo lo que se dice dentro de la llamada; nada sobre el embudo ni el seguimiento»), trajo justo lo que faltaba.
+
+**Pregunta detectora.** Si este revisor me trae diez ideas excelentes sobre otra cosa, ¿mi encargo lo habría evitado? ¿Escribí qué queda fuera?
+
+**Señal de alarma.** «Les doy total libertad para que vean lo que no hemos visto».
+
+**Qué hacer.** Escribe en el encargo el objetivo de quien pidió el trabajo, con sus palabras, más una línea con lo que queda fuera. Si quieres libertad para encontrar puntos ciegos, concédela dentro de ese alcance, y deja una sola línea para lo que encuentren fuera de él.

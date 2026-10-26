@@ -47,6 +47,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **28.** [Quem roda e quem verifica são pessoas diferentes](tests-and-checks.md#28-quem-roda-e-quem-verifica-são-pessoas-diferentes)
 - **34.** [Confie no sintoma de um achado de QA e meça a causa](tests-and-checks.md#34-confie-no-sintoma-de-um-achado-de-qa-e-meça-a-causa)
 - **55.** [Verde na sua máquina é o veredito de uma máquina só](tests-and-checks.md#55-verde-na-sua-máquina-é-o-veredito-de-uma-máquina-só)
+- **71.** [Uma nota média deixa passar o único erro que importa](tests-and-checks.md#71-uma-nota-média-deixa-passar-o-único-erro-que-importa)
 - **EDU-1.** [Se a resposta sai igual sem a habilidade, o exercício não a mede](tests-and-checks.md#edu-1-se-a-resposta-sai-igual-sem-a-habilidade-o-exercício-não-a-mede)
 - **EDU-4.** [Se dá para adivinhar a opção certa pela posição, pelo tamanho ou pela aparência, o quiz mede adivinhação](tests-and-checks.md#edu-4-se-dá-para-adivinhar-a-opção-certa-pela-posição-pelo-tamanho-ou-pela-aparência-o-quiz-mede-adivinhação)
 
@@ -98,6 +99,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **53.** [O código passa pelo editor, não pelo tratamento de texto do shell](console-and-tools.md#53-o-código-passa-pelo-editor-não-pelo-tratamento-de-texto-do-shell)
 - **60.** [O que viaja como argumento de processo tem um limite que você só vê quando o conteúdo cresce](console-and-tools.md#60-o-que-viaja-como-argumento-de-processo-tem-um-limite-que-você-só-vê-quando-o-conteúdo-cresce)
 - **62.** [Parar trabalho em segundo plano é parar quem o lança, e depois provar que nada sobrou](console-and-tools.md#62-parar-trabalho-em-segundo-plano-é-parar-quem-o-lança-e-depois-provar-que-nada-sobrou)
+- **69.** [Um processo iniciado por uma ferramenta de vida curta morre quando a ferramenta termina](console-and-tools.md#69-um-processo-iniciado-por-uma-ferramenta-de-vida-curta-morre-quando-a-ferramenta-termina)
 
 ## Git e processo
 
@@ -108,3 +110,4 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **40.** [O registro diz o que ficou e por quê, não uma crônica de erros](git-and-process.md#40-o-registro-diz-o-que-ficou-e-por-quê-não-uma-crônica-de-erros)
 - **47.** [O que se trabalha em paralelo colide no que é compartilhado](git-and-process.md#47-o-que-se-trabalha-em-paralelo-colide-no-que-é-compartilhado)
 - **65.** [Uma regra sobre como trabalhar não tem exceção para passos pequenos](git-and-process.md#65-uma-regra-sobre-como-trabalhar-não-tem-exceção-para-passos-pequenos)
+- **70.** [Um pedido aberto deriva para o que é mais fácil de criticar: o objetivo e o escopo devem estar no pedido](git-and-process.md#70-um-pedido-aberto-deriva-para-o-que-é-mais-fácil-de-criticar-o-objetivo-e-o-escopo-devem-estar-no-pedido)

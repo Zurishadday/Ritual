@@ -4,17 +4,19 @@ Ce qui s'applique quand un programme écrit, génère, transforme ou déplace de
 
 ### 6. La définition métier vit à un seul endroit
 
-`from: 5286faa8` · `by: ai`
+`from: 4a309d46` · `by: ai`
 
 **L'idée.** Si la règle qui définit « ce qui compte comme actif » est répétée dans chaque requête, les copies finiront par diverger. Ce n'est pas une question de si, mais de quand.
 
 **Exemple.** Un validateur avait le nombre d'éléments de référence saisi à la main : 43. Quand le document est passé à 47, il a rejeté les quatre nouveaux comme inexistants. Maintenant, il compte les éléments du document lui-même.
 
-**Question détectrice.** Si je modifie cette définition, combien de fichiers dois-je toucher ? Si c'est plus d'un, la règle n'est pas configurée à un seul endroit.
+**Autre exemple.** Un simulateur d'entraînement à des conversations avec des clients classait secrètement un client sur trois comme « hors cible », avec une liste de raisons écrite dans son code ; un évaluateur notait ensuite la personne qui s'entraînait d'après le manuel de vente. Une des raisons du code n'était pas dans la règle du manuel. Le client simulé refusait d'acheter pour cette raison, et l'évaluateur reprochait à la personne de ne pas avoir écarté ce client. Le verdict mesurait l'écart entre deux copies de la règle, et la personne a conclu que le simulateur était fait pour que personne ne puisse vendre.
 
-**Signal d'alarme.** « Je le mets aussi ici, ce n'est qu'une ligne » · « ce nombre ne changera pas ».
+**Question détectrice.** Si je modifie cette définition, combien de fichiers dois-je toucher ? Si c'est plus d'un, la règle n'est pas configurée à un seul endroit. Le code qui construit un cas et le code qui le juge lisent-ils la règle au même endroit ?
 
-**Que faire.** Placez la définition en un point que toutes les requêtes traversent, et faites-les toutes lire à partir de là. Un nombre saisi à la main qui recopie une valeur provenant d'ailleurs est aussi une définition répétée.
+**Signal d'alarme.** « Je le mets aussi ici, ce n'est qu'une ligne » · « ce nombre ne changera pas » · « cette liste sert seulement à générer des cas ».
+
+**Que faire.** Placez la définition en un point que toutes les requêtes traversent, et faites-les toutes lire à partir de là. Un nombre saisi à la main qui recopie une valeur provenant d'ailleurs est aussi une définition répétée. Un générateur de cas et son juge lisent le même fichier de règles, et un test échoue si le générateur produit une condition que ce fichier ne connaît pas. Avant de blâmer celui qui a été jugé, vérifiez le cas par rapport à la règle officielle.
 
 **À ne pas confondre avec.** Répéter une explication volontairement, dans un support pédagogique, n'est pas copier une définition. Ce qu'il ne faut pas copier, c'est la règle qui calcule la valeur.
 

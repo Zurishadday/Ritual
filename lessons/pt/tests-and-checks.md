@@ -156,6 +156,20 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **O que fazer.** Nomeie as máquinas em que o trabalho roda e obtenha um veredito de cada uma: leia o CI até o fim depois de cada push (cada job, não só o primeiro verde), rode no servidor ou numa cópia dele, ou peça o resultado do usuário. Uma falha em uma dessas máquinas é real mesmo que nunca apareça aqui: reproduza-a aqui forçando a diferença (uma data fixa, um relógio rápido, um caminho sensível a maiúsculas) antes de corrigir, e corrija a suposição, não a máquina.
 
+### 71. Uma nota média deixa passar o único erro que importa
+
+`from: 2cddfa4e` · `by: ai`
+
+**A ideia.** Uma verificação que dá uma nota média à saída inteira (percentual de semelhança, proporção de palavras certas, proporção de linhas que batem) pode aprovar uma saída errada justamente no item que importava. Quando quase tudo está certo, a média continua alta mesmo que a parte principal esteja errada.
+
+**Exemplo.** Cada frase de uma narração com voz sintética era aceita se, ao transcrever o áudio, a semelhança com o roteiro fosse de pelo menos 90 %. Uma frase de teste continha, em maiúsculas, o nome de uma função de planilha. A voz o pronunciou errado nas duas gravações, e as duas passaram com 93 %, porque as outras catorze palavras estavam certas. O usuário percebeu ouvindo. Pela mesma conta, uma frase com a última palavra cortada também passaria; esse caso não foi testado.
+
+**Pergunta detectora.** Minha verificação reduz tudo a um número? Eu a testei numa saída em que só o item-chave está errado (um termo, a última palavra, um número) e vi que ela foi rejeitada?
+
+**Sinal de alerta.** “Passou com 93 %, está bom.” · “Um limite de 90 % já deixa espaço para pequenos erros.”
+
+**O que fazer.** Antes de confiar no limite, monte o caso de um único erro no lugar que importa e veja se ele é rejeitado (ver a lição 13). Se não for, confira separadamente o que não pode falhar: termos raros, números, o final. E se a entrada contiver algo que a ferramenta não consegue tratar (siglas, fórmulas, símbolos), converta-o ou rejeite-o antes de gerar.
+
 ### EDU-1. Se a resposta sai igual sem a habilidade, o exercício não a mede
 
 `from: 164808ab` · `by: ai`
