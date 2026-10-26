@@ -58,7 +58,7 @@ The library grows with everyone's rituals, so contributions arrive faster than o
 
 When two reviews of the same contribution or pull request point to different places (another lesson, core or package, new or a sharpening), or a reviewer leaves it open between two, a judge decides before the maintainer is asked. Only for these cases: it costs more than a review.
 
-1. One agent with `model: fable` for all the open cases, read only: no edits, nothing on GitHub, no `private/`.
+1. One agent with `model: fable` for all the open cases, read only: no edits, nothing on GitHub, no `private/`. A follow-up question on a case goes to a new judge, not the same one resumed: the resumed judge has its own earlier verdict in front of it, and is anchored by it (#65, 2026-10-25).
 2. **Blind.** Each case gives the options as A and B in random order, with the same length of reasoning each, never who proposed which.
 3. **Evidence, not only conclusions.** It reads the contribution in full, the full text of every lesson named, `lessons/TEMPLATE.md` and `lessons/taxonomy.json`.
 4. **By the written rules.** Its verdict cites the rule or step it used. If the rules do not settle it, it says so and proposes the rule that would: that gap goes into this skill.

@@ -66,6 +66,29 @@ export function pickerRules(entries) {
   return lines;
 }
 
+const median = (xs) => { const s = [...xs].sort((a, b) => a - b), h = s.length >> 1; return s.length % 2 ? s[h] : (s[h - 1] + s[h]) / 2; };
+
+/** What the picker cost (hooks/pick.mjs logs one "pick" per Haiku call): money at the price Claude Code reports (a
+ * subscription's is the API list price, not money spent), tokens, time, and cost per first step it stopped with new
+ * lessons, the one benefit the log records. */
+export function pickerCost(picks, firsts = []) {
+  const sum = (f) => picks.reduce((n, x) => n + (Number(f(x)) || 0), 0);
+  const priced = picks.filter((x) => typeof x.cost === "number");
+  const money = sum((x) => x.cost), num = (n) => n.toLocaleString("en-US");
+  const basis = priced.length && priced.every((x) => x.basis === "list") ? "at API list prices" : "as Claude Code reports it";
+  // Only the steps since picks were costed, so both sides of the ratio cover the same days.
+  const from = picks.map((x) => x.date).filter(Boolean).sort()[0] ?? "";
+  const stopped = firsts.filter((x) => x.outcome === "stopped" && (x.date ?? "") >= from).length;
+  const timed = picks.filter((x) => typeof x.ms === "number"), outside = timed.filter((x) => typeof x.api_ms === "number");
+  const parts = [`Picker cost: ${picks.length} call(s) for ${sum((x) => x.files ?? 1)} file(s) or request(s)`];
+  if (priced.length) parts.push(`$${money.toFixed(4)} ${basis} (tokens: ${num(sum((x) => x.tokens?.cache_read))} read from cache, ${num(sum((x) => x.tokens?.cache_write))} written to it, ${num(sum((x) => x.tokens?.input))} input, ${num(sum((x) => x.tokens?.output))} output)`);
+  if (timed.length) parts.push(`median ${(median(timed.map((x) => x.ms)) / 1000).toFixed(1)} s a call${outside.length ? `, ${(median(outside.map((x) => x.ms - x.api_ms)) / 1000).toFixed(1)} s of it outside the model` : ""}`);
+  const failed = picks.filter((x) => x.answered === false).length;
+  if (failed) parts.push(`${failed} failed`);
+  if (priced.length && stopped) parts.push(`$${(money / stopped).toFixed(4)} per first step stopped with new lessons`);
+  return [parts.join(" · ")];
+}
+
 export function summary(project, { now = new Date(), session = process.env.CLAUDE_CODE_SESSION_ID || null, all = false } = {}) {
   const dir = path.join(project, ".ritual");
   if (!existsSync(dir)) return "No .ritual/ folder: run /ritual to set Ritual up first.";
@@ -99,6 +122,8 @@ export function summary(project, { now = new Date(), session = process.env.CLAUD
   if (firsts.length) lines.push("", ...firstSteps(firsts));
   const ruled = log.filter((x) => /^pick-(rule|rule-failed|batch)$/.test(x.type));
   if (ruled.length) lines.push(...(firsts.length ? [] : [""]), ...pickerRules(ruled));
+  const picks = log.filter((x) => x.type === "pick");
+  if (picks.length) lines.push(...(firsts.length || ruled.length ? [] : [""]), ...pickerCost(picks, firsts));
 
   const blocks = readJsonl(path.join(local, "guard.jsonl")).filter(isRecent).filter((x) => mine(x.session));
   const byRule = {};
@@ -292,6 +317,19 @@ export function selftest() {
     const rl = summary(tmp, { session: "aaaa1111-a" }).split("\n");
     const rh = rl.find((l) => l.startsWith("Picker rules")) ?? "";
     if (!rh.includes("skipped 2 file pick(s) (same change 1, nothing new 2) · checked anyway 1 · failed 1 · 1 batch(es), up to 4 files") || !rl.some((l) => l.includes("failed  «nothing new» skipped c.md, which had lessons 41, 46"))) bad.push(`the summary counts the picker rules and lists each failure:\n${rl.filter((l) => /picker|failed/i.test(l)).join("\n")}`);
+    // The picker's cost, one entry per Haiku call: at list prices, the time outside the model, and per first step it
+    // stopped with new lessons (the one benefit the log records).
+    rule("pick", { kind: "request", files: 1, answered: true, ms: 20000, api_ms: 2000, cost: 0.001, basis: "list", tokens: { input: 2, output: 100, cache_read: 24000, cache_write: 2000 } });
+    rule("pick", { kind: "file", files: 3, answered: true, ms: 24000, api_ms: 3000, cost: 0.002, basis: "list", tokens: { input: 2, output: 150, cache_read: 30000, cache_write: 0 } });
+    rule("pick", { kind: "file", files: 1, answered: false, ms: 90000, error: "Haiku took over 90 s" });
+    const cost = summary(tmp, { session: "aaaa1111-a" }).split("\n").find((l) => l.startsWith("Picker cost")) ?? "";
+    // Cost per stopped step counts only steps from when picks were costed; a price not at list says so.
+    const p1 = { date: "2026-10-26T10:00:00Z", ms: 1000, cost: 0.002, basis: "list" };
+    const early = [{ outcome: "stopped", date: "2026-10-25T10:00:00Z" }, { outcome: "stopped", date: "2026-10-26T11:00:00Z" }];
+    if (!pickerCost([p1], early)[0].includes("$0.0020 per first step stopped")) bad.push(`steps before the first costed pick don't count: ${pickerCost([p1], early)[0]}`);
+    if (!pickerCost([{ ...p1, basis: undefined }])[0].includes("$0.0020 as Claude Code reports it")) bad.push(`a cost not at list prices is not called one: ${pickerCost([{ ...p1, basis: undefined }])[0]}`);
+    for (const want of ["3 call(s) for 5 file(s) or request(s)", "$0.0030 at API list prices", "54,000 read from cache", "2,000 written to it", "250 output", "median 24.0 s a call, 19.5 s of it outside the model", "1 failed", "$0.0030 per first step stopped with new lessons"])
+      if (!cost.includes(want)) bad.push(`the picker's cost line lacks «${want}»: ${cost}`);
   } finally { rmSync(tmp, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
@@ -314,9 +352,10 @@ if (isMain(import.meta.url)) {
   // Every first step ever logged in this project, every session: the long-run check that the lessons come first.
   if (args.includes("--first-steps")) {
     const all = readJsonl(path.join(project, ".ritual", "local", "log.jsonl"));
-    const entries = all.filter((x) => x.type === "first-step"), ruled = all.filter((x) => /^pick-(rule|rule-failed|batch)$/.test(x.type));
-    const since = [entries[0]?.date, ruled[0]?.date].filter(Boolean).sort()[0];
-    console.log(since ? [`Since ${since.slice(0, 10)}:`, ...(entries.length ? firstSteps(entries) : ["First step after a request: none logged yet"]), ...(ruled.length ? pickerRules(ruled) : ["Picker rules: nothing logged yet"])].join("\n") : "No first steps or picker rules logged yet.");
+    const entries = all.filter((x) => x.type === "first-step"), ruled = all.filter((x) => /^pick-(rule|rule-failed|batch)$/.test(x.type)), picks = all.filter((x) => x.type === "pick");
+    const since = [entries[0]?.date, ruled[0]?.date, picks[0]?.date].filter(Boolean).sort()[0];
+    const costed = picks.length ? pickerCost(picks, entries).map((l) => `${l} (since ${picks[0].date.slice(0, 10)})`) : ["Picker cost: nothing logged yet"];
+    console.log(since ? [`Since ${since.slice(0, 10)}:`, ...(entries.length ? firstSteps(entries) : ["First step after a request: none logged yet"]), ...(ruled.length ? pickerRules(ruled) : ["Picker rules: nothing logged yet"]), ...costed].join("\n") : "No first steps or picker rules logged yet.");
     process.exit(0);
   }
   if (args.includes("--report")) {
