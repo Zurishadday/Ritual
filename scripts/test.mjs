@@ -27,15 +27,21 @@ const STEPS = [
   "assets/social/card.mjs --selftest",
 ];
 
-let failed = 0;
+// A step that passes with warnings says so inside its ✓ line ("(6 translation warning(s))"). The last line carries
+// their total, so reading the verdict is enough: twice a search for another mark hid them (126, then 6).
+const warningsIn = (line) => [...line.matchAll(/\b(\d+) [a-z ]*warning\(s\)/g)].reduce((n, m) => n + Number(m[1]), 0);
+if (warningsIn("✓ ok (6 translation warning(s))") !== 6 || warningsIn("✓ 84 lessons are well formed") !== 0) throw new Error("warningsIn no longer reads a step's warnings");
+
+let failed = 0, warnings = 0;
 for (const step of STEPS) {
   const r = spawnSync(process.execPath, step.split(" "), { cwd: ROOT, encoding: "utf8" });
   const out = `${r.stdout ?? ""}${r.stderr ?? ""}`.trim();
   const verdict = out.split("\n").find((l) => l.startsWith("✓"));
-  if (r.status === 0 && verdict) { console.log(`${verdict}   (${step})`); continue; }
+  if (r.status === 0 && verdict) { warnings += warningsIn(verdict); console.log(`${verdict}   (${step})`); continue; }
   failed++;
   console.log(`✕ ${step}: exit ${r.status}${verdict ? "" : ", no ✓ verdict"}`);
   if (out) console.log(out.replace(/^/gm, "    "));
 }
-console.log(failed ? `✕ ${failed} of ${STEPS.length} step(s) failed (Node ${process.versions.node})` : `✓ ${STEPS.length} step(s) passed (Node ${process.versions.node})`);
+const node = `(Node ${process.versions.node})`;
+console.log(failed ? `✕ ${failed} of ${STEPS.length} step(s) failed ${node}` : warnings ? `✓ ${STEPS.length} step(s) passed, ⚠ with ${warnings} warning(s): read the step that gives them ${node}` : `✓ ${STEPS.length} step(s) passed ${node}`);
 process.exit(failed ? 1 : 0);

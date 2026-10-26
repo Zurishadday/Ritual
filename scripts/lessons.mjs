@@ -245,6 +245,18 @@ export function readmeCounts(text, counts) {
   return out;
 }
 
+/** The infographic's two numbers against the library: every active lesson, and those born from a real mistake. A number
+ * it can't find is reported too, so a new layout doesn't switch the check off. @returns {string[]} */
+export function infographicCounts(html, counts) {
+  const out = [];
+  for (const [label, want] of [["lessons ready to use", counts.total], ["born from real mistakes", counts.field]]) {
+    const n = html.match(new RegExp(`>(\\d+)</b>\\s*<span>${label}<`))?.[1];
+    if (!n) out.push(`its «${label}» number is not where the check looks for it`);
+    else if (Number(n) !== want) out.push(`says ${n} ${label}, the library has ${want}`);
+  }
+  return out;
+}
+
 export function check(root = ROOT) {
   const findings = [];
   const error = (file, line, message) => findings.push({ file, line, message, level: "error" });
@@ -307,6 +319,10 @@ export function check(root = ROOT) {
   for (const l of live) if (!/^\d+$/.test(l.id)) for (const p of (l.data.packages ?? "").split(",").map((s) => s.trim()).filter(Boolean)) counts.packages[p] = (counts.packages[p] ?? 0) + 1;
   for (const f of readdirSync(root).filter((f) => /^README(\.[\w-]+)?\.md$/.test(f)))
     for (const m of readmeCounts(readFileSync(path.join(root, f), "utf8"), counts)) error(f, 0, `${m}: update every README`);
+  const infographic = path.join(root, "assets", "social", "infographic.html");
+  if (existsSync(infographic))
+    for (const m of infographicCounts(readFileSync(infographic, "utf8"), { total: live.length, field: live.filter((l) => String(l.data.origin ?? "").startsWith("field")).length }))
+      error("assets/social/infographic.html", 0, `${m}: update it and render assets/infographic.png again (1080×1350)`);
   return findings;
 }
 
@@ -319,7 +335,7 @@ const words = (text) => new Set((text.toLowerCase().match(/\p{L}{3,}/gu) ?? []))
 export function sharpeningProblems(base, current) {
   const findings = [];
   const now = new Map(current.map((l) => [l.id, l]));
-  const examples = (l) => Object.entries(l.parts).filter(([k]) => /example/i.test(k));
+  const examples = (l) => Object.entries(l.parts).filter(([k]) => /example|variant/i.test(k));
   for (const old of base) {
     if (old.merged) continue;
     const l = now.get(old.id);
@@ -512,6 +528,11 @@ export function selftest() {
   const stale = readmeCounts(readme(54, 3), counts).join(" | ");
   if (!stale.includes("54") || !stale.includes("`ai`")) failures.push(`a stale core count and a stale package count should both fail: ${stale || "nothing"}`);
   if (readmeCounts("Trae **61 lecciones de campo**\n\n| `web` | 5 条：x |", counts).join().includes("`web`") === true) failures.push("a package count followed by a word of the language is read as the number");
+  // The infographic's numbers follow the library too: on 2026-10-22 one of them stayed at 55 until the image was rendered.
+  const tile = (total, field) => `<div class="box num"><b class="orange">${total}</b><span>lessons ready to use</span></div>\n<div class="box num"><b class="red">${field}</b><span>born from real mistakes</span></div>`;
+  if (infographicCounts(tile(84, 79), { total: 84, field: 79 }).length) failures.push("an infographic with the right numbers should pass");
+  if (infographicCounts(tile(75, 79), { total: 84, field: 79 }).join() !== "says 75 lessons ready to use, the library has 84") failures.push(`a stale infographic number should fail: ${infographicCounts(tile(75, 79), { total: 84, field: 79 }).join(" | ")}`);
+  if (infographicCounts("<p>new layout</p>", { total: 84, field: 79 }).length !== 2) failures.push("an infographic whose numbers can't be found must fail, not pass");
   const run = (files, also) => { const tmp = assemble(files); try { return also ? also(tmp) : check(tmp); } finally { rmSync(tmp, { recursive: true, force: true }); } };
   const base = run(BASE);
   if (base.length) failures.push(`the case that must pass has ${base.length} finding(s):\n` + base.map((h) => `    ${h.level} ${h.file}:${h.line} ${h.message}`).join("\n"));
@@ -539,6 +560,9 @@ export function selftest() {
     const got = sharpeningProblems(was, now).map((x) => `${x.level} ${x.message}`).join(" | ");
     if (expected ? !got.includes(expected) : got) failures.push(`sharpening «${name}» should ${expected ? `give «${expected}»` : "pass"} and gave: ${got || "nothing"}`);
   }
+  // A Variant is a second form of the mistake, guarded like an example.
+  const withVariant = two("The report said almost one in five tickets were lost; measured, it was more.", "**Variant.** The same total, copied into a slide before the data was final.\n\n");
+  if (!sharpeningProblems(withVariant, was).some((x) => x.message.includes("«Variant» it had in main is gone"))) failures.push("a Variant deleted in a sharpening must be an error, like an example");
   if (!sharpeningProblems(was, two("x", "", "And if not? ".repeat(30))).some((x) => x.level === "warning" && x.message.includes("detector"))) failures.push("a drowned detector question must be a warning, not an error");
   if (sharpeningProblems(two("a", "", "And if not? ".repeat(30)), two("a", "", "And if not? ".repeat(30))).length) failures.push("a long detector question that did not grow must not warn again");
   // --stamp writes the right fingerprint on an unstamped translation, and leaves the stamped ones alone.

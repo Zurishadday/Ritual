@@ -18,7 +18,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 2. Dos cosas con el mismo nombre no son la misma cosa
 
-`from: 17c673f3` · `by: ai`
+`from: de984b04` · `by: ai`
 
 **La idea.** «Cliente activo», «fecha», «el jefe», «el umbral»: la misma palabra suele esconder dos definiciones. Cuando dos reportes no cuadran, casi siempre es esto.
 
@@ -28,11 +28,13 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 **Un ejemplo más.** El costo de unos subagentes se calculó a partir del conteo de tokens del resumen de cada uno, y salió muy bajo: ese conteo dejaba fuera parte del uso. Sumar el uso de cada respuesta en sus transcripciones dio el costo real. Y un registro decía que un guardia había dejado «23 líneas» cuando había dejado 19 bloques.
 
+**Un cuarto ejemplo.** Un script que publica una nota primero buscaba una ya publicada con el mismo título, y si encontraba una, la marcaba como enviada y borraba su borrador. Dos personas pueden escribir el mismo título: la nota de otra habría ocupado el lugar de esta, y el borrador se habría perdido. De quién es la nota lo dice el autor, no el título.
+
 **Pregunta detectora.** ¿Hay una regla que es verdad para una de las dos cosas y falsa para la otra? Y si combino dos cifras en una cuenta, ¿vienen del mismo universo, la misma escala y el mismo periodo?
 
 **Señal de alarma.** «Es la misma fecha» · «la vista ya lo filtra» · «las dos están en pesos».
 
-**Qué hacer.** Dale a cada variante un nombre distinto en el código y en la pantalla, aunque quede feo. Y antes de dividir o restar dos cifras de fuentes distintas, escribe de dónde sale cada una: si un resultado sale igual en todos los casos (todas pierden, todas ganan), sospecha de la escala antes que del negocio. Cuando una cifra sale de un campo o de un conteo, lee cómo se calcula (su documentación o su código) y escribe la unidad junto al número: «19 bloques», no «23 líneas». Para obtener la cifra de otra manera, ver la 12.
+**Qué hacer.** Dale a cada variante un nombre distinto en el código y en la pantalla, aunque quede feo. Y antes de dividir o restar dos cifras de fuentes distintas, escribe de dónde sale cada una: si un resultado sale igual en todos los casos (todas pierden, todas ganan), sospecha de la escala antes que del negocio. Cuando una cifra sale de un campo o de un conteo, lee cómo se calcula (su documentación o su código) y escribe la unidad junto al número: «19 bloques», no «23 líneas». Cuando un nombre es lo que hace coincidir dos registros (un título, una etiqueta), agrega una clave que solo pueda tener el correcto, como su autor o su id, antes de actuar sobre la coincidencia. Para obtener la cifra de otra manera, ver la 12.
 
 ### 3. El periodo en curso siempre está incompleto
 

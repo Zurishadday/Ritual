@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 46 | 5 | 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
-| `claude-opus-5-5` | 24 | 9 | 13, 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, AI-1, AI-2, AI-3, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
+| `claude-opus-5-5` | 24 | 11 | 2, 9, 13, 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, AI-1, AI-2, AI-3, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-fable-5-1` | 0 | 1 | 44 |
@@ -20,6 +20,8 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 
 The most general mistakes: different models made them.
 
+- [2. Two things with the same name are not the same thing](en/numbers-and-data.md#2-two-things-with-the-same-name-are-not-the-same-thing) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
+- [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) · `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
 - [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
@@ -41,14 +43,14 @@ The most general mistakes: different models made them.
 | Lesson | Models |
 |---|---|
 | [1. "I couldn't read it" is not "there's nothing"](en/numbers-and-data.md#1-i-couldnt-read-it-is-not-theres-nothing) | `~opus` 2026-08 |
-| [2. Two things with the same name are not the same thing](en/numbers-and-data.md#2-two-things-with-the-same-name-are-not-the-same-thing) | `~opus` 2026-08 |
+| [2. Two things with the same name are not the same thing](en/numbers-and-data.md#2-two-things-with-the-same-name-are-not-the-same-thing) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [3. The current period is always incomplete](en/numbers-and-data.md#3-the-current-period-is-always-incomplete) | `~opus` 2026-08 |
 | [4. A field the source overwrites is not history](en/numbers-and-data.md#4-a-field-the-source-overwrites-is-not-history) | `~opus` 2026-08 |
 | [5. A perfect result is a warning, not a win](en/numbers-and-data.md#5-a-perfect-result-is-a-warning-not-a-win) | `~opus` 2026-08 |
 | [6. The business definition lives in one place](en/scripts-and-files.md#6-the-business-definition-lives-in-one-place) | `~opus` 2026-08 |
 | [7. Read what was published, not the intent](en/scripts-and-files.md#7-read-what-was-published-not-the-intent) | `~opus` 2026-08 |
 | [8. List the consumers, don't remember them](en/git-and-process.md#8-list-the-consumers-dont-remember-them) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
-| [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) | `~opus` 2026-08 |
+| [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [10. Twin modules change together](en/interface-and-design.md#10-twin-modules-change-together) | `~opus` 2026-08 |
 | [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [12. Running the query doesn't prove the number is right](en/numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right) | `~opus` 2026-08 |

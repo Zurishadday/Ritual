@@ -22,13 +22,15 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 ### 9. Um estado vive em vários registros: mova-os juntos
 
-`from: d7a99bc7` · `by: ai`
+`from: dbaa12af` · `by: ai`
 
 **A ideia.** Fechar uma pendência costuma envolver três lugares: a lista de pendências, o teste que a vigia e o documento que a descreve. Se você mexe em um, os outros contradizem.
 
 **Exemplo.** Uma pendência foi marcada como fechada na lista, mas o teste que a vigiava ainda estava marcado como “esperado que falhe”, e o documento ainda a descrevia como aberta. Três lugares, três versões.
 
 **Outro exemplo.** Uma caixa de texto era preenchida por ditado por voz, que mantinha o texto numa variável separada, e o botão de enviar mandava essa variável. A pessoa apagou a primeira metade à mão enquanto ainda ditava, e o texto inteiro foi enviado, com a parte apagada. Depois, enviar limpava a caixa, mas não a variável, então o ditado seguinte começava com a mensagem anterior.
+
+**Mais um exemplo.** Uma caixa de pergunta perguntava se devia publicar um texto e mostrava o rascunho salvo como prévia. O script que publicava montava o próprio corpo a partir desse rascunho: um prefixo no título, campos que o rascunho não tinha. A pessoa teria dito sim a um texto que não era o que foi publicado; um revisor pegou isso antes do primeiro uso, e agora a prévia vem da mesma função que publica.
 
 **Pergunta detectora.** Que outros lugares afirmam este estado? Nomeie-os antes de salvar. E o que eu envio ou salvo: vem da cópia que a pessoa vê, ou de uma guardada à parte?
 

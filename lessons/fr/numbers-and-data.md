@@ -18,7 +18,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 2. Deux choses qui portent le même nom ne sont pas la même chose
 
-`from: 17c673f3` · `by: ai`
+`from: de984b04` · `by: ai`
 
 **L'idée.** « Client actif », « date », « le chef », « le seuil » : le même mot cache souvent deux définitions. Quand deux rapports ne concordent pas, c'est presque toujours cela.
 
@@ -28,11 +28,13 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Encore un exemple.** Le coût de certains sous-agents était tiré d'un décompte de jetons présent dans le résumé de chacun, et il sortait beaucoup trop bas : ce décompte oubliait une partie de la consommation. En additionnant la consommation de chaque réponse de leurs transcriptions, on obtenait le vrai coût. Et un journal indiquait qu'un garde-fou avait laissé « 23 lignes » alors qu'il avait laissé 19 blocs.
 
+**Un quatrième exemple.** Un script qui publie une note cherchait d'abord une note déjà publiée portant le même titre et, s'il en trouvait une, marquait la note comme envoyée et supprimait son brouillon. Deux personnes peuvent écrire le même titre : la note de quelqu'un d'autre aurait pris la place de celle-ci, et le brouillon aurait été perdu. C'est l'auteur, et non le titre, qui dit à qui elle appartient.
+
 **Question détectrice.** Existe-t-il une règle vraie pour l'une des deux choses et fausse pour l'autre ? Et si je combine deux chiffres dans un même calcul, viennent-ils du même univers, de la même échelle et de la même période ?
 
 **Signal d'alarme.** « C'est la même date » · « la vue filtre déjà » · « ce sont tous les deux en pesos ».
 
-**Que faire.** Donnez à chaque variante un nom différent dans le code et à l'écran, même si c'est laid. Et avant de diviser ou de soustraire deux chiffres provenant de sources différentes, notez d'où vient chacun : si un résultat sort identique dans tous les cas (ils perdent tous, ils gagnent tous), soupçonnez l'échelle avant le métier. Quand un chiffre vient d'un champ ou d'un comptage, lisez comment il est calculé (sa documentation ou son code) et écrivez l'unité à côté du nombre : « 19 blocs », et non « 23 lignes ». Pour obtenir le chiffre d'une deuxième façon, voir la leçon 12.
+**Que faire.** Donnez à chaque variante un nom différent dans le code et à l'écran, même si c'est laid. Et avant de diviser ou de soustraire deux chiffres provenant de sources différentes, notez d'où vient chacun : si un résultat sort identique dans tous les cas (ils perdent tous, ils gagnent tous), soupçonnez l'échelle avant le métier. Quand un chiffre vient d'un champ ou d'un comptage, lisez comment il est calculé (sa documentation ou son code) et écrivez l'unité à côté du nombre : « 19 blocs », et non « 23 lignes ». Quand c'est un nom qui correspond à deux fiches (un titre, une étiquette), ajoutez une clé que seule la bonne peut avoir, comme son auteur ou son identifiant, avant d'agir sur la correspondance. Pour obtenir le chiffre d'une deuxième façon, voir la leçon 12.
 
 ### 3. La période en cours est toujours incomplète
 

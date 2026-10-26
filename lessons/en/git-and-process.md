@@ -22,13 +22,15 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 9. One state lives in several records: move them together
 
-`origin: field · ~opus · 2026-08` · `groups: interface-and-design`
+`origin: field · ~opus · 2026-08` · `groups: interface-and-design` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** Closing a pending item usually involves three places: the pending-items list, the test that watches it, and the document that describes it. If you move one, the others contradict it.
 
 **Example.** A pending item was marked closed in the list, but the test watching it was still marked "expected to fail" and the document still described it as open. Three places, three versions.
 
 **Another example.** A text box was filled by voice dictation, which kept the text in a separate variable, and the send button sent that variable. The person deleted the first half by hand while still dictating, and the whole text was sent, deleted part included. Later, sending cleared the box but not the variable, so the next dictation started with the previous message.
+
+**One more example.** A question box asked whether to publish a text, and showed the saved draft as its preview. The script that published built its own body from that draft: a prefix on the title, fields the draft didn't have. The person would have said yes to a text that was not the one that went out; a reviewer caught it before the first use, and the preview now comes from the same function that publishes.
 
 **Detector question.** What other places assert this state? Name them before saving. And what I send or save: does it come from the copy the person sees, or from one kept on the side?
 

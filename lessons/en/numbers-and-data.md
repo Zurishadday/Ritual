@@ -18,7 +18,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 2. Two things with the same name are not the same thing
 
-`origin: field · ~opus · 2026-08`
+`origin: field · ~opus · 2026-08` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** "Active customer," "date," "the boss," "the threshold": the same word often hides two definitions. When two reports don't match, it's almost always this.
 
@@ -28,11 +28,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **One more example.** The cost of some sub-agents was taken from a token count in each one's summary, and it came out far too low: that count left out part of the usage. Adding up the usage of every response in their transcripts gave the real cost. And a log said a guard had left "23 lines" when it had left 19 blocks.
 
+**A fourth example.** A script that publishes a note first looked for one already published with the same title, and if it found one, marked the note as sent and deleted its draft. Two people can write the same title: someone else's note would have taken the place of this one, and the draft would have been lost. The author, not the title, says whose it is.
+
 **Detector question.** Is there a rule that's true for one of the two things and false for the other? And if I combine two figures in one calculation, do they come from the same universe, the same scale, and the same period?
 
 **Warning sign.** "It's the same date" · "the view already filters it" · "they're both in pesos."
 
-**What to do.** Give each variant a different name in the code and on the screen, even if it's ugly. And before dividing or subtracting two figures from different sources, write down where each one comes from: if a result comes out the same in every case (they all lose, they all win), suspect the scale before the business. When a figure comes from a field or a count, read how it is computed (its documentation or its code) and write the unit next to the number: "19 blocks", not "23 lines". To get the figure a second way, see lesson 12.
+**What to do.** Give each variant a different name in the code and on the screen, even if it's ugly. And before dividing or subtracting two figures from different sources, write down where each one comes from: if a result comes out the same in every case (they all lose, they all win), suspect the scale before the business. When a figure comes from a field or a count, read how it is computed (its documentation or its code) and write the unit next to the number: "19 blocks", not "23 lines". When a name is what matches two records (a title, a label), add a key only the right one can have, such as its author or its id, before acting on the match. To get the figure a second way, see lesson 12.
 
 ### 3. The current period is always incomplete
 

@@ -22,13 +22,15 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 9. Un estado vive en varios registros: muévelos juntos
 
-`from: d7a99bc7` · `by: ai`
+`from: dbaa12af` · `by: ai`
 
 **La idea.** Cerrar un pendiente suele implicar tres lugares: el registro de pendientes, la prueba que lo vigila y el documento que lo describe. Si mueves uno, los otros contradicen.
 
 **Ejemplo.** Un pendiente se marcó como cerrado en la lista, pero la prueba que lo vigilaba seguía marcada como «se espera que falle» y el documento lo describía como abierto. Tres lugares, tres versiones.
 
 **Otro ejemplo.** Un cuadro de texto se llenó con dictado por voz, que guardaba el texto en una variable aparte, y el botón de enviar mandaba esa variable. La persona borró a mano la primera mitad mientras seguía dictando, y se envió todo el texto, con la parte borrada incluida. Después, al enviar se vaciaba el cuadro pero no la variable, así que el siguiente dictado empezaba con el mensaje anterior.
+
+**Un ejemplo más.** Un cuadro de confirmación preguntaba si se publicaba un texto, y mostraba el borrador guardado como vista previa. El script que publicaba armaba su propio cuerpo a partir de ese borrador: un prefijo en el título, campos que el borrador no tenía. La persona habría dicho que sí a un texto que no era el que salía; un revisor lo atrapó antes del primer uso, y ahora la vista previa sale de la misma función que publica.
 
 **Pregunta detectora.** ¿Qué otros lugares afirman este estado? Nómbralos antes de guardar. ¿Y lo que envío o guardo: sale de la copia que ve la persona, o de una que se guarda aparte?
 

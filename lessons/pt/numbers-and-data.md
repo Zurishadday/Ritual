@@ -18,7 +18,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 2. Duas coisas com o mesmo nome não são a mesma coisa
 
-`from: 17c673f3` · `by: ai`
+`from: de984b04` · `by: ai`
 
 **A ideia.** “Cliente ativo”, “data”, “o chefe”, “o limite”: a mesma palavra muitas vezes esconde duas definições. Quando dois relatórios não batem, quase sempre é isso.
 
@@ -28,11 +28,13 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Mais um exemplo.** O custo de alguns subagentes foi tirado de uma contagem de tokens no resumo de cada um, e saiu muito baixo: essa contagem deixava de fora parte do uso. Somar o uso de cada resposta nas transcrições deu o custo real. E um log dizia que uma proteção tinha deixado “23 linhas”, quando tinha deixado 19 blocos.
 
+**Um quarto exemplo.** Um script que publica uma nota primeiro procurava outra já publicada com o mesmo título e, se encontrasse uma, marcava a nota como enviada e apagava o rascunho. Duas pessoas podem escrever o mesmo título: a nota de outra pessoa tomaria o lugar desta, e o rascunho se perderia. É o autor, e não o título, que diz de quem é a nota.
+
 **Pergunta detectora.** Existe uma regra verdadeira para uma das duas coisas e falsa para a outra? E, se eu combino dois números num mesmo cálculo, eles vêm do mesmo universo, da mesma escala e do mesmo período?
 
 **Sinal de alerta.** “É a mesma data” · “a visão já filtra isso” · “as duas estão em reais”.
 
-**O que fazer.** Dê um nome diferente para cada variante no código e na tela, mesmo que fique feio. E antes de dividir ou subtrair dois números de fontes diferentes, anote de onde vem cada um: se um resultado sai igual em todos os casos (todos perdem, todos ganham), suspeite da escala antes do negócio. Quando um número vem de um campo ou de uma contagem, leia como ele é calculado (a documentação ou o código dele) e escreva a unidade ao lado do número: “19 blocos”, não “23 linhas”. Para obter o número de outra forma, ver a lição 12.
+**O que fazer.** Dê um nome diferente para cada variante no código e na tela, mesmo que fique feio. E antes de dividir ou subtrair dois números de fontes diferentes, anote de onde vem cada um: se um resultado sai igual em todos os casos (todos perdem, todos ganham), suspeite da escala antes do negócio. Quando um número vem de um campo ou de uma contagem, leia como ele é calculado (a documentação ou o código dele) e escreva a unidade ao lado do número: “19 blocos”, não “23 linhas”. Quando é um nome que casa com dois registros (um título, um rótulo), acrescente uma chave que só o registro certo pode ter, como o autor ou o id, antes de agir sobre a correspondência. Para obter o número de outra forma, ver a lição 12.
 
 ### 3. O período atual está sempre incompleto
 

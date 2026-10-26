@@ -22,13 +22,15 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 ### 9. Un état vit dans plusieurs fiches : déplacez-les ensemble
 
-`from: d7a99bc7` · `by: ai`
+`from: dbaa12af` · `by: ai`
 
 **L'idée.** Clôturer un élément en attente implique généralement trois endroits : la liste des éléments en attente, le test qui le surveille et le document qui le décrit. Si vous en déplacez un seul, les autres le contredisent.
 
 **Exemple.** Un élément en attente était marqué comme clos dans la liste, mais le test qui le surveillait était encore marqué « échec attendu » et le document le décrivait toujours comme ouvert. Trois endroits, trois versions.
 
 **Autre exemple.** Une zone de texte était remplie par la dictée vocale, qui gardait le texte dans une variable à part, et le bouton d'envoi envoyait cette variable. La personne a effacé à la main la première moitié pendant qu'elle dictait encore, et tout le texte a été envoyé, partie effacée comprise. Plus tard, l'envoi vidait la zone mais pas la variable, si bien que la dictée suivante commençait par le message précédent.
+
+**Encore un exemple.** Une boîte de question demandait s'il fallait publier un texte et affichait le brouillon enregistré comme aperçu. Le script qui publiait construisait son propre corps à partir de ce brouillon : un préfixe sur le titre, des champs que le brouillon n'avait pas. La personne aurait dit oui à un texte qui n'était pas celui qui a été publié ; un relecteur l'a repéré avant la première utilisation, et l'aperçu vient maintenant de la même fonction que celle qui publie.
 
 **Question détectrice.** Quels autres endroits affirment cet état ? Nommez-les avant d'enregistrer. Et ce que j'envoie ou enregistre : vient-il de la copie que voit la personne, ou de celle gardée à part ?
 
