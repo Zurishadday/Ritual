@@ -4,7 +4,7 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 11. Retirar una gráfica no retira lo que afirmaba
 
-`from: 36fecfbc` · `by: ai`
+`from: 749c81c5` · `by: ai`
 
 **La idea.** Si quitas algo porque el dato no era confiable, esa misma afirmación probablemente vive en otros textos, escrita con otras palabras.
 
@@ -14,11 +14,13 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 **Un ejemplo más.** Un proyecto llevaba su propia lista de lecciones, y una biblioteca la había adoptado en su propia lista. Ambas numeraban igual hasta la 44 y distinto desde la 45. Las instrucciones del proyecto y sus agentes revisores seguían citando «la 46», que en la biblioteca es otra lección. Salió solo cuando la dueña pidió una segunda revisión.
 
-**Pregunta detectora.** ¿Qué otros textos dicen lo mismo que lo que acabo de quitar? Cuando conviven dos numeraciones, ¿cada cita dice cuál lista usa?
+**Un cuarto ejemplo.** Mientras se diseñaba una historia con alguien, se cambió una premisa central de su mundo. En la misma respuesta se recomendó una opción de trama redactada con la premisa vieja, que contradecía la nueva; alguien tuvo que señalarlo.
 
-**Señal de alarma.** «Ya quité la gráfica» · «Los números son los mismos».
+**Pregunta detectora.** ¿Qué otros textos dicen lo mismo que lo que acabo de quitar? Cuando conviven dos numeraciones, ¿cada cita dice cuál lista usa? Cuando cambia una premisa, ¿qué opciones redactadas sobre la vieja sigo recomendando?
 
-**Qué hacer.** Busca por tema, no por identificador. Los ecos no tienen nombre de variable. Cuando conviven dos numeraciones, cita con un prefijo que diga de qué lista es («v2 #46», «biblioteca #46»), y busca toda cita del rango cambiado en todos los archivos, no solo en el que renumeraste (ver la 8).
+**Señal de alarma.** «Ya quité la gráfica» · «Los números son los mismos» · «Esa opción ya estaba bien pensada, solo la adapto».
+
+**Qué hacer.** Busca por tema, no por identificador. Los ecos no tienen nombre de variable. Cuando conviven dos numeraciones, cita con un prefijo que diga de qué lista es («v2 #46», «biblioteca #46»), y busca toda cita del rango cambiado en todos los archivos, no solo en el que renumeraste (ver la 8). Cuando cambia la base de una propuesta, escribe la nueva premisa en una línea y, debajo, cada pieza construida sobre la vieja con «encaja» o «no encaja»; recomienda solo las que encajan, y rehaz las demás desde la nueva premisa.
 
 ### 37. Documenta lo que hay, no lo que quisieras que hubiera
 
@@ -201,6 +203,20 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 **Señal de alarma.** «Que cubra los cuatro puntos».
 
 **Qué hacer.** Junto a cada lista, escribe: «un punto dicho con otras palabras ya está cubierto», «lo que falte entra como un puente dentro de la respuesta que sigue el hilo» y «nunca ignores lo último que dijeron». Pruébalo con una conversación real en la que la persona responda un punto antes de que se lo pregunten.
+
+### AI-4. Las instrucciones de un modelo no llevan su propio registro de cambios
+
+`from: 7f441538` · `by: ai`
+
+**La idea.** Al versionar las instrucciones de un modelo, es natural anotar arriba «cambios desde la versión anterior». Pero ese texto viaja al modelo en cada llamada: cuesta tokens y tiempo cada vez, y describe reglas que ya se quitaron, a las que el modelo puede volver a obedecer.
+
+**Ejemplo.** Las instrucciones de un asistente que se llamaba en cada turno de una conversación traían nueve párrafos de «cambios desde vN», unos 4,800 caracteres (alrededor de 1,600 tokens por turno, estimados a partir de los caracteres). Varios describían reglas que la versión ya había quitado porque empeoraban los resultados.
+
+**Pregunta detectora.** ¿Lo que está arriba de estas instrucciones ayuda al modelo a responder, o es el historial del archivo para las personas?
+
+**Señal de alarma.** «Cambios desde la v14…» al inicio de un prompt que se envía en cada llamada.
+
+**Qué hacer.** El historial va en control de versiones o en un registro de decisiones, no dentro de las instrucciones. Si un editor necesita una nota, ponla en un comentario que el código quita antes de enviar el texto. Un documento para personas conserva su historial al lado (ver la 39); un texto que se envía a un modelo en cada llamada lo conserva afuera.
 
 ### EDU-2. Lo que se ve antes de responder no puede traer la respuesta
 

@@ -4,7 +4,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### 13. Un verificador que nunca vio el error no verifica nada
 
-`from: 200d356e` · `by: ai`
+`from: 72635574` · `by: ai`
 
 **La idea.** Una prueba que siempre pasa puede estar rota. La única forma de saberlo es verla fallar contra el error real.
 
@@ -16,11 +16,13 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Un cuarto ejemplo.** Un clasificador que marca objeciones de venta dio 0 falsas alarmas en 30 frases ordinarias de clientes, y ese número se reportó. Al agregar 25 frases de los mismos temas que decían lo contrario (señales de compra como «¿puedo pagar con tarjeta?»), se disparó 7 veces. En otro proyecto, un detector que bajaba las respiraciones de una pista de voz también bajaba la «s» final de las palabras: nada en su prueba sonaba a respiración sin serlo.
 
-**Pregunta detectora.** ¿Probé mi verificación contra el error en las formas en que aparecería de verdad? ¿Y contra los casos correctos que más se parecen al error: el mismo tema, las mismas palabras, el significado contrario?
+**Un quinto ejemplo.** Una canalización de narración transcribía cada frase generada y la volvía a generar mientras su similitud con el guion se mantuviera por debajo del 90 %. En un video, 10 de 13 frases se volvieron a generar cuatro rondas seguidas, de minutos cada una en una máquina compartida (no se cronometró la corrida). Quien escuchó comprobó que estaban bien dichas: el transcriptor escribía los nombres y las teclas con letras y números («C2», «Ctrl-D») donde el guion los escribía con palabras, así que toda toma correcta fallaba. La lección 71 es la misma verificación fallando al revés.
 
-**Señal de alarma.** «Ya pasa, entonces está bien puesta». · «Cero falsas alarmas, listo».
+**Pregunta detectora.** ¿Probé mi verificación contra el error en las formas en que aparecería de verdad? ¿Y contra los casos correctos que más se parecen al error: el mismo tema, las mismas palabras, el significado contrario? Cuando rechaza y reintenta: ¿qué vio, y cuántos reintentos no cambiaron nada?
 
-**Qué hacer.** Calibra con dos casos: uno donde debe encontrar y otro donde no debe, y córrela de verdad el día que nace. El caso bueno importa tanto como el malo: un verificador que rechaza lo correcto también está roto, y se nota menos, porque parece exigente. El caso bueno lleva las formas reales de lo correcto, también las que no escribiste tú: otro orden, otro nombre. Construye los más difíciles a propósito: por cada cosa que la verificación debe atrapar, su gemelo que debe dejar pasar, y reporta las falsas alarmas de esos aparte de las fáciles; un cero que sale solo de los casos fáciles no dice nada. Cada verificación se calibra sola: si otra atrapa el error antes, la tuya nunca se probó. Y una revisión que repite lo que ya leyó no puede fallar (una «segunda corrida» que vuelve a leer el mismo archivo): cámbiala por un cuadre que sí falle si algo está mal.
+**Señal de alarma.** «Ya pasa, entonces está bien puesta». · «Cero falsas alarmas, listo». · «Que reintente hasta que pase».
+
+**Qué hacer.** Calibra con dos casos: uno donde debe encontrar y otro donde no debe, y córrela de verdad el día que nace. El caso bueno importa tanto como el malo: un verificador que rechaza lo correcto también está roto, y se nota menos, porque parece exigente. El caso bueno lleva las formas reales de lo correcto, también las que no escribiste tú: otro orden, otro nombre. Construye los más difíciles a propósito: por cada cosa que la verificación debe atrapar, su gemelo que debe dejar pasar, y reporta las falsas alarmas de esos aparte de las fáciles; un cero que sale solo de los casos fáciles no dice nada. Cada verificación se calibra sola: si otra atrapa el error antes, la tuya nunca se probó. Y una revisión que repite lo que ya leyó no puede fallar (una «segunda corrida» que vuelve a leer el mismo archivo): cámbiala por un cuadre que sí falle si algo está mal. Y un verificador que rechaza y reintenta por su cuenta muestra el detalle de su primer rechazo antes de seguir el ciclo: si la diferencia es de forma y no de contenido, normaliza las dos formas en el verificador, agrega ese par como caso que debe pasar, y detén el ciclo después de dos rechazos que muestren la misma diferencia, entregando el caso a una persona (ver la 27).
 
 ### 14. La sonda no viaja por el canal que investiga
 
@@ -170,6 +172,34 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Qué hacer.** Antes de confiar en el umbral, arma el caso de un solo error en el lugar que importa y mira si se rechaza (ver la 13). Si no se rechaza, verifica por separado lo que no puede fallar: los términos raros, los números, el final. Y si la entrada trae algo que la herramienta no maneja (siglas, fórmulas, símbolos), conviértelo o recházalo antes de generar.
 
+### 72. Un juez que ya vio sus propios veredictos anteriores ya no es independiente
+
+`from: 851656dd` · `by: ai`
+
+**La idea.** Para comparar dos versiones de algo, un evaluador califica la nueva. Si es el mismo evaluador que calificó la anterior y todavía la tiene en mente (una persona con sus notas, un agente retomado con su historial), su veredicto puede anclarse en lo que ya dijo: confirmar sus propias calificaciones, o ver «mejoras» donde esperaba encontrarlas. Retomarlo también carga toda su historia, lo que cuesta.
+
+**Ejemplo.** Para cada versión de un asistente, se retomaba el mismo agente juez con «califica la nueva como a la anterior». Su contexto creció a unos 450 mil tokens, y cada veredicto nuevo se leía contra sus propios veredictos anteriores. Un revisor independiente lo señaló: la rúbrica y los criterios deben ser los mismos, pero no el juez.
+
+**Pregunta detectora.** ¿Quien califica esta versión ya conoce sus propias calificaciones de la anterior? ¿La comparación depende de su memoria, o de una rúbrica escrita que cualquier juez nuevo puede aplicar?
+
+**Señal de alarma.** «Retomo al mismo juez para que siga consistente».
+
+**Qué hacer.** Escribe la rúbrica y los criterios en un archivo, y para cada versión usa un juez nuevo con un encargo corto que apunte a ese archivo. La consistencia viene de la rúbrica, no de la memoria del juez. Cuando una versión importa mucho, que dos jueces nuevos la califiquen y compara en qué difieren. Mantener separado a quien hizo el trabajo de quien lo revisa es la 28.
+
+### 74. Si la puntuación sale de los mismos casos con los que afinaste, mide qué tan bien los memorizaste
+
+`from: 33f0d9bf` · `by: ai`
+
+**La idea.** Cuando afinas algo (un prompt, unas reglas, unos umbrales) mirando los errores de algunos casos y luego lo mides en esos mismos casos, la puntuación sube aunque no se haya aprendido nada general. Si además pegas en las instrucciones líneas de esos casos como ejemplos, el examen ya trae sus respuestas.
+
+**Ejemplo.** Un asistente de IA se afinó en seis versiones mirando solo dos conversaciones de práctica, y llegó a 92.5 %. Sus instrucciones llevaban, como ejemplos, cuatro líneas tomadas de esas mismas conversaciones. En una conversación que nunca había visto, sacó 64 %. Con un conjunto de diez, de los que cuatro se reservaron solo para medir, la versión siguiente subió en los casos de afinación (de 62 % a 67 %) y no subió en los reservados (de 64.8 % a 60.2 %, en cuatro conversaciones).
+
+**Pregunta detectora.** ¿Esta puntuación sale de casos que también usé para decidir el cambio, o que viven dentro de las instrucciones como ejemplos? ¿Hay casos reservados que nadie miró mientras afinaba?
+
+**Señal de alarma.** «Llega a 92 %», medido en los casos de siempre · «Agrego este caso como ejemplo para que lo acierte».
+
+**Qué hacer.** Desde el principio, separa casos para afinar y casos solo para medir, con variedad. Los cambios salen solo del primer conjunto y se quedan solo si la puntuación del segundo sube. Ningún ejemplo de las instrucciones sale de un caso del conjunto; los ejemplos se inventan. Cada vez que miras los casos reservados los gastas un poco: después de varias miradas, construye otros nuevos. Elegir un ajuste con sus muestras extremas es la lección 67; un ejercicio que trae su propia respuesta, la lección EDU-2.
+
 ### EDU-1. Si la respuesta sale igual sin la habilidad, el ejercicio no la mide
 
 `from: 164808ab` · `by: ai`
@@ -190,7 +220,7 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 ### EDU-4. Si adivinas la correcta por su lugar, su largo o su aspecto, el quiz mide la suerte
 
-`from: d2e6b716` · `by: ai`
+`from: 538c38d7` · `by: ai`
 
 **La idea.** Cada pregunta puede estar bien sola y el conjunto delatar la respuesta: la correcta es siempre la segunda, siempre la más larga, siempre la de largo medio o la única con un botón. Los estudiantes notan los patrones antes que quien escribe.
 
@@ -198,8 +228,10 @@ Lo que aplica cuando compruebas algo: pruebas automáticas, validadores, revisio
 
 **Otro ejemplo.** En un buzón de correo dibujado, solo los correos falsos tenían un botón de reportar, así que los estudiantes reportaban sin leer el remitente. En una pregunta de «toca la captura correcta», la captura correcta era la única con contenido: las otras dos eran bloques de color.
 
-**Pregunta detectora.** Si leo solo el lugar, el largo y el aspecto de las opciones, sin el texto, ¿adivino la correcta más de una vez de cada tres?
+**Un ejemplo más.** En una lección de idiomas para principiantes, los estudiantes ponían piezas en orden: `Thank you,` · `Name.` · `You're` · `in.`. La única mayúscula iba primero y el único punto al final, así que el orden se armaba sin leer una palabra. La misma frase también había aparecido palabra por palabra antes en la lección (lección EDU-2). Las piezas se pasaron a minúsculas y sin puntuación, alrededor del nombre del propio estudiante.
+
+**Pregunta detectora.** Si leo solo el lugar, el largo y el aspecto de las opciones, sin el texto, ¿adivino la correcta más de una vez de cada tres? En un ejercicio de ordenar, ¿las mayúsculas o la puntuación delatan el orden?
 
 **Señal de alarma.** «Revisé cada pregunta y todas están bien».
 
-**Qué hacer.** Baraja las opciones al mostrarlas, con un orden que no salga de dónde se escribió la correcta. Mide la más larga, la más corta y la de en medio por archivo, y junta por módulo los archivos chicos, para que unas pocas preguntas no escondan el patrón. Lee el conteo contra lo que pediste: emparejar a mano puede mover la pista en lugar de quitarla. Da a cada opción los mismos controles (cada correo tiene un enlace y un botón), y dibuja las opciones incorrectas tan creíbles como la correcta.
+**Qué hacer.** Baraja las opciones al mostrarlas, con un orden que no salga de dónde se escribió la correcta. Mide la más larga, la más corta y la de en medio por archivo, y junta por módulo los archivos chicos, para que unas pocas preguntas no escondan el patrón. Lee el conteo contra lo que pediste: emparejar a mano puede mover la pista en lugar de quitarla. Da a cada opción los mismos controles (cada correo tiene un enlace y un botón), y dibuja las opciones incorrectas tan creíbles como la correcta. Las piezas de un ejercicio de ordenar van en minúsculas y sin puntuación, con una combinación que no se haya escrito antes en la lección.

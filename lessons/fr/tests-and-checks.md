@@ -4,7 +4,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### 13. Un contrôle qui n'a jamais vu l'erreur ne vérifie rien
 
-`from: 200d356e` · `by: ai`
+`from: 72635574` · `by: ai`
 
 **L'idée.** Un test qui réussit toujours peut être cassé. La seule façon de le savoir est de le voir échouer face à la vraie erreur.
 
@@ -14,13 +14,15 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Encore un exemple.** Une règle qui détectait le code indenté signalait une ligne commençant par un texte : le cas qui devait passer n'avait pas cette forme. Et un test vérifiant que la comparaison de texte fonctionnait réussissait alors que la comparaison était cassée, parce qu'une autre relecture avait rejeté l'erreur en premier.
 
-**Un quatrième exemple.** Un classifieur qui signale les objections commerciales a obtenu 0 fausse alerte sur 30 phrases ordinaires de clients, et ce chiffre a été rapporté. En ajoutant 25 phrases sur les mêmes sujets, le résultat s'est inversé : des signaux d'achat comme « puis-je payer par carte ? » l'ont fait se déclencher 7 fois. Dans un autre projet, un détecteur qui baissait les respirations dans une piste de voix baissait aussi le « s » final des mots : rien dans son test ne sonnait comme une respiration sans en être une.
+**Un quatrième exemple.** Un classifieur qui signale les objections commerciales a obtenu 0 fausse alerte sur 30 phrases ordinaires de clients, et ce chiffre a été rapporté. En ajoutant 25 phrases sur les mêmes sujets, le contraire s'est produit : des signaux d'achat comme « puis-je payer par carte ? » l'ont fait se déclencher 7 fois. Dans un autre projet, un détecteur qui baissait les respirations dans une piste de voix baissait aussi le « s » final des mots : rien dans son test ne sonnait comme une respiration sans en être une.
 
-**Question détectrice.** Ai-je testé mon contrôle face à l'erreur dans les formes où elle apparaîtrait réellement ? Et face aux cas corrects qui ressemblent le plus à l'erreur : même sujet, mêmes mots, sens opposé ?
+**Un cinquième exemple.** Un pipeline de narration transcrivait chaque phrase générée et la refaisait tant que sa ressemblance avec le script restait sous 90 %. Dans une vidéo, 10 phrases sur 13 ont été refaites quatre tours de suite, quelques minutes chacune sur une machine partagée (la durée n'a pas été mesurée). Celui qui écoutait les jugeait bien dites : le transcripteur écrivait les noms et les touches en lettres et chiffres (« C2 », « Ctrl-D ») là où le script les épelait, si bien que chaque bonne prise échouait. La leçon 71 est le même contrôle qui échoue dans l'autre sens.
 
-**Signal d'alarme.** « Il réussit déjà, donc il est bien configuré. » · « Zéro fausse alerte, c'est réglé. »
+**Question détectrice.** Ai-je testé mon contrôle face à l'erreur dans les formes où elle apparaîtrait réellement ? Et face aux cas corrects qui lui ressemblent le plus : même sujet, mêmes mots, sens opposé ? Quand il rejette et relance : qu'a-t-il vu, et combien de relances n'ont rien changé ?
 
-**Que faire.** Calibrez-le avec deux cas : un où il doit trouver quelque chose et un où il ne doit rien trouver, et lancez-le réellement le jour même de sa création. Le bon cas compte autant que le mauvais : un contrôle qui rejette ce qui est correct est lui aussi cassé, et c'est plus difficile à remarquer parce qu'il paraît strict. Le cas correct inclut les formes réelles de ce qui est juste, y compris celles que vous n'avez pas écrites vous-même : un autre ordre, un autre nom. Construisez les plus difficiles exprès : pour chaque chose que le contrôle doit attraper, son jumeau qu'il doit laisser passer, et signalez les fausses alertes sur ces cas à part des cas faciles ; un zéro qui ne vient que des cas faciles ne prouve rien. Chaque contrôle se calibre lui-même : si un autre attrape l'erreur en premier, le vôtre n'a jamais été testé. Et une relecture qui répète ce qu'elle a déjà lu ne peut pas échouer (une « deuxième passe » qui relit le même fichier) : remplacez-la par une réconciliation qui échoue si quelque chose ne va pas.
+**Signal d'alarme.** « Il réussit déjà, donc il est bien configuré. » · « Zéro fausse alerte, c'est réglé. » · « Qu'il relance jusqu'à ce qu'il réussisse. »
+
+**Que faire.** Calibrez-le avec deux cas : un où il doit trouver quelque chose et un où il ne doit rien trouver, et lancez-le réellement le jour même de sa création. Le cas correct compte autant que le mauvais : un contrôle qui rejette ce qui est juste est lui aussi cassé, et c'est plus difficile à remarquer parce qu'il paraît strict. Ce cas inclut les formes réelles de ce qui est correct, y compris celles que vous n'avez pas écrites vous-même : un autre ordre, un autre nom. Construisez les plus difficiles exprès : pour chaque chose que le contrôle doit attraper, son jumeau qu'il doit laisser passer, et signalez les fausses alertes sur ces cas à part des cas faciles ; un zéro qui ne vient que des cas faciles ne dit rien. Chaque contrôle se calibre lui-même : si un autre attrape l'erreur en premier, le vôtre n'a jamais été testé. Et une relecture qui répète ce qu'elle a déjà lu ne peut pas échouer (une « deuxième passe » qui relit le même fichier) : remplacez-la par une réconciliation qui échoue si quelque chose ne va pas. Un contrôle qui rejette et relance tout seul affiche le détail de son premier rejet avant de reprendre la boucle : si la différence est de forme et non de fond, normalisez les deux formes dans le contrôle, ajoutez cette paire comme cas qui doit passer, et arrêtez la boucle après deux rejets qui montrent la même différence, en confiant l'élément à une personne (voir la leçon 27).
 
 ### 14. La sonde ne passe pas par le canal qu'elle examine
 
@@ -170,6 +172,34 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Que faire.** Avant de faire confiance au seuil, construisez le cas à une seule erreur à l'endroit qui compte, et vérifiez s'il est rejeté (leçon 13). Sinon, vérifiez séparément ce qui ne peut pas échouer : les termes rares, les nombres, la fin. Et si l'entrée contient quelque chose que l'outil ne sait pas traiter (sigles, formules, symboles), convertissez-le ou rejetez-le avant de générer.
 
+### 72. Un juge qui a vu ses propres verdicts précédents n'est plus indépendant
+
+`from: 851656dd` · `by: ai`
+
+**L'idée.** Pour comparer deux versions de quelque chose, un évaluateur note la nouvelle. Si c'est le même évaluateur qui a noté la précédente et qui l'a encore en tête (une personne avec ses notes, un agent repris avec son historique), son verdict peut s'ancrer dans ce qu'il a déjà dit : il confirme ses propres notes, ou voit des « améliorations » là où il s'attendait à en voir. Le reprendre charge aussi tout son historique, ce qui coûte cher.
+
+**Exemple.** Pour chaque version d'un assistant, le même agent juge était repris avec « note la nouvelle comme la précédente ». Son contexte a grandi jusqu'à environ 450 mille jetons, et chaque nouveau verdict était lu à la lumière de ses propres verdicts antérieurs. Un relecteur indépendant l'a signalé : la grille et les critères doivent rester les mêmes, mais pas le juge.
+
+**Question détectrice.** Celui qui note cette version connaît-il déjà ses propres notes de la précédente ? La comparaison dépend-elle de sa mémoire, ou d'une grille écrite que n'importe quel nouveau juge peut appliquer ?
+
+**Signal d'alarme.** « Je reprendrai le même juge pour qu'il reste cohérent. »
+
+**Que faire.** Écrivez la grille et les critères dans un fichier, et pour chaque version utilisez un nouveau juge avec une consigne courte qui renvoie à ce fichier. La cohérence vient de la grille, pas de la mémoire du juge. Quand une version compte beaucoup, faites-la noter par deux nouveaux juges et comparez les endroits où ils divergent. Garder séparés celui qui fait le travail et celui qui le vérifie, c'est la leçon 28.
+
+### 74. Si le score vient des cas sur lesquels vous avez ajusté, il mesure à quel point vous les avez mémorisés
+
+`from: 33f0d9bf` · `by: ai`
+
+**L'idée.** Quand vous ajustez quelque chose (un prompt, des règles, des seuils) en regardant les erreurs de certains cas, puis que vous le mesurez sur ces mêmes cas, le score monte même si rien de général n'a été appris. Si vous recopiez en plus des lignes de ces cas dans les consignes comme exemples, l'examen porte déjà ses réponses.
+
+**Exemple.** Un assistant IA a été ajusté sur six versions en ne regardant que deux conversations d'entraînement, et a atteint 92.5%. Ses consignes contenaient, comme exemples, quatre lignes tirées de ces mêmes conversations. Sur une conversation qu'il n'avait jamais vue, il a obtenu 64%. Avec un ensemble de dix conversations, dont quatre réservées à la seule mesure, la version suivante a progressé sur les cas d'ajustement (de 62% à 67%) et n'a pas progressé sur les cas réservés (de 64.8% à 60.2%, sur quatre conversations).
+
+**Question détectrice.** Ce score vient-il de cas que j'ai aussi utilisés pour décider du changement, ou qui vivent dans les consignes comme exemples ? Y a-t-il des cas réservés que personne n'a regardés pendant l'ajustement ?
+
+**Signal d'alarme.** « C'est à 92%, mesuré sur les cas habituels. » · « J'ajoute ce cas comme exemple pour qu'il l'obtienne. »
+
+**Que faire.** Dès le départ, séparez les cas d'ajustement des cas réservés à la seule mesure, et variez-les. Les changements ne viennent que du premier ensemble, et ne restent que si le score du second monte. Aucun exemple dans les consignes ne vient d'un cas de l'ensemble ; les exemples sont inventés. Chaque regard porté sur les cas réservés en use un peu : après plusieurs regards, construisez-en de nouveaux. Choisir un réglage sur ses échantillons extrêmes est la leçon 67 ; un exercice qui porte ses propres réponses, c'est EDU-2.
+
 ### EDU-1. Si la réponse est la même sans la compétence, l'exercice ne la mesure pas
 
 `from: 164808ab` · `by: ai`
@@ -190,7 +220,7 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 ### EDU-4. Si l'on peut deviner la bonne option à sa place, à sa longueur ou à son apparence, le quiz mesure la devinette
 
-`from: d2e6b716` · `by: ai`
+`from: 538c38d7` · `by: ai`
 
 **L'idée.** Chaque question peut être correcte prise isolément, et l'ensemble donner quand même la réponse : la bonne option est toujours la deuxième, toujours la plus longue, toujours de taille moyenne, ou la seule à avoir un bouton. Les apprenants repèrent les régularités plus vite que les auteurs.
 
@@ -198,8 +228,10 @@ Ce qui s'applique quand vous vérifiez quelque chose : tests automatisés, valid
 
 **Autre exemple.** Dans une boîte de messagerie dessinée, seuls les faux e-mails avaient un bouton de signalement, si bien que les apprenants les signalaient sans lire l'expéditeur. Dans une question « touchez la bonne capture d'écran », la bonne capture était la seule à contenir quelque chose : les deux autres étaient des blocs de couleur.
 
-**Question détectrice.** Si je ne lis que la position, la longueur et l'apparence des options, sans le texte, est-ce que je devine la bonne plus d'une fois sur trois ?
+**Encore un exemple.** Dans une leçon de langue pour débutants, les apprenants remettent des morceaux dans l'ordre : `Thank you,` · `Name.` · `You're` · `in.`. La seule majuscule était en premier et le seul point en dernier, si bien que l'ordre se construisait sans lire un mot ; la même phrase était aussi apparue mot pour mot plus tôt dans la leçon (leçon EDU-2). Les morceaux sont passés en minuscules, sans ponctuation, autour du prénom de l'apprenant.
+
+**Question détectrice.** Si je ne lis que la position, la longueur et l'apparence des options, sans le texte, est-ce que je devine la bonne plus d'une fois sur trois ? Dans un exercice de mise en ordre, les majuscules ou la ponctuation trahissent-elles l'ordre ?
 
 **Signal d'alarme.** « J'ai vérifié chaque question, elles sont toutes correctes. »
 
-**Que faire.** Mélangez les options à l'affichage, selon un ordre qui ne dépend pas de l'endroit où la bonne a été écrite. Mesurez la plus longue, la plus courte et celle du milieu par fichier, et regroupez les petits fichiers par module, pour que quelques questions ne cachent pas la régularité. Relisez les chiffres au regard de ce que vous visiez : une passe d'équilibrage peut déplacer l'indice qui trahit la réponse au lieu de le supprimer. Donnez à chaque option les mêmes commandes (chaque e-mail a un lien et un bouton), et dessinez les mauvaises options aussi crédiblement que la bonne.
+**Que faire.** Mélangez les options à l'affichage, selon un ordre qui ne dépend pas de l'endroit où la bonne a été écrite. Mesurez la plus longue, la plus courte et celle du milieu par fichier, et regroupez les petits fichiers par module, pour que quelques questions ne cachent pas la régularité. Relisez les chiffres au regard de ce que vous visiez : une passe d'équilibrage peut déplacer le défaut au lieu de le supprimer. Donnez à chaque option les mêmes commandes (chaque e-mail a un lien et un bouton), et dessinez les mauvaises options aussi crédiblement que la bonne. Les morceaux d'un exercice de mise en ordre s'écrivent en minuscules, sans ponctuation, pour une combinaison qui n'a pas été écrite plus tôt dans la leçon.

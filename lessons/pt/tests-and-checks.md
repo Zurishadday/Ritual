@@ -4,7 +4,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### 13. Um verificador que nunca viu o erro não verifica nada
 
-`from: 200d356e` · `by: ai`
+`from: 72635574` · `by: ai`
 
 **A ideia.** Um teste que sempre passa pode estar quebrado. A única forma de saber é vê-lo falhar contra o erro real.
 
@@ -16,11 +16,13 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **Um quarto exemplo.** Um classificador que sinaliza objeções de venda deu 0 falsos alarmes em 30 frases comuns de clientes, e esse número foi relatado. Ao acrescentar 25 frases sobre os mesmos temas, mas no sentido contrário (sinais de compra como “posso pagar no cartão?”), ele disparou 7 vezes. Em outro projeto, um detector que baixava as respirações numa trilha de voz também baixava o “s” final das palavras: nada no seu teste soava como uma respiração sem ser uma.
 
+**Um quinto exemplo.** Um pipeline de narração transcrevia cada frase gerada e a refazia enquanto a semelhança com o roteiro ficasse abaixo de 90 %. Em um vídeo, 10 de 13 frases foram refeitas quatro rodadas seguidas, minutos cada numa máquina compartilhada (a execução não foi cronometrada). Quem ouviu constatou que elas estavam certas: o transcritor escrevia nomes e teclas como letras e números (“C2”, “Ctrl-D”) onde o roteiro os soletrava, então toda gravação correta falhava. A lição 71 é a mesma verificação falhando no sentido contrário.
+
 **Pergunta detectora.** Testei meu verificador contra o erro nas formas em que ele realmente apareceria? E contra os casos corretos que mais se parecem com o erro: mesmo assunto, mesmas palavras, sentido oposto?
 
 **Sinal de alerta.** “Já passa, então está bem configurado.” · “Zero alarmes falsos, pronto.”
 
-**O que fazer.** Calibre com dois casos: um em que ele precisa encontrar algo e outro em que não pode encontrar nada, e rode de verdade no dia em que nasce. O caso bom importa tanto quanto o ruim: um verificador que rejeita o que está correto também está quebrado, e isso é mais difícil de notar porque parece rigoroso. O caso bom inclui as formas reais do que está certo, inclusive as que você não escreveu: outra ordem, outro nome. Construa os mais difíceis de propósito: para cada coisa que a verificação precisa pegar, a sua gêmea que ela precisa deixar passar, e informe os falsos alarmes nessas separadamente dos casos fáceis; um zero que vem só dos casos fáceis não diz nada. Cada verificação se calibra sozinha: se outra pega o erro antes, a sua nunca foi testada. E uma revisão que repete o que já leu não consegue falhar (uma “segunda passada” que relê o mesmo arquivo): substitua por uma reconciliação que falha se algo estiver errado.
+**O que fazer.** Calibre com dois casos: um em que ele precisa encontrar algo e outro em que não pode encontrar nada, e rode de verdade no dia em que nasce. O caso bom importa tanto quanto o ruim: um verificador que rejeita o que está correto também está quebrado, e isso é mais difícil de notar porque parece rigoroso. O caso bom inclui as formas reais do que está certo, inclusive as que você não escreveu: outra ordem, outro nome. Construa os mais difíceis de propósito: para cada coisa que a verificação precisa pegar, a sua gêmea que ela precisa deixar passar, e informe os falsos alarmes nessas separadamente dos casos fáceis; um zero que vem só dos casos fáceis não diz nada. Cada verificação se calibra sozinha: se outra pega o erro antes, a sua nunca foi testada. E uma revisão que repete o que já leu não consegue falhar (uma “segunda passada” que relê o mesmo arquivo): substitua por uma reconciliação que falha se algo estiver errado. Uma verificação que rejeita e tenta de novo sozinha mostra o detalhe da sua primeira rejeição antes de o laço seguir: se a diferença é de forma, e não de conteúdo, normalize as duas formas no verificador, acrescente esse par como caso que precisa passar, e pare o laço depois de duas rejeições que mostrem a mesma diferença, entregando o item a uma pessoa (ver a lição 27).
 
 ### 14. A sonda não percorre o canal que investiga
 
@@ -170,6 +172,34 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **O que fazer.** Antes de confiar no limite, monte o caso de um único erro no lugar que importa e veja se ele é rejeitado (ver a lição 13). Se não for, confira separadamente o que não pode falhar: termos raros, números, o final. E se a entrada contiver algo que a ferramenta não consegue tratar (siglas, fórmulas, símbolos), converta-o ou rejeite-o antes de gerar.
 
+### 72. Um juiz que já viu os próprios veredictos anteriores deixa de ser independente
+
+`from: 851656dd` · `by: ai`
+
+**A ideia.** Para comparar duas versões de algo, um avaliador julga a nova. Se é o mesmo avaliador que julgou a anterior e ainda a tem em mente (uma pessoa com suas anotações, um agente retomado com o histórico dele), o veredito pode se ancorar no que ele já disse: confirmar as próprias notas, ou ver “melhorias” onde esperava encontrá-las. Retomá-lo também carrega todo o histórico, o que custa caro.
+
+**Exemplo.** Para cada versão de um assistente, o mesmo agente juiz era retomado com “avalie a nova como avaliou a anterior”. O contexto dele cresceu para cerca de 450 mil tokens, e cada novo veredito era lido contra os próprios vereditos anteriores. Um revisor independente apontou: a rubrica e os critérios precisam ser os mesmos, mas o juiz, não.
+
+**Pergunta detectora.** Quem avalia esta versão já conhece as próprias notas da anterior? A comparação depende da memória dele, ou de uma rubrica escrita que qualquer juiz novo pode aplicar?
+
+**Sinal de alerta.** “Vou retomar o mesmo juiz para manter a consistência”.
+
+**O que fazer.** Escreva a rubrica e os critérios em um arquivo, e para cada versão use um juiz novo com um briefing curto que aponte para esse arquivo. A consistência vem da rubrica, não da memória do juiz. Quando uma versão importa muito, peça que dois juízes novos a avaliem e compare onde eles divergem. Manter separados quem fez o trabalho e quem o verifica é a lição 28.
+
+### 74. Se a nota vem dos mesmos casos com que você ajustou, ela mede o quanto você decorou esses casos
+
+`from: 33f0d9bf` · `by: ai`
+
+**A ideia.** Quando você ajusta algo (um prompt, regras, limiares) olhando os erros de alguns casos e depois mede nesses mesmos casos, a nota sobe mesmo que nada de geral tenha sido aprendido. Se você ainda cola trechos desses casos nas instruções como exemplos, a prova já traz as respostas.
+
+**Exemplo.** Um assistente de LLM foi ajustado ao longo de seis versões olhando apenas duas conversas de prática, e chegou a 92.5%. As instruções dele traziam, como exemplos, quatro linhas tiradas dessas mesmas conversas. Em uma conversa que nunca tinha visto, ele fez 64%. Com um conjunto de dez conversas, quatro reservadas só para medir, a versão seguinte subiu nos casos de ajuste (de 62% para 67%) e não subiu nos reservados (de 64.8% para 60.2%, em quatro conversas).
+
+**Pergunta detectora.** Esta nota vem de casos que também usei para decidir a mudança, ou que estão dentro das instruções como exemplos? Há casos reservados que ninguém olhou durante o ajuste?
+
+**Sinal de alerta.** “Chegou a 92%”, medido nos casos de sempre · “Vou pôr este caso como exemplo para ele acertar”.
+
+**O que fazer.** Desde o início, separe casos para ajustar e casos só para medir, com variedade. As mudanças saem só do primeiro conjunto e ficam apenas se a nota do segundo subir. Nenhum exemplo das instruções vem de um caso do conjunto; os exemplos são inventados. Cada olhada nos casos reservados os gasta um pouco: depois de várias olhadas, monte novos. Escolher um ajuste com base nas amostras extremas é a lição 67; um exercício que traz a própria resposta: EDU-2.
+
 ### EDU-1. Se a resposta sai igual sem a habilidade, o exercício não a mede
 
 `from: 164808ab` · `by: ai`
@@ -190,7 +220,7 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 ### EDU-4. Se dá para adivinhar a opção certa pela posição, pelo tamanho ou pela aparência, o quiz mede adivinhação
 
-`from: d2e6b716` · `by: ai`
+`from: 538c38d7` · `by: ai`
 
 **A ideia.** Cada pergunta pode estar boa isoladamente e, ainda assim, o conjunto entregar a resposta: a opção certa é sempre a segunda, sempre a mais longa, sempre a de tamanho intermediário, ou a única com um botão. Os estudantes percebem padrões mais rápido que os autores.
 
@@ -198,8 +228,10 @@ O que vale quando você verifica algo: testes automatizados, validadores, revis�
 
 **Outro exemplo.** Em uma caixa de e-mail desenhada, só os e-mails falsos tinham um botão de denunciar, então os estudantes denunciavam sem ler o remetente. Numa pergunta de “toque na captura de tela certa”, a captura certa era a única com conteúdo: as outras duas eram blocos de cor.
 
-**Pergunta detectora.** Se eu ler só a posição, o tamanho e a aparência das opções, sem o texto, acerto a certa mais de uma vez em três?
+**Mais um exemplo.** Em uma lição de idioma para iniciantes, os estudantes colocavam as peças em ordem: `Thank you,` · `Name.` · `You're` · `in.`. A única maiúscula ficava na primeira peça e o único ponto na última, então a ordem podia ser montada sem ler uma palavra; a mesma frase também tinha aparecido palavra por palavra antes, na própria lição (lição EDU-2). As peças passaram a ser minúsculas e sem pontuação, em torno do nome do próprio estudante.
+
+**Pergunta detectora.** Se eu ler só a posição, o tamanho e a aparência das opções, sem o texto, acerto a certa mais de uma vez em três? Em um exercício de ordenação, maiúsculas ou pontuação entregam a ordem?
 
 **Sinal de alerta.** “Eu revisei cada pergunta, todas estão certas.”
 
-**O que fazer.** Embaralhe as opções na hora de mostrá-las, com uma ordem que não venha de onde a certa foi escrita. Meça a mais longa, a mais curta e a do meio em cada arquivo, e agrupe arquivos pequenos por módulo, para que poucas perguntas não escondam o padrão. Compare a contagem com o que você pediu: uma passagem de balanceamento pode deslocar a pista em vez de eliminá-la. Dê a todas as opções os mesmos controles (todo e-mail tem um link e um botão), e desenhe as opções erradas tão verossímeis quanto a certa.
+**O que fazer.** Embaralhe as opções na hora de mostrá-las, com uma ordem que não venha de onde a certa foi escrita. Meça a mais longa, a mais curta e a do meio em cada arquivo, e agrupe arquivos pequenos por módulo, para que poucas perguntas não escondam o padrão. Compare a contagem com o que você pediu: uma passagem de balanceamento pode deslocar a pista em vez de eliminá-la. Dê a todas as opções os mesmos controles (todo e-mail tem um link e um botão), e desenhe as opções erradas tão verossímeis quanto a certa. As peças de um exercício de ordenação vão em minúsculas e sem pontuação, numa combinação que não foi escrita antes na lição.

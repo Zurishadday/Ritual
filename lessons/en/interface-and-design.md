@@ -50,7 +50,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 32. Something that works but can't be seen gets reported as broken
 
-`origin: field · ~opus · 2026-08` · `packages: web, apps`
+`origin: field · ~opus · 2026-08` · `packages: web, apps` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** If a button changes something outside the view, for the user, working and not working look the same.
 
@@ -58,11 +58,13 @@ What applies when a person is going to see or use what you build: screens, compo
 
 **Variant.** Hiding a container hides everything inside it, even things that had nothing to do with it. For example, a useful link that lived inside a retired control.
 
-**Detector question.** Right after using the control, without moving from where it is, does the user see what changed?
+**Another example.** A five-question sign-up form, sent empty, moved the focus to the first field, but its message sat under the submit button, about 900 px further down: on a phone the person saw the focus jump and nothing else. The accessibility tests passed; a review with phone screenshots found it.
 
-**Warning sign.** "It does work, it just doesn't show."
+**Detector question.** Right after using the control, without moving from where it is, does the user see what changed? On a phone too?
 
-**What to do.** Every control says what changed and takes the user to it. And before hiding something, check what other elements live inside it.
+**Warning sign.** "It does work, it just doesn't show." · "Focus does go to the field and the screen reader reads the error."
+
+**What to do.** Every control says what changed and takes the user to it. And before hiding something, check what other elements live inside it. A form's error goes right under its field, tied to it (`aria-describedby`, with `aria-invalid` marking the field), not next to the button; check it in a phone screenshot (see lesson 45 and WEB-4).
 
 ### 33. The glyph is not the text
 
@@ -169,6 +171,20 @@ What applies when a person is going to see or use what you build: screens, compo
 **Warning sign.** "When it ends, it checks the flag and decides".
 
 **What to do.** Every callback first checks that its instance is still the current one (`if (current !== me) return`), and the control stays disabled (or `aria-disabled`, see lesson WEB-4) while the previous one finishes closing. To test it, double-click, or fire two searches in a row where the first is slower.
+
+### 73. A page that has to persuade is designed from what it shows
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** A page that has to convince someone (sign up, buy, attend) is built from the pictures and pieces people see; the words come with them. Written first as text and decorated afterwards, it reads like a document, not an invitation.
+
+**Example.** A sign-up page for a free live class came out correct (accessible, honest, tidy) but made of paragraphs and a date card. The owner felt it was "too plain, no pictures". Rebuilt from what it shows (the one piece nobody else has on the first screen, each section carried by an image or a heavy piece, about 80 words per screen), it was approved at once.
+
+**Detector question.** If I delete every word on the page, what does each section still say with what is left? Does the first screen show the result being promised, or only describe it?
+
+**Warning sign.** "The content is done; we will add pictures later."
+
+**What to do.** Before the first paragraph, list what the page can show (real photos of the person, the product working, made-up data that adds up, drawn with code) and decide which piece carries each section. Draw pictures of data or screens with code, so every number and label in them is real; pictures of people are real photos. Then write the text, the least that works.
 
 ### VIDEO-1. In a video, each action lands when the narration names it
 

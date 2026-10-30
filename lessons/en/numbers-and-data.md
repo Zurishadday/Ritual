@@ -4,7 +4,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 1. "I couldn't read it" is not "there's nothing"
 
-`origin: field · ~opus · 2026-08` · `groups: tests-and-checks` · `seen: claude-opus-5-5 2026-10`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks, console-and-tools, writing-and-docs` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** Every data point has three states: I have it, there really was nothing, and I don't know. The last two get drawn the same way on a chart, as a zero, and they mean the opposite.
 
@@ -12,11 +12,15 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **Another example.** An AI evaluator of practice sales calls said the person had invented a past customer's story, and listed "fills gaps with proof that doesn't exist" among their habits. The customer was real; the story just wasn't in the manual the evaluator read. Later another AI judge flagged as invented a figure that was in the person's own profile file, which it never opened. Both times the person had to correct it: "not in my reference" had been graded as "false".
 
-**Detector question.** Could the number I'm about to show, or the "everything's fine" I'm about to believe, come from a query that failed, an empty table, a denied permission, or an output I didn't read in full (see lesson 44)? And is what I'm about to call false really false, or only missing from the source I read?
+**One more example.** To redraw an app's upload dialog for a tutorial video, one frame of the user's screen recording was checked. It showed a list of recent files, so the script said "there is no Browse button". One second later, after a tab was clicked, the button appeared. The agent drawing the scenes found it; otherwise the video would have taught a path that doesn't exist.
 
-**Warning sign.** "If it fails, I'll just set it to zero and move on." · "It's not in the manual, so it was made up."
+**A fourth example.** A loop counted the files each branch changed with `git diff --name-only <base> $branch`. One branch had the same name as a folder; git stopped with "ambiguous argument: both revision and filename", nobody read the error, and the count said "0 files" for a branch with recent work. Written as `refs/heads/$branch --`, it gave 17.
 
-**What to do.** If the read fails, show the error on the card itself, not a gap or a zero. And a counter that says "0 problems" is only trustworthy if it first found a problem you planted on purpose. A judge's instructions list every source that counts and say what to do with a fact found in none of them: mark it "unverified" and ask, never grade it as false. A fact the person confirms goes into the reference right away. Marking what you don't know when you write is lesson 38.
+**Detector question.** Could the number I'm about to show, or the "everything's fine" I'm about to believe, come from a query that failed, an empty table, a denied permission, or an output I didn't read in full (see lesson 44)? And is what I call false or absent only missing from the source, or the moment, I read?
+
+**Warning sign.** "If it fails, I'll just set it to zero and move on." · "It's not in the manual, so it was made up." · "It doesn't exist," from one screenshot · "0 files changed" on a branch with recent commits.
+
+**What to do.** If the read fails, show the error on the card itself, not a gap or a zero. And a counter that says "0 problems" is only trustworthy if it first found a problem you planted on purpose. A judge's instructions list every source that counts and say what to do with a fact found in none of them: mark it "unverified" and ask, never grade it as false. A fact the person confirms goes into the reference right away. Marking what you don't know when you write is lesson 38. Before saying something isn't there, look at the whole sequence around that moment (frames every half second, the full log, the page after it loads); if you can't, write "I didn't see it at second 30", not "it doesn't exist" (see lesson 27). In a loop of commands, check the exit code of every call, not only the last, and confirm a 0 another way before trusting it; a name that can mean two things gets the key only the right one has (lesson 2: for git, `refs/heads/<branch>` and `--`).
 
 ### 2. Two things with the same name are not the same thing
 
@@ -137,6 +141,20 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 **Warning sign.** "The numbers confirm it."
 
 **What to do.** Before teaching or reporting why something happens, write the rival explanation and build a case where the two predict differently. Compare parts of the same size, try another example size, and measure a general claim on simulated data before writing it. If you can't separate them, say that the example is compatible with both. When code builds the example (a demo, a sample dataset), leave an assert in it that fails if the rival would give the same result. Before fixing, measure with only the suspected variable changed (the same message, long and short, on the machine in the same state), note what else was running, and measure again after the fix (lesson 34).
+
+### 75. A saving measured in a unit that isn't the one you pay can be close to zero
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** When you work out how much a change saves, the number comes in whatever unit you have at hand: tokens, requests, rows, minutes. But the bill is in another unit, with discounts, caches and fixed costs. Measured in the wrong unit, a big saving can be small, or even a cost once you count what the alternative costs.
+
+**Example.** An analysis of a long session with an AI assistant concluded: "starting a new session past 200 thousand tokens would save 76%". It priced every token the same, but 98.7% of them were cache reads, which the price list charges at about a tenth. A new session also has to rebuild the cache and re-read files. The number was relayed without checking; an independent reviewer corrected it. The real saving, in money, was not measured.
+
+**Detector question.** In what unit is this actually paid, and is my number in that unit? Did I subtract what the alternative costs?
+
+**Warning sign.** "Saves 76% of the tokens" (or requests, or rows) without saying how much in money or in the limit that matters.
+
+**What to do.** Convert the saving to the unit that is paid (money, the plan's limit, the person's time), with its discounts and caches, and subtract the cost of the alternative. If you can't convert it, say so: "in tokens; cost not measured". Adding a cost from each item's own price is lesson 36; two figures on different scales, lesson 2.
 
 ### AI-3. A fine-tuned model also learns the edges and the background of its examples
 

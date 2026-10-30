@@ -50,7 +50,7 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 ### 32. Ce qui fonctionne mais ne se voit pas est signalé comme cassé
 
-`from: 62e8051c` · `by: ai`
+`from: 39c9c528` · `by: ai`
 
 **L'idée.** Si un bouton modifie quelque chose hors de la vue de l'utilisateur, fonctionner et ne pas fonctionner paraissent identiques.
 
@@ -58,11 +58,13 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 **Variante.** Masquer un conteneur masque tout ce qu'il contient, même ce qui n'a rien à voir. Par exemple, un lien utile qui se trouvait à l'intérieur d'un contrôle retiré.
 
-**Question détectrice.** Juste après avoir utilisé le contrôle, sans bouger de là où il se trouve, l'utilisateur voit-il ce qui a changé ?
+**Autre exemple.** Un formulaire d'inscription de cinq questions, envoyé vide, déplaçait le focus vers le premier champ, mais son message se trouvait sous le bouton d'envoi, à environ 900 px plus bas : sur un téléphone, la personne voyait le focus sauter et rien d'autre. Les tests d'accessibilité passaient ; une relecture avec des captures d'écran de téléphone l'a repéré.
 
-**Signal d'alarme.** « Ça marche, ça ne se voit simplement pas. »
+**Question détectrice.** Juste après avoir utilisé le contrôle, sans bouger de là où il se trouve, l'utilisateur voit-il ce qui a changé ? Et sur téléphone aussi ?
 
-**Que faire.** Chaque contrôle dit ce qui a changé et amène l'utilisateur jusqu'à cet endroit. Et avant de masquer quelque chose, vérifiez quels autres éléments se trouvent à l'intérieur.
+**Signal d'alarme.** « Ça marche, ça ne se voit simplement pas. » · « Le focus va bien sur le champ, et le lecteur d'écran lit l'erreur. »
+
+**Que faire.** Chaque contrôle dit ce qui a changé et amène l'utilisateur jusqu'à cet endroit. Et avant de masquer quelque chose, vérifiez quels autres éléments se trouvent à l'intérieur. L'erreur d'un formulaire s'affiche juste sous son champ, rattachée à lui (`aria-describedby`, avec `aria-invalid` qui marque le champ), et non à côté du bouton ; vérifiez-le sur une capture d'écran de téléphone (voir la leçon 45 et WEB-4).
 
 ### 33. Le glyphe n'est pas le texte
 
@@ -170,6 +172,20 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 **Signal d'alarme.** « Quand ça se termine, ça vérifie le drapeau et décide »
 
 **Que faire.** Chaque rappel vérifie d'abord qu'il est toujours l'instance en cours (`if (current !== me) return`), et le contrôle reste désactivé (ou `aria-disabled`, voir la leçon WEB-4) pendant que le précédent finit de se fermer. Pour le tester, double-cliquez, ou lancez deux recherches à la suite dont la première est plus lente.
+
+### 73. Une page qui doit convaincre se conçoit à partir de ce qu'elle montre
+
+`from: a71c6a9e` · `by: ai`
+
+**L'idée.** Une page qui doit convaincre quelqu'un (s'inscrire, acheter, assister) se construit à partir des images et des éléments que les gens voient ; les mots viennent avec eux. Écrite d'abord en texte puis décorée, elle se lit comme un document, pas comme une invitation.
+
+**Exemple.** Une page d'inscription à un cours en direct gratuit était juste (accessible, honnête, soignée), mais faite de paragraphes et d'une carte avec la date. Le propriétaire la trouvait « trop sobre, sans images ». Reconstruite à partir de ce qu'elle montre (l'élément unique que personne d'autre n'a sur le premier écran, chaque section portée par une image ou un élément lourd, environ 80 mots par écran), elle a été approuvée immédiatement.
+
+**Question détectrice.** Si je supprime chaque mot de la page, que dit encore chaque section avec ce qui reste ? Le premier écran montre-t-il le résultat promis, ou se contente-t-il de le décrire ?
+
+**Signal d'alarme.** « Le contenu est prêt ; on ajoutera des images plus tard. »
+
+**Que faire.** Avant le premier paragraphe, listez ce que la page peut montrer (de vraies photos de la personne, le produit en marche, des données inventées mais cohérentes, dessinées avec du code) et décidez quel élément porte chaque section. Dessinez les images de données ou d'écrans avec du code, pour que chaque chiffre et chaque libellé qu'elles contiennent soit réel ; les photos de personnes, elles, sont de vraies photos. Écrivez ensuite le texte, le minimum qui fonctionne.
 
 ### VIDEO-1. Dans une vidéo, chaque action tombe au moment où la narration la nomme
 

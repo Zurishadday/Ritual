@@ -4,7 +4,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 1. « Je n'ai pas pu le lire » n'est pas « il n'y a rien »
 
-`from: 01957441` · `by: ai`
+`from: fcaf6923` · `by: ai`
 
 **L'idée.** Chaque donnée a trois états : je l'ai, il n'y avait vraiment rien, et je ne sais pas. Les deux derniers se dessinent de la même façon sur un graphique, comme un zéro, alors qu'ils signifient le contraire.
 
@@ -12,11 +12,15 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Autre exemple.** Un évaluateur IA d'appels commerciaux d'entraînement a affirmé que la personne avait inventé l'histoire d'un ancien client, et l'a notée parmi ses habitudes : « combler les vides avec une preuve qui n'existe pas ». Le client était réel ; l'histoire n'était simplement pas dans le manuel que l'évaluateur avait lu. Plus tard, un autre juge IA a signalé comme inventé un chiffre qui figurait dans le fichier de profil de la personne, fichier qu'il n'avait jamais ouvert. Dans les deux cas, la personne a dû corriger : « absent de ma référence » avait été noté comme « faux ».
 
-**Question détectrice.** Le chiffre que je m'apprête à afficher, ou le « tout va bien » que je m'apprête à croire, pourrait-il venir d'une requête échouée, d'une table vide, d'une autorisation refusée, ou d'un résultat que je n'ai pas lu en entier (voir la leçon 44) ? Et ce que je m'apprête à déclarer faux est-il vraiment faux, ou seulement absent de la source que j'ai lue ?
+**Encore un exemple.** Pour redessiner la boîte de dialogue d'envoi de fichiers d'une application dans une vidéo de tutoriel, une seule image de l'enregistrement d'écran de l'utilisateur a été vérifiée. Elle montrait une liste de fichiers récents, si bien que le script affirmait « il n'y a pas de bouton Parcourir ». Une seconde plus tard, après un clic sur un onglet, le bouton est apparu. L'agent qui dessinait les scènes l'a repéré ; sinon, la vidéo aurait enseigné un chemin qui n'existe pas.
 
-**Signal d'alarme.** « Si ça échoue, je mets zéro et je passe à autre chose. » · « Ce n'est pas dans le manuel, donc c'était inventé. »
+**Un quatrième exemple.** Une boucle comptait les fichiers modifiés par chaque branche avec `git diff --name-only <base> $branch`. Une branche portait le même nom qu'un dossier ; git s'est arrêté sur « ambiguous argument: both revision and filename », personne n'a lu l'erreur, et le compte affichait « 0 fichier » pour une branche avec des travaux récents. Écrit `refs/heads/$branch --`, il donnait 17.
 
-**Que faire.** Si la lecture échoue, affichez l'erreur sur la carte elle-même, et non un vide ou un zéro. Et un compteur qui affiche « 0 problème » n'est digne de confiance que s'il a d'abord trouvé un problème que vous aviez placé exprès. Les consignes d'un juge listent chaque source qui compte et disent quoi faire d'un fait trouvé dans aucune d'elles : le marquer « non vérifié » et demander, sans jamais le noter comme faux. Un fait que la personne confirme entre tout de suite dans la référence. Marquer ce qu'on ne sait pas au moment d'écrire, c'est la leçon 38.
+**Question détectrice.** Le chiffre que je m'apprête à afficher, ou le « tout va bien » que je m'apprête à croire, pourrait-il venir d'une requête échouée, d'une table vide, d'une autorisation refusée, ou d'un résultat que je n'ai pas lu en entier (voir la leçon 44) ? Et ce que je m'apprête à déclarer faux est-il vraiment absent de la source, ou seulement absent au moment où je le lis ?
+
+**Signal d'alarme.** « Si ça échoue, je mets zéro et je passe à autre chose. » · « Ce n'est pas dans le manuel, donc c'était inventé. » · « Ça n'existe pas », d'après une seule capture d'écran · « 0 fichier modifié » sur une branche avec des commits récents.
+
+**Que faire.** Si la lecture échoue, affichez l'erreur sur la carte elle-même, et non un vide ou un zéro. Et un compteur qui affiche « 0 problème » n'est digne de confiance que s'il a d'abord trouvé un problème que vous aviez placé exprès. Les consignes d'un juge listent chaque source qui compte et disent quoi faire d'un fait trouvé dans aucune d'elles : le marquer « non vérifié » et demander, sans jamais le noter comme faux. Un fait que la personne confirme entre tout de suite dans la référence. Marquer ce qu'on ne sait pas au moment d'écrire, c'est la leçon 38. Avant d'affirmer qu'une chose n'est pas là, regardez toute la séquence autour de ce moment (une image toutes les demi-secondes, le journal complet, la page après son chargement) ; si vous ne le pouvez pas, écrivez « je ne l'ai pas vu à la seconde 30 », pas « ça n'existe pas » (voir la leçon 27). Dans une boucle de commandes, vérifiez le code de sortie de chaque appel, pas seulement celui du dernier, et confirmez un 0 autrement avant de lui faire confiance ; un nom qui peut désigner deux choses reçoit la clé que seule la bonne possède (leçon 2 : pour git, `refs/heads/<branch>` et `--`).
 
 ### 2. Deux choses qui portent le même nom ne sont pas la même chose
 
@@ -137,6 +141,20 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 **Signal d'alarme.** « Les chiffres le confirment. »
 
 **Que faire.** Avant d'enseigner ou de rapporter pourquoi quelque chose se produit, écrivez l'explication rivale et construisez un cas où les deux prédisent des résultats différents. Comparez des segments de même taille, essayez une autre taille d'exemple, et mesurez une affirmation générale sur des données simulées avant de l'écrire. Si vous ne pouvez pas les séparer, dites que l'exemple est compatible avec les deux. Quand du code construit l'exemple (une démo, un jeu de données d'exemple), laissez-y une assertion qui échoue si l'explication rivale donnerait le même résultat. Avant de corriger, mesurez en ne changeant que la variable soupçonnée (le même message, long et court, sur la machine dans le même état), notez ce qui d'autre tournait, et mesurez à nouveau après la correction (leçon 34).
+
+### 75. Une économie mesurée dans une unité qui n'est pas celle que vous payez peut être presque nulle
+
+`from: cf5a2f7f` · `by: ai`
+
+**L'idée.** Quand vous calculez combien une modification fait économiser, le chiffre arrive dans l'unité que vous avez sous la main : jetons, requêtes, lignes, minutes. Mais la facture est dans une autre unité, avec des remises, des caches et des coûts fixes. Mesurée dans la mauvaise unité, une grosse économie peut devenir petite, voire un coût une fois qu'on a compté ce que coûte l'alternative.
+
+**Exemple.** L'analyse d'une longue session avec un assistant IA a conclu : « démarrer une nouvelle session au-delà de 200 mille jetons ferait économiser 76% ». Elle valorisait chaque jeton au même prix, alors que 98.7% d'entre eux étaient des lectures de cache, que la grille tarifaire facture environ un dixième. Une nouvelle session doit aussi reconstruire le cache et relire les fichiers. Le chiffre a été repris sans vérification ; un relecteur indépendant l'a corrigé. L'économie réelle, en argent, n'a pas été mesurée.
+
+**Question détectrice.** Dans quelle unité cela est-il réellement payé, et mon chiffre est-il dans cette unité ? Ai-je retranché ce que coûte l'alternative ?
+
+**Signal d'alarme.** « Économise 76% des jetons » (ou des requêtes, ou des lignes) sans dire combien en argent ni dans la limite qui compte.
+
+**Que faire.** Convertissez l'économie dans l'unité qui est payée (l'argent, la limite du forfait, le temps de la personne), avec ses remises et ses caches, et retranchez le coût de l'alternative. Si vous ne pouvez pas convertir, dites-le : « en jetons ; coût non mesuré ». Additionner un coût à partir du prix propre à chaque élément relève de la leçon 36 ; deux chiffres sur des échelles différentes, de la leçon 2.
 
 ### AI-3. Un modèle affiné apprend aussi les bords et le bruit de fond de ses exemples
 

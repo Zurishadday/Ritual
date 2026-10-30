@@ -4,7 +4,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 1. “Não consegui ler” não é “não há nada”
 
-`from: 01957441` · `by: ai`
+`from: fcaf6923` · `by: ai`
 
 **A ideia.** Todo dado tem três estados: eu tenho, realmente não havia nada, e eu não sei. Os dois últimos são desenhados do mesmo jeito num gráfico, como zero, e significam o oposto.
 
@@ -12,11 +12,15 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Outro exemplo.** Um avaliador de IA de ligações de venda para treino disse que a pessoa tinha inventado a história de um cliente anterior, e listou “preenche lacunas com provas que não existem” entre os hábitos dela. O cliente era real; a história só não estava no manual que o avaliador leu. Depois, outro juiz de IA marcou como inventado um número que estava no próprio arquivo de perfil da pessoa, arquivo que ele nunca abriu. Nas duas vezes a pessoa teve de corrigir: “não está na minha referência” tinha sido avaliado como “falso”.
 
-**Pergunta detectora.** O número que estou prestes a mostrar, ou o “está tudo bem” em que estou prestes a acreditar, pode vir de uma consulta que falhou, de uma tabela vazia, de uma permissão negada ou de uma saída que não li por completo (ver a lição 44)? E o que estou prestes a chamar de falso é mesmo falso, ou só está faltando na fonte que li?
+**Mais um exemplo.** Para redesenhar a janela de envio de um aplicativo para um vídeo tutorial, foi conferido um único quadro da gravação de tela do usuário. Ele mostrava uma lista de arquivos recentes, então o roteiro dizia “não há botão Procurar”. Um segundo depois, depois de clicar em uma aba, o botão apareceu. O agente que desenhava as cenas o encontrou; do contrário, o vídeo teria ensinado um caminho que não existe.
 
-**Sinal de alerta.** “Se falhar, eu coloco zero e sigo em frente.” · “Não está no manual, então foi inventado.”
+**Um quarto exemplo.** Um laço contava os arquivos que cada branch alterou com `git diff --name-only <base> $branch`. Uma branch tinha o mesmo nome de uma pasta; o git parou com “ambiguous argument: both revision and filename”, ninguém leu o erro, e a contagem dizia “0 files” para uma branch com trabalho recente. Escrito como `refs/heads/$branch --`, deu 17.
 
-**O que fazer.** Se a leitura falhar, mostre o erro no próprio cartão, e não uma lacuna nem um zero. E um contador que diz “0 problemas” só é confiável se antes encontrou um problema que você plantou de propósito. As instruções de um juiz listam todas as fontes que contam e dizem o que fazer com um fato que não está em nenhuma delas: marcá-lo como “não verificado” e perguntar, nunca avaliá-lo como falso. Um fato que a pessoa confirma entra na referência logo. Marcar o que você não sabe ao escrever é a lição 38.
+**Pergunta detectora.** O número que estou prestes a mostrar, ou o “está tudo bem” em que estou prestes a acreditar, pode vir de uma consulta que falhou, de uma tabela vazia, de uma permissão negada ou de uma saída que não li por completo (ver a lição 44)? E o que estou prestes a chamar de falso ou de ausente é mesmo, ou só falta na fonte ou no momento em que eu li?
+
+**Sinal de alerta.** “Se falhar, eu coloco zero e sigo em frente.” · “Não está no manual, então foi inventado.” · “Não existe”, a partir de uma única captura de tela · “0 arquivos alterados” numa branch com commits recentes.
+
+**O que fazer.** Se a leitura falhar, mostre o erro no próprio cartão, e não uma lacuna nem um zero. E um contador que diz “0 problemas” só é confiável se antes encontrou um problema que você plantou de propósito. As instruções de um juiz listam todas as fontes que contam e dizem o que fazer com um fato que não está em nenhuma delas: marcá-lo como “não verificado” e perguntar, nunca avaliá-lo como falso. Um fato que a pessoa confirma entra na referência logo. Marcar o que você não sabe ao escrever é a lição 38. Antes de dizer que algo não está lá, olhe a sequência inteira em volta daquele momento (quadros a cada meio segundo, o log completo, a página depois que carrega); se não conseguir, escreva “não vi no segundo 30”, e não “não existe” (ver a lição 27). Em um laço de comandos, confira o código de saída de cada chamada, e não só o da última, e confirme um 0 de outra forma antes de confiar nele; um nome que pode significar duas coisas recebe uma chave que só o certo tem (lição 2: para o git, `refs/heads/<branch>` e `--`).
 
 ### 2. Duas coisas com o mesmo nome não são a mesma coisa
 
@@ -137,6 +141,20 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 **Sinal de alerta.** “Os números confirmam.”
 
 **O que fazer.** Antes de ensinar ou relatar por que algo acontece, escreva a explicação rival e monte um caso em que as duas prevejam coisas diferentes. Compare partes de mesmo tamanho, teste outro tamanho de exemplo e meça uma afirmação geral em dados simulados antes de escrevê-la. Se não conseguir separá-las, diga que o exemplo é compatível com as duas. Quando o código monta o exemplo (uma demonstração, um conjunto de dados de amostra), deixe nele um assert que falhe se a explicação rival der o mesmo resultado. Antes de corrigir, meça variando só a variável suspeita (a mesma mensagem, longa e curta, na máquina no mesmo estado), anote o que mais estava rodando e meça de novo depois da correção (ver a lição 34).
+
+### 75. Uma economia medida em uma unidade que não é a que você paga pode ficar perto de zero
+
+`from: cf5a2f7f` · `by: ai`
+
+**A ideia.** Ao calcular quanto uma mudança economiza, o número sai na unidade que você tem à mão: tokens, requisições, linhas, minutos. Mas a conta vem em outra unidade, com descontos, caches e custos fixos. Medida na unidade errada, uma economia grande pode ser pequena, ou até um custo, quando você soma o que a alternativa custa.
+
+**Exemplo.** Uma análise de uma sessão longa com um assistente de IA concluiu: “começar uma nova sessão depois de 200 mil tokens economizaria 76%”. Ela precificava cada token do mesmo jeito, mas 98.7% deles eram leituras de cache, que a tabela de preços cobra por algo como um décimo. Uma sessão nova também precisa reconstruir o cache e reler os arquivos. O número foi repassado sem ser conferido; um revisor independente o corrigiu. A economia real, em dinheiro, não foi medida.
+
+**Pergunta detectora.** Em que unidade isto é realmente pago, e meu número está nessa unidade? Eu descontei o que a alternativa custa?
+
+**Sinal de alerta.** “Economiza 76% dos tokens” (ou das requisições, ou das linhas), sem dizer quanto isso vale em dinheiro ou no limite que importa.
+
+**O que fazer.** Converta a economia para a unidade em que se paga (dinheiro, o limite do plano, o tempo da pessoa), com os descontos e os caches, e subtraia o custo da alternativa. Se não conseguir converter, diga isso: “em tokens; custo não medido”. Somar um custo a partir do preço de cada item é a lição 36; dois números em escalas diferentes, a lição 2.
 
 ### AI-3. Um modelo ajustado também aprende as bordas e o fundo de seus exemplos
 

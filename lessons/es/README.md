@@ -19,6 +19,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **64.** [Ancla un concepto en algo que el lector ya vivió, no en cómo se calcula](writing-and-docs.md#64-ancla-un-concepto-en-algo-que-el-lector-ya-vivió-no-en-cómo-se-calcula)
 - **AI-1.** [Si restringes dónde puede escribir el modelo, escribe donde lo dejes](writing-and-docs.md#ai-1-si-restringes-dónde-puede-escribir-el-modelo-escribe-donde-lo-dejes)
 - **AI-2.** [Una regla escrita como lista se ejecuta como lista, aun después de que la otra persona respondió](writing-and-docs.md#ai-2-una-regla-escrita-como-lista-se-ejecuta-como-lista-aun-después-de-que-la-otra-persona-respondió)
+- **AI-4.** [Las instrucciones de un modelo no llevan su propio registro de cambios](writing-and-docs.md#ai-4-las-instrucciones-de-un-modelo-no-llevan-su-propio-registro-de-cambios)
 - **EDU-2.** [Lo que se ve antes de responder no puede traer la respuesta](writing-and-docs.md#edu-2-lo-que-se-ve-antes-de-responder-no-puede-traer-la-respuesta)
 - **EDU-3.** [Una pregunta con dos respuestas defendibles no mide nada](writing-and-docs.md#edu-3-una-pregunta-con-dos-respuestas-defendibles-no-mide-nada)
 - **EDU-5.** [Una pista apunta a la causa del error, no a la respuesta](writing-and-docs.md#edu-5-una-pista-apunta-a-la-causa-del-error-no-a-la-respuesta)
@@ -33,6 +34,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **12.** [Que la consulta corra no prueba que el número esté bien](numbers-and-data.md#12-que-la-consulta-corra-no-prueba-que-el-número-esté-bien)
 - **36.** [Mide antes de escribir](numbers-and-data.md#36-mide-antes-de-escribir)
 - **50.** [Si dos explicaciones predicen lo mismo, tu ejemplo no elige entre ellas](numbers-and-data.md#50-si-dos-explicaciones-predicen-lo-mismo-tu-ejemplo-no-elige-entre-ellas)
+- **75.** [Un ahorro medido en una unidad que no es la que pagas puede ser casi cero](numbers-and-data.md#75-un-ahorro-medido-en-una-unidad-que-no-es-la-que-pagas-puede-ser-casi-cero)
 - **AI-3.** [Un modelo afinado también aprende los bordes y el fondo de sus ejemplos](numbers-and-data.md#ai-3-un-modelo-afinado-también-aprende-los-bordes-y-el-fondo-de-sus-ejemplos)
 
 ## Prácticas y pruebas
@@ -48,6 +50,8 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **34.** [A un hallazgo de QA créele el síntoma y mide la causa](tests-and-checks.md#34-a-un-hallazgo-de-qa-créele-el-síntoma-y-mide-la-causa)
 - **55.** [El verde en tu máquina es el veredicto de una sola máquina](tests-and-checks.md#55-el-verde-en-tu-máquina-es-el-veredicto-de-una-sola-máquina)
 - **71.** [Una puntuación promedio deja pasar el único error que importa](tests-and-checks.md#71-una-puntuación-promedio-deja-pasar-el-único-error-que-importa)
+- **72.** [Un juez que ya vio sus propios veredictos anteriores ya no es independiente](tests-and-checks.md#72-un-juez-que-ya-vio-sus-propios-veredictos-anteriores-ya-no-es-independiente)
+- **74.** [Si la puntuación sale de los mismos casos con los que afinaste, mide qué tan bien los memorizaste](tests-and-checks.md#74-si-la-puntuación-sale-de-los-mismos-casos-con-los-que-afinaste-mide-qué-tan-bien-los-memorizaste)
 - **EDU-1.** [Si la respuesta sale igual sin la habilidad, el ejercicio no la mide](tests-and-checks.md#edu-1-si-la-respuesta-sale-igual-sin-la-habilidad-el-ejercicio-no-la-mide)
 - **EDU-4.** [Si adivinas la correcta por su lugar, su largo o su aspecto, el quiz mide la suerte](tests-and-checks.md#edu-4-si-adivinas-la-correcta-por-su-lugar-su-largo-o-su-aspecto-el-quiz-mide-la-suerte)
 
@@ -84,6 +88,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **49.** [Una regla general no debe ganarle en silencio a las particulares](interface-and-design.md#49-una-regla-general-no-debe-ganarle-en-silencio-a-las-particulares)
 - **57.** [Una tecla llega distinta en cada sistema](interface-and-design.md#57-una-tecla-llega-distinta-en-cada-sistema)
 - **59.** [Un evento de algo ya reemplazado no debe actuar](interface-and-design.md#59-un-evento-de-algo-ya-reemplazado-no-debe-actuar)
+- **73.** [Una página que tiene que convencer se diseña a partir de lo que muestra](interface-and-design.md#73-una-página-que-tiene-que-convencer-se-diseña-a-partir-de-lo-que-muestra)
 - **VIDEO-1.** [En un video, cada acción cae cuando la narración la nombra](interface-and-design.md#video-1-en-un-video-cada-acción-cae-cuando-la-narración-la-nombra)
 - **VIDEO-2.** [En un video, lo que cambia sin mostrarse se marca](interface-and-design.md#video-2-en-un-video-lo-que-cambia-sin-mostrarse-se-marca)
 - **WEB-2.** [Un formulario público recibe robots desde el primer día](interface-and-design.md#web-2-un-formulario-público-recibe-robots-desde-el-primer-día)

@@ -50,7 +50,7 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 ### 32. Algo que funciona mas não se vê é relatado como quebrado
 
-`from: 62e8051c` · `by: ai`
+`from: 39c9c528` · `by: ai`
 
 **A ideia.** Se um botão muda algo fora da vista do usuário, funcionar e não funcionar parecem a mesma coisa.
 
@@ -58,11 +58,13 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 **Variante.** Esconder um contêiner esconde tudo o que está dentro dele, mesmo o que não tinha nada a ver com ele. Por exemplo, um link útil que morava dentro de um controle aposentado.
 
-**Pergunta detectora.** Logo depois de usar o controle, sem sair de onde está, o usuário vê o que mudou?
+**Outro exemplo.** Um formulário de inscrição de cinco perguntas, enviado vazio, levou o foco para o primeiro campo, mas a mensagem ficava embaixo do botão de envio, cerca de 900 px abaixo: no celular, a pessoa via o foco pular e mais nada. Os testes de acessibilidade passaram; uma revisão com capturas de tela do celular encontrou o problema.
 
-**Sinal de alerta.** “Funciona, só não aparece.”
+**Pergunta detectora.** Logo depois de usar o controle, sem sair de onde está, o usuário vê o que mudou? E no celular também?
 
-**O que fazer.** Cada controle diz o que mudou e leva o usuário até lá. E antes de esconder algo, confira o que mais vive dentro dele.
+**Sinal de alerta.** “Funciona, só não aparece.” · “O foco vai para o campo, e o leitor de tela lê o erro.”
+
+**O que fazer.** Cada controle diz o que mudou e leva o usuário até lá. E antes de esconder algo, confira o que mais vive dentro dele. O erro de um formulário fica logo abaixo do seu campo, ligado a ele (`aria-describedby`, com `aria-invalid` marcando o campo), e não ao lado do botão; confira numa captura de tela do celular (ver a lição 45 e WEB-4).
 
 ### 33. O glifo não é o texto
 
@@ -170,6 +172,20 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 **Sinal de alerta.** “Quando termina, ele verifica a flag e decide”.
 
 **O que fazer.** Cada callback verifica primeiro se a sua instância ainda é a atual (`if (current !== me) return`), e o controle continua desativado (ou `aria-disabled`, ver a lição WEB-4) enquanto o anterior termina de fechar. Para testar, dê duplo clique, ou dispare duas buscas seguidas em que a primeira é mais lenta.
+
+### 73. Uma página que precisa convencer é desenhada a partir do que ela mostra
+
+`from: a71c6a9e` · `by: ai`
+
+**A ideia.** Uma página que precisa convencer alguém (se inscrever, comprar, participar) é construída a partir das imagens e das peças que as pessoas veem; as palavras vêm junto com elas. Escrita primeiro como texto e decorada depois, ela se lê como um documento, não como um convite.
+
+**Exemplo.** Uma página de inscrição para uma aula ao vivo gratuita saiu correta (acessível, honesta, arrumada), mas feita de parágrafos e um cartão de data. O responsável achou que estava “simples demais, sem imagens”. Refeita a partir do que mostra (uma peça única que ninguém mais tem na primeira tela, cada seção sustentada por uma imagem ou por uma peça pesada, cerca de 80 palavras por tela), foi aprovada de imediato.
+
+**Pergunta detectora.** Se eu apagar cada palavra da página, o que cada seção ainda diz com o que sobra? A primeira tela mostra o resultado prometido, ou só o descreve?
+
+**Sinal de alerta.** “O conteúdo está pronto; as imagens a gente põe depois.”
+
+**O que fazer.** Antes do primeiro parágrafo, liste o que a página pode mostrar (fotos reais da pessoa, o produto funcionando, dados inventados que somam certo, desenhados com código) e decida qual peça sustenta cada seção. Desenhe imagens de dados ou de telas com código, para que cada número e rótulo nelas seja real; imagens de pessoas são fotos reais. Depois escreva o texto, o mínimo que funciona.
 
 ### VIDEO-1. Em um vídeo, cada ação cai quando a narração a nomeia
 

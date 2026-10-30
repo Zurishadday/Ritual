@@ -19,6 +19,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **64.** [Ancrer un concept dans ce que le lecteur a déjà vécu, pas dans la façon dont il se calcule](writing-and-docs.md#64-ancrer-un-concept-dans-ce-que-le-lecteur-a-déjà-vécu-pas-dans-la-façon-dont-il-se-calcule)
 - **AI-1.** [Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez](writing-and-docs.md#ai-1-si-vous-restreignez-lendroit-où-le-modèle-peut-écrire-il-écrit-là-où-vous-le-laissez)
 - **AI-2.** [Une règle écrite en liste de contrôle s'exécute comme une liste, même après que l'autre personne a répondu](writing-and-docs.md#ai-2-une-règle-écrite-en-liste-de-contrôle-sexécute-comme-une-liste-même-après-que-lautre-personne-a-répondu)
+- **AI-4.** [Les consignes d'un modèle ne portent pas leur propre journal des modifications](writing-and-docs.md#ai-4-les-consignes-dun-modèle-ne-portent-pas-leur-propre-journal-des-modifications)
 - **EDU-2.** [Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse](writing-and-docs.md#edu-2-ce-que-lapprenant-voit-avant-de-répondre-ne-peut-pas-contenir-la-réponse)
 - **EDU-3.** [Une question à deux réponses défendables ne mesure rien](writing-and-docs.md#edu-3-une-question-à-deux-réponses-défendables-ne-mesure-rien)
 - **EDU-5.** [Un indice pointe vers la cause de l'erreur, pas vers la réponse](writing-and-docs.md#edu-5-un-indice-pointe-vers-la-cause-de-lerreur-pas-vers-la-réponse)
@@ -33,6 +34,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **12.** [Exécuter la requête ne prouve pas que le chiffre est juste](numbers-and-data.md#12-exécuter-la-requête-ne-prouve-pas-que-le-chiffre-est-juste)
 - **36.** [Mesurer avant d'écrire](numbers-and-data.md#36-mesurer-avant-décrire)
 - **50.** [Si deux explications prédisent la même chose, votre exemple ne tranche pas entre elles](numbers-and-data.md#50-si-deux-explications-prédisent-la-même-chose-votre-exemple-ne-tranche-pas-entre-elles)
+- **75.** [Une économie mesurée dans une unité qui n'est pas celle que vous payez peut être presque nulle](numbers-and-data.md#75-une-économie-mesurée-dans-une-unité-qui-nest-pas-celle-que-vous-payez-peut-être-presque-nulle)
 - **AI-3.** [Un modèle affiné apprend aussi les bords et le bruit de fond de ses exemples](numbers-and-data.md#ai-3-un-modèle-affiné-apprend-aussi-les-bords-et-le-bruit-de-fond-de-ses-exemples)
 
 ## Tests et vérifications
@@ -48,6 +50,8 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **34.** [Croire le symptôme d'un constat QA et mesurer la cause](tests-and-checks.md#34-croire-le-symptôme-dun-constat-qa-et-mesurer-la-cause)
 - **55.** [Le vert sur votre machine n'est que le verdict d'une seule machine](tests-and-checks.md#55-le-vert-sur-votre-machine-nest-que-le-verdict-dune-seule-machine)
 - **71.** [Une note moyenne laisse passer l'unique erreur qui compte](tests-and-checks.md#71-une-note-moyenne-laisse-passer-lunique-erreur-qui-compte)
+- **72.** [Un juge qui a vu ses propres verdicts précédents n'est plus indépendant](tests-and-checks.md#72-un-juge-qui-a-vu-ses-propres-verdicts-précédents-nest-plus-indépendant)
+- **74.** [Si le score vient des cas sur lesquels vous avez ajusté, il mesure à quel point vous les avez mémorisés](tests-and-checks.md#74-si-le-score-vient-des-cas-sur-lesquels-vous-avez-ajusté-il-mesure-à-quel-point-vous-les-avez-mémorisés)
 - **EDU-1.** [Si la réponse est la même sans la compétence, l'exercice ne la mesure pas](tests-and-checks.md#edu-1-si-la-réponse-est-la-même-sans-la-compétence-lexercice-ne-la-mesure-pas)
 - **EDU-4.** [Si l'on peut deviner la bonne option à sa place, à sa longueur ou à son apparence, le quiz mesure la devinette](tests-and-checks.md#edu-4-si-lon-peut-deviner-la-bonne-option-à-sa-place-à-sa-longueur-ou-à-son-apparence-le-quiz-mesure-la-devinette)
 
@@ -84,6 +88,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **49.** [Une règle générale ne doit pas écraser en silence les règles spécifiques](interface-and-design.md#49-une-règle-générale-ne-doit-pas-écraser-en-silence-les-règles-spécifiques)
 - **57.** [Une touche n'arrive pas de la même façon sur chaque système](interface-and-design.md#57-une-touche-narrive-pas-de-la-même-façon-sur-chaque-système)
 - **59.** [Un événement venant de quelque chose déjà remplacé ne doit pas agir](interface-and-design.md#59-un-événement-venant-de-quelque-chose-déjà-remplacé-ne-doit-pas-agir)
+- **73.** [Une page qui doit convaincre se conçoit à partir de ce qu'elle montre](interface-and-design.md#73-une-page-qui-doit-convaincre-se-conçoit-à-partir-de-ce-quelle-montre)
 - **VIDEO-1.** [Dans une vidéo, chaque action tombe au moment où la narration la nomme](interface-and-design.md#video-1-dans-une-vidéo-chaque-action-tombe-au-moment-où-la-narration-la-nomme)
 - **VIDEO-2.** [Dans une vidéo, ce qui change sans être montré est signalé](interface-and-design.md#video-2-dans-une-vidéo-ce-qui-change-sans-être-montré-est-signalé)
 - **WEB-2.** [Un formulaire public reçoit des robots dès le premier jour](interface-and-design.md#web-2-un-formulaire-public-reçoit-des-robots-dès-le-premier-jour)

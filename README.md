@@ -16,7 +16,7 @@ A Claude Code plugin that turns every mistake into a lesson, every lesson into a
 
 Other tools write down what was learned; Ritual goes as far as checking it, because a rule that only lives in text gets forgotten in a long session, and one that checks itself does not.
 
-It ships **71 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from real mistakes in that kind of project or from watching a model build one and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
+It ships **75 field lessons**, each born from a real mistake; **packages per kind of project**, whose lessons come from real mistakes in that kind of project or from watching a model build one and break it; and **one command**, `/ritual`, that turns the mistakes of your session into your own lessons, and your lessons into rules that enforce themselves.
 
 **Measured:** a web task Ritual never learned from, built four times without Ritual and four with it, every build reviewed blind. The mistakes that get decided while writing (the error path, keyboard focus, a damaged data file), a group set before the runs, showed up 11 times without Ritual and once with its lessons at the start, as it ships (5 times with the close on too). The mistakes only seen by running did not drop, nor did new mistakes or the total, by the rule set before the runs: Ritual stops the mistakes it has a lesson for, while the code is being written. A build with Ritual and no review ended with no more of the package's mistakes than a build without Ritual after a review and a fix (3.5 against 4.5 on average, within the spread), for $0.61 against $2.64. One task, four builds per arm, one model: the data and the method are in [simulations](simulations/clinic/RESULTS.md).
 
@@ -132,7 +132,7 @@ On top of the groups sit the **packages** per kind of project: lessons that only
 | `web` | 5: what gets lost when the saved data gets damaged, bots on a public form, the fallback without JavaScript, focus on submit, and a login with no limit on attempts. |
 | `education` | 5: an exercise that passes without the skill, the answer visible before the question, two defensible answers, guessing by position or length, and a hint that gives the answer away. |
 | `video` | 3: each action lands when the narration names it, what changes without showing gets marked, and clips pasted onto silence let their background noise be heard at every cut. |
-| `ai` | 3: what a prompt forbids in one field ends up written in another, a checklist in a prompt gets asked point by point even after the person answered, and a model trained on examples also learns their edges and their background. |
+| `ai` | 4: what a prompt forbids in one field ends up written in another, a checklist in a prompt gets asked point by point even after the person answered, a model trained on examples also learns their edges and their background, and a prompt's changelog travels to the model on every call. |
 | `apps`, `crm` | On the way, with the same method. |
 | Yours | A kind of project that's missing (mobile, data, games…) starts with its first lesson: see [where a lesson goes](lessons/TEMPLATE.md#where-a-lesson-goes). |
 

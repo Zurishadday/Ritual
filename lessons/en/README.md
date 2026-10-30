@@ -17,6 +17,7 @@
 - **64.** [Anchor a concept in something the reader has already experienced, not in how it is computed](writing-and-docs.md#64-anchor-a-concept-in-something-the-reader-has-already-experienced-not-in-how-it-is-computed)
 - **AI-1.** [If you restrict where the model may write, it writes wherever you let it](writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it)
 - **AI-2.** [A rule written as a checklist gets executed as a checklist, even after the other person answered](writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered)
+- **AI-4.** [A model's instructions don't carry their own changelog](writing-and-docs.md#ai-4-a-models-instructions-dont-carry-their-own-changelog)
 - **EDU-2.** [What learners see before answering can't contain the answer](writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer)
 - **EDU-3.** [A question with two defensible answers measures nothing](writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing)
 - **EDU-5.** [A hint points at the cause of the mistake, not at the answer](writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer)
@@ -31,6 +32,7 @@
 - **12.** [Running the query doesn't prove the number is right](numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right)
 - **36.** [Measure before you write](numbers-and-data.md#36-measure-before-you-write)
 - **50.** [If two explanations predict the same thing, your example doesn't choose between them](numbers-and-data.md#50-if-two-explanations-predict-the-same-thing-your-example-doesnt-choose-between-them)
+- **75.** [A saving measured in a unit that isn't the one you pay can be close to zero](numbers-and-data.md#75-a-saving-measured-in-a-unit-that-isnt-the-one-you-pay-can-be-close-to-zero)
 - **AI-3.** [A fine-tuned model also learns the edges and the background of its examples](numbers-and-data.md#ai-3-a-fine-tuned-model-also-learns-the-edges-and-the-background-of-its-examples)
 
 ## Tests and checks
@@ -46,6 +48,8 @@
 - **34.** [Trust the symptom in a QA finding and measure the cause](tests-and-checks.md#34-trust-the-symptom-in-a-qa-finding-and-measure-the-cause)
 - **55.** [Green on your machine is one machine's verdict](tests-and-checks.md#55-green-on-your-machine-is-one-machines-verdict)
 - **71.** [An average score lets through the one error that matters](tests-and-checks.md#71-an-average-score-lets-through-the-one-error-that-matters)
+- **72.** [A judge who has seen its own earlier verdicts is no longer independent](tests-and-checks.md#72-a-judge-who-has-seen-its-own-earlier-verdicts-is-no-longer-independent)
+- **74.** [If the score comes from the same cases you tuned on, it measures how well you memorized them](tests-and-checks.md#74-if-the-score-comes-from-the-same-cases-you-tuned-on-it-measures-how-well-you-memorized-them)
 - **EDU-1.** [If the answer comes out the same without the skill, the exercise doesn't measure it](tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it)
 - **EDU-4.** [If you can guess the right option by its place, its length or its look, the quiz measures guessing](tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing)
 
@@ -82,6 +86,7 @@
 - **49.** [A general rule must not silently beat the specific ones](interface-and-design.md#49-a-general-rule-must-not-silently-beat-the-specific-ones)
 - **57.** [A key arrives differently on each system](interface-and-design.md#57-a-key-arrives-differently-on-each-system)
 - **59.** [An event from something already replaced must not act](interface-and-design.md#59-an-event-from-something-already-replaced-must-not-act)
+- **73.** [A page that has to persuade is designed from what it shows](interface-and-design.md#73-a-page-that-has-to-persuade-is-designed-from-what-it-shows)
 - **VIDEO-1.** [In a video, each action lands when the narration names it](interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it)
 - **VIDEO-2.** [In a video, what changes without showing gets marked](interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked)
 - **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)

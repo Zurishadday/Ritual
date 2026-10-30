@@ -97,8 +97,12 @@ export function postText(c) {
   return `${L.lesson} ${c.id} · ${c.title}\n\n${c.questionLabel}: ${c.question.replace(/\s+/g, " ")}\n\n${c.warningLabel}: ${c.warning.replace(/\s+/g, " ")}\n\n${L.from}\n${c.url}\n`;
 }
 
+// A missing field printed as text, as a whole word: French «nulle» is a word, not a leak.
+const leaks = (page) => /\b(undefined|null)\b/.test(page.replace(/<script>[\s\S]*<\/script>/, ""));
+
 export function selftest() {
   const bad = [];
+  if (leaks(cardHtml({ ...cardData("27"), title: "presque nulle" })) || !leaks("<p>undefined</p>") || !leaks("<p>by null</p>")) bad.push("a card with a missing field is caught, a word that contains «null» is not");
   const ids = readLessons(ORIGINAL).lessons.filter((l) => !l.merged).map((l) => l.id);
   for (const language of Object.keys(PARTS)) {
     if (!LABEL[language]) bad.push(`no card labels for ${language}`);
@@ -106,7 +110,7 @@ export function selftest() {
       const c = cardData(id, language);
       if (!c?.title || !c.question || !c.warning) { bad.push(`${language} ${id}: card without title, question or warning`); continue; }
       const page = cardHtml(c);
-      if (/undefined|null/.test(page.replace(/<script>[\s\S]*<\/script>/, ""))) bad.push(`${language} ${id}: "undefined" on the card`);
+      if (leaks(page)) bad.push(`${language} ${id}: "undefined" on the card`);
       if (!postText(c).includes(c.url)) bad.push(`${language} ${id}: the post text lacks the link`);
     }
   }

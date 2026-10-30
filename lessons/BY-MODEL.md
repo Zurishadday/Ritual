@@ -11,7 +11,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
 | `~opus` | 46 | 5 | 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
-| `claude-opus-5-5` | 27 | 13 | 1, 2, 6, 9, 13, 27, 30, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, AI-1, AI-2, AI-3, EDU-1, EDU-2, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
+| `claude-opus-5-5` | 32 | 16 | 1, 2, 6, 9, 11, 13, 27, 30, 32, 36, 38, 41, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, AI-1, AI-2, AI-3, AI-4, EDU-1, EDU-2, EDU-4, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
 | `claude-fable-5-1` | 0 | 1 | 44 |
@@ -24,11 +24,13 @@ The most general mistakes: different models made them.
 - [2. Two things with the same name are not the same thing](en/numbers-and-data.md#2-two-things-with-the-same-name-are-not-the-same-thing) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [6. The business definition lives in one place](en/scripts-and-files.md#6-the-business-definition-lives-in-one-place) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
+- [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) · `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
 - [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) · `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
 - [19. A review of one dimension is not a review](en/interface-and-design.md#19-a-review-of-one-dimension-is-not-a-review) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [27. Doubt the instrument before you doubt the system](en/console-and-tools.md#27-doubt-the-instrument-before-you-doubt-the-system) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) · `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again)
 - [30. Explain before acting, and wait for the yes](en/git-and-process.md#30-explain-before-acting-and-wait-for-the-yes) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
+- [32. Something that works but can't be seen gets reported as broken](en/interface-and-design.md#32-something-that-works-but-cant-be-seen-gets-reported-as-broken) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [36. Measure before you write](en/numbers-and-data.md#36-measure-before-you-write) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [38. What you don't know gets marked, not invented](en/writing-and-docs.md#38-what-you-dont-know-gets-marked-not-invented) · `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again)
 - [41. Check in the format the reader actually sees](en/interface-and-design.md#41-check-in-the-format-the-reader-actually-sees) · `~sonnet` 2026-09 · `claude-sonnet-5-5` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again)
@@ -39,6 +41,7 @@ The most general mistakes: different models made them.
 - [50. If two explanations predict the same thing, your example doesn't choose between them](en/numbers-and-data.md#50-if-two-explanations-predict-the-same-thing-your-example-doesnt-choose-between-them) · `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again)
 - [EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it](en/tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it) · `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again)
 - [EDU-2. What learners see before answering can't contain the answer](en/writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer) · `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again)
+- [EDU-4. If you can guess the right option by its place, its length or its look, the quiz measures guessing](en/tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing) · `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again)
 
 ## By lesson
 
@@ -54,7 +57,7 @@ The most general mistakes: different models made them.
 | [8. List the consumers, don't remember them](en/git-and-process.md#8-list-the-consumers-dont-remember-them) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
 | [9. One state lives in several records: move them together](en/git-and-process.md#9-one-state-lives-in-several-records-move-them-together) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [10. Twin modules change together](en/interface-and-design.md#10-twin-modules-change-together) | `~opus` 2026-08 |
-| [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) | `~opus` 2026-08 · `~opus` 2026-10 (again) |
+| [11. Removing a chart doesn't remove the claim it made](en/writing-and-docs.md#11-removing-a-chart-doesnt-remove-the-claim-it-made) | `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again) |
 | [12. Running the query doesn't prove the number is right](en/numbers-and-data.md#12-running-the-query-doesnt-prove-the-number-is-right) | `~opus` 2026-08 |
 | [13. A checker that never saw the error verifies nothing](en/tests-and-checks.md#13-a-checker-that-never-saw-the-error-verifies-nothing) | `~opus` 2026-08 · `~opus` 2026-10 (again) · `claude-opus-5-5` 2026-10 (again) |
 | [14. The probe doesn't travel the channel it investigates](en/tests-and-checks.md#14-the-probe-doesnt-travel-the-channel-it-investigates) | `~opus` 2026-08 |
@@ -75,7 +78,7 @@ The most general mistakes: different models made them.
 | [29. Check the command before handing it to someone else](en/console-and-tools.md#29-check-the-command-before-handing-it-to-someone-else) | `~opus` 2026-08 · `claude-sonnet-5-5` 2026-10 (again) |
 | [30. Explain before acting, and wait for the yes](en/git-and-process.md#30-explain-before-acting-and-wait-for-the-yes) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [31. Nothing technical on screen unless it changes a decision](en/interface-and-design.md#31-nothing-technical-on-screen-unless-it-changes-a-decision) | `~opus` 2026-08 |
-| [32. Something that works but can't be seen gets reported as broken](en/interface-and-design.md#32-something-that-works-but-cant-be-seen-gets-reported-as-broken) | `~opus` 2026-08 |
+| [32. Something that works but can't be seen gets reported as broken](en/interface-and-design.md#32-something-that-works-but-cant-be-seen-gets-reported-as-broken) | `~opus` 2026-08 · `claude-opus-5-5` 2026-10 (again) |
 | [33. The glyph is not the text](en/interface-and-design.md#33-the-glyph-is-not-the-text) | `~opus` 2026-08 |
 | [34. Trust the symptom in a QA finding and measure the cause](en/tests-and-checks.md#34-trust-the-symptom-in-a-qa-finding-and-measure-the-cause) | `~opus` 2026-08 |
 | [35. A to-do list written in passing goes stale](en/git-and-process.md#35-a-to-do-list-written-in-passing-goes-stale) | `~opus` 2026-08 |
@@ -115,13 +118,18 @@ The most general mistakes: different models made them.
 | [69. A process you start from a short-lived tool dies when the tool ends](en/console-and-tools.md#69-a-process-you-start-from-a-short-lived-tool-dies-when-the-tool-ends) | `claude-opus-5-5` 2026-10 |
 | [70. An open-ended brief drifts to what is easiest to criticize: the goal and the scope belong in the brief](en/git-and-process.md#70-an-open-ended-brief-drifts-to-what-is-easiest-to-criticize-the-goal-and-the-scope-belong-in-the-brief) | `claude-opus-5-5` 2026-10 |
 | [71. An average score lets through the one error that matters](en/tests-and-checks.md#71-an-average-score-lets-through-the-one-error-that-matters) | `claude-opus-5-5` 2026-10 |
+| [72. A judge who has seen its own earlier verdicts is no longer independent](en/tests-and-checks.md#72-a-judge-who-has-seen-its-own-earlier-verdicts-is-no-longer-independent) | `claude-opus-5-5` 2026-10 |
+| [73. A page that has to persuade is designed from what it shows](en/interface-and-design.md#73-a-page-that-has-to-persuade-is-designed-from-what-it-shows) | `claude-opus-5-5` 2026-10 |
+| [74. If the score comes from the same cases you tuned on, it measures how well you memorized them](en/tests-and-checks.md#74-if-the-score-comes-from-the-same-cases-you-tuned-on-it-measures-how-well-you-memorized-them) | `claude-opus-5-5` 2026-10 |
+| [75. A saving measured in a unit that isn't the one you pay can be close to zero](en/numbers-and-data.md#75-a-saving-measured-in-a-unit-that-isnt-the-one-you-pay-can-be-close-to-zero) | `claude-opus-5-5` 2026-10 |
 | [AI-1. If you restrict where the model may write, it writes wherever you let it](en/writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it) | `claude-opus-5-5` 2026-10 |
 | [AI-2. A rule written as a checklist gets executed as a checklist, even after the other person answered](en/writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered) | `claude-opus-5-5` 2026-10 |
 | [AI-3. A fine-tuned model also learns the edges and the background of its examples](en/numbers-and-data.md#ai-3-a-fine-tuned-model-also-learns-the-edges-and-the-background-of-its-examples) | `claude-opus-5-5` 2026-10 |
+| [AI-4. A model's instructions don't carry their own changelog](en/writing-and-docs.md#ai-4-a-models-instructions-dont-carry-their-own-changelog) | `claude-opus-5-5` 2026-10 |
 | [EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it](en/tests-and-checks.md#edu-1-if-the-answer-comes-out-the-same-without-the-skill-the-exercise-doesnt-measure-it) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-2. What learners see before answering can't contain the answer](en/writing-and-docs.md#edu-2-what-learners-see-before-answering-cant-contain-the-answer) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-3. A question with two defensible answers measures nothing](en/writing-and-docs.md#edu-3-a-question-with-two-defensible-answers-measures-nothing) | `~opus` 2026-10 |
-| [EDU-4. If you can guess the right option by its place, its length or its look, the quiz measures guessing](en/tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing) | `~opus` 2026-10 |
+| [EDU-4. If you can guess the right option by its place, its length or its look, the quiz measures guessing](en/tests-and-checks.md#edu-4-if-you-can-guess-the-right-option-by-its-place-its-length-or-its-look-the-quiz-measures-guessing) | `~opus` 2026-10 · `claude-opus-5-5` 2026-10 (again) |
 | [EDU-5. A hint points at the cause of the mistake, not at the answer](en/writing-and-docs.md#edu-5-a-hint-points-at-the-cause-of-the-mistake-not-at-the-answer) | `claude-opus-5-5` 2026-10 |
 | [VIDEO-1. In a video, each action lands when the narration names it](en/interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it) | `claude-opus-5-5` 2026-10 |
 | [VIDEO-2. In a video, what changes without showing gets marked](en/interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked) | `claude-opus-5-5` 2026-10 |

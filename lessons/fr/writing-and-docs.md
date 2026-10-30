@@ -4,7 +4,7 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 11. Retirer un graphique ne retire pas l'affirmation qu'il faisait
 
-`from: 36fecfbc` · `by: ai`
+`from: 749c81c5` · `by: ai`
 
 **L'idée.** Si vous retirez quelque chose parce que la donnée n'était pas fiable, la même affirmation vit probablement encore dans d'autres textes, écrite avec d'autres mots.
 
@@ -14,11 +14,13 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Encore un exemple.** Un projet tenait sa propre liste de leçons, et une bibliothèque avait repris ces leçons dans sa propre liste. Les deux les numérotaient de la même façon jusqu'à 44, et différemment à partir de 45. Les instructions du projet et ses agents relecteurs continuaient de citer « 46 », qui désigne dans la bibliothèque une autre leçon. Le problème n'est apparu que lorsque le propriétaire a demandé une seconde relecture.
 
-**Question détectrice.** Quels autres textes disent la même chose que ce que je viens de retirer ? Quand deux numérotations coexistent, chaque citation dit-elle quelle liste elle utilise ?
+**Un quatrième exemple.** Pendant qu'une histoire était conçue avec une personne, celle-ci a modifié un prémisse central de son univers. Dans la même réponse, une option d'intrigue rédigée sous l'ancien prémisse a été recommandée, et elle contredisait le nouveau ; la personne a dû le signaler.
 
-**Signal d'alarme.** « J'ai déjà retiré le graphique. » · « Les numéros sont les mêmes. »
+**Question détectrice.** Quels autres textes disent la même chose que ce que je viens de retirer ? Quand deux numérotations coexistent, chaque citation dit-elle quelle liste elle utilise ? Quand un prémisse change, quelles options rédigées sur l'ancien est-ce que je recommande encore ?
 
-**Que faire.** Cherchez par sujet, pas par identifiant. Les échos n'ont pas de nom de variable. Quand deux numérotations coexistent, citez avec un préfixe qui nomme la liste (« v2 #46 », « bibliothèque #46 »), et cherchez chaque citation de la plage modifiée dans chaque fichier, pas seulement dans celui que vous avez renuméroté (voir la leçon 8).
+**Signal d'alarme.** « J'ai déjà retiré le graphique. » · « Les numéros sont les mêmes. » · « Cette option était déjà bien pensée, je ne fais que l'adapter. »
+
+**Que faire.** Cherchez par sujet, pas par identifiant. Les échos n'ont pas de nom de variable. Quand deux numérotations coexistent, citez avec un préfixe qui nomme la liste (« v2 #46 », « bibliothèque #46 »), et cherchez chaque citation de la plage modifiée dans chaque fichier, pas seulement dans celui que vous avez renuméroté (voir la leçon 8). Quand la base d'une proposition change, écrivez le nouveau prémisse en une ligne et, en dessous, chaque élément construit sur l'ancien avec « convient » ou « ne convient pas » ; ne recommandez que ceux qui conviennent, et reconstruisez les autres à partir du nouveau prémisse.
 
 ### 37. Documenter ce qui existe, pas ce que vous aimeriez qu'il existe
 
@@ -201,6 +203,20 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 **Signal d'alarme.** « Qu'il couvre les quatre points. »
 
 **Que faire.** À côté de chaque liste, écrivez : « un point dit autrement est déjà couvert », « ce qui manque entre comme une transition dans la réponse qui suit le fil » et « ne jamais ignorer la dernière chose qu'elle a dite ». Testez avec une vraie conversation où la personne répond à un point avant qu'on le lui demande.
+
+### AI-4. Les consignes d'un modèle ne portent pas leur propre journal des modifications
+
+`from: 7f441538` · `by: ai`
+
+**L'idée.** Quand on versionne les consignes d'un modèle, il est naturel de noter en tête « modifications depuis la version précédente ». Mais ce texte voyage vers le modèle à chaque appel : il coûte des jetons et du temps à chaque fois, et il décrit des règles déjà retirées, que le modèle peut de nouveau suivre.
+
+**Exemple.** Les consignes d'un assistant appelé à chaque tour d'une conversation comportaient neuf paragraphes de « modifications depuis vN », soit environ 4,800 caractères (environ 1,600 jetons par tour, estimés à partir des caractères). Plusieurs décrivaient des règles que la version avait déjà retirées parce qu'elles dégradaient les résultats.
+
+**Question détectrice.** Ce qui se trouve en tête de ces consignes aide-t-il le modèle à répondre, ou est-ce l'historique du fichier, destiné aux humains ?
+
+**Signal d'alarme.** « Modifications depuis la v14… » au début d'un prompt envoyé à chaque appel.
+
+**Que faire.** L'historique va dans le contrôle de version ou dans un journal des décisions, pas à l'intérieur des consignes. Si un éditeur a besoin d'une note, mettez-la dans un commentaire que le code retire avant d'envoyer le texte. Un document destiné aux humains garde son historique à côté de lui (leçon 39) ; un texte envoyé à un modèle à chaque appel le garde à l'extérieur.
 
 ### EDU-2. Ce que l'apprenant voit avant de répondre ne peut pas contenir la réponse
 

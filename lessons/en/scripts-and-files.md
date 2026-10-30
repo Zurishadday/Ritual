@@ -198,7 +198,7 @@ What applies when a program writes, generates, transforms, or moves files and da
 
 ### 67. A value tuned on one sample does not fit every sample
 
-`origin: field · claude-opus-5-5 · 2026-10` · `groups: numbers-and-data`
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: numbers-and-data, tests-and-checks`
 
 **The idea.** A setting chosen by trying it on one sample (a threshold, a cut, a gain) is fitted to that sample. When a louder, longer or rarer one comes in, the same number no longer gives the result that was approved.
 

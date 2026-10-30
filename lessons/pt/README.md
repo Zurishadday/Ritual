@@ -19,6 +19,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **64.** [Ancore um conceito em algo que o leitor já viveu, e não em como ele é calculado](writing-and-docs.md#64-ancore-um-conceito-em-algo-que-o-leitor-já-viveu-e-não-em-como-ele-é-calculado)
 - **AI-1.** [Se você restringe onde o modelo pode escrever, ele escreve onde você deixar](writing-and-docs.md#ai-1-se-você-restringe-onde-o-modelo-pode-escrever-ele-escreve-onde-você-deixar)
 - **AI-2.** [Uma regra escrita como lista de verificação é executada como lista de verificação, mesmo depois de a outra pessoa ter respondido](writing-and-docs.md#ai-2-uma-regra-escrita-como-lista-de-verificação-é-executada-como-lista-de-verificação-mesmo-depois-de-a-outra-pessoa-ter-respondido)
+- **AI-4.** [As instruções de um modelo não trazem o próprio changelog](writing-and-docs.md#ai-4-as-instruções-de-um-modelo-não-trazem-o-próprio-changelog)
 - **EDU-2.** [O que o estudante vê antes de responder não pode conter a resposta](writing-and-docs.md#edu-2-o-que-o-estudante-vê-antes-de-responder-não-pode-conter-a-resposta)
 - **EDU-3.** [Uma pergunta com duas respostas defensáveis não mede nada](writing-and-docs.md#edu-3-uma-pergunta-com-duas-respostas-defensáveis-não-mede-nada)
 - **EDU-5.** [Uma dica aponta para a causa do erro, não para a resposta](writing-and-docs.md#edu-5-uma-dica-aponta-para-a-causa-do-erro-não-para-a-resposta)
@@ -33,6 +34,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **12.** [Rodar a consulta não prova que o número está certo](numbers-and-data.md#12-rodar-a-consulta-não-prova-que-o-número-está-certo)
 - **36.** [Meça antes de escrever](numbers-and-data.md#36-meça-antes-de-escrever)
 - **50.** [Se duas explicações preveem a mesma coisa, seu exemplo não escolhe entre elas](numbers-and-data.md#50-se-duas-explicações-preveem-a-mesma-coisa-seu-exemplo-não-escolhe-entre-elas)
+- **75.** [Uma economia medida em uma unidade que não é a que você paga pode ficar perto de zero](numbers-and-data.md#75-uma-economia-medida-em-uma-unidade-que-não-é-a-que-você-paga-pode-ficar-perto-de-zero)
 - **AI-3.** [Um modelo ajustado também aprende as bordas e o fundo de seus exemplos](numbers-and-data.md#ai-3-um-modelo-ajustado-também-aprende-as-bordas-e-o-fundo-de-seus-exemplos)
 
 ## Testes e verificações
@@ -48,6 +50,8 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **34.** [Confie no sintoma de um achado de QA e meça a causa](tests-and-checks.md#34-confie-no-sintoma-de-um-achado-de-qa-e-meça-a-causa)
 - **55.** [Verde na sua máquina é o veredito de uma máquina só](tests-and-checks.md#55-verde-na-sua-máquina-é-o-veredito-de-uma-máquina-só)
 - **71.** [Uma nota média deixa passar o único erro que importa](tests-and-checks.md#71-uma-nota-média-deixa-passar-o-único-erro-que-importa)
+- **72.** [Um juiz que já viu os próprios veredictos anteriores deixa de ser independente](tests-and-checks.md#72-um-juiz-que-já-viu-os-próprios-veredictos-anteriores-deixa-de-ser-independente)
+- **74.** [Se a nota vem dos mesmos casos com que você ajustou, ela mede o quanto você decorou esses casos](tests-and-checks.md#74-se-a-nota-vem-dos-mesmos-casos-com-que-você-ajustou-ela-mede-o-quanto-você-decorou-esses-casos)
 - **EDU-1.** [Se a resposta sai igual sem a habilidade, o exercício não a mede](tests-and-checks.md#edu-1-se-a-resposta-sai-igual-sem-a-habilidade-o-exercício-não-a-mede)
 - **EDU-4.** [Se dá para adivinhar a opção certa pela posição, pelo tamanho ou pela aparência, o quiz mede adivinhação](tests-and-checks.md#edu-4-se-dá-para-adivinhar-a-opção-certa-pela-posição-pelo-tamanho-ou-pela-aparência-o-quiz-mede-adivinhação)
 
@@ -84,6 +88,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **49.** [Uma regra geral não pode vencer em silêncio as específicas](interface-and-design.md#49-uma-regra-geral-não-pode-vencer-em-silêncio-as-específicas)
 - **57.** [Uma tecla chega de forma diferente em cada sistema](interface-and-design.md#57-uma-tecla-chega-de-forma-diferente-em-cada-sistema)
 - **59.** [Um evento de algo já substituído não pode agir](interface-and-design.md#59-um-evento-de-algo-já-substituído-não-pode-agir)
+- **73.** [Uma página que precisa convencer é desenhada a partir do que ela mostra](interface-and-design.md#73-uma-página-que-precisa-convencer-é-desenhada-a-partir-do-que-ela-mostra)
 - **VIDEO-1.** [Em um vídeo, cada ação cai quando a narração a nomeia](interface-and-design.md#video-1-em-um-vídeo-cada-ação-cai-quando-a-narração-a-nomeia)
 - **VIDEO-2.** [Em um vídeo, o que muda sem aparecer é marcado](interface-and-design.md#video-2-em-um-vídeo-o-que-muda-sem-aparecer-é-marcado)
 - **WEB-2.** [Um formulário público recebe robôs desde o primeiro dia](interface-and-design.md#web-2-um-formulário-público-recebe-robôs-desde-o-primeiro-dia)

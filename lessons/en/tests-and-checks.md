@@ -4,7 +4,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### 13. A checker that never saw the error verifies nothing
 
-`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10, claude-opus-5-5 2026-10`
+`origin: field · ~opus · 2026-08` · `groups: scripts-and-files` · `seen: ~opus 2026-10, claude-opus-5-5 2026-10`
 
 **The idea.** A test that always passes may be broken. The only way to know is to watch it fail against the real error.
 
@@ -16,11 +16,13 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **A fourth example.** A classifier that flags sales objections scored 0 false alarms on 30 ordinary customer sentences, and that number was reported. Adding 25 sentences on the same topics said the other way round (buying signals like "can I pay by card?") made it fire 7 times. In another project, a detector that lowered breaths in a voice track also lowered the final "s" of words: nothing in its test sounded like a breath without being one.
 
-**Detector question.** Did I test my check against the error in the forms it would really appear? And against the correct cases that look most like the error: same topic, same words, opposite meaning?
+**A fifth example.** A narration pipeline transcribed each generated sentence and made it again while its similarity with the script stayed under 90 %. In one video, 10 of 13 sentences were made again four rounds in a row, minutes each on a shared machine (the run was not timed). Whoever listened found them said right: the transcriber wrote names and keys as letters and digits ("C2", "Ctrl-D") where the script spelled them out, so every correct take failed. Lesson 71 is the same check failing the other way.
 
-**Warning sign.** "It already passes, so it's set up right." · "Zero false alarms, done."
+**Detector question.** Did I test my check against the error in the forms it would really appear? And against the correct cases that look most like the error: same topic, same words, opposite meaning? When it rejects and retries: what did it see, and how many retries changed nothing?
 
-**What to do.** Calibrate it with two cases: one where it must find something and one where it must not, and run it for real on the day it's born. The good case matters as much as the bad one: a checker that rejects what's correct is broken too, and that is harder to notice because it looks strict. The good case includes the real forms of what's correct, including the ones you didn't write yourself: another order, another name. Build the hardest ones on purpose: for each thing the check must catch, its twin that it must let through, and report false alarms on those apart from the easy ones; a zero that only comes from easy cases says nothing. Each check calibrates itself: if another one catches the error first, yours was never tested. And a review that repeats what it already read can't fail (a "second run" that rereads the same file): replace it with a reconciliation that does fail if something is wrong.
+**Warning sign.** "It already passes, so it's set up right." · "Zero false alarms, done." · "Let it retry until it passes."
+
+**What to do.** Calibrate it with two cases: one where it must find something and one where it must not, and run it for real on the day it's born. The good case matters as much as the bad one: a checker that rejects what's correct is broken too, and that is harder to notice because it looks strict. The good case includes the real forms of what's correct, including the ones you didn't write yourself: another order, another name. Build the hardest ones on purpose: for each thing the check must catch, its twin that it must let through, and report false alarms on those apart from the easy ones; a zero that only comes from easy cases says nothing. Each check calibrates itself: if another one catches the error first, yours was never tested. And a review that repeats what it already read can't fail (a "second run" that rereads the same file): replace it with a reconciliation that does fail if something is wrong. A check that rejects and retries on its own shows the detail of its first rejection before the loop goes on: if the difference is form, not content, normalize both forms in the checker, add that pair as a case that must pass, and stop the loop after two rejections that show the same difference, handing the item to a person (see lesson 27).
 
 ### 14. The probe doesn't travel the channel it investigates
 
@@ -170,6 +172,34 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **What to do.** Before trusting the threshold, build the one-error case in the place that matters and see whether it is rejected (lesson 13). If it is not, check separately what cannot fail: rare terms, numbers, the ending. And if the input contains something the tool cannot handle (acronyms, formulas, symbols), convert or reject it before generating.
 
+### 72. A judge who has seen its own earlier verdicts is no longer independent
+
+`origin: field · claude-opus-5-5 · 2026-10`
+
+**The idea.** To compare two versions of something, an evaluator grades the new one. If it is the same evaluator that graded the previous one and still has it in mind (a person with their notes, an agent resumed with its history), its verdict can anchor on what it already said: confirm its own scores, or see "improvements" where it expected them. Resuming it also loads its whole history, which costs.
+
+**Example.** For each version of an assistant, the same judge agent was resumed with "grade the new one like the previous one". Its context grew to about 450 thousand tokens, and each new verdict was read against its own earlier ones. An independent reviewer pointed it out: the rubric and the criteria must be the same, but not the judge.
+
+**Detector question.** Does whoever grades this version already know their own grades for the previous one? Does the comparison depend on their memory, or on a written rubric any new judge can apply?
+
+**Warning sign.** "I'll resume the same judge so it stays consistent".
+
+**What to do.** Write the rubric and the criteria in a file, and for each version use a new judge with a short brief that points to that file. Consistency comes from the rubric, not from the judge's memory. When a version matters a lot, have two new judges grade it and compare where they differ. Keeping whoever did the work apart from whoever checks it is lesson 28.
+
+### 74. If the score comes from the same cases you tuned on, it measures how well you memorized them
+
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: numbers-and-data`
+
+**The idea.** When you tune something (a prompt, rules, thresholds) by looking at the mistakes in some cases and then measure it on those same cases, the score goes up even if nothing general was learned. If you also paste lines from those cases into the instructions as examples, the exam already carries its answers.
+
+**Example.** An LLM assistant was tuned over six versions looking at only two practice conversations, and reached 92.5%. Its instructions carried, as examples, four lines taken from those same conversations. On a conversation it had never seen, it scored 64%. With a set of ten, four held out only for measuring, the next version went up on the tuning cases (62% to 67%) and did not go up on the held-out ones (64.8% to 60.2%, on four conversations).
+
+**Detector question.** Does this score come from cases I also used to decide the change, or that live inside the instructions as examples? Are there held-out cases nobody looked at while tuning?
+
+**Warning sign.** "It's up to 92%", measured on the usual cases · "I'll add this case as an example so it gets it right".
+
+**What to do.** From the start, split cases for tuning and cases only for measuring, with variety. Changes come only from the first set and stay only if the score on the second set goes up. No example in the instructions comes from a case in the set; examples are invented. Every look at the held-out cases spends them a little: after several looks, build new ones. Choosing one setting on its extreme samples is lesson 67; an exercise that carries its own answer, EDU-2.
+
 ### EDU-1. If the answer comes out the same without the skill, the exercise doesn't measure it
 
 `origin: field · ~opus · 2026-10` · `packages: education` · `seen: claude-opus-5-5 2026-10`
@@ -190,7 +220,7 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 ### EDU-4. If you can guess the right option by its place, its length or its look, the quiz measures guessing
 
-`origin: field · ~opus · 2026-10` · `packages: education`
+`origin: field · ~opus · 2026-10` · `packages: education` · `seen: claude-opus-5-5 2026-10`
 
 **The idea.** Each question can be fine on its own and the set still give the answer away: the right option is always second, always the longest, always the middle-sized one, or the only one with a button. Learners notice patterns faster than authors do.
 
@@ -198,8 +228,10 @@ What applies when you check something: automated tests, validators, reviews, cal
 
 **Another example.** In a drawn mail inbox, only the fake emails had a report button, so learners reported them without reading the sender. In a "tap the right screenshot" question, the right screenshot was the only one with content: the other two were blocks of color.
 
-**Detector question.** If I read only the position, the length and the look of the options, without the text, do I guess the right one more than once in three?
+**One more example.** In a beginner language lesson, learners put pieces in order: `Thank you,` · `Name.` · `You're` · `in.`. The only capital went first and the only period last, so the order could be built without reading a word; the same sentence had also appeared word for word earlier in the lesson (lesson EDU-2). The pieces became lowercase, without punctuation, around the learner's own name.
+
+**Detector question.** If I read only the position, the length and the look of the options, without the text, do I guess the right one more than once in three? In an ordering exercise, do capitals or punctuation give the order away?
 
 **Warning sign.** "I checked each question, they're all correct."
 
-**What to do.** Shuffle the options when they are shown, with an order that doesn't come from where the right one was written. Measure longest, shortest and middle per file, and pool small files per module, so a few questions don't hide the pattern. Read the count against what you asked for: a balancing pass can move the giveaway instead of removing it. Give every option the same controls (every email has a link and a button), and draw the wrong options as believably as the right one.
+**What to do.** Shuffle the options when they are shown, with an order that doesn't come from where the right one was written. Measure longest, shortest and middle per file, and pool small files per module, so a few questions don't hide the pattern. Read the count against what you asked for: a balancing pass can move the giveaway instead of removing it. Give every option the same controls (every email has a link and a button), and draw the wrong options as believably as the right one. The pieces of an ordering exercise go in lowercase without punctuation, for a combination not written earlier in the lesson.

@@ -4,7 +4,7 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 1. «No pude leer» no es «no hay nada»
 
-`from: 01957441` · `by: ai`
+`from: fcaf6923` · `by: ai`
 
 **La idea.** Todo dato tiene tres estados: lo tengo, de verdad no hubo nada, y no sé. Los dos últimos se dibujan igual en una gráfica, como un cero, y significan lo contrario.
 
@@ -12,11 +12,15 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 **Otro ejemplo.** Un evaluador de IA de llamadas de venta de práctica dijo que la persona había inventado la historia de un cliente anterior, y puso entre sus hábitos «rellena los huecos con pruebas que no existen». El cliente era real; la historia simplemente no estaba en el manual que leyó el evaluador. Después, otro juez de IA marcó como inventada una cifra que sí estaba en el archivo de perfil de la propia persona, que nunca abrió. En las dos ocasiones la persona tuvo que corregirlo: «no está en mi referencia» se había calificado como «falso».
 
-**Pregunta detectora.** El número que voy a mostrar, o el «todo bien» que me voy a creer, ¿podría venir de una consulta que falló, de una tabla vacía, de un permiso denegado o de una salida que no leí completa (ver la 44)? ¿Y lo que voy a llamar falso es de verdad falso, o solo falta en la fuente que leí?
+**Un ejemplo más.** Para redibujar el diálogo de subida de una app en un video tutorial, se revisó un solo cuadro de la grabación de pantalla del usuario. Mostraba una lista de archivos recientes, así que el script decía «no hay botón Examinar». Un segundo después, al hacer clic en una pestaña, apareció el botón. Lo encontró el agente que dibujaba las escenas; si no, el video habría enseñado una ruta que no existe.
 
-**Señal de alarma.** «Si falla, lo dejo en cero y ya». · «No está en el manual, así que se lo inventó».
+**Un cuarto ejemplo.** Un bucle contaba los archivos que cambiaba cada rama con `git diff --name-only <base> $branch`. Una rama tenía el mismo nombre que una carpeta; git se detuvo con «ambiguous argument: both revision and filename», nadie leyó el error, y el conteo decía «0 archivos» para una rama con trabajo reciente. Escrita como `refs/heads/$branch --`, dio 17.
 
-**Qué hacer.** Si la lectura falla, muestra el error en la propia tarjeta, no un hueco ni un cero. Y un contador que dice «0 problemas» solo se cree si antes encontró un problema que le sembraste a propósito. Las instrucciones de un juez enumeran cada fuente que cuenta y dicen qué hacer con un dato que no aparezca en ninguna: marcarlo como «sin verificar» y preguntar, nunca calificarlo como falso. Un dato que la persona confirma entra de inmediato a la referencia. Marcar lo que no sabes al escribir es la lección 38.
+**Pregunta detectora.** El número que voy a mostrar, o el «todo bien» que me voy a creer, ¿podría venir de una consulta que falló, de una tabla vacía, de un permiso denegado o de una salida que no leí completa (ver la 44)? ¿Y lo que voy a llamar falso o ausente solo falta en la fuente o en el momento que leí?
+
+**Señal de alarma.** «Si falla, lo dejo en cero y ya». · «No está en el manual, así que se lo inventó». · «No existe», con base en una sola captura · «0 archivos cambiados» en una rama con commits recientes.
+
+**Qué hacer.** Si la lectura falla, muestra el error en la propia tarjeta, no un hueco ni un cero. Y un contador que dice «0 problemas» solo se cree si antes encontró un problema que le sembraste a propósito. Las instrucciones de un juez enumeran cada fuente que cuenta y dicen qué hacer con un dato que no aparezca en ninguna: marcarlo como «sin verificar» y preguntar, nunca calificarlo como falso. Un dato que la persona confirma entra de inmediato a la referencia. Marcar lo que no sabes al escribir es la lección 38. Antes de decir que algo no está, mira toda la secuencia alrededor de ese momento (cuadros cada medio segundo, el registro completo, la página después de cargar); si no puedes, escribe «no lo vi en el segundo 30», no «no existe» (ver la 27). En un bucle de comandos, revisa el código de salida de cada llamada, no solo el último, y confirma un 0 de otra forma antes de confiar en él; un nombre que puede significar dos cosas recibe la clave que solo tiene la correcta (lección 2: para git, `refs/heads/<branch>` y `--`).
 
 ### 2. Dos cosas con el mismo nombre no son la misma cosa
 
@@ -137,6 +141,20 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 **Señal de alarma.** «Los números lo confirman».
 
 **Qué hacer.** Antes de enseñar o reportar por qué pasa algo, escribe la explicación rival y arma un caso donde las dos predigan distinto. Compara partes del mismo tamaño, prueba con otro tamaño de ejemplo y mide una afirmación general en datos simulados antes de escribirla. Si no logras separarlas, di que el ejemplo es compatible con las dos. Cuando el código construye el ejemplo (una demo, un conjunto de datos de muestra), deja en él un assert que falle si la explicación rival daría el mismo resultado. Antes de arreglar, mide cambiando solo la variable sospechosa (el mismo mensaje, largo y corto, en la misma máquina y en el mismo estado), anota qué más estaba corriendo, y vuelve a medir después del arreglo (ver la 34).
+
+### 75. Un ahorro medido en una unidad que no es la que pagas puede ser casi cero
+
+`from: cf5a2f7f` · `by: ai`
+
+**La idea.** Cuando calculas cuánto ahorra un cambio, el número llega en la unidad que tienes a la mano: tokens, peticiones, filas, minutos. Pero la factura está en otra unidad, con descuentos, cachés y costos fijos. Medido en la unidad equivocada, un gran ahorro puede ser pequeño, o incluso un costo si contamos lo que cuesta la alternativa.
+
+**Ejemplo.** Un análisis de una sesión larga con un asistente de IA concluyó: «empezar una sesión nueva pasados los 200 mil tokens ahorraría 76 %». Cada token lo contó igual, pero el 98.7 % eran lecturas de caché, que la lista de precios cobra a cerca de una décima parte. Una sesión nueva también tiene que reconstruir el caché y volver a leer archivos. El número se pasó sin verificar; un revisor independiente lo corrigió. El ahorro real, en dinero, no se midió.
+
+**Pregunta detectora.** ¿En qué unidad se paga esto de verdad, y mi número está en esa unidad? ¿Resté lo que cuesta la alternativa?
+
+**Señal de alarma.** «Ahorra 76 % de los tokens» (o de las peticiones, o de las filas) sin decir cuánto en dinero ni en el límite que importa.
+
+**Qué hacer.** Convierte el ahorro a la unidad que se paga (dinero, el límite del plan, el tiempo de la persona), con sus descuentos y cachés, y resta el costo de la alternativa. Si no puedes convertirlo, dilo: «en tokens; costo sin medir». Sumar un costo desde el precio propio de cada elemento es la lección 36; dos cifras en escalas distintas, la lección 2.
 
 ### AI-3. Un modelo afinado también aprende los bordes y el fondo de sus ejemplos
 

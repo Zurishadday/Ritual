@@ -4,7 +4,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 11. Removing a chart doesn't remove the claim it made
 
-`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10`
+`origin: field · ~opus · 2026-08` · `seen: ~opus 2026-10, claude-opus-5-5 2026-10`
 
 **The idea.** If you remove something because the data wasn't reliable, that same claim probably still lives in other texts, written in other words.
 
@@ -14,11 +14,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **One more example.** A project kept its own list of lessons, and a library had adopted them into its own list. Both numbered the same up to 44 and differently from 45 on. The project's instructions and its reviewer agents kept citing "46", which in the library is a different lesson. It came out only when the owner asked for a second review.
 
-**Detector question.** What other texts say the same thing as what I just removed? When two numberings coexist, does each citation say which list it uses?
+**A fourth example.** While a story was being designed with a person, they changed a core premise of its world. In the same answer, a plot option drafted under the old premise was recommended, and it contradicted the new one; the person had to point it out.
 
-**Warning sign.** "I already removed the chart." · "The numbers are the same."
+**Detector question.** What other texts say the same thing as what I just removed? When two numberings coexist, does each citation say which list it uses? When a premise changes, which options drafted on the old one am I still recommending?
 
-**What to do.** Search by topic, not by identifier. Echoes don't have a variable name. When two numberings coexist, cite with a prefix that names the list ("v2 #46", "library #46"), and search every citation of the changed range in every file, not only in the one you renumbered (see lesson 8).
+**Warning sign.** "I already removed the chart." · "The numbers are the same." · "That option was already well thought out, I'm just adapting it."
+
+**What to do.** Search by topic, not by identifier. Echoes don't have a variable name. When two numberings coexist, cite with a prefix that names the list ("v2 #46", "library #46"), and search every citation of the changed range in every file, not only in the one you renumbered (see lesson 8). When the base of a proposal changes, write the new premise in one line and, under it, each piece built on the old one with "fits" or "doesn't fit"; recommend only the ones that fit, and rebuild the rest from the new premise.
 
 ### 37. Document what's there, not what you wish were there
 
@@ -201,6 +203,20 @@ What applies when you write for others: documentation, manuals, screen text, con
 **Warning sign.** "Have it cover the four points".
 
 **What to do.** Next to every list, write: "a point said in other words is already covered", "whatever is missing goes in as a bridge inside the reply that follows the thread" and "never ignore the last thing they said". Test it with a real conversation where the person answers a point before being asked.
+
+### AI-4. A model's instructions don't carry their own changelog
+
+`origin: field · claude-opus-5-5 · 2026-10` · `packages: ai`
+
+**The idea.** When you version a model's instructions, it's natural to note at the top "changes since the previous version". But that text travels to the model on every call: it costs tokens and time every time, and it describes rules that were already removed, which the model may follow again.
+
+**Example.** The instructions of an assistant called on every turn of a conversation carried nine paragraphs of "changes since vN", about 4,800 characters (around 1,600 tokens per turn, estimated from the characters). Several described rules that the version had already removed because they made results worse.
+
+**Detector question.** Does what sits at the top of these instructions help the model answer, or is it the file's history for people?
+
+**Warning sign.** "Changes since v14…" at the start of a prompt that is sent on every call.
+
+**What to do.** The history goes in version control or a decisions log, not inside the instructions. If an editor needs a note, put it in a comment that the code strips before sending the text. A document for people keeps its history beside it (lesson 39); a text sent to a model on every call keeps it outside.
 
 ### EDU-2. What learners see before answering can't contain the answer
 

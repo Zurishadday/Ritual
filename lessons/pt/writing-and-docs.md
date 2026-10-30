@@ -4,7 +4,7 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 ### 11. Remover um gráfico não remove a afirmação que ele fazia
 
-`from: 36fecfbc` · `by: ai`
+`from: 749c81c5` · `by: ai`
 
 **A ideia.** Se você tirou algo porque os dados não eram confiáveis, a mesma afirmação provavelmente ainda está em outros textos, escrita com outras palavras.
 
@@ -14,11 +14,13 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 **Mais um exemplo.** Um projeto mantinha a sua própria lista de lições, e uma biblioteca tinha incorporado essas lições à sua própria lista. As duas numeravam igual até 44 e diferente a partir de 45. As instruções do projeto e os agentes revisores dele continuavam citando “46”, que na biblioteca é outra lição. Isso só apareceu quando o dono pediu uma segunda revisão.
 
-**Pergunta detectora.** Quais outros textos dizem a mesma coisa que acabei de remover? Quando duas numerações coexistem, cada citação diz qual lista usa?
+**Um quarto exemplo.** Enquanto uma história era planejada com uma pessoa, ela mudou uma premissa central do mundo da história. Na mesma resposta, foi recomendada uma opção de enredo redigida sob a premissa antiga, que contradizia a nova; a pessoa teve de apontar isso.
 
-**Sinal de alerta.** “Eu já tirei o gráfico.” · “Os números são os mesmos.”
+**Pergunta detectora.** Quais outros textos dizem a mesma coisa que acabei de remover? Quando duas numerações coexistem, cada citação diz qual lista usa? Quando uma premissa muda, quais opções redigidas com base na antiga ainda estou recomendando?
 
-**O que fazer.** Busque por assunto, não por identificador. Ecos não têm nome de variável. Quando duas numerações coexistem, cite com um prefixo que nomeie a lista (“v2 #46”, “biblioteca #46”), e busque toda citação da faixa alterada em todos os arquivos, e não só no que você renumerou (ver a lição 8).
+**Sinal de alerta.** “Eu já tirei o gráfico.” · “Os números são os mesmos.” · “Aquela opção já estava bem pensada, só estou adaptando.”
+
+**O que fazer.** Busque por assunto, não por identificador. Ecos não têm nome de variável. Quando duas numerações coexistem, cite com um prefixo que nomeie a lista (“v2 #46”, “biblioteca #46”), e busque toda citação da faixa alterada em todos os arquivos, e não só no que você renumerou (ver a lição 8). Quando a base de uma proposta muda, escreva a nova premissa em uma linha e, abaixo dela, cada peça construída sobre a antiga com “encaixa” ou “não encaixa”; recomende só as que encaixam, e refaça as demais a partir da nova premissa.
 
 ### 37. Documente o que existe, não o que você gostaria que existisse
 
@@ -201,6 +203,20 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 **Sinal de alerta.** “Faça ele cobrir os quatro pontos”.
 
 **O que fazer.** Ao lado de cada lista, escreva: “um ponto dito com outras palavras já está coberto”, “o que faltar entra como ponte dentro da resposta que segue o fio da conversa” e “nunca ignore a última coisa que a pessoa disse”. Teste com uma conversa real em que a pessoa responde a um ponto antes de ser perguntada.
+
+### AI-4. As instruções de um modelo não trazem o próprio changelog
+
+`from: 7f441538` · `by: ai`
+
+**A ideia.** Quando você versiona as instruções de um modelo, é natural anotar no topo “mudanças desde a versão anterior”. Mas esse texto viaja para o modelo em toda chamada: custa tokens e tempo a cada vez, e descreve regras que a versão já tinha removido, e que o modelo pode voltar a seguir.
+
+**Exemplo.** As instruções de um assistente chamado a cada turno de uma conversa traziam nove parágrafos de “mudanças desde vN”, cerca de 4,800 caracteres (por volta de 1,600 tokens por turno, estimados a partir dos caracteres). Vários descreviam regras que a versão já tinha removido por piorarem os resultados.
+
+**Pergunta detectora.** O que fica no topo destas instruções ajuda o modelo a responder, ou é o histórico do arquivo para as pessoas?
+
+**Sinal de alerta.** “Mudanças desde a v14…” no início de um prompt que é enviado em toda chamada.
+
+**O que fazer.** O histórico vai para o controle de versões ou para um registro de decisões, e não dentro das instruções. Se quem edita precisa de uma nota, ponha-a em um comentário que o código remove antes de enviar o texto. Um documento para pessoas guarda o histórico ao lado dele (lição 39); um texto enviado a um modelo em toda chamada o guarda do lado de fora.
 
 ### EDU-2. O que o estudante vê antes de responder não pode conter a resposta
 
