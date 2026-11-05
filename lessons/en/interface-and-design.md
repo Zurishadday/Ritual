@@ -132,17 +132,19 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 49. A general rule must not silently beat the specific ones
 
-`origin: field · ~sonnet · 2026-09` · `packages: web` · `seen: claude-sonnet-5-5 2026-10`
+`origin: field · ~sonnet · 2026-09` · `packages: web` · `seen: claude-sonnet-5-5 2026-10, claude-opus-5-5 2026-11`
 
 **The idea.** A rule that applies to everything (a global style, a default value) can override what each piece decided for itself, without anything warning you.
 
 **Example.** The keyboard focus style, written for the whole site, came with its own border radius. Because it ranked above each component's own styles, a pill-shaped button changed shape when focused with the keyboard. Nobody noticed, because with the mouse the focus doesn't appear.
 
-**Detector question.** Does this general rule touch something each piece already decides for itself? If they clash, which one wins?
+**Another example.** A learning site carried `noindex` in its root layout, chosen when it only ran locally. When its sign-up page and home page went live, both inherited it and could not appear in search results until someone asked for search work.
 
-**Warning sign.** "I made it global so I wouldn't have to repeat it."
+**Detector question.** Does this general rule touch something each piece already decides for itself? If they clash, which one wins? Or does a new piece inherit a default chosen for a job that isn't its own?
 
-**What to do.** Let the general rule touch only what's its own (the focus outline, not the shape). If it should win on purpose, write that down next to it. And test it on the most different piece, not only the common one.
+**Warning sign.** "I made it global so I wouldn't have to repeat it." · "The page is in production, so it is visible."
+
+**What to do.** Let the general rule touch only what's its own (the focus outline, not the shape). If it should win on purpose, write that down next to it. And test it on the most different piece, not only the common one. A new public page declares its own value (`index, follow`) and is checked in the HTML and headers the live site serves (see lessons 7 and 18).
 
 ### 57. A key arrives differently on each system
 
@@ -174,7 +176,7 @@ What applies when a person is going to see or use what you build: screens, compo
 
 ### 73. A page that has to persuade is designed from what it shows
 
-`origin: field · claude-opus-5-5 · 2026-10`
+`origin: field · claude-opus-5-5 · 2026-10` · `seen: claude-opus-5-5 2026-11`
 
 **The idea.** A page that has to convince someone (sign up, buy, attend) is built from the pictures and pieces people see; the words come with them. Written first as text and decorated afterwards, it reads like a document, not an invitation.
 
@@ -185,6 +187,34 @@ What applies when a person is going to see or use what you build: screens, compo
 **Warning sign.** "The content is done; we will add pictures later."
 
 **What to do.** Before the first paragraph, list what the page can show (real photos of the person, the product working, made-up data that adds up, drawn with code) and decide which piece carries each section. Draw pictures of data or screens with code, so every number and label in them is real; pictures of people are real photos. Then write the text, the least that works.
+
+### 77. An animated chart must not lie halfway through
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: numbers-and-data`
+
+**The idea.** While a bar chart grows, every frame is read as a chart too. If each bar advances on its own clock, halfway through the order and the proportions differ from the data, and someone can read the lie before it ends.
+
+**Example.** Salary bars per country grew with scrolling, each bar driven by its own position on screen. Halfway down, the "entry level" bar looked longer than the "all levels" bar, because the lower bar was further behind. It showed up in a mid-animation screenshot, not in the final one.
+
+**Detector question.** At the middle of the animation, is every bar at the same percentage of its final size? Did I measure an intermediate frame, or only look at the end?
+
+**Warning sign.** "It looks right when it finishes."
+
+**What to do.** Give all bars one shared clock: the same start and the same duration, or one timeline for the whole list instead of one per bar. Measure each bar's current width divided by its final width at three moments (before, middle, end): every bar must give the same number at each moment. With reduced motion, show them complete from the start.
+
+### 80. A character's look does not come from their group's label
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: writing-and-docs`
+
+**The idea.** When the look of a person (skin, hair, features, clothes) is drawn or chosen from their country or group, what comes out is the trait the label suggests, not the one real people have. It feels like representation, but it imposes a default look that most of that group does not have, and someone from there reads it as a stereotype.
+
+**Example.** In a course with characters from several countries, the character from one region came out with the darker skin and curly hair the label suggested, though nobody asked for it, only because of where the character was from. The owner, from that region, pointed out that most people there don't look like that. The rule that stayed: the look is decided per character; a tone that is real for their country is fine, and what is not fine is an imposed or false look, or a costume or symbols of the country.
+
+**Detector question.** Why does this character look like this: because of who they are, or because of their group's label? If I changed their country, would I change their drawing? Do they wear anything whose only job is to say where they are from?
+
+**Warning sign.** "That's how someone from there looks" · "so it's clear which country they're from".
+
+**What to do.** Write each character's sheet (personality, age, what they do) before their look, and decide the look from the sheet, not from the country. Review the whole cast together: there should be variety, and no group should have a single look. Have someone other than the author review it, with this question in their rubric.
 
 ### VIDEO-1. In a video, each action lands when the narration names it
 

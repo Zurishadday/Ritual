@@ -17,6 +17,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **54.** [«El X al inicio y al cierre»: todo traductor elige la misma lectura equivocada](writing-and-docs.md#54-el-x-al-inicio-y-al-cierre-todo-traductor-elige-la-misma-lectura-equivocada)
 - **58.** [Una instrucción hecha de muchas piezas se ve antes de armarla](writing-and-docs.md#58-una-instrucción-hecha-de-muchas-piezas-se-ve-antes-de-armarla)
 - **64.** [Ancla un concepto en algo que el lector ya vivió, no en cómo se calcula](writing-and-docs.md#64-ancla-un-concepto-en-algo-que-el-lector-ya-vivió-no-en-cómo-se-calcula)
+- **81.** [Cada pieza se lee sola: revisa en la unidad en que vive el usuario](writing-and-docs.md#81-cada-pieza-se-lee-sola-revisa-en-la-unidad-en-que-vive-el-usuario)
 - **AI-1.** [Si restringes dónde puede escribir el modelo, escribe donde lo dejes](writing-and-docs.md#ai-1-si-restringes-dónde-puede-escribir-el-modelo-escribe-donde-lo-dejes)
 - **AI-2.** [Una regla escrita como lista se ejecuta como lista, aun después de que la otra persona respondió](writing-and-docs.md#ai-2-una-regla-escrita-como-lista-se-ejecuta-como-lista-aun-después-de-que-la-otra-persona-respondió)
 - **AI-4.** [Las instrucciones de un modelo no llevan su propio registro de cambios](writing-and-docs.md#ai-4-las-instrucciones-de-un-modelo-no-llevan-su-propio-registro-de-cambios)
@@ -89,6 +90,8 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **57.** [Una tecla llega distinta en cada sistema](interface-and-design.md#57-una-tecla-llega-distinta-en-cada-sistema)
 - **59.** [Un evento de algo ya reemplazado no debe actuar](interface-and-design.md#59-un-evento-de-algo-ya-reemplazado-no-debe-actuar)
 - **73.** [Una página que tiene que convencer se diseña a partir de lo que muestra](interface-and-design.md#73-una-página-que-tiene-que-convencer-se-diseña-a-partir-de-lo-que-muestra)
+- **77.** [Una gráfica animada no debe mentir a mitad de camino](interface-and-design.md#77-una-gráfica-animada-no-debe-mentir-a-mitad-de-camino)
+- **80.** [El aspecto de un personaje no sale de la etiqueta de su grupo](interface-and-design.md#80-el-aspecto-de-un-personaje-no-sale-de-la-etiqueta-de-su-grupo)
 - **VIDEO-1.** [En un video, cada acción cae cuando la narración la nombra](interface-and-design.md#video-1-en-un-video-cada-acción-cae-cuando-la-narración-la-nombra)
 - **VIDEO-2.** [En un video, lo que cambia sin mostrarse se marca](interface-and-design.md#video-2-en-un-video-lo-que-cambia-sin-mostrarse-se-marca)
 - **WEB-2.** [Un formulario público recibe robots desde el primer día](interface-and-design.md#web-2-un-formulario-público-recibe-robots-desde-el-primer-día)
@@ -105,6 +108,9 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **60.** [Lo que viaja como argumento de un proceso tiene un techo que no se ve hasta que crece](console-and-tools.md#60-lo-que-viaja-como-argumento-de-un-proceso-tiene-un-techo-que-no-se-ve-hasta-que-crece)
 - **62.** [Parar un trabajo en segundo plano es parar lo que lo lanza, y luego comprobar que no queda nada](console-and-tools.md#62-parar-un-trabajo-en-segundo-plano-es-parar-lo-que-lo-lanza-y-luego-comprobar-que-no-queda-nada)
 - **69.** [Un proceso que lanzas desde una herramienta de vida corta muere cuando la herramienta termina](console-and-tools.md#69-un-proceso-que-lanzas-desde-una-herramienta-de-vida-corta-muere-cuando-la-herramienta-termina)
+- **78.** [Lo que encuentra el shell, quizá no lo encuentre un programa](console-and-tools.md#78-lo-que-encuentra-el-shell-quizá-no-lo-encuentre-un-programa)
+- **79.** [Un generador que no encuentra lo que ya hizo, lo vuelve a hacer todo](console-and-tools.md#79-un-generador-que-no-encuentra-lo-que-ya-hizo-lo-vuelve-a-hacer-todo)
+- **82.** [Una herramienta que vacía su carpeta al arrancar se lleva lo que otros guardaron ahí](console-and-tools.md#82-una-herramienta-que-vacía-su-carpeta-al-arrancar-se-lleva-lo-que-otros-guardaron-ahí)
 
 ## Git y proceso
 
@@ -116,3 +122,4 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **47.** [Lo que se trabaja en paralelo se cruza en lo compartido](git-and-process.md#47-lo-que-se-trabaja-en-paralelo-se-cruza-en-lo-compartido)
 - **65.** [Una regla sobre cómo trabajar no tiene excepción para los pasos chicos](git-and-process.md#65-una-regla-sobre-cómo-trabajar-no-tiene-excepción-para-los-pasos-chicos)
 - **70.** [Un encargo abierto deriva hacia lo más fácil de criticar: el objetivo y el alcance van en el encargo](git-and-process.md#70-un-encargo-abierto-deriva-hacia-lo-más-fácil-de-criticar-el-objetivo-y-el-alcance-van-en-el-encargo)
+- **76.** [Una aprobación cubre la pieza para la que se dio](git-and-process.md#76-una-aprobación-cubre-la-pieza-para-la-que-se-dio)

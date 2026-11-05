@@ -104,7 +104,7 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### 51. What looks obvious to you is the first thing to teach
 
-`origin: field · ~opus · 2026-10` · `groups: interface-and-design`
+`origin: field · ~opus · 2026-10` · `groups: interface-and-design, tests-and-checks` · `seen: claude-opus-5-5 2026-11`
 
 **The idea.** Someone who already knows doesn't see the steps they take without thinking. So their first example brings several new things at once, and a beginner gets lost on the first line.
 
@@ -112,11 +112,13 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 **Another example.** In a beginners' module, the same small word named a spreadsheet cell in one step and the little square at its corner in another. A practice's own notices used a cell reference and the name of a screenshot tool before the text had introduced either of them.
 
-**Detector question.** In my first example, how many things are new to someone who knows nothing? Has every symbol, every word, every button name and every action I ask for been taught before? Does one word name two things? Does a notice name something not yet taught?
+**One more example.** A beginners' lesson asked, in one sentence, to select a column, click its letter and choose a sort command from a spreadsheet's Data menu, largest first: four actions, and no video or image of that menu anywhere in the course. The reviewer passed it: a written menu path counted as taught. The course owner found it; with the rule changed, the same reviewer flagged twelve more steps in that module.
 
-**Warning sign.** "Anyone gets that" · "it's just one line" · "it's the usual word." · "The notice explains it."
+**Detector question.** In my first example, how many things are new to someone who knows nothing? Has every symbol, every word, every button name and every action I ask for been taught (an action in a tool: seen) before? Does one word name two things? Does a notice name something not yet taught?
 
-**What to do.** Before writing, list what your example takes for granted (symbols, words, clicks, things the learner should have built already) and teach those first: one new idea at a time, each symbol explained the first time it appears. Search for each word that matches a button's name, and each action you ask for, the way you search for a symbol. If possible, let an automatic check compare what each example uses with what was already taught. Read the interface's notices and hints in the order the learner meets them, and search for each name they use the way you search for a symbol. Give each thing one name and keep it (see lesson 2).
+**Warning sign.** "Anyone gets that" · "it's just one line" · "it's the usual word." · "The notice explains it." · "It already gives the menu path."
+
+**What to do.** Before writing, list what your example takes for granted (symbols, words, clicks, things the learner should have built already) and teach those first: one new idea at a time, each symbol explained the first time it appears. Search for each word that matches a button's name, and each action you ask for, the way you search for a symbol. If possible, let an automatic check compare what each example uses with what was already taught. Read the interface's notices and hints in the order the learner meets them, and search for each name they use the way you search for a symbol. Give each thing one name and keep it (see lesson 2). An action in a real tool counts as taught only once the learner has seen it (a video, a drawing or an image of that screen): cite where, and ask for one action per line, with what they will see after it (see lesson 58).
 
 ### 52. Write about a fast-moving tool from today's practice, not from memory
 
@@ -175,6 +177,20 @@ What applies when you write for others: documentation, manuals, screen text, con
 **Warning sign.** "It's the most honest way to compute it" · "the reviewers say it's correct" · "imagine you repeat the experiment a thousand times".
 
 **What to do.** Before the script or the text, write in one line the everyday experience that has the same shape as the concept. If none comes, ask someone who knows the audience. Build the opening from that experience and the case's data, and leave the method as "how it's computed" at the end. Ask a reviewer "what does the intuition rest on?" as well as "is it correct?". What the reader must already know is lesson 51.
+
+### 81. Each piece is read alone: review in the unit the user lives in
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: tests-and-checks`
+
+**The idea.** Whoever writes and whoever reviews read the whole document and, without noticing, fill each piece with what another piece said. The person using it lives one piece at a time (a step, a screen, a section) and does not remember the rest.
+
+**Example.** In a step-by-step course, a step said "In «work», in this order…" without saying that «work» was a tab of a file downloaded in an earlier lesson. It took three rounds: first "each lesson offers its file", then "the file comes before the first prediction"; both rules went green and the gap was still there step by step. The reviewer's prompt already said "review it as the learner lives it, step by step", but it received the whole lesson. Given each step on its own, it found 184 gaps in 8 modules, five of them failures the learner would hit.
+
+**Detector question.** Did I read each piece alone, as the user sees it, or the whole document? Does my rule check the piece or the document?
+
+**Warning sign.** "It already said so two steps earlier" · "the lesson already has the file" · "review step by step" written in a prompt that receives the whole document.
+
+**What to do.** Split the document into its pieces with a script and give the reviewer each piece alone, before the whole. Ask for a table per piece: where the work happens, what it takes for granted, whether the piece says it. Done means every piece read alone passes, not that a document-level rule turns green (see lesson 13). Rereading the whole after many corrections is lesson 43, the other half of this; seeing it on screen as the reader does is lesson 41, and whoever reviews is not whoever wrote it (lesson 28).
 
 ### AI-1. If you restrict where the model may write, it writes wherever you let it
 
@@ -252,14 +268,16 @@ What applies when you write for others: documentation, manuals, screen text, con
 
 ### EDU-5. A hint points at the cause of the mistake, not at the answer
 
-`origin: field · claude-opus-5-5 · 2026-10` · `groups: tests-and-checks` · `packages: education`
+`origin: field · claude-opus-5-5 · 2026-10` · `groups: tests-and-checks` · `packages: education` · `seen: claude-opus-5-5 2026-11`
 
 **The idea.** A hint shows up after a wrong attempt. If it gives the answer, the line that solves the exercise, or what separates the solution from the most likely mistake, the second attempt measures copying.
 
 **Example.** A review of a course's 277 checked practices changed 82 hints in 49 files. Some gave the line that solves it ("the second one is the…"). Some dictated the order that separates the solution from its common mistake. In "check against an earlier result" exercises, the hint said "it should match what you got in lesson 2.2": whoever remembered the earlier number could type it without doing the step.
 
-**Detector question.** Could someone who reads this hint pass the next attempt without the skill? Does it name the answer, the solving line, the steps the exercise measures, or the earlier number it should match?
+**Another example.** In three lessons of a language course, 16 feedbacks for wrong options named the right answer. They were written as explanations, without checking that the quiz lets the learner choose again after checking; a second review found it in the component's code.
 
-**Warning sign.** "It's only a nudge" · "they already tried once."
+**Detector question.** Could someone who reads this hint pass the next attempt without the skill? Does it name the answer, the solving line, the steps the exercise measures, or the earlier number it should match? Can the learner try again after reading it? Then it is a hint.
 
-**What to do.** Write the hint about the cause of the likely mistake ("positions start at 0, not at 1"), and cite only what was already taught. Keep the "it should match the earlier number" for the explanation shown after answering, where it teaches that two methods giving the same number is a verification. Review hints against the exercise's most likely mistake, not on their own.
+**Warning sign.** "It's only a nudge" · "they already tried once." · "It's the explanation, not the hint."
+
+**What to do.** Write the hint about the cause of the likely mistake ("positions start at 0, not at 1"), and cite only what was already taught. Keep the "it should match the earlier number" for the explanation shown after answering, where it teaches that two methods giving the same number is a verification. Review hints against the exercise's most likely mistake, not on their own. Before writing a wrong option's feedback, open the component and check whether it lets the learner choose again: if it does, the feedback says where to look or listen, and the explanation goes with the right option or after the last attempt (see EDU-2).

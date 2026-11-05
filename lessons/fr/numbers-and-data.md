@@ -24,7 +24,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 2. Deux choses qui portent le même nom ne sont pas la même chose
 
-`from: de984b04` · `by: ai`
+`from: 229af8ff` · `by: ai`
 
 **L'idée.** « Client actif », « date », « le chef », « le seuil » : le même mot cache souvent deux définitions. Quand deux rapports ne concordent pas, c'est presque toujours cela.
 
@@ -36,11 +36,13 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Un quatrième exemple.** Un script qui publie une note cherchait d'abord une note déjà publiée portant le même titre et, s'il en trouvait une, marquait la note comme envoyée et supprimait son brouillon. Deux personnes peuvent écrire le même titre : la note de quelqu'un d'autre aurait pris la place de celle-ci, et le brouillon aurait été perdu. C'est l'auteur, et non le titre, qui dit à qui elle appartient.
 
-**Question détectrice.** Existe-t-il une règle vraie pour l'une des deux choses et fausse pour l'autre ? Et si je combine deux chiffres dans un même calcul, viennent-ils du même univers, de la même échelle et de la même période ?
+**Un cinquième exemple.** Six scripts de leçons affirmaient que « le portail mélange l'ordre des options ». C'était vrai pour le quiz, pas pour l'exercice de tri, qui affiche ses cartes dans l'ordre écrit, regroupées par réponse, si bien qu'on pouvait les deviner par leur position. Et l'exercice de mise en ordre prend l'ordre écrit comme réponse : des blocs recopiés mélangés depuis le script rendaient impossible de terminer pour un apprenant qui avait pourtant bien construit la phrase. Un relecteur qui a lu le code de chaque composant a trouvé les deux.
+
+**Question détectrice.** Existe-t-il une règle vraie pour l'une des deux choses et fausse pour l'autre ? Et si je combine deux chiffres dans un même calcul, viennent-ils du même univers, de la même échelle et de la même période ? Quand « le système » fait quelque chose : dans quel composant, et dans ses composants frères ?
 
 **Signal d'alarme.** « C'est la même date » · « la vue filtre déjà » · « ce sont tous les deux en pesos ».
 
-**Que faire.** Donnez à chaque variante un nom différent dans le code et à l'écran, même si c'est laid. Et avant de diviser ou de soustraire deux chiffres provenant de sources différentes, notez d'où vient chacun : si un résultat sort identique dans tous les cas (ils perdent tous, ils gagnent tous), soupçonnez l'échelle avant le métier. Quand un chiffre vient d'un champ ou d'un comptage, lisez comment il est calculé (sa documentation ou son code) et écrivez l'unité à côté du nombre : « 19 blocs », et non « 23 lignes ». Quand c'est un nom qui correspond à deux fiches (un titre, une étiquette), ajoutez une clé que seule la bonne peut avoir, comme son auteur ou son identifiant, avant d'agir sur la correspondance. Pour obtenir le chiffre d'une deuxième façon, voir la leçon 12.
+**Que faire.** Donnez à chaque variante un nom différent dans le code et à l'écran, même si c'est laid. Et avant de diviser ou de soustraire deux chiffres provenant de sources différentes, notez d'où vient chacun : si un résultat sort identique dans tous les cas (ils perdent tous, ils gagnent tous), soupçonnez l'échelle avant le métier. Quand un chiffre vient d'un champ ou d'un comptage, lisez comment il est calculé (sa documentation ou son code) et écrivez l'unité à côté du nombre : « 19 blocs », et non « 23 lignes ». Quand c'est un nom qui correspond à deux fiches (un titre, une étiquette), ajoutez une clé que seule la bonne peut avoir, comme son auteur ou son identifiant, avant d'agir sur la correspondance. Pour obtenir le chiffre d'une deuxième façon, voir la leçon 12. Une phrase sur ce que fait « le système » nomme le composant, vérifié dans son code (« le quiz mélange ; le tri non » ; voir la leçon 38).
 
 ### 3. La période en cours est toujours incomplète
 
@@ -86,7 +88,7 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 ### 12. Exécuter la requête ne prouve pas que le chiffre est juste
 
-`from: b2232042` · `by: ai`
+`from: 69c26b3f` · `by: ai`
 
 **L'idée.** « Ça n'a pas échoué » n'est pas « c'est correct ». Comparez à quelque chose d'indépendant de votre propre calcul.
 
@@ -96,11 +98,13 @@ Ce qui s'applique quand vous calculez, mesurez ou affichez un nombre : tableaux 
 
 **Encore un exemple.** Chaque exemple d'une page a été exécuté, et trois phrases se sont tout de même révélées fausses : l'explication d'une option, écrite à la fin, décrivait ce que fait une ligne sans que personne ne l'ait jamais exécutée ; une règle de lecture des erreurs (« si elle dit ceci, alors il manque cela ») était contredite par une autre étape de la même page ; et l'introduction disait qu'une fonction « renvoie un résultat » alors qu'elle n'en renvoie pas.
 
-**Question détectrice.** Qu'est-ce qui, en dehors de mon propre code, va me permettre de vérifier ce résultat ? Et pour tout ce que le texte dit que le système fait, qu'il s'agisse d'un exemple, d'une règle ou de l'explication d'une option, l'ai-je exécuté sur le vrai moteur ?
+**Un quatrième exemple.** Dans un module d'un cours de langue, cinq règles pratiques données aux apprenants, écrites de mémoire, échouaient sur des cas voisins : « entendez-vous un *n* à la fin ? » distinguait *thirteen* de *thirty*, mais *seventy-one* finit aussi par un *n* ; « une syllabe s'ajoute avec *-es* » échoue sur *nurses*, qui s'écrit avec un simple *-s*. Des relecteurs les ont trouvées, pas l'auteur.
 
-**Signal d'alarme.** « Chez moi ça marche » · « ça n'a pas renvoyé d'erreur » · « c'est comme ça que ça marche, je viens de l'expliquer ».
+**Question détectrice.** Qu'est-ce qui, en dehors de mon propre code, va me permettre de vérifier ce résultat ? Et pour tout ce que le texte dit que le système fait, qu'il s'agisse d'un exemple, d'une règle ou de l'explication d'une option, l'ai-je exécuté sur le vrai moteur ? Et une règle pratique que je donne à un apprenant : sur quels cas voisins l'ai-je essayée ?
 
-**Que faire.** Recoupez avec un chiffre connu, le système source ou la période précédente. Testez dans l'environnement réel : avec ses autorisations, ses bibliothèques et la copie du code qui s'exécute réellement. Chaque affirmation sur le comportement du système est exécutée une fois avant d'être écrite, y compris celle qui apparaît au passage dans un exemple ou qui est écrite en dernier. Si l'affirmation est une règle générale (« seulement », « toujours », « jamais »), cherchez le cas qui la ferait échouer et exécutez-le aussi : « convertir en entier ne lit que les entiers » a été vérifié avec une chaîne de texte contenant des décimales, et s'est révélé faux pour un nombre à décimales. Quand vous énoncez une fraction (« cinq sur six »), nommez le tout dont elle est une fraction ; et un scénario inventé se vérifie lui aussi : la taille, l'écart et la p-value doivent être cohérents entre eux.
+**Signal d'alarme.** « Chez moi ça marche » · « ça n'a pas renvoyé d'erreur » · « c'est comme ça que ça marche, je viens de l'expliquer » · « Le repère le plus sûr, c'est… ».
+
+**Que faire.** Recoupez avec un chiffre connu, le système source ou la période précédente. Testez dans l'environnement réel : avec ses autorisations, ses bibliothèques et la copie du code qui s'exécute réellement. Chaque affirmation sur le comportement du système est exécutée une fois avant d'être écrite, y compris celle qui apparaît au passage dans un exemple ou qui est écrite en dernier. Si l'affirmation est une règle générale (« seulement », « toujours », « jamais »), cherchez le cas qui la ferait échouer et exécutez-le aussi : « convertir en entier ne lit que les entiers » a été vérifié avec une chaîne de texte contenant des décimales, et s'est révélé faux pour un nombre à décimales. Quand vous énoncez une fraction (« cinq sur six »), nommez le tout dont elle est une fraction ; et un scénario inventé se vérifie lui aussi : la taille, l'écart et la p-value doivent être cohérents entre eux. Une règle pratique donnée à un apprenant est un contrôle qu'il fera seul : sous cette règle, écrivez trois cas voisins que vous n'avez pas utilisés pour la concevoir, et appliquez-la à chacun (voir la leçon 13).
 
 ### 36. Mesurer avant d'écrire
 

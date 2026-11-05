@@ -17,6 +17,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **54.** [« Le X au début et à la fin » : tous les traducteurs choisissent la même mauvaise lecture](writing-and-docs.md#54--le-x-au-début-et-à-la-fin---tous-les-traducteurs-choisissent-la-même-mauvaise-lecture)
 - **58.** [Une consigne faite de plusieurs morceaux se voit avant d'être assemblée](writing-and-docs.md#58-une-consigne-faite-de-plusieurs-morceaux-se-voit-avant-dêtre-assemblée)
 - **64.** [Ancrer un concept dans ce que le lecteur a déjà vécu, pas dans la façon dont il se calcule](writing-and-docs.md#64-ancrer-un-concept-dans-ce-que-le-lecteur-a-déjà-vécu-pas-dans-la-façon-dont-il-se-calcule)
+- **81.** [Chaque pièce se lit seule : relire dans l'unité que vit l'utilisateur](writing-and-docs.md#81-chaque-pièce-se-lit-seule--relire-dans-lunité-que-vit-lutilisateur)
 - **AI-1.** [Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez](writing-and-docs.md#ai-1-si-vous-restreignez-lendroit-où-le-modèle-peut-écrire-il-écrit-là-où-vous-le-laissez)
 - **AI-2.** [Une règle écrite en liste de contrôle s'exécute comme une liste, même après que l'autre personne a répondu](writing-and-docs.md#ai-2-une-règle-écrite-en-liste-de-contrôle-sexécute-comme-une-liste-même-après-que-lautre-personne-a-répondu)
 - **AI-4.** [Les consignes d'un modèle ne portent pas leur propre journal des modifications](writing-and-docs.md#ai-4-les-consignes-dun-modèle-ne-portent-pas-leur-propre-journal-des-modifications)
@@ -89,6 +90,8 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **57.** [Une touche n'arrive pas de la même façon sur chaque système](interface-and-design.md#57-une-touche-narrive-pas-de-la-même-façon-sur-chaque-système)
 - **59.** [Un événement venant de quelque chose déjà remplacé ne doit pas agir](interface-and-design.md#59-un-événement-venant-de-quelque-chose-déjà-remplacé-ne-doit-pas-agir)
 - **73.** [Une page qui doit convaincre se conçoit à partir de ce qu'elle montre](interface-and-design.md#73-une-page-qui-doit-convaincre-se-conçoit-à-partir-de-ce-quelle-montre)
+- **77.** [Un graphique animé ne doit pas mentir à mi-parcours](interface-and-design.md#77-un-graphique-animé-ne-doit-pas-mentir-à-mi-parcours)
+- **80.** [Le look d'un personnage ne vient pas de l'étiquette de son groupe](interface-and-design.md#80-le-look-dun-personnage-ne-vient-pas-de-létiquette-de-son-groupe)
 - **VIDEO-1.** [Dans une vidéo, chaque action tombe au moment où la narration la nomme](interface-and-design.md#video-1-dans-une-vidéo-chaque-action-tombe-au-moment-où-la-narration-la-nomme)
 - **VIDEO-2.** [Dans une vidéo, ce qui change sans être montré est signalé](interface-and-design.md#video-2-dans-une-vidéo-ce-qui-change-sans-être-montré-est-signalé)
 - **WEB-2.** [Un formulaire public reçoit des robots dès le premier jour](interface-and-design.md#web-2-un-formulaire-public-reçoit-des-robots-dès-le-premier-jour)
@@ -105,6 +108,9 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **60.** [Ce qui passe en argument d'un processus a un plafond qu'on ne voit qu'en grandissant](console-and-tools.md#60-ce-qui-passe-en-argument-dun-processus-a-un-plafond-quon-ne-voit-quen-grandissant)
 - **62.** [Arrêter un travail en arrière-plan, c'est arrêter ce qui le lance, puis prouver qu'il ne reste rien](console-and-tools.md#62-arrêter-un-travail-en-arrière-plan-cest-arrêter-ce-qui-le-lance-puis-prouver-quil-ne-reste-rien)
 - **69.** [Un processus lancé depuis un outil de courte durée meurt quand l'outil se termine](console-and-tools.md#69-un-processus-lancé-depuis-un-outil-de-courte-durée-meurt-quand-loutil-se-termine)
+- **78.** [Ce que le shell trouve, un programme peut ne pas le trouver](console-and-tools.md#78-ce-que-le-shell-trouve-un-programme-peut-ne-pas-le-trouver)
+- **79.** [Un générateur qui ne retrouve pas ce qu'il a déjà fait refait tout](console-and-tools.md#79-un-générateur-qui-ne-retrouve-pas-ce-quil-a-déjà-fait-refait-tout)
+- **82.** [Un outil qui vide son dossier au démarrage emporte ce que d'autres y ont enregistré](console-and-tools.md#82-un-outil-qui-vide-son-dossier-au-démarrage-emporte-ce-que-dautres-y-ont-enregistré)
 
 ## Git et processus
 
@@ -116,3 +122,4 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **47.** [Ce qui est travaillé en parallèle entre en collision dans ce qui est partagé](git-and-process.md#47-ce-qui-est-travaillé-en-parallèle-entre-en-collision-dans-ce-qui-est-partagé)
 - **65.** [Une règle sur la manière de travailler n'a pas d'exception pour les petites étapes](git-and-process.md#65-une-règle-sur-la-manière-de-travailler-na-pas-dexception-pour-les-petites-étapes)
 - **70.** [Une demande ouverte dérive vers ce qui est le plus facile à critiquer : le but et le périmètre vont dans la consigne](git-and-process.md#70-une-demande-ouverte-dérive-vers-ce-qui-est-le-plus-facile-à-critiquer--le-but-et-le-périmètre-vont-dans-la-consigne)
+- **76.** [Une approbation vaut pour la pièce pour laquelle elle a été donnée](git-and-process.md#76-une-approbation-vaut-pour-la-pièce-pour-laquelle-elle-a-été-donnée)

@@ -84,7 +84,7 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 ### 47. Ce qui est travaillé en parallèle entre en collision dans ce qui est partagé
 
-`from: 83287f40` · `by: ai`
+`from: 28067331` · `by: ai`
 
 **L'idée.** Quand plusieurs personnes travaillent en même temps, chacune voit clairement sa propre partie. Ce qu'elles partagent (les tests, les données, les documents de tout le projet) combine leurs modifications : des noms qui se heurtent, des copies qui prennent du retard, des tests qui lisent le travail à moitié fini de quelqu'un d'autre. Intégrer est un travail, pas un copier-coller.
 
@@ -92,11 +92,13 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 
 **Autre exemple.** Deux conversations travaillaient dans le même dossier, qui partage plus que des fichiers : une seule branche active, un seul résultat de build, un seul port pour le serveur de test. Une conversation a fait passer le dossier sur une autre branche ; le commit suivant de l'autre conversation a atterri sur cette branche, et son push vers main a répondu « everything up to date » sans rien envoyer. Remettre ensuite le dossier sur main a entraîné avec lui les modifications non enregistrées de la première conversation.
 
-**Question détectrice.** Quel fichier deux parties touchent-elles en même temps, et qui l'intègre ? Mon test lit-il le travail à moitié fini de quelqu'un d'autre ? Sur quelle branche se trouve ce dossier juste avant le commit, et qui d'autre l'utilise ?
+**Encore un exemple.** Les tests d'une branche ont obtenu un « 404 » sur une nouvelle page qui existait pourtant. Le port de test, fixé dans la configuration, était occupé par le serveur du dossier principal, qui lançait ses propres tests ; attendre ne le libérait pas. La correction : un port que chaque dossier peut choisir avec une variable d'environnement, l'usuel restant la valeur par défaut.
 
-**Signal d'alarme.** « Chacun a testé sa partie » · « l'échec est dans une autre partie » · « chacun touche des fichiers différents, ils ne se heurtent pas ».
+**Question détectrice.** Quel fichier deux parties touchent-elles en même temps, et qui l'intègre ? Mon test lit-il le travail à moitié fini de quelqu'un d'autre ? Sur quelle branche se trouve ce dossier juste avant le commit, et qui d'autre l'utilise ? Quelle ressource fixe (un port, une base de test) les copies séparées partagent-elles encore ?
 
-**Que faire.** Confiez à une seule personne l'intégration de ce qui est partagé, avec une étape qui s'arrête si un nom entre en conflit. Faites lire les tests à l'original, pas à une copie. Lancez toute la suite de tests une fois que tout le monde a fini, ou sans les parties qui changent encore, et dites lesquelles ont été exclues. Et enregistrez ensemble les parties qui partagent des fichiers, pour que chaque version enregistrée fonctionne en entier. Donnez à chaque session son propre dossier (`git worktree`), lisez `git status -sb` avant chaque commit, et après un push vérifiez que la branche distante contient le commit.
+**Signal d'alarme.** « Chacun a testé sa partie » · « l'échec est dans une autre partie » · « chacun touche des fichiers différents, ils ne se heurtent pas. » · « Ça échoue avec 404, mais ça se charge dans mon navigateur. »
+
+**Que faire.** Confiez à une seule personne l'intégration de ce qui est partagé, avec une étape qui s'arrête si un nom entre en conflit. Faites lire les tests à l'original, pas à une copie. Lancez toute la suite de tests une fois que tout le monde a fini, ou sans les parties qui changent encore, et dites lesquelles ont été exclues. Enregistrez ensemble les parties qui partagent des fichiers, pour que chaque version enregistrée fonctionne en entier. Donnez à chaque session son propre dossier (`git worktree`), lisez `git status -sb` avant chaque commit, et après un push vérifiez que la branche distante contient le commit. Les dossiers séparés partagent encore ce que la configuration fixe : rendez chaque ressource fixe choisissable par une variable, avec la valeur habituelle par défaut, et quand un test échoue avec « not found », trouvez qui occupe le port avant de toucher au code (voir la leçon 27).
 
 ### 65. Une règle sur la manière de travailler n'a pas d'exception pour les petites étapes
 
@@ -125,3 +127,17 @@ Ce qui s'applique quand vous sauvegardez, clôturez, transmettez ou coordonnez :
 **Signal d'alarme.** « Je leur laisse une liberté totale, pour qu'ils voient ce qu'on n'a pas vu. »
 
 **Que faire.** Écrivez dans la consigne le but de la personne qui a demandé le travail, dans ses mots, plus une ligne sur ce qui est hors périmètre. Si vous voulez laisser une liberté pour trouver les angles morts, accordez-la à l'intérieur de ce périmètre, et réservez une seule ligne pour tout ce qui serait trouvé en dehors.
+
+### 76. Une approbation vaut pour la pièce pour laquelle elle a été donnée
+
+`from: 66dc161d` · `by: ai`
+
+**L'idée.** Le « oui » d'un responsable approuve une pièce, avec sa fonction et son public. Reprendre ce texte ou ce modèle dans une autre pièce, avec une autre fonction, ne le rend pas approuvé : demandez, ou décidez de nouveau à partir des références de cette pièce.
+
+**Exemple.** Une page d'inscription à un cours gratuit (une page d'annonce : une seule action, pas de menu, l'expert en haut) et le titre d'une page de vente avaient été approuvés. En construisant la page d'accueil du site, les deux ont été recopiés « puisqu'ils étaient déjà approuvés ». Le responsable a refusé : l'approbation ne valait que pour la page du cours. Une page d'accueil a besoin d'une navigation, de la liste de ce que propose le site et d'un accès pour les personnes déjà inscrites.
+
+**Question détectrice.** Ce que je réutilise : pour quelle pièce a-t-il été approuvé, et celle-ci a-t-elle la même fonction et le même public ?
+
+**Signal d'alarme.** « Ça a déjà été approuvé. »
+
+**Que faire.** Avant de réutiliser un texte ou un modèle approuvé, nommez la pièce pour laquelle il a été approuvé. Si la nouvelle pièce a une autre fonction, traitez la réutilisation comme une proposition : décidez à partir des références de cette pièce, et dites en une ligne ce que vous réutilisez et pourquoi. Ne demandez que ce qui appartient au responsable (données, prix, promesses).

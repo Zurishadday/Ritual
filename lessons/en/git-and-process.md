@@ -84,7 +84,7 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 ### 47. What's worked on in parallel collides in what's shared
 
-`origin: field · ~sonnet · 2026-09`
+`origin: field · ~sonnet · 2026-09` · `groups: console-and-tools, tests-and-checks` · `seen: claude-opus-5-5 2026-11`
 
 **The idea.** When several people work at once, each sees their own piece clearly. What they share (the tests, the data, the documents for the whole project) combines their changes: names that clash, copies that fall behind, tests that read someone else's half-finished work. Integrating is work, not a paste.
 
@@ -92,11 +92,13 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 
 **Another example.** Two conversations worked in the same folder, which shares more than files: one checked-out branch, one build output, one test server port. One conversation switched the folder to another branch; the other conversation's next commit landed on that branch, and its push to main said "everything up to date" without pushing anything. Switching the folder back to main then carried the first conversation's uncommitted changes along.
 
-**Detector question.** Which file are two pieces touching at the same time, and who integrates it? Is my test reading another person's half-finished work? Which branch is this folder on right before the commit, and who else uses it?
+**One more example.** A branch's tests got "404" on a new page that did exist. The test port, fixed in the configuration, was held by the main folder's server, which was running its own tests; waiting did not free it. The fix was a port each folder can choose with an environment variable, the usual one as the default.
 
-**Warning sign.** "Each of us tested our own" · "the failure is in another piece" · "each one touches different files, they don't collide."
+**Detector question.** Which file are two pieces touching at the same time, and who integrates it? Is my test reading another person's half-finished work? Which branch is this folder on right before the commit, and who else uses it? What fixed resource (a port, a test database) do separate copies still share?
 
-**What to do.** Have one person integrate what's shared, with a step that stops if a name clashes. Have the tests read the original, not a copy. Run the full test suite once everyone is done, or without the pieces that are still changing, and say which ones were left out. And save pieces that share files together, so each saved version works in full. Give each session its own folder (`git worktree`), read `git status -sb` before every commit, and after a push check that the remote branch has the commit.
+**Warning sign.** "Each of us tested our own" · "the failure is in another piece" · "each one touches different files, they don't collide." · "It fails with 404, but it loads in my browser."
+
+**What to do.** Have one person integrate what's shared, with a step that stops if a name clashes. Have the tests read the original, not a copy. Run the full test suite once everyone is done, or without the pieces that are still changing, and say which ones were left out. And save pieces that share files together, so each saved version works in full. Give each session its own folder (`git worktree`), read `git status -sb` before every commit, and after a push check that the remote branch has the commit. Separate folders still share what the configuration fixes: make each fixed resource choosable with a variable, the usual value as the default, and when a test fails with "not found", find who holds the port before touching the code (see lesson 27).
 
 ### 65. A rule about how to work has no exception for small steps
 
@@ -125,3 +127,17 @@ What applies when you save, close, hand off, or coordinate: commits, states, pen
 **Warning sign.** "I'll give them total freedom so they see what we haven't."
 
 **What to do.** Write in the brief the goal of whoever asked for the work, in their words, plus one line of what is out of scope. If you want freedom to find blind spots, grant it inside that scope, and leave a single line for anything found outside it.
+
+### 76. An approval covers the piece it was given for
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: interface-and-design, writing-and-docs`
+
+**The idea.** An owner's "yes" approves one piece, with its job and its audience. Carrying that text or that pattern into another piece with another job does not make it approved: ask, or decide again from that piece's own references.
+
+**Example.** A signup page for a free class (an ad landing page: one action, no menu, the expert at the top) and the headline of a sales page were approved. While building the site's home page, both were copied in "because they were already approved". The owner rejected it: the approval was for the class page only. A home page needs navigation, the list of what the site offers and a way in for people already enrolled.
+
+**Detector question.** What I am reusing: which piece was it approved for, and does this one have the same job and the same audience?
+
+**Warning sign.** "This was already approved."
+
+**What to do.** Before reusing an approved text or pattern, name the piece it was approved for. If the new piece has another job, treat the reuse as a proposal: decide from that piece's references and say in one line what you reuse and why. Ask only what belongs to the owner (data, prices, promises).

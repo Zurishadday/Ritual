@@ -4,9 +4,9 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 ### 27. Douter de l'instrument avant de douter du système
 
-`from: 11b6d719` · `by: ai`
+`from: 82624501` · `by: ai`
 
-**L'idée.** Si un chiffre n'a pas changé alors qu'il aurait dû, ou a changé juste au moment où vous le regardiez, soupçonnez dans l'ordre : le cache, un autre processus qui écrit dans la même table, l'outil à travers lequel vous regardez, et seulement à la toute fin le système lui-même.
+**L'idée.** Si un chiffre n'a pas changé alors qu'il aurait dû, ou a changé juste au moment où vous le regardiez, soupçonnez dans cet ordre : le cache, un autre processus qui écrit dans la même table, l'outil à travers lequel vous regardez, et seulement en dernier lieu le système lui-même.
 
 **Exemple.** Une table « avait perdu la moitié de ses colonnes ». Quelques minutes plus tard, elle était complète : vous la regardiez pendant qu'un autre processus la reconstruisait.
 
@@ -14,25 +14,29 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 
 **Encore un exemple.** Un script « calculait mal un motif de texte ». Le script était bon : la console par laquelle on lui passait le code transformait chaque `\n` en un vrai saut de ligne avant que le script ne le lise. Et dans un carnet où les cellules partagent la mémoire, une erreur qui aurait dû apparaître n'est pas apparue : la variable était encore stockée depuis une cellule précédente.
 
+**Un quatrième exemple.** Juste après le déploiement d'une page sur un serveur de préproduction, une vérification automatique a signalé 528 px de débordement horizontal et des avertissements d'accessibilité ; quelques secondes plus tard, tout passait. Le site renvoyait encore la feuille de style précédente. Cela s'est produit deux fois avant que la vérification n'attende le nouveau fichier.
+
 **Question détectrice.** Est-ce que je regarde le système, ou un cache, une copie, ou un outil qui a gardé un ancien instantané de celui-ci ou l'a modifié en cours de route ?
 
-**Signal d'alarme.** « Je l'ai déjà corrigé et c'est toujours pareil » · « cette fois je l'ai vraiment bien tapé ».
+**Signal d'alarme.** « Je l'ai déjà corrigé et c'est toujours pareil » · « cette fois, je l'ai vraiment bien tapé » · « je viens de déployer, je peux vérifier maintenant ».
 
-**Que faire.** Prenez un second instantané quelques minutes plus tard avant de déclarer un désastre. Si un instrument vous a déjà trompé de la même façon, remplacez-le au lieu de continuer à le surveiller : un raté qui se répète n'est pas de la malchance, c'est le mauvais outil. Une console qui transforme `\n` ou `\\` en cours de route ne convient pas pour lui passer du code : le code va dans un fichier, écrit avec un outil qui n'y touche pas, et s'exécute depuis là. Et tout ce qui est mécanique (une commande qui a déjà échoué trois fois) se bloque par un garde-fou, il ne se retient pas de mémoire. Avant de mesurer un serveur, vérifiez quel processus occupe son port. Avant de lire l'historique d'une copie, vérifiez si elle est superficielle (`git rev-parse --is-shallow-repository`), et si c'est le cas, interrogez le dépôt distant.
+**Que faire.** Prenez un second instantané quelques minutes plus tard avant de déclarer un désastre. Si un instrument vous a déjà trompé de la même façon, remplacez-le au lieu de continuer à le surveiller : un raté qui se répète n'est pas de la malchance, c'est le mauvais outil. Une console qui transforme `\n` ou `\\` en cours de route ne convient pas pour lui passer du code : le code va dans un fichier, écrit avec un outil qui n'y touche pas, et s'exécute depuis là. Et tout ce qui est mécanique (une commande qui a déjà échoué trois fois) se bloque par un garde-fou, il ne se retient pas de mémoire. Avant de mesurer un serveur, vérifiez quel processus occupe son port. Avant de lire l'historique d'une copie, vérifiez si elle est superficielle (`git rev-parse --is-shallow-repository`), et si c'est le cas, interrogez le dépôt distant. Après un déploiement, attendez que le site renvoie un marqueur que cette seule version possède (une classe, un texte, un paramètre `?v=`), dans une boucle avec un nombre maximal de tentatives, avant de mesurer.
 
 ### 29. Vérifier la commande avant de la transmettre à quelqu'un d'autre
 
-`from: 0c95aa16` · `by: ai`
+`from: 730b276c` · `by: ai`
 
-**L'idée.** Celui qui exécute la commande de quelqu'un d'autre le fait à l'aveugle. Chaque commande cassée érode la confiance qu'il aurait accordée à la suivante.
+**L'idée.** Celui qui exécute la commande de quelqu'un d'autre le fait à l'aveugle. Chaque commande cassée entame la confiance qu'il aurait accordée à la suivante.
 
 **Exemple.** Une commande de déploiement contenait un nom de branche tapé de mémoire. La branche avait un autre nom, et celui qui l'a lancée a perdu une demi-heure avant de demander.
 
-**Question détectrice.** Pour chaque nom de cette commande, l'ai-je lu aujourd'hui dans le système, ou l'ai-je tapé de mémoire ?
+**Autre exemple.** Pour voir une modification, une personne a reçu `cd folder && npx next dev -p 3001`. Son terminal était Windows PowerShell 5.1, qui refuse `&&`. Corrigée et lancée depuis son propre terminal, le serveur a répondu « not found » : les pages à examiner ne s'affichent qu'avec une variable d'environnement que la commande ne définissait pas.
 
-**Signal d'alarme.** « C'est la même commande que d'habitude. »
+**Question détectrice.** Pour chaque nom de cette commande, l'ai-je lu aujourd'hui dans le système, ou l'ai-je tapé de mémoire ? Dans quel shell et dans quel dossier vont-ils l'exécuter, et l'ai-je exécutée ainsi ?
 
-**Que faire.** Exécutez-la vous-même avant de la transmettre, et recopiez chaque nom (script, chemin, branche) depuis le système, pas depuis la mémoire.
+**Signal d'alarme.** « C'est la même commande que d'habitude. » · `&&`, `export` ou `$VAR` dans une commande destinée à Windows PowerShell 5.1.
+
+**Que faire.** Exécutez-la vous-même avant de la transmettre, et recopiez chaque nom (script, chemin, branche) depuis le système, pas depuis la mémoire. Écrivez-la dans leur shell (dans PowerShell 5.1 : `;` et `$env:NAME = 'value'`), et avant de transmettre un lien, demandez cette adresse exacte et vérifiez la réponse attendue. Si vous la lancez pour eux, lancez-la dans leur propre terminal, pas comme enfant de votre appel d'outil (voir la leçon 69).
 
 ### 44. Ce que vous retirez de la sortie peut être le verdict
 
@@ -107,3 +111,45 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 **Signal d'alarme.** « Je l'ai relancé, il répond sur le port. »
 
 **Que faire.** Ce qu'une personne utilise chaque jour, elle le démarre elle-même, avec son propre raccourci ou son propre service. Si vous devez le lancer, détachez-le de son parent (un mode d'arrière-plan qui survit à la commande, un service système), et vérifiez dans un appel séparé, ensuite, qu'il est toujours vivant. Si vous ne pouvez pas le garantir, ne dites pas que c'est fait : demandez à la personne de l'ouvrir. Arrêter ce genre de travail relève de la leçon 62 ; le lancer deux fois, de la leçon 22.
+
+### 78. Ce que le shell trouve, un programme peut ne pas le trouver
+
+`from: 8b07c6d7` · `by: ai`
+
+**L'idée.** Un nom de commande qui fonctionne dans le shell peut échouer quand un programme le lance : le shell résout des raccourcis (fichiers batch, alias, fonctions) qu'un appel système direct ne connaît pas. Alors, c'est un autre programme portant le même nom qui s'exécute, ou aucun.
+
+**Exemple.** Un script Node appelait `python` pour générer de l'audio. Dans le shell, `python` était un shim de gestionnaire de versions (un fichier `.bat`) ; depuis Node, sans shell, le système d'exploitation ouvrait un alias du magasin d'applications qui affiche seulement « Python was not found ».
+
+**Question détectrice.** Le programme que je lance depuis du code : est-il résolu par le shell (un shim, un fichier batch, un alias), ou est-ce un vrai exécutable ? L'ai-je essayé lancé depuis le code, et non depuis le shell ?
+
+**Signal d'alarme.** « Mais ça marche dans le terminal. »
+
+**Que faire.** Exécutez l'étape une fois avec le même programme que celui qui la lancera. Si la commande est un shim, lancez-la à travers le shell (en Node, `shell: true` sous Windows, avec des arguments sans espaces ni guillemets) ou par son chemin complet, et faites en sorte que l'erreur indique quelle commande n'a pas été trouvée. Une autre machine relève de la leçon 55 ; la configuration d'un autre script, de la leçon 66.
+
+### 79. Un générateur qui ne retrouve pas ce qu'il a déjà fait refait tout
+
+`from: ae59e617` · `by: ai`
+
+**L'idée.** Un processus qui saute le travail déjà terminé (grâce à une empreinte de chaque partie, à un cache ou à un dossier de travail) n'est peu coûteux que sur la machine ou la copie de travail où vit cet état. Lancé ailleurs, il ne voit rien de fait et recommence depuis le début : un travail coûteux, une nouvelle fois, que personne n'a demandé.
+
+**Exemple.** La narration audio d'une leçon avait été enregistrée étape par étape avec un modèle de voix lent (sans mesure de temps), et le générateur sautait les étapes inchangées grâce à son dossier de travail, qui n'est pas dans git. Un agent, pour régénérer une seule étape, l'a lancé dans une autre copie du dépôt qui ne possédait pas ce dossier : il s'est mis à enregistrer toute la leçon sur le GPU partagé. Il a fallu l'arrêter à la main.
+
+**Question détectrice.** Où vit l'état qui permet de sauter ce travail déjà fait ? Existe-t-il dans le dossier et sur la machine où je m'apprête à le lancer ? Si ce n'est pas le cas, le processus s'arrête-t-il, ou refait-il tout en silence ?
+
+**Signal d'alarme.** « Une seule étape a changé » dans une copie fraîche · un dossier de travail dans .gitignore · un agent à qui l'on demande de « lancer le générateur » sans lui dire où se trouve son cache.
+
+**Que faire.** Faites en sorte que le générateur refuse de repartir de zéro quand un résultat existe déjà et que son état manque, et qu'il indique où le lancer (avec une option explicite, comme `--all`, pour qui veut vraiment tout reconstruire). Dans les consignes données aux agents, nommez le dossier où le lancer. Un état manquant lu comme « rien n'a été fait » est le « je n'ai pas pu le lire » de la leçon 1, sous une autre forme.
+
+### 82. Un outil qui vide son dossier au démarrage emporte ce que d'autres y ont enregistré
+
+`from: b6b0c760` · `by: ai`
+
+**L'idée.** Beaucoup d'outils vident leur dossier de sortie à chaque démarrage, pour que les exécutions ne se mélangent pas. Si d'autres processus y enregistrent leurs propres fichiers parce que c'est « le dossier des résultats », la prochaine exécution les supprime sans prévenir, et personne ne s'en aperçoit avant de chercher le fichier.
+
+**Exemple.** Un exécuteur de tests de navigateur vidait son dossier de résultats à chaque démarrage. Des agents de relecture y enregistraient leurs rapports, et un script y enregistrait des fichiers d'étapes par leçon. En une journée, deux longs rapports ont été perdus, dont un demandé par le responsable du projet, et un relecteur a signalé que l'un de ces fichiers d'étapes n'existait pas, parce qu'une exécution de tests l'avait supprimé quelques minutes plus tôt. Ils ont été récupérés dans les transcriptions des agents.
+
+**Question détectrice.** Quel outil écrit dans ce dossier, et l'un d'eux le vide-t-il au démarrage ou à la fin ? Ce que j'enregistre ici survit-il à la prochaine exécution de cet outil ? L'ai-je vérifié avec un fichier de test ?
+
+**Signal d'alarme.** « Je le laisse dans le dossier des résultats » · « le fichier n'existe pas » pour quelque chose écrit quelques minutes plus tôt · un seul dossier ignoré qui contient à la fois des artefacts jetables et des livrables.
+
+**Que faire.** Donnez à chaque outil qui vide son dossier son propre sous-dossier (avec Playwright, `outputDir`) et gardez les livrables en dehors, ou dans un endroit versionné. Vérifiez-le : déposez un fichier de test, lancez l'outil, et constatez qu'il est toujours là. La sortie complète d'un test conservée dans ce dossier relève du cas de la leçon 44 ; modifier un fichier qu'un générateur écrit, de la leçon 48.

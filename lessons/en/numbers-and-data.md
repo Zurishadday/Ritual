@@ -24,7 +24,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 2. Two things with the same name are not the same thing
 
-`origin: field · ~opus · 2026-08` · `seen: claude-opus-5-5 2026-10`
+`origin: field · ~opus · 2026-08` · `groups: writing-and-docs` · `seen: claude-opus-5-5 2026-10, claude-opus-5-5 2026-11`
 
 **The idea.** "Active customer," "date," "the boss," "the threshold": the same word often hides two definitions. When two reports don't match, it's almost always this.
 
@@ -36,11 +36,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **A fourth example.** A script that publishes a note first looked for one already published with the same title, and if it found one, marked the note as sent and deleted its draft. Two people can write the same title: someone else's note would have taken the place of this one, and the draft would have been lost. The author, not the title, says whose it is.
 
-**Detector question.** Is there a rule that's true for one of the two things and false for the other? And if I combine two figures in one calculation, do they come from the same universe, the same scale, and the same period?
+**A fifth example.** Six lesson scripts said "the portal shuffles the order of the options". It was true for the quiz, not for the sorting exercise, which shows its cards in the order written, grouped by answer, so they could be guessed by position. And the ordering exercise takes the written order as the answer: blocks copied scrambled from the script left a learner who built the sentence right unable to finish. A reviewer who read each component's code found both.
 
-**Warning sign.** "It's the same date" · "the view already filters it" · "they're both in pesos."
+**Detector question.** Is there a rule that's true for one of the two things and false for the other? And if I combine two figures in one calculation, do they come from the same universe, the same scale, and the same period? When "the system" does something: in which component, and in its siblings?
 
-**What to do.** Give each variant a different name in the code and on the screen, even if it's ugly. And before dividing or subtracting two figures from different sources, write down where each one comes from: if a result comes out the same in every case (they all lose, they all win), suspect the scale before the business. When a figure comes from a field or a count, read how it is computed (its documentation or its code) and write the unit next to the number: "19 blocks", not "23 lines". When a name is what matches two records (a title, a label), add a key only the right one can have, such as its author or its id, before acting on the match. To get the figure a second way, see lesson 12.
+**Warning sign.** "It's the same date" · "the view already filters it" · "they're both in pesos." · "The portal shuffles it."
+
+**What to do.** Give each variant a different name in the code and on the screen, even if it's ugly. And before dividing or subtracting two figures from different sources, write down where each one comes from: if a result comes out the same in every case (they all lose, they all win), suspect the scale before the business. When a figure comes from a field or a count, read how it is computed (its documentation or its code) and write the unit next to the number: "19 blocks", not "23 lines". When a name is what matches two records (a title, a label), add a key only the right one can have, such as its author or its id, before acting on the match. To get the figure a second way, see lesson 12. A sentence about what "the system" does names the component, checked in its code ("the quiz shuffles; sorting does not"; see lesson 38).
 
 ### 3. The current period is always incomplete
 
@@ -86,7 +88,7 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 ### 12. Running the query doesn't prove the number is right
 
-`origin: field · ~opus · 2026-08` · `groups: tests-and-checks`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks, writing-and-docs` · `seen: claude-opus-5-5 2026-11`
 
 **The idea.** "It didn't error" is not "it's correct." Compare against something independent of your own calculation.
 
@@ -96,11 +98,13 @@ What applies when you calculate, measure, or display a number: dashboards, repor
 
 **One more example.** Every example on one page was run, and three sentences still turned out false: the explanation of an option, written at the end, described what a line does that nobody had run; a rule for reading errors ("if it says this, then that's missing") was contradicted by another step on the same page; and the introduction said a function "returns a result" when it doesn't.
 
-**Detector question.** What outside my own code am I going to check this result against? And for anything the text says the system does, whether in an example, a rule, or the explanation of an option, did I run it on the real engine?
+**A fourth example.** In one module of a language course, five rules of thumb given to learners, written from memory, failed on nearby cases: "did you hear an *n* at the end?" told *thirteen* from *thirty*, but *seventy-one* also ends in *n*; "a syllable is added with *-es*" fails on *nurses*, written with *-s*. Reviewers found them, not the author.
 
-**Warning sign.** "It runs on my machine" · "it didn't error" · "that's how it works, I just explained it."
+**Detector question.** What outside my own code am I going to check this result against? And for anything the text says the system does, whether in an example, a rule, or the explanation of an option, did I run it on the real engine? And a rule of thumb I give a learner: on which nearby cases did I try it?
 
-**What to do.** Reconcile against a known figure, the source system, or the previous period. Test in the real environment: with its permissions, its libraries, and the copy of the code that actually runs. Every claim about how the system behaves gets run once before you write it down, including the one that shows up in passing in an example or gets written last. If the claim is a general rule ("only," "always," "never"), find the case that would break it and run that too: "converting to an integer only reads integers" was checked with a text string that had decimals, and it turned out false for a number with decimals. When you state a fraction ("five in six"), name the whole it's a fraction of; and a made-up scenario gets checked too: the size, the difference, and the p-value have to be consistent with each other.
+**Warning sign.** "It runs on my machine" · "it didn't error" · "that's how it works, I just explained it." · "The safest cue is…"
+
+**What to do.** Reconcile against a known figure, the source system, or the previous period. Test in the real environment: with its permissions, its libraries, and the copy of the code that actually runs. Every claim about how the system behaves gets run once before you write it down, including the one that shows up in passing in an example or gets written last. If the claim is a general rule ("only," "always," "never"), find the case that would break it and run that too: "converting to an integer only reads integers" was checked with a text string that had decimals, and it turned out false for a number with decimals. When you state a fraction ("five in six"), name the whole it's a fraction of; and a made-up scenario gets checked too: the size, the difference, and the p-value have to be consistent with each other. A rule of thumb given to a learner is a check they will run alone: under it, write three nearby cases you did not use to design it and apply the rule to each (see lesson 13).
 
 ### 36. Measure before you write
 

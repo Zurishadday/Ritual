@@ -265,7 +265,9 @@ export function selftest() {
     // For agents without hooks: every group's active questions, in one file at a stable path.
     const all = digest(DEFAULT_CONFIG, path.join(project, ".ritual"));
     for (const x of ["## Console and tools", "## Tests and checks", "- P-1 (refines 27) · Sharper question about the console?", "- 13 · "]) if (!all.includes(x)) failures.push(`the digest lacks «${x}»`);
-    if (all.includes("- 27 · ") || all.includes("- 46 · ")) failures.push("the digest must skip a refined original and a package that is off");
+    // A refinement takes its original's place in its own group; 27 may also show, unrefined, in another group it belongs to.
+    const consoleSection = all.split("## ").find((s) => s.startsWith("Console and tools")) ?? "";
+    if (consoleSection.includes("- 27 · ") || all.includes("- 46 · ")) failures.push("the digest must skip a refined original in its group, and a package that is off");
     // The project of the file being edited, not the session's: the nearest .ritual/ above the file.
     for (const p of ["a", "b"]) mkdirSync(path.join(project, p, ".ritual"), { recursive: true });
     mkdirSync(path.join(project, "b", "src", "deep"), { recursive: true });

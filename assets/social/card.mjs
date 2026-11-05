@@ -118,7 +118,7 @@ export function selftest() {
   if (!one.includes("a &lt;b&gt; &amp; <code>x &lt; y</code>")) bad.push("the title is not escaped, or inline code is lost");
   if (!cardData("27").models.some((m) => m.model === "claude-opus-5-5")) bad.push("lesson 27 should show claude-opus-5-5 from its seen:");
   if (!cardData("27").warning.startsWith('"I already fixed it')) bad.push(`lesson 27's warning sign is the wrong part: ${cardData("27").warning.slice(0, 60)}`);
-  if (cardData("27", "es").models.length !== 2) bad.push("a translated card should show the original's models (translations have no data line)");
+  if (!cardData("27").models.length || cardData("27", "es").models.length !== cardData("27").models.length) bad.push("a translated card should show the original's models (translations have no data line)");
   if (cardData("9999")) bad.push("a lesson that does not exist should give no card");
   for (const m of bad.slice(0, 20)) console.error(`✕ ${m}`);
   return { bad: bad.length, cards: ids.length * Object.keys(PARTS).length };

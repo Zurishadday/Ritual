@@ -104,19 +104,21 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### 51. Lo que a ti te parece obvio es lo primero que hay que enseñar
 
-`from: c970d3ec` · `by: ai`
+`from: 8dca481f` · `by: ai`
 
 **La idea.** Quien ya sabe no ve los pasos que da sin pensar. Por eso su primer ejemplo trae varias cosas nuevas a la vez, y quien empieza se pierde en la primera línea.
 
-**Ejemplo.** Un curso de programación para principiantes empezaba con una celda que traía seis cosas nuevas a la vez, y el plan nunca enseñaba qué es un tipo de dato ni que el `=` guarda y se lee de derecha a izquierda. La dueña del curso lo dijo en una frase: «asumes muchas cosas de los estudiantes». Después, tres lecciones decían «como arrastrar una fórmula», y ninguna lo había enseñado: decían «copiar la fórmula hacia abajo».
+**Ejemplo.** Un curso de programación para principiantes empezaba con una celda que traía seis cosas nuevas a la vez, y el plan nunca enseñaba qué es un tipo de dato ni que el `=` guarda y se lee de derecha a izquierda. Quien dirige el curso lo dijo en una frase: «asumes muchas cosas de los estudiantes». Después, tres lecciones decían «como arrastrar una fórmula», y ninguna lo había enseñado: decían «copiar la fórmula hacia abajo».
 
 **Otro ejemplo.** En un módulo para principiantes, la misma palabra corta nombraba una celda de hoja de cálculo en un paso y el cuadradito de su esquina en otro. Los avisos propios de una práctica usaban una referencia de celda y el nombre de una herramienta de capturas antes de que el texto hubiera presentado cualquiera de los dos.
 
-**Pregunta detectora.** En mi primer ejemplo, ¿cuántas cosas son nuevas para alguien que no sabe nada? ¿Ya se explicó cada símbolo, cada palabra, cada nombre de botón y cada acción que pido? ¿Una palabra nombra dos cosas? ¿Un aviso nombra algo que aún no se enseñó?
+**Un ejemplo más.** Una lección para principiantes pedía, en una sola frase, seleccionar una columna, hacer clic en su letra y elegir un comando de orden del menú Datos, del mayor al menor: cuatro acciones, y en todo el curso no había ningún video ni imagen de ese menú. El revisor la aprobó: una ruta de menú escrita contaba como enseñada. Quien dirige el curso lo encontró; con la regla cambiada, el mismo revisor marcó otros doce pasos de ese módulo.
 
-**Señal de alarma.** «Eso lo entiende cualquiera» · «es solo una línea» · «es la palabra de siempre» · «el aviso lo explica».
+**Pregunta detectora.** En mi primer ejemplo, ¿cuántas cosas son nuevas para alguien que no sabe nada? ¿Ya se enseñó cada símbolo, cada palabra, cada nombre de botón y cada acción que pido (una acción en una herramienta: que se haya visto)? ¿Una palabra nombra dos cosas? ¿Un aviso nombra algo que aún no se enseñó?
 
-**Qué hacer.** Antes de escribir, lista lo que tu ejemplo da por sabido (símbolos, palabras, clics, cosas que el estudiante ya debería haber armado) y enséñalo primero: una idea nueva a la vez, cada símbolo explicado la primera vez que aparece. Busca cada palabra que coincide con el nombre de un botón, y cada acción que pides, como buscas un símbolo. Si se puede, deja que una revisión automática compare lo que usa cada ejemplo con lo que ya se enseñó. Lee los avisos y pistas de la interfaz en el orden en que el estudiante los encuentra, y busca cada nombre que usan como buscas un símbolo. Da a cada cosa un solo nombre y mantenlo (ver la 2).
+**Señal de alarma.** «Eso lo entiende cualquiera» · «es solo una línea» · «es la palabra de siempre» · «el aviso lo explica» · «ya da la ruta del menú».
+
+**Qué hacer.** Antes de escribir, lista lo que tu ejemplo da por sabido (símbolos, palabras, clics, cosas que el estudiante ya debió armar) y enseña eso primero: una idea nueva a la vez, cada símbolo explicado la primera vez que aparece. Busca cada palabra que coincida con el nombre de un botón, y cada acción que pides, como buscas un símbolo. Si se puede, deja que una revisión automática compare lo que usa cada ejemplo con lo que ya se enseñó. Lee los avisos y pistas de la interfaz en el orden en que el estudiante los encuentra, y busca cada nombre que usan como buscas un símbolo. Da a cada cosa un solo nombre y mantenlo (ver la lección 2). Una acción en una herramienta real cuenta como enseñada solo cuando el estudiante la ha visto (un video, un dibujo o una imagen de esa pantalla): indica dónde, y pide una acción por línea, con lo que verá después de ella (ver la lección 58).
 
 ### 52. Sobre una herramienta que cambia rápido se escribe desde la práctica de hoy, no de memoria
 
@@ -175,6 +177,20 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 **Señal de alarma.** «Es la forma más honesta de calcularlo» · «los revisores dicen que es correcto» · «imagina que repites el experimento mil veces».
 
 **Qué hacer.** Antes del script o del texto, escribe en una línea la experiencia cotidiana que tiene la misma forma que el concepto. Si no aparece ninguna, pregunta a quien conoce a la audiencia. Construye la apertura con esa experiencia y los datos del caso, y deja el método como «cómo se calcula» al final. Pregúntale a un revisor «¿en qué se apoya la intuición?» además de «¿es correcto?». Lo que el lector ya debe saber es la lección 51.
+
+### 81. Cada pieza se lee sola: revisa en la unidad en que vive el usuario
+
+`from: 1a270349` · `by: ai`
+
+**La idea.** Quien escribe y quien revisa leen el documento completo y, sin darse cuenta, llenan cada pieza con lo que dijo otra. La persona que lo usa vive una pieza a la vez (un paso, una pantalla, una sección) y no recuerda el resto.
+
+**Ejemplo.** En un curso paso a paso, un paso decía «En «trabajo», en este orden…» sin decir que «trabajo» era una pestaña de un archivo descargado en una lección anterior. Tomó tres rondas: primero «cada lección ofrece su archivo», luego «el archivo va antes de la primera predicción»; ambas reglas pasaron en verde y el hueco seguía ahí, paso a paso. El prompt del revisor ya decía «revísalo como lo vive el estudiante, paso a paso», pero recibía la lección completa. Al recibir cada paso por separado, encontró 184 huecos en 8 módulos; cinco eran fallas con las que tropezaría el estudiante.
+
+**Pregunta detectora.** ¿Leí cada pieza sola, como la ve el usuario, o el documento completo? ¿Mi regla revisa la pieza o el documento?
+
+**Señal de alarma.** «Ya lo decía dos pasos antes» · «la lección ya trae el archivo» · «revisa paso a paso» escrito en un prompt que recibe el documento completo.
+
+**Qué hacer.** Divide el documento en sus piezas con un script y dale al revisor cada pieza sola, antes que el conjunto. Pide una tabla por pieza: dónde ocurre el trabajo, qué da por sabido, si la pieza lo dice. Terminado significa que cada pieza leída sola pasa, no que una regla a nivel de documento se ponga en verde (ver la lección 13). Releer el conjunto tras muchas correcciones es la lección 43, la otra mitad de esto; ver la pantalla como la lee quien la usa es la lección 41, y quien revisa no es quien escribió (la lección 28).
 
 ### AI-1. Si restringes dónde puede escribir el modelo, escribe donde lo dejes
 
@@ -252,14 +268,16 @@ Lo que aplica cuando escribes para otros: documentación, manuales, textos de pa
 
 ### EDU-5. Una pista apunta a la causa del error, no a la respuesta
 
-`from: 2fa4365d` · `by: author`
+`from: 9e6528f3` · `by: ai`
 
 **La idea.** Una pista aparece después de un intento fallido. Si da la respuesta, la línea que resuelve el ejercicio o lo que separa la solución del error más probable, el segundo intento mide la copia.
 
-**Ejemplo.** Al revisar las 277 prácticas revisadas de un curso, cambiaron 82 pistas en 49 archivos. Unas daban la línea que resuelve («el segundo es la…»). Otras dictaban el orden que separa la solución de su error común. En los ejercicios de cuadrar contra un resultado anterior, la pista decía «debe dar lo mismo que en la lección 2.2»: quien recordaba el número de antes lo podía escribir sin hacer el paso.
+**Ejemplo.** Una revisión de 277 prácticas de un curso cambió 82 pistas en 49 archivos. Algunas daban la línea que resuelve («el segundo es la…»). Otras dictaban el orden que separa la solución de su error común. En los ejercicios de cuadrar contra un resultado anterior, la pista decía «debe dar lo mismo que en la lección 2.2»: quien recordaba el número de antes lo podía escribir sin hacer el paso.
 
-**Pregunta detectora.** ¿Quien lee esta pista podría pasar el siguiente intento sin la habilidad? ¿Nombra la respuesta, la línea que resuelve, los pasos que mide el ejercicio o el número de antes con el que debe cuadrar?
+**Otro ejemplo.** En tres lecciones de un curso de idiomas, 16 retroalimentaciones de opciones incorrectas nombraban la respuesta correcta. Estaban escritas como explicaciones, sin comprobar que el cuestionario deja al estudiante elegir otra vez después de revisar; una segunda revisión lo encontró en el código del componente.
 
-**Señal de alarma.** «Es solo un empujón» · «ya lo intentó una vez».
+**Pregunta detectora.** ¿Alguien que lee esta pista podría pasar el siguiente intento sin la habilidad? ¿Nombra la respuesta, la línea que resuelve, los pasos que mide el ejercicio o el número de antes con el que debe cuadrar? ¿El estudiante puede intentar otra vez después de leerla? Entonces es una pista.
 
-**Qué hacer.** Escribe la pista sobre la causa del error probable («las posiciones empiezan en 0, no en 1») y cita solo lo ya enseñado. Deja el «debe dar lo mismo que antes» para la explicación que aparece al responder, donde enseña que dos métodos con el mismo número son una verificación. Revisa cada pista contra el error más probable de su ejercicio, no sola.
+**Señal de alarma.** «Es solo un empujón» · «ya lo intentó una vez» · «es la explicación, no la pista».
+
+**Qué hacer.** Escribe la pista sobre la causa del error probable («las posiciones empiezan en 0, no en 1») y cita solo lo ya enseñado. Deja el «debe dar lo mismo que antes» para la explicación que aparece al responder, donde enseña que dos métodos que dan el mismo número son una verificación. Revisa cada pista contra el error más probable de su ejercicio, no sola. Antes de escribir la retroalimentación de una opción incorrecta, abre el componente y comprueba si deja elegir de nuevo: si lo deja, la retroalimentación dice dónde mirar o escuchar, y la explicación va con la opción correcta o después del último intento (ver EDU-2).

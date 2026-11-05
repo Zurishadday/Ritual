@@ -17,6 +17,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **54.** [“O X no início e no fechamento”: todo tradutor escolhe a mesma leitura errada](writing-and-docs.md#54-o-x-no-início-e-no-fechamento-todo-tradutor-escolhe-a-mesma-leitura-errada)
 - **58.** [Uma instrução feita de várias peças é vista antes de ser montada](writing-and-docs.md#58-uma-instrução-feita-de-várias-peças-é-vista-antes-de-ser-montada)
 - **64.** [Ancore um conceito em algo que o leitor já viveu, e não em como ele é calculado](writing-and-docs.md#64-ancore-um-conceito-em-algo-que-o-leitor-já-viveu-e-não-em-como-ele-é-calculado)
+- **81.** [Cada peça é lida sozinha: revise na unidade em que o usuário vive](writing-and-docs.md#81-cada-peça-é-lida-sozinha-revise-na-unidade-em-que-o-usuário-vive)
 - **AI-1.** [Se você restringe onde o modelo pode escrever, ele escreve onde você deixar](writing-and-docs.md#ai-1-se-você-restringe-onde-o-modelo-pode-escrever-ele-escreve-onde-você-deixar)
 - **AI-2.** [Uma regra escrita como lista de verificação é executada como lista de verificação, mesmo depois de a outra pessoa ter respondido](writing-and-docs.md#ai-2-uma-regra-escrita-como-lista-de-verificação-é-executada-como-lista-de-verificação-mesmo-depois-de-a-outra-pessoa-ter-respondido)
 - **AI-4.** [As instruções de um modelo não trazem o próprio changelog](writing-and-docs.md#ai-4-as-instruções-de-um-modelo-não-trazem-o-próprio-changelog)
@@ -89,6 +90,8 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **57.** [Uma tecla chega de forma diferente em cada sistema](interface-and-design.md#57-uma-tecla-chega-de-forma-diferente-em-cada-sistema)
 - **59.** [Um evento de algo já substituído não pode agir](interface-and-design.md#59-um-evento-de-algo-já-substituído-não-pode-agir)
 - **73.** [Uma página que precisa convencer é desenhada a partir do que ela mostra](interface-and-design.md#73-uma-página-que-precisa-convencer-é-desenhada-a-partir-do-que-ela-mostra)
+- **77.** [Um gráfico animado não pode mentir no meio do caminho](interface-and-design.md#77-um-gráfico-animado-não-pode-mentir-no-meio-do-caminho)
+- **80.** [A aparência de um personagem não vem do rótulo do seu grupo](interface-and-design.md#80-a-aparência-de-um-personagem-não-vem-do-rótulo-do-seu-grupo)
 - **VIDEO-1.** [Em um vídeo, cada ação cai quando a narração a nomeia](interface-and-design.md#video-1-em-um-vídeo-cada-ação-cai-quando-a-narração-a-nomeia)
 - **VIDEO-2.** [Em um vídeo, o que muda sem aparecer é marcado](interface-and-design.md#video-2-em-um-vídeo-o-que-muda-sem-aparecer-é-marcado)
 - **WEB-2.** [Um formulário público recebe robôs desde o primeiro dia](interface-and-design.md#web-2-um-formulário-público-recebe-robôs-desde-o-primeiro-dia)
@@ -105,6 +108,9 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **60.** [O que viaja como argumento de processo tem um limite que você só vê quando o conteúdo cresce](console-and-tools.md#60-o-que-viaja-como-argumento-de-processo-tem-um-limite-que-você-só-vê-quando-o-conteúdo-cresce)
 - **62.** [Parar trabalho em segundo plano é parar quem o lança, e depois provar que nada sobrou](console-and-tools.md#62-parar-trabalho-em-segundo-plano-é-parar-quem-o-lança-e-depois-provar-que-nada-sobrou)
 - **69.** [Um processo iniciado por uma ferramenta de vida curta morre quando a ferramenta termina](console-and-tools.md#69-um-processo-iniciado-por-uma-ferramenta-de-vida-curta-morre-quando-a-ferramenta-termina)
+- **78.** [O que o shell encontra, um programa pode não encontrar](console-and-tools.md#78-o-que-o-shell-encontra-um-programa-pode-não-encontrar)
+- **79.** [Um gerador que não encontra o que já fez refaz tudo](console-and-tools.md#79-um-gerador-que-não-encontra-o-que-já-fez-refaz-tudo)
+- **82.** [Uma ferramenta que esvazia a pasta ao iniciar leva o que outros salvaram ali](console-and-tools.md#82-uma-ferramenta-que-esvazia-a-pasta-ao-iniciar-leva-o-que-outros-salvaram-ali)
 
 ## Git e processo
 
@@ -116,3 +122,4 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **47.** [O que se trabalha em paralelo colide no que é compartilhado](git-and-process.md#47-o-que-se-trabalha-em-paralelo-colide-no-que-é-compartilhado)
 - **65.** [Uma regra sobre como trabalhar não tem exceção para passos pequenos](git-and-process.md#65-uma-regra-sobre-como-trabalhar-não-tem-exceção-para-passos-pequenos)
 - **70.** [Um pedido aberto deriva para o que é mais fácil de criticar: o objetivo e o escopo devem estar no pedido](git-and-process.md#70-um-pedido-aberto-deriva-para-o-que-é-mais-fácil-de-criticar-o-objetivo-e-o-escopo-devem-estar-no-pedido)
+- **76.** [Uma aprovação vale para a peça para a qual foi dada](git-and-process.md#76-uma-aprovação-vale-para-a-peça-para-a-qual-foi-dada)

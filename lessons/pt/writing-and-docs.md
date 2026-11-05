@@ -104,19 +104,21 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 ### 51. O que parece óbvio para você é a primeira coisa a ensinar
 
-`from: c970d3ec` · `by: ai`
+`from: 8dca481f` · `by: ai`
 
 **A ideia.** Quem já sabe não percebe os passos que dá sem pensar. Por isso o primeiro exemplo traz várias coisas novas de uma vez, e um iniciante se perde na primeira linha.
 
-**Exemplo.** Um curso de programação para iniciantes abriu com uma célula que tinha seis coisas novas ao mesmo tempo, e o plano nunca ensinava o que é um tipo de dado nem que o `=` guarda e lê da direita para a esquerda. O responsável pelo curso resumiu em uma frase: “você presume muito sobre os estudantes”. Depois, três lições diziam “como arrastar uma fórmula”; nenhuma tinha ensinado a arrastar, só “copiar a fórmula para baixo”.
+**Exemplo.** Um curso de programação para iniciantes abriu com uma célula que trazia seis coisas novas ao mesmo tempo, e o plano nunca ensinava o que é um tipo de dado, nem que o `=` guarda e lê da direita para a esquerda. O responsável pelo curso disse em uma frase: “você presume muito sobre os estudantes”. Depois, três lições diziam “como arrastar uma fórmula”; nenhuma tinha ensinado a arrastar, só “copiar a fórmula para baixo”.
 
 **Outro exemplo.** Em um módulo para iniciantes, a mesma palavra curta nomeava uma célula da planilha num passo e o quadradinho no canto dela em outro. Os avisos de uma prática usavam uma referência de célula e o nome de uma ferramenta de captura de tela antes de o texto ter apresentado qualquer uma delas.
 
-**Pergunta detectora.** No meu primeiro exemplo, quantas coisas são novas para quem não sabe nada? Cada símbolo, cada palavra, cada nome de botão e cada ação que eu peço já foi ensinado? Uma palavra nomeia duas coisas? Um aviso nomeia algo ainda não ensinado?
+**Mais um exemplo.** Uma lição para iniciantes pedia, em uma frase, que se selecionasse uma coluna, se clicasse na sua letra e se escolhesse um comando de ordenação no menu Dados da planilha, do maior para o menor: quatro ações, e nenhum vídeo ou imagem desse menu em todo o curso. O revisor aprovou: um caminho de menu escrito contava como ensinado. O responsável pelo curso encontrou o problema; com a regra mudada, o mesmo revisor marcou mais doze passos naquele módulo.
 
-**Sinal de alerta.** “Qualquer um entende” · “é só uma linha” · “é a palavra de sempre.” · “O aviso explica.”
+**Pergunta detectora.** No meu primeiro exemplo, quantas coisas são novas para quem não sabe nada? Cada símbolo, cada palavra, cada nome de botão e cada ação que eu peço já foi ensinado (uma ação numa ferramenta: vista)? Uma palavra nomeia duas coisas? Um aviso nomeia algo ainda não ensinado?
 
-**O que fazer.** Antes de escrever, liste o que o seu exemplo dá por certo (símbolos, palavras, cliques, coisas que o estudante já deveria ter construído) e ensine essas coisas primeiro: uma ideia nova por vez, cada símbolo explicado na primeira vez em que aparece. Procure cada palavra igual ao nome de um botão, e cada ação que você pede, do mesmo jeito que procura um símbolo. Se possível, deixe uma verificação automática comparar o que cada exemplo usa com o que já foi ensinado. Leia os avisos e as dicas da interface na ordem em que o estudante os encontra, e busque cada nome que eles usam do mesmo jeito que busca um símbolo. Dê a cada coisa um nome só e mantenha-o (ver a lição 2).
+**Sinal de alerta.** “Qualquer um entende” · “é só uma linha” · “é a palavra de sempre.” · “O aviso explica.” · “Já dá o caminho do menu.”
+
+**O que fazer.** Antes de escrever, liste o que o seu exemplo dá por certo (símbolos, palavras, cliques, coisas que o estudante já deveria ter construído) e ensine essas coisas primeiro: uma ideia nova por vez, cada símbolo explicado na primeira vez em que aparece. Procure cada palavra igual ao nome de um botão, e cada ação que você pede, do mesmo jeito que procura um símbolo. Se possível, deixe uma verificação automática comparar o que cada exemplo usa com o que já foi ensinado. Leia os avisos e as dicas da interface na ordem em que o estudante os encontra, e busque cada nome que eles usam do mesmo jeito que busca um símbolo. Dê a cada coisa um nome só e mantenha-o (ver a lição 2). Uma ação numa ferramenta real só conta como ensinada depois que o estudante a viu (um vídeo, um desenho ou uma imagem daquela tela): cite onde, e peça uma ação por linha, com o que ele vai ver depois dela (ver a lição 58).
 
 ### 52. Escreva sobre uma ferramenta que muda rápido a partir da prática de hoje, não da memória
 
@@ -175,6 +177,20 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 **Sinal de alerta.** “É a forma mais honesta de calcular” · “os revisores dizem que está correto” · “imagine que você repete o experimento mil vezes”.
 
 **O que fazer.** Antes do script ou do texto, escreva em uma linha a experiência cotidiana que tem o mesmo formato do conceito. Se nenhuma vier à mente, pergunte a quem conhece o público. Construa a abertura a partir dessa experiência e dos dados do caso, e deixe o método como “como é calculado” no fim. Pergunte a um revisor “em que repousa a intuição?”, além de “está correto?”. O que o leitor precisa já saber é o tema da lição 51.
+
+### 81. Cada peça é lida sozinha: revise na unidade em que o usuário vive
+
+`from: 1a270349` · `by: ai`
+
+**A ideia.** Quem escreve e quem revisa lê o documento inteiro e, sem perceber, preenche cada peça com o que outra peça disse. A pessoa que usa vive uma peça de cada vez (um passo, uma tela, uma seção) e não se lembra do resto.
+
+**Exemplo.** Em um curso passo a passo, um passo dizia “Em «trabalho», nesta ordem…” sem dizer que «trabalho» era uma aba de um arquivo baixado em uma lição anterior. Levou três rodadas: primeiro “cada lição oferece o seu arquivo”, depois “o arquivo vem antes da primeira previsão”; as duas regras ficaram verdes e a lacuna continuou ali, passo a passo. O prompt do revisor já dizia “revise como o aluno vive, passo a passo”, mas ele recebia a lição inteira. Lendo cada passo sozinho, encontrou 184 lacunas em 8 módulos, cinco delas falhas em que o aluno iria tropeçar.
+
+**Pergunta detectora.** Eu li cada peça sozinha, como o usuário a vê, ou o documento inteiro? A minha regra verifica a peça ou o documento?
+
+**Sinal de alerta.** “Já disse isso dois passos antes.” · “a lição já tem o arquivo.” · “revise passo a passo” escrito num prompt que recebe o documento inteiro.
+
+**O que fazer.** Divida o documento em suas peças com um script e entregue ao revisor cada peça sozinha, antes do documento inteiro. Peça uma tabela por peça: onde o trabalho acontece, o que ela dá por certo e se a peça diz isso. Pronto significa que cada peça lida sozinha passa, e não que uma regra de nível de documento ficou verde (ver a lição 13). Reler o todo depois de muitas correções é a lição 43, a outra metade disso; ver na tela como o leitor vê é a lição 41, e quem revisa não é quem escreveu (lição 28).
 
 ### AI-1. Se você restringe onde o modelo pode escrever, ele escreve onde você deixar
 
@@ -252,14 +268,16 @@ O que vale quando você escreve para outras pessoas: documentação, manuais, te
 
 ### EDU-5. Uma dica aponta para a causa do erro, não para a resposta
 
-`from: 2fa4365d` · `by: ai`
+`from: 9e6528f3` · `by: ai`
 
 **A ideia.** A dica aparece depois de uma tentativa errada. Se ela dá a resposta, a linha que resolve o exercício, ou o que separa a solução do erro mais provável, a segunda tentativa mede cópia.
 
 **Exemplo.** Uma revisão das 277 práticas verificadas de um curso mudou 82 dicas em 49 arquivos. Algumas davam a linha que resolve (“o segundo é o…”). Algumas ditavam a ordem que separa a solução do erro comum. Em exercícios de “confira com um resultado anterior”, a dica dizia “deve bater com o que você obteve na lição 2.2”: quem lembrasse o número anterior podia digitá-lo sem fazer o passo.
 
-**Pergunta detectora.** Alguém que lê esta dica consegue passar na próxima tentativa sem a habilidade? Ela nomeia a resposta, a linha que resolve, os passos que o exercício mede, ou o número anterior com o qual deveria bater?
+**Outro exemplo.** Em três lições de um curso de idioma, 16 feedbacks de opções erradas nomeavam a resposta certa. Eles foram escritos como explicações, sem conferir se o quiz permite escolher de novo depois de verificar; uma segunda revisão encontrou isso no código do componente.
 
-**Sinal de alerta.** “É só um empurrãozinho” · “eles já tentaram uma vez.”
+**Pergunta detectora.** Alguém que lê esta dica consegue passar na próxima tentativa sem a habilidade? Ela nomeia a resposta, a linha que resolve, os passos que o exercício mede, ou o número anterior com o qual deveria bater? Se o aluno pode tentar de novo depois de lê-la, então ela é uma dica.
 
-**O que fazer.** Escreva a dica sobre a causa do erro provável (“as posições começam em 0, não em 1”), e cite apenas o que já foi ensinado. Guarde o “deve bater com o número anterior” para a explicação mostrada depois de responder, onde ensina que dois métodos que dão o mesmo número são uma verificação. Revise as dicas contra o erro mais provável do exercício, e não isoladamente.
+**Sinal de alerta.** “É só um empurrãozinho” · “eles já tentaram uma vez.” · “É a explicação, não a dica.”
+
+**O que fazer.** Escreva a dica sobre a causa do erro provável (“as posições começam em 0, não em 1”), e cite apenas o que já foi ensinado. Guarde o “deve bater com o número anterior” para a explicação mostrada depois de responder, onde ensina que dois métodos que dão o mesmo número são uma verificação. Revise as dicas contra o erro mais provável do exercício, e não isoladamente. Antes de escrever o feedback de uma opção errada, abra o componente e confira se ele permite escolher de novo: se permite, o feedback diz onde olhar ou ouvir, e a explicação vai com a opção certa ou depois da última tentativa (ver EDU-2).

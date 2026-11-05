@@ -84,7 +84,7 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 ### 47. O que se trabalha em paralelo colide no que é compartilhado
 
-`from: 83287f40` · `by: ai`
+`from: 28067331` · `by: ai`
 
 **A ideia.** Quando várias pessoas trabalham ao mesmo tempo, cada uma vê bem a sua parte. O que elas compartilham (os testes, os dados, os documentos do projeto inteiro) combina as mudanças de todas: nomes que colidem, cópias que ficam para trás, testes que leem um trabalho de outra pessoa ainda incompleto. Integrar é trabalho, não é colar.
 
@@ -92,11 +92,13 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 
 **Outro exemplo.** Duas conversas trabalhavam na mesma pasta, que compartilha mais do que arquivos: uma branch ativa, uma saída de build, uma porta de servidor de testes. Uma conversa trocou a pasta para outra branch; o próximo commit da outra caiu nessa branch, e o push para main disse “everything up to date” sem enviar nada. Voltar a pasta para main então levou junto as mudanças não commitadas da primeira conversa.
 
-**Pergunta detectora.** Qual arquivo duas peças estão tocando ao mesmo tempo, e quem o integra? Meu teste está lendo um trabalho de outra pessoa ainda incompleto? Em qual branch esta pasta está logo antes do commit, e quem mais a usa?
+**Mais um exemplo.** Os testes de uma branch davam “404” numa página nova que existia. A porta de teste, fixada na configuração, estava ocupada pelo servidor da pasta principal, que rodava os próprios testes; esperar não liberou a porta. A correção foi uma porta que cada pasta pode escolher com uma variável de ambiente, com a usual como padrão.
 
-**Sinal de alerta.** “Cada um testou a sua” · “a falha está na outra peça” · “cada um mexe em arquivos diferentes, não colidem.”
+**Pergunta detectora.** Qual arquivo duas peças estão tocando ao mesmo tempo, e quem o integra? Meu teste está lendo um trabalho de outra pessoa ainda incompleto? Em qual branch esta pasta está logo antes do commit, e quem mais a usa? Qual recurso fixo (uma porta, um banco de testes) cópias separadas ainda compartilham?
 
-**O que fazer.** Tenha uma pessoa integrando o que é compartilhado, com uma etapa que pare se um nome colidir. Faça os testes lerem o original, e não uma cópia. Rode a suíte de testes completa uma vez, quando todos terminarem, ou sem as peças que ainda estão mudando, e diga quais ficaram de fora. E salve juntas as peças que compartilham arquivos, para que cada versão salva funcione por inteiro. Dê a cada sessão a sua própria pasta (`git worktree`), leia `git status -sb` antes de cada commit, e depois de um push confira se a branch remota tem o commit.
+**Sinal de alerta.** “Cada um testou a sua” · “a falha está na outra peça” · “cada um mexe em arquivos diferentes, não colidem.” · “Dá 404, mas carrega no meu navegador.”
+
+**O que fazer.** Tenha uma pessoa integrando o que é compartilhado, com uma etapa que pare se um nome colidir. Faça os testes lerem o original, e não uma cópia. Rode a suíte de testes completa uma vez, quando todos terminarem, ou sem as peças que ainda estão mudando, e diga quais ficaram de fora. E salve juntas as peças que compartilham arquivos, para que cada versão salva funcione por inteiro. Dê a cada sessão a sua própria pasta (`git worktree`), leia `git status -sb` antes de cada commit, e depois de um push confira se a branch remota tem o commit. Pastas separadas ainda compartilham o que a configuração fixa: torne cada recurso fixo escolhível com uma variável, com o valor usual como padrão, e quando um teste falhar com “not found”, descubra quem ocupa a porta antes de mexer no código (ver a lição 27).
 
 ### 65. Uma regra sobre como trabalhar não tem exceção para passos pequenos
 
@@ -125,3 +127,17 @@ O que vale quando você salva, fecha, passa adiante ou coordena: commits, estado
 **Sinal de alerta.** “Vou dar total liberdade para que eles vejam o que ainda não vimos.”
 
 **O que fazer.** Escreva no pedido o objetivo de quem pediu o trabalho, nas palavras dessa pessoa, mais uma linha com o que está fora do escopo. Se você quiser liberdade para encontrar pontos cegos, conceda-a dentro desse escopo, e deixe uma única linha para o que for achado fora dele.
+
+### 76. Uma aprovação vale para a peça para a qual foi dada
+
+`from: 66dc161d` · `by: ai`
+
+**A ideia.** A aprovação de um dono vale para uma peça, com o trabalho dela e o público dela. Levar esse texto ou esse padrão para outra peça, com outro trabalho, não o torna aprovado: pergunte, ou decida de novo a partir das referências dessa outra peça.
+
+**Exemplo.** Uma página de inscrição para uma aula gratuita (uma página de anúncio: uma única ação, sem menu, o especialista no topo) e o título de uma página de vendas foram aprovados. Ao montar a página inicial do site, os dois foram copiados “porque já estavam aprovados”. O dono recusou: a aprovação valia só para a página da aula. Uma página inicial precisa de navegação, da lista do que o site oferece e de uma entrada para quem já está matriculado.
+
+**Pergunta detectora.** O que estou reutilizando: para qual peça isso foi aprovado, e esta peça tem o mesmo trabalho e o mesmo público?
+
+**Sinal de alerta.** “Isto já foi aprovado.”
+
+**O que fazer.** Antes de reutilizar um texto ou um padrão aprovado, diga para qual peça ele foi aprovado. Se a nova peça tem outro trabalho, trate o reaproveitamento como proposta: decida a partir das referências dessa peça e diga em uma linha o que reaproveita e por quê. Pergunte só o que pertence ao dono (dados, preços, promessas).

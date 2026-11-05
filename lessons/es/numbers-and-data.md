@@ -24,23 +24,25 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 2. Dos cosas con el mismo nombre no son la misma cosa
 
-`from: de984b04` · `by: ai`
+`from: 229af8ff` · `by: ai`
 
 **La idea.** «Cliente activo», «fecha», «el jefe», «el umbral»: la misma palabra suele esconder dos definiciones. Cuando dos reportes no cuadran, casi siempre es esto.
 
-**Ejemplo.** «Fecha» puede ser la del evento, la de carga o la de partición. O «el jefe»: el que la persona tiene hoy, o el que tenía cuando pasó lo que estás midiendo.
+**Ejemplo.** «Fecha» puede ser la fecha del evento, la de carga o la de partición. O «el jefe»: el jefe actual de la persona, o el que tenía cuando pasó lo que se está midiendo.
 
-**Otro ejemplo.** Una tabla de campañas traía la inversión de la empresa completa, pero los ingresos salían de una muestra de una compra de cada cien. Las dos columnas decían «pesos», y el retorno de todas las campañas salía negativo.
+**Otro ejemplo.** Una tabla de campañas tenía la inversión de toda la empresa, pero los ingresos venían de una muestra de una compra por cada cien. Las dos columnas se llamaban «pesos», y el retorno salió negativo en todas las campañas.
 
-**Un ejemplo más.** El costo de unos subagentes se calculó a partir del conteo de tokens del resumen de cada uno, y salió muy bajo: ese conteo dejaba fuera parte del uso. Sumar el uso de cada respuesta en sus transcripciones dio el costo real. Y un registro decía que un guardia había dejado «23 líneas» cuando había dejado 19 bloques.
+**Un ejemplo más.** El costo de algunos subagentes se tomó del conteo de tokens del resumen de cada uno, y salió muy bajo: ese conteo dejaba fuera parte del uso. Sumar el uso de cada respuesta en sus transcripciones dio el costo real. Y un registro decía que un guardia había dejado «23 líneas» cuando había dejado 19 bloques.
 
-**Un cuarto ejemplo.** Un script que publica una nota primero buscaba una ya publicada con el mismo título, y si encontraba una, la marcaba como enviada y borraba su borrador. Dos personas pueden escribir el mismo título: la nota de otra habría ocupado el lugar de esta, y el borrador se habría perdido. De quién es la nota lo dice el autor, no el título.
+**Un cuarto ejemplo.** Un script que publica una nota primero buscaba una ya publicada con el mismo título, y si la encontraba, la marcaba como enviada y borraba su borrador. Dos personas pueden escribir el mismo título: la nota de otra habría ocupado el lugar de esta, y el borrador se habría perdido. De quién es la nota lo dice el autor, no el título.
 
-**Pregunta detectora.** ¿Hay una regla que es verdad para una de las dos cosas y falsa para la otra? Y si combino dos cifras en una cuenta, ¿vienen del mismo universo, la misma escala y el mismo periodo?
+**Un quinto ejemplo.** Seis scripts de lecciones decían «el portal mezcla el orden de las opciones». Era cierto para el cuestionario, no para el ejercicio de ordenar, que muestra sus tarjetas en el orden en que se escribieron, agrupadas por respuesta, así que se podían adivinar por su posición. Y el ejercicio de ordenar toma el orden escrito como respuesta: los bloques copiados desordenados del script dejaban sin poder terminar a quien armaba bien la oración. Un revisor que leyó el código de cada componente encontró los dos problemas.
 
-**Señal de alarma.** «Es la misma fecha» · «la vista ya lo filtra» · «las dos están en pesos».
+**Pregunta detectora.** ¿Hay una regla que es verdad para una de las dos cosas y falsa para la otra? Y si combino dos cifras en una cuenta, ¿vienen del mismo universo, de la misma escala y del mismo periodo? Cuando «el sistema» hace algo: ¿en qué componente, y en sus hermanos?
 
-**Qué hacer.** Dale a cada variante un nombre distinto en el código y en la pantalla, aunque quede feo. Y antes de dividir o restar dos cifras de fuentes distintas, escribe de dónde sale cada una: si un resultado sale igual en todos los casos (todas pierden, todas ganan), sospecha de la escala antes que del negocio. Cuando una cifra sale de un campo o de un conteo, lee cómo se calcula (su documentación o su código) y escribe la unidad junto al número: «19 bloques», no «23 líneas». Cuando un nombre es lo que hace coincidir dos registros (un título, una etiqueta), agrega una clave que solo pueda tener el correcto, como su autor o su id, antes de actuar sobre la coincidencia. Para obtener la cifra de otra manera, ver la 12.
+**Señal de alarma.** «Es la misma fecha» · «la vista ya lo filtra» · «las dos están en pesos» · «El portal lo mezcla».
+
+**Qué hacer.** Dale a cada variante un nombre distinto en el código y en la pantalla, aunque quede feo. Y antes de dividir o restar dos cifras de fuentes distintas, anota de dónde sale cada una: si un resultado sale igual en todos los casos (todas pierden, todas ganan), sospecha de la escala antes que del negocio. Cuando una cifra sale de un campo o de un conteo, lee cómo se calcula (su documentación o su código) y escribe la unidad junto al número: «19 bloques», no «23 líneas». Cuando un nombre es lo que hace coincidir dos registros (un título, una etiqueta), agrega una clave que solo pueda tener el correcto, como su autor o su id, antes de actuar sobre la coincidencia. Para obtener la cifra por otro camino, ver la lección 12. Una frase sobre lo que hace «el sistema» nombra el componente, comprobado en su código («el cuestionario mezcla; el ordenar no»; ver la lección 38).
 
 ### 3. El periodo en curso siempre está incompleto
 
@@ -86,21 +88,23 @@ Lo que aplica cuando calculas, mides o muestras un número: tableros, reportes, 
 
 ### 12. Que la consulta corra no prueba que el número esté bien
 
-`from: b2232042` · `by: author`
+`from: 69c26b3f` · `by: ai`
 
 **La idea.** «No dio error» no es «está bien». Compara contra algo independiente de tu propio cálculo.
 
 **Ejemplo.** Una pregunta de opción múltiple afirmaba que comparar un número con un texto entre comillas da error. En otros motores sí; en el que de verdad usaba la gente, la consulta corría y devolvía filas.
 
-**Otro ejemplo.** Un texto explicaba bien que un bloque con nombre vive solo dentro de su consulta, pero su propio ejemplo daba por hecho que tres consultas separadas lo compartían. Corrida, la segunda consulta daba error: la tabla no existía.
+**Otro ejemplo.** Un texto explicaba bien que un bloque con nombre vive solo dentro de su consulta, pero su propio ejemplo daba por hecho que tres consultas separadas lo compartían. Al correrlo, la segunda consulta daba error: la tabla no existía.
 
-**Un ejemplo más.** Se corrieron todos los ejemplos de una página, y aun así tres frases salieron falsas: la explicación de una opción, escrita al final, decía qué hace una línea que nadie corrió; una regla para leer errores («si dice esto, falta aquello») la contradecía otro paso de la misma página; y la introducción decía que una función «da un resultado» cuando no lo hace.
+**Un ejemplo más.** Se corrieron todos los ejemplos de una página, y aun así tres frases salieron falsas: la explicación de una opción, escrita al final, describía lo que hace una línea que nadie corrió; una regla para leer errores («si dice esto, entonces falta aquello») la contradecía otro paso de la misma página; y la introducción decía que una función «devuelve un resultado» cuando no lo hace.
 
-**Pregunta detectora.** ¿Con qué, fuera de mi código, voy a comprobar este resultado? Y lo que el texto afirma que hace el sistema, en un ejemplo, una regla o la explicación de una opción, ¿lo corrí en el motor real?
+**Un cuarto ejemplo.** En un módulo de un curso de idiomas, cinco reglas prácticas dadas a los estudiantes, escritas de memoria, fallaban en casos cercanos: «did you hear an *n* at the end?» distinguía *thirteen* de *thirty*, pero *seventy-one* también termina en *n*; «a syllable is added with *-es*» falla con *nurses*, que se escribe con *-s*. Los revisores las encontraron, no el autor.
 
-**Señal de alarma.** «En mi máquina corre» · «no dio error» · «así funciona, lo acabo de explicar».
+**Pregunta detectora.** ¿Contra qué, fuera de mi propio código, voy a comprobar este resultado? Y todo lo que el texto dice que hace el sistema, ya sea en un ejemplo, en una regla o en la explicación de una opción, ¿lo corrí en el motor real? Y una regla práctica que le doy a un estudiante: ¿en qué casos cercanos la probé?
 
-**Qué hacer.** Reconcilia contra una cifra conocida, el sistema de origen o el periodo anterior. Prueba en el entorno real: con sus permisos, sus librerías y la copia del código que de verdad se ejecuta. Cada afirmación sobre cómo se comporta el sistema se corre una vez antes de escribirla, también la que aparece de paso en un ejemplo o se escribe de último. Si la afirmación es una regla general («solo», «siempre», «nunca»), busca el caso que la rompería y córrelo también: «la conversión a entero solo lee enteros» se comprobó con un texto con decimales, y resultó falsa con un número con decimales. Al decir una fracción («cinco de cada seis»), nombra el todo del que sale; y un escenario inventado también se mide: el tamaño, la diferencia y el valor p tienen que cuadrar entre sí.
+**Señal de alarma.** «En mi máquina corre» · «no dio error» · «así funciona, lo acabo de explicar». · «La señal más segura es…»
+
+**Qué hacer.** Reconcilia contra una cifra conocida, el sistema de origen o el periodo anterior. Prueba en el entorno real: con sus permisos, sus librerías y la copia del código que de verdad se ejecuta. Cada afirmación sobre cómo se comporta el sistema se corre una vez antes de escribirla, también la que aparece de paso en un ejemplo o se escribe al final. Si la afirmación es una regla general («solo», «siempre», «nunca»), busca el caso que la rompería y córrelo también: «convertir a entero solo lee enteros» se comprobó con una cadena de texto que tenía decimales, y resultó falsa con un número con decimales. Al decir una fracción («cinco de cada seis»), nombra el todo del que es parte; y un escenario inventado también se revisa: el tamaño, la diferencia y el valor p tienen que cuadrar entre sí. Una regla práctica que das a un estudiante es una comprobación que hará solo: bajo esa regla, escribe tres casos cercanos que no usaste para diseñarla y aplícala a cada uno (ver la lección 13).
 
 ### 36. Mide antes de escribir
 

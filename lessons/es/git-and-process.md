@@ -84,19 +84,21 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 
 ### 47. Lo que se trabaja en paralelo se cruza en lo compartido
 
-`from: 83287f40` · `by: ai`
+`from: 28067331` · `by: ai`
 
 **La idea.** Cuando varias personas trabajan a la vez, cada una ve bien su pieza. Lo que comparten (las pruebas, los datos, los documentos de todo el proyecto) junta sus cambios: nombres que chocan, copias que se quedan atrás, pruebas que leen el trabajo a medias de otra persona. Integrar es un trabajo, no un pegado.
 
-**Ejemplo.** Cuatro personas escribían a la vez una pieza cada una y dejaban lo compartido como entrega. Al integrar, dos entregas usaban un nombre que ya existía en la prueba común, y la prueba dejó de correr. Otra prueba guardaba una copia de lo que revisaba, la pieza cambió y la copia no. Una corrida de las pruebas falló por una imagen que otra persona todavía estaba dibujando. Y al final no se podía guardar cada pieza por separado: los archivos comunes ya traían cambios de todas.
+**Ejemplo.** Cuatro personas escribían cada una una pieza al mismo tiempo y dejaban lo compartido como entrega. Al integrar, dos entregas usaban un nombre que ya existía en la prueba común, y la prueba dejó de correr. Otra prueba guardaba una copia de lo que revisaba: la pieza cambió y la copia no. Una corrida de pruebas falló por una imagen que otra persona todavía estaba dibujando. Y al final no se podía guardar cada pieza por separado: los archivos compartidos ya traían cambios de todos.
 
-**Otro ejemplo.** Dos conversaciones trabajaban en la misma carpeta, que comparte más que archivos: una rama activa, una salida de compilación y un puerto del servidor de pruebas. Una conversación cambió la carpeta a otra rama; el siguiente commit de la otra conversación cayó en esa rama, y su push a main dijo «everything up to date» sin subir nada. Al volver la carpeta a main, arrastró los cambios sin confirmar de la primera conversación.
+**Otro ejemplo.** Dos conversaciones trabajaban en la misma carpeta, que comparte más que archivos: una rama activa, una salida de compilación y un puerto del servidor de pruebas. Una conversación cambió la carpeta a otra rama; el siguiente commit de la otra cayó en esa rama, y su push a main dijo «everything up to date» sin subir nada. Al volver la carpeta a main, arrastró los cambios sin confirmar de la primera conversación.
 
-**Pregunta detectora.** ¿Qué archivo tocan dos piezas a la vez, y quién lo integra? ¿Mi prueba está leyendo el trabajo a medias de otra persona? ¿Qué rama tiene esta carpeta justo antes del commit, y quién más la usa?
+**Un ejemplo más.** Las pruebas de una rama daban «404» en una página nueva que sí existía. El puerto de pruebas, fijado en la configuración, lo tenía el servidor de la carpeta principal, que corría sus propias pruebas; esperar no lo liberaba. La solución fue un puerto que cada carpeta puede elegir con una variable de entorno, con el habitual como valor por defecto.
 
-**Señal de alarma.** «Cada quien probó lo suyo» · «la falla es de otra pieza» · «cada uno toca archivos distintos, no chocan».
+**Pregunta detectora.** ¿Qué archivo tocan dos piezas a la vez, y quién lo integra? ¿Mi prueba lee el trabajo a medias de otra persona? ¿Qué rama tiene esta carpeta justo antes del commit, y quién más la usa? ¿Qué recurso fijo (un puerto, una base de datos de pruebas) siguen compartiendo las copias separadas?
 
-**Qué hacer.** Que lo compartido lo integre una sola persona, con un paso que se detenga si un nombre choca. Que las pruebas lean el original, no una copia. Corre las pruebas completas cuando todas terminen, o sin las piezas que siguen cambiando, y di cuáles quedaron fuera. Y guarda juntas las piezas que comparten archivos, para que cada versión guardada funcione completa. Dale a cada sesión su propia carpeta (`git worktree`), lee `git status -sb` antes de cada commit, y después de un push revisa que la rama remota tenga el commit.
+**Señal de alarma.** «Cada quien probó lo suyo» · «la falla es de otra pieza» · «cada uno toca archivos distintos, no chocan» · «da 404, pero en mi navegador carga».
+
+**Qué hacer.** Que lo compartido lo integre una sola persona, con un paso que se detenga si un nombre choca. Que las pruebas lean el original, no una copia. Corre las pruebas completas cuando todos terminen, o sin las piezas que siguen cambiando, y di cuáles quedaron fuera. Y guarda juntas las piezas que comparten archivos, para que cada versión guardada funcione completa. Dale a cada sesión su propia carpeta (`git worktree`), lee `git status -sb` antes de cada commit, y después de un push revisa que la rama remota tenga el commit. Las carpetas separadas siguen compartiendo lo que fija la configuración: haz que cada recurso fijo se pueda elegir con una variable, con el valor habitual por defecto, y cuando una prueba falle con «not found», averigua quién ocupa el puerto antes de tocar el código (ver la lección 27).
 
 ### 65. Una regla sobre cómo trabajar no tiene excepción para los pasos chicos
 
@@ -125,3 +127,17 @@ Lo que aplica cuando guardas, cierras, entregas o coordinas: commits, estados, p
 **Señal de alarma.** «Les doy total libertad para que vean lo que no hemos visto».
 
 **Qué hacer.** Escribe en el encargo el objetivo de quien pidió el trabajo, con sus palabras, más una línea con lo que queda fuera. Si quieres libertad para encontrar puntos ciegos, concédela dentro de ese alcance, y deja una sola línea para lo que encuentren fuera de él.
+
+### 76. Una aprobación cubre la pieza para la que se dio
+
+`from: 66dc161d` · `by: ai`
+
+**La idea.** El «sí» de un dueño aprueba una pieza, con su función y su público. Llevar ese texto o ese patrón a otra pieza con otra función no lo aprueba: pregunta, o decide de nuevo a partir de las referencias de esa pieza.
+
+**Ejemplo.** Una página de registro para una clase gratuita (una página de anuncio: una sola acción, sin menú, el experto arriba) y el titular de una página de ventas estaban aprobados. Al armar la página principal del sitio, se copiaron los dos «porque ya estaban aprobados». El dueño lo rechazó: la aprobación era solo para la página de la clase. Una página principal necesita navegación, la lista de lo que ofrece el sitio y una entrada para quienes ya están inscritos.
+
+**Pregunta detectora.** ¿Qué estoy reutilizando: para qué pieza se aprobó, y esta tiene la misma función y el mismo público?
+
+**Señal de alarma.** «Esto ya estaba aprobado».
+
+**Qué hacer.** Antes de reutilizar un texto o un patrón aprobado, di para qué pieza se aprobó. Si la pieza nueva tiene otra función, trata la reutilización como una propuesta: decide a partir de las referencias de esa pieza y di en una línea qué reutilizas y por qué. Pregunta solo lo que le toca al dueño (datos, precios, promesas).

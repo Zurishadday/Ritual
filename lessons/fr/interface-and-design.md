@@ -133,17 +133,19 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 
 ### 49. Une règle générale ne doit pas écraser en silence les règles spécifiques
 
-`from: 4a81cf45` · `by: ai`
+`from: 681630b6` · `by: ai`
 
 **L'idée.** Une règle qui s'applique à tout (un style global, une valeur par défaut) peut écraser ce que chaque élément a décidé pour lui-même, sans qu'aucun avertissement ne vous prévienne.
 
 **Exemple.** Le style de focus clavier, écrit pour tout le site, venait avec son propre rayon de bordure. Comme il était placé au-dessus des styles propres à chaque composant, un bouton en forme de pilule changeait de forme au focus clavier. Personne ne l'a remarqué, parce qu'à la souris le focus n'apparaît pas.
 
-**Question détectrice.** Cette règle générale touche-t-elle à quelque chose que chaque élément décide déjà pour lui-même ? En cas de conflit, laquelle l'emporte ?
+**Autre exemple.** Un site d'apprentissage portait `noindex` dans sa mise en page racine, choisi quand il ne tournait qu'en local. Quand sa page d'inscription et sa page d'accueil ont été mises en ligne, les deux en ont hérité et n'ont pu apparaître dans les résultats de recherche tant que personne n'a demandé de travailler le référencement.
 
-**Signal d'alarme.** « Je l'ai rendu global pour ne pas avoir à le répéter. »
+**Question détectrice.** Cette règle générale touche-t-elle à quelque chose que chaque élément décide déjà pour lui-même ? En cas de conflit, laquelle l'emporte ? Ou un nouvel élément hérite-t-il d'une valeur par défaut choisie pour un rôle qui n'est pas le sien ?
 
-**Que faire.** Laissez la règle générale ne toucher que ce qui lui appartient (le contour de focus, pas la forme). Si elle doit l'emporter volontairement, écrivez-le à côté. Et testez-la sur l'élément le plus différent, pas seulement sur le plus courant.
+**Signal d'alarme.** « Je l'ai rendu global pour ne pas avoir à le répéter. » · « La page est en production, donc elle est visible. »
+
+**Que faire.** Laissez la règle générale ne toucher que ce qui lui appartient (le contour de focus, pas la forme). Si elle doit l'emporter volontairement, écrivez-le à côté. Et testez-la sur l'élément le plus différent, pas seulement sur le plus courant. Une nouvelle page publique déclare sa propre valeur (`index, follow`) et se vérifie dans le HTML et les en-têtes que renvoie le site en ligne (voir les leçons 7 et 18).
 
 ### 57. Une touche n'arrive pas de la même façon sur chaque système
 
@@ -186,6 +188,34 @@ Ce qui s'applique quand une personne va voir ou utiliser ce que vous construisez
 **Signal d'alarme.** « Le contenu est prêt ; on ajoutera des images plus tard. »
 
 **Que faire.** Avant le premier paragraphe, listez ce que la page peut montrer (de vraies photos de la personne, le produit en marche, des données inventées mais cohérentes, dessinées avec du code) et décidez quel élément porte chaque section. Dessinez les images de données ou d'écrans avec du code, pour que chaque chiffre et chaque libellé qu'elles contiennent soit réel ; les photos de personnes, elles, sont de vraies photos. Écrivez ensuite le texte, le minimum qui fonctionne.
+
+### 77. Un graphique animé ne doit pas mentir à mi-parcours
+
+`from: d65db198` · `by: ai`
+
+**L'idée.** Pendant qu'un graphique en barres grandit, chaque image est aussi lue comme un graphique. Si chaque barre avance sur sa propre horloge, à mi-parcours l'ordre et les proportions ne correspondent plus aux données, et quelqu'un peut lire le mensonge avant la fin.
+
+**Exemple.** Des barres de salaires par pays grandissaient au fil du défilement, chaque barre étant pilotée par sa propre position à l'écran. À mi-page, la barre « premier poste » paraissait plus longue que la barre « tous niveaux », parce que la barre du bas était plus en retard. Cela est apparu sur une capture faite pendant l'animation, pas sur la capture finale.
+
+**Question détectrice.** À mi-animation, chaque barre est-elle au même pourcentage de sa taille finale ? Ai-je mesuré une image intermédiaire, ou seulement regardé la fin ?
+
+**Signal d'alarme.** « À la fin, ça paraît juste. »
+
+**Que faire.** Donnez à toutes les barres une même horloge : même départ et même durée, ou une seule chronologie pour toute la liste au lieu d'une par barre. Mesurez la largeur actuelle de chaque barre divisée par sa largeur finale à trois moments (avant, milieu, fin) : chaque barre doit donner le même nombre à chaque moment. Avec l'animation réduite, affichez-les complètes dès le départ.
+
+### 80. Le look d'un personnage ne vient pas de l'étiquette de son groupe
+
+`from: 247fa72e` · `by: ai`
+
+**L'idée.** Quand l'apparence d'une personne (teint, cheveux, traits, vêtements) est dessinée ou choisie d'après son pays ou son groupe, ce qui en sort est le trait que suggère l'étiquette, pas celui que les vraies personnes ont. Cela ressemble à de la représentation, mais cela impose un look par défaut que la plupart des membres de ce groupe n'ont pas, et quelqu'un de là-bas y lit un stéréotype.
+
+**Exemple.** Dans un cours avec des personnages de plusieurs pays, le personnage d'une région est sorti avec le teint plus foncé et les cheveux frisés que suggérait l'étiquette, alors que personne ne l'avait demandé, seulement à cause de son origine. Le responsable, originaire de cette région, a fait remarquer que la plupart des gens de là-bas n'ont pas cet aspect. La règle retenue : le look se décide personnage par personnage ; un teint réel pour leur pays est acceptable, ce qui ne l'est pas, c'est un look imposé ou faux, ou un costume ou des symboles du pays.
+
+**Question détectrice.** Pourquoi ce personnage a-t-il cet aspect : parce que de qui il est, ou à cause de l'étiquette de son groupe ? Si je changeais son pays, changerais-je son dessin ? Porte-t-il quelque chose dont le seul rôle est de dire d'où il vient ?
+
+**Signal d'alarme.** « C'est comme ça que quelqu'un de là-bas est. » · « Comme ça, on voit bien de quel pays il vient. »
+
+**Que faire.** Rédigez la fiche de chaque personnage (personnalité, âge, ce qu'il fait) avant son look, et décidez le look à partir de la fiche, pas du pays. Relisez tout le casting ensemble : il doit y avoir de la variété, et aucun groupe ne doit avoir un seul look. Faites-le relire par quelqu'un d'autre que l'auteur, avec cette question dans sa grille de relecture.
 
 ### VIDEO-1. Dans une vidéo, chaque action tombe au moment où la narration la nomme
 

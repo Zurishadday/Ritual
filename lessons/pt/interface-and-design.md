@@ -133,17 +133,19 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 
 ### 49. Uma regra geral não pode vencer em silêncio as específicas
 
-`from: 4a81cf45` · `by: ai`
+`from: 681630b6` · `by: ai`
 
 **A ideia.** Uma regra que vale para tudo (um estilo global, um valor padrão) pode sobrescrever o que cada peça decidiu para si mesma, sem que nada avise.
 
 **Exemplo.** O estilo de foco do teclado, escrito para o site inteiro, vinha com seu próprio raio de borda. Como ficava acima dos estilos de cada componente, um botão em formato de pílula mudava de forma ao receber foco pelo teclado. Ninguém notou, porque com o mouse o foco não aparece.
 
-**Pergunta detectora.** Esta regra geral mexe em algo que cada peça já decide para si? Se elas entram em conflito, qual vence?
+**Outro exemplo.** Um site de aprendizado trazia `noindex` no layout raiz, escolhido quando ele só rodava localmente. Quando a página de inscrição e a página inicial foram para o ar, as duas herdaram a marcação e não podiam aparecer nos resultados de busca até alguém pedir um trabalho de busca.
 
-**Sinal de alerta.** “Deixei global para não ter que repetir.”
+**Pergunta detectora.** Esta regra geral mexe em algo que cada peça já decide para si? Se elas entram em conflito, qual vence? Ou uma peça nova herda um padrão escolhido para um trabalho que não é o dela?
 
-**O que fazer.** Deixe a regra geral mexer só no que é dela (o contorno do foco, e não a forma). Se ela deve vencer de propósito, escreva isso ao lado. E teste na peça mais diferente, e não só na comum.
+**Sinal de alerta.** “Deixei global para não ter que repetir.” · “A página está em produção, então está visível.”
+
+**O que fazer.** Deixe a regra geral mexer só no que é dela (o contorno do foco, e não a forma). Se ela deve vencer de propósito, escreva isso ao lado. E teste na peça mais diferente, e não só na comum. Uma página pública nova declara o próprio valor (`index, follow`) e é conferida no HTML e nos cabeçalhos que o site no ar entrega (ver as lições 7 e 18).
 
 ### 57. Uma tecla chega de forma diferente em cada sistema
 
@@ -186,6 +188,34 @@ O que vale quando uma pessoa vai ver ou usar o que você construiu: telas, compo
 **Sinal de alerta.** “O conteúdo está pronto; as imagens a gente põe depois.”
 
 **O que fazer.** Antes do primeiro parágrafo, liste o que a página pode mostrar (fotos reais da pessoa, o produto funcionando, dados inventados que somam certo, desenhados com código) e decida qual peça sustenta cada seção. Desenhe imagens de dados ou de telas com código, para que cada número e rótulo nelas seja real; imagens de pessoas são fotos reais. Depois escreva o texto, o mínimo que funciona.
+
+### 77. Um gráfico animado não pode mentir no meio do caminho
+
+`from: d65db198` · `by: ai`
+
+**A ideia.** Enquanto uma barra de gráfico cresce, cada quadro também é lido como gráfico. Se cada barra avança no próprio relógio, no meio da animação a ordem e as proporções diferem dos dados, e alguém pode ler a mentira antes de ela terminar.
+
+**Exemplo.** Barras de salário por país cresciam com a rolagem da página, cada uma guiada pela própria posição na tela. No meio da descida, a barra “nível de entrada” parecia maior que a barra “todos os níveis”, porque a barra de baixo estava mais atrasada. Isso apareceu numa captura de tela tirada no meio da animação, e não na final.
+
+**Pergunta detectora.** No meio da animação, cada barra está na mesma porcentagem do seu tamanho final? Eu medi um quadro intermediário, ou só olhei o final?
+
+**Sinal de alerta.** “Fica certo quando termina.”
+
+**O que fazer.** Dê a todas as barras um único relógio compartilhado: o mesmo início e a mesma duração, ou uma linha do tempo para a lista inteira em vez de uma por barra. Meça a largura atual de cada barra dividida pela largura final, em três momentos (antes, no meio e no fim): cada barra precisa dar o mesmo número em cada momento. Com movimento reduzido, mostre-as completas desde o início.
+
+### 80. A aparência de um personagem não vem do rótulo do seu grupo
+
+`from: 247fa72e` · `by: ai`
+
+**A ideia.** Quando a aparência de uma pessoa (pele, cabelo, traços, roupas) é desenhada ou escolhida a partir do país ou do grupo dela, o resultado é o traço que o rótulo sugere, e não o que as pessoas reais têm. Parece representação, mas impõe uma aparência padrão que a maioria daquele grupo não tem, e quem é de lá lê como estereótipo.
+
+**Exemplo.** Em um curso com personagens de vários países, a personagem de uma região saiu com a pele mais escura e o cabelo crespo que o rótulo sugeria, embora ninguém tivesse pedido isso, só por causa de onde ela era. O responsável, dessa região, observou que a maioria das pessoas de lá não tem essa aparência. A regra que ficou: a aparência é decidida por personagem; um tom que é real no país dela é aceitável, e não é aceitável uma aparência imposta ou falsa, nem uma fantasia ou símbolos do país.
+
+**Pergunta detectora.** Por que este personagem tem esta aparência: por quem ele é, ou pelo rótulo do grupo dele? Se eu mudasse o país dele, eu mudaria o desenho? Ele usa algo cuja única função é dizer de onde ele é?
+
+**Sinal de alerta.** “É assim que alguém de lá é” · “assim fica claro de qual país ele é.”
+
+**O que fazer.** Escreva a ficha de cada personagem (personalidade, idade, o que faz) antes da aparência, e decida a aparência pela ficha, não pelo país. Revise o elenco inteiro junto: deve haver variedade, e nenhum grupo deve ter uma aparência única. Peça que alguém que não seja o autor revise, com esta pergunta nos critérios de avaliação.
 
 ### VIDEO-1. Em um vídeo, cada ação cai quando a narração a nomeia
 

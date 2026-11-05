@@ -4,35 +4,39 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 
 ### 27. Desconfie do instrumento antes de desconfiar do sistema
 
-`from: 11b6d719` · `by: ai`
+`from: 82624501` · `by: ai`
 
 **A ideia.** Se um número não mudou quando devia, ou mudou justo enquanto você olhava, desconfie nesta ordem: o cache, outro processo escrevendo na mesma tabela, a ferramenta pela qual você está olhando, e só no fim o próprio sistema.
 
 **Exemplo.** Uma tabela “perdeu metade das colunas”. Alguns minutos depois estava completa: você a olhava enquanto outro processo a reconstruía.
 
-**Outro exemplo.** Uma imagem nova “não carregava” na página. O arquivo estava bem: o servidor de teste não enxergava pastas criadas depois que ele tinha subido. Um servidor que estava sendo medido continuava respondendo com o código antigo: parar a tarefa dele tinha deixado o processo anterior vivo na mesma porta. E um `git log` entre duas versões de um plugin instalado falhou com “unknown revision”: a cópia local era rasa e tinha um único commit, e o histórico estava só no remoto.
+**Outro exemplo.** Uma imagem nova “não carregava” na página. O arquivo estava bem: o servidor de teste não enxergava pastas criadas depois que ele tinha subido. Um servidor que estava sendo medido continuava respondendo com o código antigo: parar a tarefa dele tinha deixado o processo anterior vivo na mesma porta. E um `git log` entre duas versões de um plugin instalado falhou com “unknown revision”: a cópia local era rasa, com um único commit, e o histórico estava só no remoto.
 
 **Mais um exemplo.** Um script “calculava errado um padrão de texto”. O script estava bem: o console pelo qual o código era passado transformava cada `\n` numa quebra de linha de verdade antes de o script lê-lo. E num notebook em que as células compartilham memória, um erro que deveria aparecer não apareceu: a variável ainda estava guardada de uma célula anterior.
 
+**Um quarto exemplo.** Logo depois que uma página foi publicada num servidor de homologação (staging), uma verificação automática relatou 528 px de estouro horizontal e avisos de acessibilidade; segundos depois, tudo passou. O site ainda servia a folha de estilo anterior. Isso aconteceu duas vezes, até a verificação passar a esperar pelo arquivo novo.
+
 **Pergunta detectora.** Estou olhando o sistema, ou um cache, uma cópia, ou uma ferramenta que guardou um retrato antigo dele ou o alterou pelo caminho?
 
-**Sinal de alerta.** “Já corrigi e continua igual” · “desta vez eu digitei certo, de verdade”.
+**Sinal de alerta.** “Já corrigi e continua igual” · “desta vez eu digitei certo, de verdade.” · “Acabei de publicar, posso verificar agora.”
 
-**O que fazer.** Tire uma segunda foto alguns minutos depois, antes de declarar um desastre. Se um instrumento já te enganou do mesmo jeito, troque-o em vez de continuar olhando por ele: um erro repetido não é azar, é a ferramenta errada. Um console que transforma `\n` ou `\\` pelo caminho não serve para passar código a ele: o código vai num arquivo, escrito com uma ferramenta que não o toca, e roda a partir dali. E qualquer coisa mecânica (um comando que já falhou três vezes) é bloqueada por uma proteção, e não lembrada. Antes de medir um servidor, confira qual processo ocupa a porta dele. Antes de ler o histórico de uma cópia, confira se ela é rasa (`git rev-parse --is-shallow-repository`), e se for, pergunte ao remoto.
+**O que fazer.** Tire uma segunda foto alguns minutos depois, antes de declarar um desastre. Se um instrumento já te enganou do mesmo jeito, troque-o em vez de continuar olhando por ele: um erro repetido não é azar, é a ferramenta errada. Um console que transforma `\n` ou `\\` pelo caminho não serve para passar código a ele: o código vai num arquivo, escrito com uma ferramenta que não o toca, e roda a partir dali. E qualquer coisa mecânica (um comando que já falhou três vezes) é bloqueada por uma proteção, e não lembrada. Antes de medir um servidor, confira qual processo ocupa a porta dele. Antes de ler o histórico de uma cópia, confira se ela é rasa (`git rev-parse --is-shallow-repository`), e se for, pergunte ao remoto. Depois de um deploy, espere até o site servir uma marca que só esta versão tem (uma classe, um texto, um parâmetro `?v=`), em um laço com limite de tentativas, antes de medir.
 
 ### 29. Confira o comando antes de entregá-lo a alguém
 
-`from: 0c95aa16` · `by: ai`
+`from: 730b276c` · `by: ai`
 
 **A ideia.** Quem roda um comando de outra pessoa o faz às cegas. Cada comando quebrado gasta a confiança que a pessoa daria ao próximo.
 
 **Exemplo.** Um comando de deploy tinha um nome de branch digitado de memória. A branch tinha outro nome, e quem rodou perdeu meia hora antes de perguntar.
 
-**Pergunta detectora.** Para cada nome neste comando, eu li do sistema hoje, ou digitei de memória?
+**Outro exemplo.** Para ver uma mudança, uma pessoa recebeu `cd folder && npx next dev -p 3001`. O terminal dela era o Windows PowerShell 5.1, que rejeita `&&`. Corrigido e iniciado no próprio terminal dela, o servidor respondeu “not found”: as páginas em revisão só aparecem com uma variável de ambiente que o comando não definia.
 
-**Sinal de alerta.** “É o mesmo comando de sempre.”
+**Pergunta detectora.** Para cada nome neste comando, eu li do sistema hoje, ou digitei de memória? Em qual shell e em qual pasta a pessoa vai rodá-lo, e eu rodei assim?
 
-**O que fazer.** Rode você mesmo antes de passar adiante, e copie cada nome (script, caminho, branch) do sistema, não da memória.
+**Sinal de alerta.** “É o mesmo comando de sempre.” · `&&`, `export` ou `$VAR` num comando para o Windows PowerShell.
+
+**O que fazer.** Rode você mesmo antes de passar adiante, e copie cada nome (script, caminho, branch) do sistema, não da memória. Escreva no shell dela (no PowerShell 5.1: `;` e `$env:NAME = 'value'`), e antes de passar um link, peça exatamente esse endereço e veja a resposta que você espera. Se você o iniciar para ela, inicie-o no próprio terminal dela, e não como filho da chamada da sua ferramenta (lição 69).
 
 ### 44. O que você corta da saída pode ser o veredito
 
@@ -107,3 +111,45 @@ O que vale quando você roda comandos, servidores, testes ou capturas, e quando 
 **Sinal de alerta.** “Reiniciei, ele responde na porta.”
 
 **O que fazer.** O que uma pessoa usa todo dia, ela mesma inicia, com o próprio atalho ou serviço. Se for preciso iniciá-lo, desprenda-o do processo pai (um modo em segundo plano que sobrevive ao comando, um serviço do sistema) e confira, numa chamada separada, depois, que ele continua vivo. Se não puder garantir isso, não diga que está pronto: peça à pessoa que o abra. Parar esse tipo de trabalho é a lição 62; iniciá-lo duas vezes, a lição 22.
+
+### 78. O que o shell encontra, um programa pode não encontrar
+
+`from: 8b07c6d7` · `by: ai`
+
+**A ideia.** Um nome de comando que funciona no shell pode falhar quando um programa o executa: o shell resolve atalhos (arquivos batch, aliases, funções) que uma chamada direta ao sistema não conhece, e então roda outro programa com o mesmo nome, ou nenhum.
+
+**Exemplo.** Um script Node chamava `python` para gerar áudio. No shell, `python` era um shim de um gerenciador de versões (um arquivo `.bat`); a partir do Node, sem shell, o sistema operacional abria um alias da loja de aplicativos que só imprime "Python was not found".
+
+**Pergunta detectora.** O programa que eu inicio pelo código: é resolvido pelo shell (um shim, um arquivo batch, um alias) ou é um executável de verdade? Eu testei iniciado pelo código, e não pelo shell?
+
+**Sinal de alerta.** “Mas roda no terminal.”
+
+**O que fazer.** Rode o passo uma vez pelo mesmo programa que vai iniciá-lo. Se o comando for um shim, inicie-o pelo shell (no Node, `shell: true` no Windows, com argumentos que não tenham espaços nem aspas) ou pelo caminho completo, e faça o erro dizer qual comando não foi encontrado. Outra máquina é a lição 55; a configuração de outro script, a lição 66.
+
+### 79. Um gerador que não encontra o que já fez refaz tudo
+
+`from: ae59e617` · `by: ai`
+
+**A ideia.** Um processo que pula trabalho já feito (por uma impressão digital de cada parte, um cache, uma pasta de trabalho) só é barato na máquina ou no checkout onde esse estado existe. Iniciado em outro lugar, ele não vê nada feito e recomeça: trabalho caro, de novo, que ninguém pediu.
+
+**Exemplo.** A narração de uma lição era gravada passo a passo com um modelo de voz lento (sem cronometragem), e o gerador pulava os passos não alterados graças à pasta de trabalho, que não está no git. Um agente, para regenerar um passo, o iniciou em outro checkout do repositório que não tinha essa pasta: ele começou a gravar a lição inteira na GPU compartilhada. Foi interrompido à mão.
+
+**Pergunta detectora.** Onde está o estado que permite pular trabalho já feito? Ele existe na pasta e na máquina onde vou rodar? Se não existe, o processo para, ou refaz tudo em silêncio?
+
+**Sinal de alerta.** “Só um passo mudou” num checkout novo · uma pasta de trabalho no .gitignore · um agente instruído a “rodar o gerador” sem saber onde fica o cache dele.
+
+**O que fazer.** Faça o gerador recusar começar do zero quando um resultado já existe e o estado dele está faltando, e diga onde rodá-lo (com uma opção explícita, como `--all`, para quem realmente quer refazer tudo). Nas instruções para agentes, nomeie a pasta onde o processo roda. Estado ausente lido como “nada feito” é o “não consegui ler” da lição 1, em outra forma.
+
+### 82. Uma ferramenta que esvazia a pasta ao iniciar leva o que outros salvaram ali
+
+`from: b6b0c760` · `by: ai`
+
+**A ideia.** Muitas ferramentas apagam a pasta de saída a cada início, para que as execuções não se misturem. Se outros processos salvam os próprios arquivos ali porque “é a pasta de resultados”, a próxima execução os apaga sem aviso, e ninguém percebe até alguém procurar o arquivo.
+
+**Exemplo.** Um executor de testes de navegador esvaziava a pasta de resultados a cada início. Agentes revisores salvavam ali os seus relatórios, e um script salvava arquivos de passos por lição. Em um dia, dois relatórios longos se perderam, um deles pedido pelo dono do projeto, e um revisor informou que um desses arquivos de passos não existia, porque uma execução de testes o tinha apagado minutos antes. Eles foram recuperados a partir das transcrições dos agentes.
+
+**Pergunta detectora.** Qual ferramenta escreve nesta pasta, e alguma delas a esvazia ao iniciar ou ao terminar? O que eu salvo aqui sobrevive à próxima execução dessa ferramenta? Eu conferi isso com um arquivo de teste?
+
+**Sinal de alerta.** “Deixo na pasta de resultados.” · “o arquivo não existe” para algo escrito minutos antes · uma pasta ignorada que guarda, ao mesmo tempo, artefatos descartáveis e entregas.
+
+**O que fazer.** Dê a cada ferramenta que apaga uma subpasta própria (no Playwright, `outputDir`) e mantenha as entregas fora dela, ou em algum lugar versionado. Confira: deixe um arquivo de teste, rode a ferramenta e veja se ele continua ali. O teste completo de saída guardado nessa pasta é o caso da lição 44; editar um arquivo que um gerador escreve, a lição 48.

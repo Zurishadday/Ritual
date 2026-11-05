@@ -15,6 +15,7 @@
 - **54.** ["The X at the start and the close": every translator picks the same wrong reading](writing-and-docs.md#54-the-x-at-the-start-and-the-close-every-translator-picks-the-same-wrong-reading)
 - **58.** [An instruction made of many pieces is seen before it is assembled](writing-and-docs.md#58-an-instruction-made-of-many-pieces-is-seen-before-it-is-assembled)
 - **64.** [Anchor a concept in something the reader has already experienced, not in how it is computed](writing-and-docs.md#64-anchor-a-concept-in-something-the-reader-has-already-experienced-not-in-how-it-is-computed)
+- **81.** [Each piece is read alone: review in the unit the user lives in](writing-and-docs.md#81-each-piece-is-read-alone-review-in-the-unit-the-user-lives-in)
 - **AI-1.** [If you restrict where the model may write, it writes wherever you let it](writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it)
 - **AI-2.** [A rule written as a checklist gets executed as a checklist, even after the other person answered](writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered)
 - **AI-4.** [A model's instructions don't carry their own changelog](writing-and-docs.md#ai-4-a-models-instructions-dont-carry-their-own-changelog)
@@ -87,6 +88,8 @@
 - **57.** [A key arrives differently on each system](interface-and-design.md#57-a-key-arrives-differently-on-each-system)
 - **59.** [An event from something already replaced must not act](interface-and-design.md#59-an-event-from-something-already-replaced-must-not-act)
 - **73.** [A page that has to persuade is designed from what it shows](interface-and-design.md#73-a-page-that-has-to-persuade-is-designed-from-what-it-shows)
+- **77.** [An animated chart must not lie halfway through](interface-and-design.md#77-an-animated-chart-must-not-lie-halfway-through)
+- **80.** [A character's look does not come from their group's label](interface-and-design.md#80-a-characters-look-does-not-come-from-their-groups-label)
 - **VIDEO-1.** [In a video, each action lands when the narration names it](interface-and-design.md#video-1-in-a-video-each-action-lands-when-the-narration-names-it)
 - **VIDEO-2.** [In a video, what changes without showing gets marked](interface-and-design.md#video-2-in-a-video-what-changes-without-showing-gets-marked)
 - **WEB-2.** [A public form gets bots from day one](interface-and-design.md#web-2-a-public-form-gets-bots-from-day-one)
@@ -103,6 +106,9 @@
 - **60.** [What travels as a process argument has a ceiling you don't see until it grows](console-and-tools.md#60-what-travels-as-a-process-argument-has-a-ceiling-you-dont-see-until-it-grows)
 - **62.** [Stopping background work means stopping whatever launches it, then proving nothing is left](console-and-tools.md#62-stopping-background-work-means-stopping-whatever-launches-it-then-proving-nothing-is-left)
 - **69.** [A process you start from a short-lived tool dies when the tool ends](console-and-tools.md#69-a-process-you-start-from-a-short-lived-tool-dies-when-the-tool-ends)
+- **78.** [What the shell finds, a program may not](console-and-tools.md#78-what-the-shell-finds-a-program-may-not)
+- **79.** [A generator that cannot find what it already did redoes everything](console-and-tools.md#79-a-generator-that-cannot-find-what-it-already-did-redoes-everything)
+- **82.** [A tool that empties its folder on start takes what others saved there](console-and-tools.md#82-a-tool-that-empties-its-folder-on-start-takes-what-others-saved-there)
 
 ## Git and process
 
@@ -114,3 +120,4 @@
 - **47.** [What's worked on in parallel collides in what's shared](git-and-process.md#47-whats-worked-on-in-parallel-collides-in-whats-shared)
 - **65.** [A rule about how to work has no exception for small steps](git-and-process.md#65-a-rule-about-how-to-work-has-no-exception-for-small-steps)
 - **70.** [An open-ended brief drifts to what is easiest to criticize: the goal and the scope belong in the brief](git-and-process.md#70-an-open-ended-brief-drifts-to-what-is-easiest-to-criticize-the-goal-and-the-scope-belong-in-the-brief)
+- **76.** [An approval covers the piece it was given for](git-and-process.md#76-an-approval-covers-the-piece-it-was-given-for)

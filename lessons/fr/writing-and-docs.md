@@ -104,7 +104,7 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### 51. Ce qui vous paraît évident est la première chose à enseigner
 
-`from: c970d3ec` · `by: ai`
+`from: 8dca481f` · `by: ai`
 
 **L'idée.** Quelqu'un qui sait déjà ne voit pas les étapes qu'il franchit sans y penser. Son premier exemple apporte donc plusieurs notions nouvelles à la fois, et un débutant se perd dès la première ligne.
 
@@ -112,11 +112,13 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 **Autre exemple.** Dans un module pour débutants, le même petit mot désignait une cellule du tableur à une étape, et le petit carré dans son coin à une autre. Les messages propres à un exercice utilisaient une référence de cellule et le nom d'un outil de capture d'écran avant que le texte ait présenté l'un ou l'autre.
 
+**Encore un exemple.** Une leçon pour débutants demandait, en une phrase, de sélectionner une colonne, de cliquer sur sa lettre et de choisir une commande de tri dans le menu Données d'un tableur, du plus grand au plus petit : quatre actions, et aucune vidéo ni image de ce menu nulle part dans le cours. Le relecteur l'a validée : un chemin de menu écrit comptait comme enseigné. Le responsable du cours l'a repérée ; la règle changée, le même relecteur a signalé douze étapes de plus dans ce module.
+
 **Question détectrice.** Dans mon premier exemple, combien de notions sont nouvelles pour quelqu'un qui ne sait rien ? Chaque symbole, chaque mot, chaque nom de bouton et chaque action que je demande a-t-il déjà été enseigné ? Un mot désigne-t-il deux choses ? Un message nomme-t-il quelque chose qui n'a pas encore été enseigné ?
 
-**Signal d'alarme.** « N'importe qui comprend ça » · « ce n'est qu'une ligne » · « c'est le mot habituel » · « le message l'explique ».
+**Signal d'alarme.** « N'importe qui comprend ça » · « ce n'est qu'une ligne » · « c'est le mot habituel » · « le message l'explique » · « il donne déjà le chemin du menu ».
 
-**Que faire.** Avant d'écrire, listez ce que votre exemple tient pour acquis (symboles, mots, clics, choses que l'apprenant aurait déjà dû construire) et enseignez-les d'abord : une idée nouvelle à la fois, chaque symbole expliqué à sa première apparition. Cherchez chaque mot qui correspond au nom d'un bouton, et chaque action demandée, de la même façon que vous cherchez un symbole. Si c'est possible, laissez une vérification automatique comparer ce que chaque exemple utilise avec ce qui a déjà été enseigné. Lisez les messages et les indications de l'interface dans l'ordre où l'apprenant les rencontre, et cherchez chaque nom qu'ils emploient comme vous cherchez un symbole. Donnez un seul nom à chaque chose et gardez-le (voir la leçon 2).
+**Que faire.** Avant d'écrire, listez ce que votre exemple tient pour acquis (symboles, mots, clics, choses que l'apprenant aurait déjà dû construire) et enseignez-les d'abord : une idée nouvelle à la fois, chaque symbole expliqué à sa première apparition. Cherchez chaque mot qui correspond au nom d'un bouton, et chaque action demandée, de la même façon que vous cherchez un symbole. Si c'est possible, laissez une vérification automatique comparer ce que chaque exemple utilise avec ce qui a déjà été enseigné. Lisez les messages et les indications de l'interface dans l'ordre où l'apprenant les rencontre, et cherchez chaque nom qu'ils emploient comme vous cherchez un symbole. Donnez un seul nom à chaque chose et gardez-le (voir la leçon 2). Une action dans un vrai outil ne compte comme enseignée qu'une fois que l'apprenant l'a vue (une vidéo, un dessin ou une image de cet écran) : indiquez où, et demandez une action par ligne, avec ce qu'il verra après elle (voir la leçon 58).
 
 ### 52. Écrire sur un outil qui évolue vite à partir de la pratique d'aujourd'hui, pas de mémoire
 
@@ -175,6 +177,20 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 **Signal d'alarme.** « C'est la façon la plus honnête de le calculer » · « les relecteurs disent que c'est correct » · « imaginez que vous répétez l'expérience mille fois ».
 
 **Que faire.** Avant le script ou le texte, écrivez en une ligne l'expérience quotidienne qui a la même forme que le concept. Si aucune ne vient, demandez à quelqu'un qui connaît le public. Construisez l'ouverture à partir de cette expérience et des données du cas, et laissez la méthode comme « comment cela se calcule », à la fin. Demandez à un relecteur « sur quoi repose l'intuition ? » en plus de « est-ce correct ? ». Ce que le lecteur doit déjà savoir relève de la leçon 51.
+
+### 81. Chaque pièce se lit seule : relire dans l'unité que vit l'utilisateur
+
+`from: 1a270349` · `by: ai`
+
+**L'idée.** Celui qui écrit et celui qui relit lisent le document entier et, sans le remarquer, complètent chaque pièce avec ce qu'une autre pièce disait. La personne qui l'utilise vit une pièce à la fois (une étape, un écran, une section) et ne se souvient pas du reste.
+
+**Exemple.** Dans un cours pas à pas, une étape disait « Dans « travail », dans cet ordre… » sans dire que « travail » était un onglet d'un fichier téléchargé dans une leçon précédente. Il a fallu trois tours : d'abord « chaque leçon propose son fichier », puis « le fichier vient avant la première prédiction » ; les deux règles sont passées au vert et le trou subsistait étape par étape. La consigne du relecteur disait déjà « relis-le comme l'apprenant le vit, étape par étape », mais il recevait la leçon entière. Donné à chaque étape seule, il a trouvé 184 trous dans 8 modules, dont cinq échecs que l'apprenant aurait rencontrés.
+
+**Question détectrice.** Ai-je relu chaque pièce seule, comme l'utilisateur la voit, ou le document entier ? Ma règle contrôle-t-elle la pièce ou le document ?
+
+**Signal d'alarme.** « Elle l'avait déjà dit deux étapes plus tôt. » · « la leçon a déjà le fichier » · « relis étape par étape » écrit dans une consigne qui reçoit le document entier.
+
+**Que faire.** Découpez le document en pièces avec un script et donnez au relecteur chaque pièce seule, avant le tout. Demandez un tableau par pièce : où se passe le travail, ce que la pièce tient pour acquis, et si elle le dit. Fini veut dire que chaque pièce lue seule passe, et non qu'une règle au niveau du document devient verte (voir la leçon 13). Relire l'ensemble après de nombreuses corrections relève de la leçon 43, l'autre moitié de ce sujet ; le voir à l'écran comme le lecteur le voit, de la leçon 41, et celui qui relit n'est pas celui qui a écrit (leçon 28).
 
 ### AI-1. Si vous restreignez l'endroit où le modèle peut écrire, il écrit là où vous le laissez
 
@@ -252,14 +268,16 @@ Ce qui s'applique quand vous écrivez pour d'autres : documentation, manuels, te
 
 ### EDU-5. Un indice pointe vers la cause de l'erreur, pas vers la réponse
 
-`from: 2fa4365d` · `by: ai`
+`from: 9e6528f3` · `by: ai`
 
 **L'idée.** Un indice apparaît après une mauvaise tentative. S'il donne la réponse, la ligne qui résout l'exercice, ou ce qui sépare la solution de l'erreur la plus probable, la deuxième tentative mesure la capacité à recopier.
 
 **Exemple.** La révision de 277 exercices vérifiés d'un cours a modifié 82 indices dans 49 fichiers. Certains donnaient la ligne qui résout l'exercice (« la deuxième est la… »). D'autres imposaient l'ordre qui sépare la solution de son erreur courante. Dans les exercices « vérifier par rapport à un résultat précédent », l'indice disait « cela doit correspondre à ce que vous avez obtenu dans la leçon 2.2 » : celui qui se souvenait du nombre précédent pouvait le taper sans faire l'étape.
 
-**Question détectrice.** Quelqu'un qui lit cet indice pourrait-il réussir la tentative suivante sans la compétence ? Nomme-t-il la réponse, la ligne de solution, les étapes que l'exercice mesure, ou le nombre précédent auquel il doit correspondre ?
+**Autre exemple.** Dans trois leçons d'un cours de langue, 16 retours sur des mauvaises options nommaient la bonne réponse. Ils étaient rédigés comme des explications, sans vérifier que le quiz permet de choisir à nouveau après une vérification ; une seconde relecture l'a repéré dans le code du composant.
 
-**Signal d'alarme.** « Ce n'est qu'un petit coup de pouce » · « ils ont déjà essayé une fois ».
+**Question détectrice.** Quelqu'un qui lit cet indice pourrait-il réussir la tentative suivante sans la compétence ? Nomme-t-il la réponse, la ligne de solution, les étapes que l'exercice mesure, ou le nombre précédent auquel il doit correspondre ? L'apprenant peut-il réessayer après l'avoir lu ? Alors c'est un indice.
 
-**Que faire.** Rédigez l'indice sur la cause de l'erreur probable (« les positions commencent à 0, pas à 1 »), et ne citez que ce qui a déjà été enseigné. Gardez « cela doit correspondre au nombre précédent » pour l'explication affichée après la réponse, où l'on apprend que deux méthodes qui donnent le même nombre constituent une vérification. Relisez les indices au regard de l'erreur la plus probable de l'exercice, et non isolément.
+**Signal d'alarme.** « Ce n'est qu'un petit coup de pouce » · « ils ont déjà essayé une fois » · « C'est l'explication, pas l'indice ».
+
+**Que faire.** Rédigez l'indice sur la cause de l'erreur probable (« les positions commencent à 0, pas à 1 »), et ne citez que ce qui a déjà été enseigné. Gardez « cela doit correspondre au nombre précédent » pour l'explication affichée après la réponse, où l'on apprend que deux méthodes qui donnent le même nombre constituent une vérification. Relisez les indices au regard de l'erreur la plus probable de l'exercice, et non isolément. Avant de rédiger le retour sur une mauvaise option, ouvrez le composant et vérifiez s'il permet de choisir à nouveau : si oui, le retour indique où regarder ou écouter, et l'explication accompagne la bonne option ou arrive après la dernière tentative (voir EDU-2).

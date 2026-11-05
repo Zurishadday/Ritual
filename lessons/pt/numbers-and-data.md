@@ -24,7 +24,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 2. Duas coisas com o mesmo nome não são a mesma coisa
 
-`from: de984b04` · `by: ai`
+`from: 229af8ff` · `by: ai`
 
 **A ideia.** “Cliente ativo”, “data”, “o chefe”, “o limite”: a mesma palavra muitas vezes esconde duas definições. Quando dois relatórios não batem, quase sempre é isso.
 
@@ -34,13 +34,15 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Mais um exemplo.** O custo de alguns subagentes foi tirado de uma contagem de tokens no resumo de cada um, e saiu muito baixo: essa contagem deixava de fora parte do uso. Somar o uso de cada resposta nas transcrições deu o custo real. E um log dizia que uma proteção tinha deixado “23 linhas”, quando tinha deixado 19 blocos.
 
-**Um quarto exemplo.** Um script que publica uma nota primeiro procurava outra já publicada com o mesmo título e, se encontrasse uma, marcava a nota como enviada e apagava o rascunho. Duas pessoas podem escrever o mesmo título: a nota de outra pessoa tomaria o lugar desta, e o rascunho se perderia. É o autor, e não o título, que diz de quem é a nota.
+**Um quarto exemplo.** Um script que publica uma nota primeiro procurava outra já publicada com o mesmo título e, se encontrasse uma, marcava a nota como enviada e apagava o rascunho. Duas pessoas podem escrever o mesmo título: a nota de outra pessoa tomaria o lugar desta, e o rascunho se perderia. Quem diz de quem é a nota é o autor, e não o título.
 
-**Pergunta detectora.** Existe uma regra verdadeira para uma das duas coisas e falsa para a outra? E, se eu combino dois números num mesmo cálculo, eles vêm do mesmo universo, da mesma escala e do mesmo período?
+**Um quinto exemplo.** Seis scripts de lição diziam “o portal embaralha a ordem das opções”. Era verdade para o quiz, mas não para o exercício de ordenação, que mostra os cartões na ordem em que foram escritos, agrupados por resposta, então podiam ser adivinhados pela posição. E o exercício de ordenação toma a ordem escrita como resposta: blocos copiados embaralhados do script deixavam sem conseguir terminar um aluno que montou a frase certa. Um revisor que leu o código de cada componente encontrou os dois problemas.
 
-**Sinal de alerta.** “É a mesma data” · “a visão já filtra isso” · “as duas estão em reais”.
+**Pergunta detectora.** Existe uma regra verdadeira para uma das duas coisas e falsa para a outra? E, se eu combino dois números num mesmo cálculo, eles vêm do mesmo universo, da mesma escala e do mesmo período? Quando “o sistema” faz algo: em qual componente, e nos componentes irmãos?
 
-**O que fazer.** Dê um nome diferente para cada variante no código e na tela, mesmo que fique feio. E antes de dividir ou subtrair dois números de fontes diferentes, anote de onde vem cada um: se um resultado sai igual em todos os casos (todos perdem, todos ganham), suspeite da escala antes do negócio. Quando um número vem de um campo ou de uma contagem, leia como ele é calculado (a documentação ou o código dele) e escreva a unidade ao lado do número: “19 blocos”, não “23 linhas”. Quando é um nome que casa com dois registros (um título, um rótulo), acrescente uma chave que só o registro certo pode ter, como o autor ou o id, antes de agir sobre a correspondência. Para obter o número de outra forma, ver a lição 12.
+**Sinal de alerta.** “É a mesma data” · “a visão já filtra isso” · “as duas estão em reais.” · “O portal embaralha.”
+
+**O que fazer.** Dê um nome diferente para cada variante no código e na tela, mesmo que fique feio. E antes de dividir ou subtrair dois números de fontes diferentes, anote de onde vem cada um: se um resultado sai igual em todos os casos (todos perdem, todos ganham), suspeite da escala antes do negócio. Quando um número vem de um campo ou de uma contagem, leia como ele é calculado (a documentação ou o código dele) e escreva a unidade ao lado do número: “19 blocos”, não “23 linhas”. Quando é um nome que casa com dois registros (um título, um rótulo), acrescente uma chave que só o registro certo pode ter, como o autor ou o id, antes de agir sobre a correspondência. Para obter o número de outra forma, ver a lição 12. Uma frase sobre o que “o sistema” faz nomeia o componente, conferido no código (“o quiz embaralha; a ordenação não”; ver a lição 38).
 
 ### 3. O período atual está sempre incompleto
 
@@ -86,7 +88,7 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 ### 12. Rodar a consulta não prova que o número está certo
 
-`from: b2232042` · `by: ai`
+`from: 69c26b3f` · `by: ai`
 
 **A ideia.** “Não deu erro” não é “está correto”. Compare com algo independente do seu próprio cálculo.
 
@@ -96,11 +98,13 @@ O que vale quando você calcula, mede ou mostra um número: painéis, relatório
 
 **Mais um exemplo.** Todos os exemplos de uma página foram executados, e ainda assim três frases se revelaram falsas: a explicação de uma opção, escrita no fim, descrevia o que uma linha faz sem que ninguém tivesse executado; uma regra para ler erros (“se disser isto, então falta aquilo”) era contradita por outro passo da mesma página; e a introdução dizia que uma função “devolve um resultado” quando não devolve.
 
-**Pergunta detectora.** Contra o que, fora do meu próprio código, vou verificar este resultado? E, em tudo o que o texto diz que o sistema faz, seja num exemplo, numa regra ou na explicação de uma opção, eu executei no motor real?
+**Um quarto exemplo.** Em um módulo de um curso de idioma, cinco regras práticas dadas aos alunos, escritas de memória, falhavam em casos parecidos: “você ouviu um *n* no final?” diferenciava *thirteen* de *thirty*, mas *seventy-one* também termina em *n*; “uma sílaba é acrescentada com *-es*” falha em *nurses*, escrito com *-s*. Foram os revisores que encontraram, e não o autor.
 
-**Sinal de alerta.** “Na minha máquina funciona” · “não deu erro” · “é assim que funciona, só expliquei”.
+**Pergunta detectora.** Contra o que, fora do meu próprio código, vou verificar este resultado? E, em tudo o que o texto diz que o sistema faz, seja num exemplo, numa regra ou na explicação de uma opção, eu executei no motor real? E uma regra prática que dou a um aluno: em quais casos parecidos eu a testei?
 
-**O que fazer.** Reconcilie com um número conhecido, com o sistema de origem ou com o período anterior. Teste no ambiente real: com as suas permissões, as suas bibliotecas e a cópia do código que de fato roda. Toda afirmação sobre como o sistema se comporta é executada uma vez antes de ser escrita, inclusive a que aparece de passagem num exemplo ou é escrita por último. Se a afirmação é uma regra geral (“só”, “sempre”, “nunca”), encontre o caso que a quebraria e execute também: “converter para inteiro só lê inteiros” foi checado com um texto que tinha decimais, e se revelou falso para um número com decimais. Ao afirmar uma fração (“cinco em seis”), diga de qual todo ela é fração; e um cenário inventado também é checado: o tamanho, a diferença e o valor-p precisam ser coerentes entre si.
+**Sinal de alerta.** “Na minha máquina funciona” · “não deu erro” · “é assim que funciona, só expliquei.” · “A pista mais segura é…”
+
+**O que fazer.** Reconcilie com um número conhecido, com o sistema de origem ou com o período anterior. Teste no ambiente real: com as suas permissões, as suas bibliotecas e a cópia do código que de fato roda. Toda afirmação sobre como o sistema se comporta é executada uma vez antes de ser escrita, inclusive a que aparece de passagem num exemplo ou é escrita por último. Se a afirmação é uma regra geral (“só”, “sempre”, “nunca”), encontre o caso que a quebraria e execute também: “converter para inteiro só lê inteiros” foi checado com um texto que tinha decimais, e se revelou falso para um número com decimais. Ao afirmar uma fração (“cinco em seis”), diga de qual todo ela é fração; e um cenário inventado também é checado: o tamanho, a diferença e o valor-p precisam ser coerentes entre si. Uma regra prática dada a um aluno é uma verificação que ele fará sozinho: abaixo dela, escreva três casos parecidos que você não usou para desenhá-la e aplique a regra a cada um (ver a lição 13).
 
 ### 36. Meça antes de escrever
 

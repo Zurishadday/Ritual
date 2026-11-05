@@ -4,7 +4,7 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 ### 27. Doubt the instrument before you doubt the system
 
-`origin: field · ~opus · 2026-08` · `seen: claude-opus-5-5 2026-10`
+`origin: field · ~opus · 2026-08` · `groups: tests-and-checks` · `seen: claude-opus-5-5 2026-10, claude-opus-5-5 2026-11`
 
 **The idea.** If a number didn't change when it should have, or changed just as you were looking at it, suspect these in order: the cache, another process writing to the same table, the tool you're looking through, and only at the very end the system itself.
 
@@ -14,25 +14,29 @@ What applies when you run commands, servers, tests, or captures, and when the to
 
 **One more example.** A script "computed a text pattern wrong." The script was fine: the console the code was passed through turned every `\n` into a real line break before the script read it. And in a notebook where cells share memory, an error that should have shown up didn't: the variable was still stored from an earlier cell.
 
+**A fourth example.** Right after a page was deployed to a staging server, an automated check reported 528 px of horizontal overflow and accessibility warnings; seconds later everything passed. The site was still serving the previous stylesheet. It happened twice before the check waited for the new file.
+
 **Detector question.** Am I looking at the system, or at a cache, a copy, or a tool that kept an old snapshot of it or changed it along the way?
 
-**Warning sign.** "I already fixed it and it's still the same" · "this time I really did type it right."
+**Warning sign.** "I already fixed it and it's still the same" · "this time I really did type it right." · "I just deployed it, I can check now."
 
-**What to do.** Take a second snapshot a few minutes later before you declare a disaster. If an instrument has already failed you the same way, replace it instead of watching it: a repeated slip isn't bad luck, it's the wrong tool. A console that transforms `\n` or `\\` along the way is no good for passing it code: the code goes in a file, written with a tool that doesn't touch it, and runs from there. And anything mechanical (a command that has already failed three times) gets blocked by a guard, not remembered. Before measuring a server, check which process holds its port. Before reading the history of a copy, check whether it is shallow (`git rev-parse --is-shallow-repository`), and if it is, ask the remote.
+**What to do.** Take a second snapshot a few minutes later before you declare a disaster. If an instrument has already failed you the same way, replace it instead of watching it: a repeated slip isn't bad luck, it's the wrong tool. A console that transforms `\n` or `\\` along the way is no good for passing it code: the code goes in a file, written with a tool that doesn't touch it, and runs from there. And anything mechanical (a command that has already failed three times) gets blocked by a guard, not remembered. Before measuring a server, check which process holds its port. Before reading the history of a copy, check whether it is shallow (`git rev-parse --is-shallow-repository`), and if it is, ask the remote. After a deploy, wait until the site serves a marker only this version has (a class, a text, a `?v=` query), in a loop with an attempt limit, before measuring.
 
 ### 29. Check the command before handing it to someone else
 
-`origin: field · ~opus · 2026-08` · `seen: claude-sonnet-5-5 2026-10`
+`origin: field · ~opus · 2026-08` · `seen: claude-sonnet-5-5 2026-10, claude-opus-5-5 2026-11`
 
 **The idea.** Whoever runs someone else's command does it blind. Every broken command spends the trust they'd give the next one.
 
 **Example.** A deploy command had a branch name typed from memory. The branch had a different name, and whoever ran it lost half an hour before asking.
 
-**Detector question.** For each name in this command, did I read it from the system today, or did I type it from memory?
+**Another example.** To see a change, a person was given `cd folder && npx next dev -p 3001`. Their terminal was Windows PowerShell 5.1, which rejects `&&`. Fixed and started from their own terminal, the server answered "not found": the pages under review only show with an environment variable the command didn't set.
 
-**Warning sign.** "It's the same command as always."
+**Detector question.** For each name in this command, did I read it from the system today, or did I type it from memory? In which shell and folder will they run it, and did I run it that way?
 
-**What to do.** Run it yourself before passing it on, and copy each name (script, path, branch) from the system, not from memory.
+**Warning sign.** "It's the same command as always." · `&&`, `export` or `$VAR` in a command for Windows PowerShell.
+
+**What to do.** Run it yourself before passing it on, and copy each name (script, path, branch) from the system, not from memory. Write it in their shell (in PowerShell 5.1: `;` and `$env:NAME = 'value'`), and before handing over a link, request that exact address and see the answer you expect. If you start it for them, start it in their own terminal, not as a child of your tool call (lesson 69).
 
 ### 44. What you cut from the output can be the verdict
 
@@ -107,3 +111,45 @@ What applies when you run commands, servers, tests, or captures, and when the to
 **Warning sign.** "I restarted it, it answers on the port."
 
 **What to do.** What a person uses every day, they start themselves, with their own shortcut or service. If you must start it, detach it from the parent (a background mode that survives the command, a system service) and check in a separate call, afterwards, that it is still alive. If you can't guarantee it, don't say it's done: ask them to open it. Stopping such work is lesson 62; starting it twice, lesson 22.
+
+### 78. What the shell finds, a program may not
+
+`origin: field · claude-opus-5-5 · 2026-11`
+
+**The idea.** A command name that works in the shell may fail when a program launches it: the shell resolves shortcuts (batch files, aliases, functions) that a direct system call does not know, and then a different program with the same name runs, or none.
+
+**Example.** A Node script called `python` to generate audio. In the shell, `python` was a version manager's shim (a `.bat` file); from Node, without a shell, the operating system opened an app-store alias that only prints "Python was not found".
+
+**Detector question.** The program I launch from code: is it resolved by the shell (a shim, a batch file, an alias) or is it a real executable? Did I try it launched from the code, not from the shell?
+
+**Warning sign.** "But it runs in the terminal."
+
+**What to do.** Run the step once from the same program that will launch it. If the command is a shim, launch it through the shell (in Node, `shell: true` on Windows, with arguments that carry no spaces or quotes) or by its full path, and make the error say which command was not found. Another machine is lesson 55; another script's setup, lesson 66.
+
+### 79. A generator that cannot find what it already did redoes everything
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: scripts-and-files`
+
+**The idea.** A process that skips finished work (by a fingerprint of each part, a cache, a work folder) is only cheap on the machine or checkout where that state lives. Started anywhere else, it sees nothing done and starts over: expensive work, again, that nobody asked for.
+
+**Example.** A lesson's narration was recorded step by step with a slow voice model (not timed), and the generator skipped unchanged steps thanks to its work folder, which is not in git. An agent, to regenerate one step, started it in another checkout of the repository that lacked that folder: it began recording the whole lesson on the shared GPU. It was stopped by hand.
+
+**Detector question.** Where does the state that lets this skip finished work live? Does it exist in the folder and machine where I am about to run it? If it does not, does the process stop, or silently redo everything?
+
+**Warning sign.** "Only one step changed" in a fresh checkout · a work folder in .gitignore · an agent told to "run the generator" without being told where its cache is.
+
+**What to do.** Make the generator refuse to start from scratch when a result already exists and its state is missing, and say where to run it (with an explicit option, such as `--all`, for whoever really wants a rebuild). In briefs to agents, name the folder where it runs. Missing state read as "nothing done" is lesson 1's "I couldn't read it" in another form.
+
+### 82. A tool that empties its folder on start takes what others saved there
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: scripts-and-files`
+
+**The idea.** Many tools wipe their output folder each time they start, so runs do not mix. If other processes save their own files there because "it is the results folder", the next run deletes them without warning, and nobody notices until someone looks for the file.
+
+**Example.** A browser test runner emptied its results folder on every start. Review agents saved their reports there, and a script saved per-lesson step files. In one day two long reports were lost, one of them requested by the project owner, and a reviewer reported that one of those step files did not exist, because a test run had deleted it minutes before. They were recovered from the agents' transcripts.
+
+**Detector question.** Which tool writes to this folder, and does any of them empty it on start or finish? Does what I save here survive that tool's next run? Did I check it with a test file?
+
+**Warning sign.** "I'll leave it in the results folder" · "the file does not exist" for something written minutes ago · one ignored folder holding both throwaway artifacts and deliverables.
+
+**What to do.** Give each wiping tool its own subfolder (in Playwright, `outputDir`) and keep deliverables outside it, or somewhere versioned. Check it: leave a test file, run the tool, and see it is still there. A test's full output kept in that folder is lesson 44's case; editing a file a generator writes, lesson 48.

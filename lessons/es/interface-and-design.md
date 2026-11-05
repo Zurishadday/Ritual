@@ -133,17 +133,19 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 
 ### 49. Una regla general no debe ganarle en silencio a las particulares
 
-`from: 4a81cf45` · `by: author`
+`from: 681630b6` · `by: ai`
 
 **La idea.** Una regla que aplica a todo (un estilo global, un valor por defecto) puede pisar lo que cada pieza decidió para sí, sin que nada avise.
 
-**Ejemplo.** El estilo del foco del teclado, escrito para todo el sitio, traía su propio redondeo. Como quedaba por encima de los estilos de cada componente, un botón en forma de píldora cambiaba de forma al enfocarlo con el teclado. Nadie lo vio, porque con el ratón el foco no aparece.
+**Ejemplo.** El estilo del foco del teclado, escrito para todo el sitio, traía su propio redondeo de borde. Como quedaba por encima de los estilos de cada componente, un botón en forma de píldora cambiaba de forma al enfocarlo con el teclado. Nadie lo notó, porque con el ratón el foco no aparece.
 
-**Pregunta detectora.** Esta regla general, ¿toca algo que cada pieza ya decide por su cuenta? Si chocan, ¿cuál gana?
+**Otro ejemplo.** Un sitio de aprendizaje tenía `noindex` en su diseño raíz, puesto cuando solo corría en local. Cuando su página de registro y su página principal salieron en línea, ambas heredaron la marca y no podían aparecer en los resultados de búsqueda hasta que alguien pidiera trabajar en la búsqueda.
 
-**Señal de alarma.** «Lo puse global para no repetirlo».
+**Pregunta detectora.** ¿Esta regla general toca algo que cada pieza ya decide por su cuenta? Si chocan, ¿cuál gana? ¿O una pieza nueva hereda un valor por defecto elegido para un trabajo que no es el suyo?
 
-**Qué hacer.** Que la regla general toque solo lo suyo (el contorno del foco, no la forma). Si debe ganar a propósito, escríbelo junto a ella. Y pruébala en la pieza más distinta, no solo en la común.
+**Señal de alarma.** «Lo puse global para no repetirlo». · «La página está en producción, así que es visible».
+
+**Qué hacer.** Que la regla general toque solo lo suyo (el contorno del foco, no la forma). Si debe ganar a propósito, escríbelo junto a ella. Y pruébala en la pieza más distinta, no solo en la común. Una página pública nueva declara su propio valor (`index, follow`) y se revisa en el HTML y en las cabeceras que sirve el sitio en línea (ver las lecciones 7 y 18).
 
 ### 57. Una tecla llega distinta en cada sistema
 
@@ -186,6 +188,34 @@ Lo que aplica cuando una persona va a ver o usar lo que haces: pantallas, compon
 **Señal de alarma.** «El contenido ya está; las imágenes las agregamos después».
 
 **Qué hacer.** Antes del primer párrafo, haz una lista de lo que la página puede mostrar (fotos reales de la persona, el producto funcionando, datos inventados que cuadren, dibujados con código) y decide qué pieza lleva cada sección. Dibuja con código las imágenes de datos o de pantallas, para que cada número y cada rótulo en ellas sea real; las imágenes de personas son fotos reales. Después escribe el texto, lo mínimo que funcione.
+
+### 77. Una gráfica animada no debe mentir a mitad de camino
+
+`from: d65db198` · `by: ai`
+
+**La idea.** Mientras una gráfica de barras crece, cada cuadro también se lee como gráfica. Si cada barra avanza con su propio reloj, a mitad de camino el orden y las proporciones no coinciden con los datos, y alguien puede leer la mentira antes de que termine.
+
+**Ejemplo.** Las barras de salario por país crecían al hacer scroll, y cada una se movía según su propia posición en la pantalla. A mitad de la página, la barra de «nivel de entrada» se veía más larga que la de «todos los niveles», porque la de abajo iba más atrasada. Apareció en una captura a mitad de la animación, no en la final.
+
+**Pregunta detectora.** ¿En la mitad de la animación, cada barra está en el mismo porcentaje de su tamaño final? ¿Medí un cuadro intermedio, o solo miré el final?
+
+**Señal de alarma.** «Se ve bien cuando termina».
+
+**Qué hacer.** Dale a todas las barras un solo reloj compartido: el mismo inicio y la misma duración, o una sola línea de tiempo para toda la lista en lugar de una por barra. Mide el ancho actual de cada barra dividido entre su ancho final en tres momentos (antes, a la mitad y al final): cada barra debe dar el mismo número en cada momento. Con movimiento reducido, muéstralas completas desde el principio.
+
+### 80. El aspecto de un personaje no sale de la etiqueta de su grupo
+
+`from: 247fa72e` · `by: ai`
+
+**La idea.** Cuando el aspecto de una persona (tono de piel, pelo, rasgos, ropa) se dibuja o se elige a partir de su país o de su grupo, lo que sale es el rasgo que sugiere la etiqueta, no el que tienen las personas reales. Parece representación, pero impone un aspecto por defecto que la mayoría de ese grupo no tiene, y alguien de allí lo lee como un estereotipo.
+
+**Ejemplo.** En un curso con personajes de varios países, el personaje de una región salió con la piel más oscura y el pelo rizado que sugería la etiqueta, aunque nadie lo pidió: solo por su lugar de origen. El dueño, que es de esa región, señaló que la mayoría de la gente de allí no se ve así. La regla que quedó: el aspecto se decide por personaje; un tono que es real en su país está bien, y lo que no está bien es un aspecto impuesto o falso, o un disfraz o símbolos del país.
+
+**Pregunta detectora.** ¿Por qué este personaje se ve así: por quién es, o por la etiqueta de su grupo? Si cambiara su país, ¿cambiaría su dibujo? ¿Lleva algo cuya única función sea decir de dónde es?
+
+**Señal de alarma.** «Así se ve la gente de allá» · «así se entiende de qué país es».
+
+**Qué hacer.** Escribe la ficha de cada personaje (personalidad, edad, a qué se dedica) antes que su aspecto, y decide el aspecto a partir de la ficha, no del país. Revisa todo el reparto junto: debe haber variedad, y ningún grupo debe tener un solo aspecto. Que lo revise alguien distinto del autor, con esta pregunta en su rúbrica.
 
 ### VIDEO-1. En un video, cada acción cae cuando la narración la nombra
 
