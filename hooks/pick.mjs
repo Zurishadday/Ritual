@@ -135,6 +135,9 @@ const logUse = (job, key, files, answered, r) => {
   if (log && r?.use) appendLine(log, { type: "pick", session: path.basename(path.dirname(job)), kind: String(key).split(":")[0], files, answered, ...r.use });
 };
 
+/** How a pick's Claude Code is started: stdin ignored, since with an open pipe it waits for input that never comes. */
+export const askOptions = (cwd, env) => ({ cwd, env: { ...env, RITUAL_PICKER: "1" }, windowsHide: true, stdio: ["ignore", "pipe", "pipe"] });
+
 /** Asks Haiku through the Claude Code the user already has: no other account, key or download. Its session loads no
  * plugin, CLAUDE.md or memory, runs in an empty folder, and RITUAL_PICKER keeps Ritual's own hooks quiet in it. */
 export async function askHaiku(prompt) {
@@ -146,7 +149,7 @@ export async function askHaiku(prompt) {
   const start = Date.now();
   try {
     return await new Promise((resolve) => {
-      const p = spawn(bin, s.args, { cwd, env: { ...s.env, RITUAL_PICKER: "1" }, windowsHide: true });
+      const p = spawn(bin, s.args, askOptions(cwd, s.env));
       let out = "", err = "";
       const timer = setTimeout(() => { p.kill(); resolve({ text: "", error: `Haiku took over ${ASK_MS / 1000} s`, use: useOf(null, Date.now() - start) }); }, ASK_MS);
       p.stdout.on("data", (d) => (out += d));
@@ -383,6 +386,10 @@ export async function selftest() {
     const real = { total_cost_usd: 0.00075, duration_api_ms: 1725, usage: { input_tokens: 2, output_tokens: 132, cache_read_input_tokens: 23896, cache_creation_input_tokens: 2207 }, modelUsage: { "claude-haiku-5-5": { costBasis: "list" } } };
     if (JSON.stringify(useOf(real, 22068)) !== JSON.stringify({ ms: 22068, api_ms: 1725, cost: 0.00075, basis: "list", tokens: { input: 2, output: 132, cache_read: 23896, cache_write: 2207 } }) || JSON.stringify(useOf(null, 900)) !== JSON.stringify({ ms: 900 })) bad.push(`useOf reads cost, time and tokens: ${JSON.stringify(useOf(real, 22068))}`);
     if (logOf(failed) !== null) bad.push("a job outside a session's picks folder logs nothing");
+    // Claude Code waits for stdin when it is an open pipe ("no stdin data received in 3s"): measured on 2026-11-05, four
+    // calls each, a median of 22.1 s with stdin open against 12.3 s with it ignored.
+    const opts = askOptions("x", { A: "1" });
+    if (opts.stdio?.[0] !== "ignore" || opts.env.RITUAL_PICKER !== "1" || opts.env.A !== "1") bad.push(`a pick starts Claude Code with stdin closed and Ritual's hooks quiet: ${JSON.stringify(opts)}`);
     const used = path.join(dirOf(ritual, "u1"), "request-x.job.json");
     mkdirSync(path.dirname(used), { recursive: true });
     writeFileSync(used, JSON.stringify({ key: "request:x", label: "your request", ids: ["41"] }));
