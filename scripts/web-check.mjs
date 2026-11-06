@@ -178,12 +178,20 @@ export async function burstCheck(form, burst = 40) {
 const visibleText = (b) => b.evaluate("document.body ? document.body.innerText : ''");
 const fresh = (before, after) => { const old = new Set(before.split("\n").map((l) => l.trim())); return after.split("\n").map((l) => l.trim()).filter((l) => l.length > 1 && !old.has(l)); };
 
+/** A browser that gave no answer gets one more try, with a fresh profile: on Linux CI a cold start timed out on 2026-10-22
+ * and 2026-11-06 and passed on rerun. One that exited at once is not retried: it would exit again. A timed-out launch has
+ * already killed its browser, so the second try starts alone. */
+export async function launchRetrying(bin, start = launch) {
+  try { return await start(bin); }
+  catch (e) { if (!/no answer in/.test(e.message)) throw e; return start(bin); }
+}
+
 /** Every check against a running site. @returns {{results: [string, string, string][], shots: string[], sent: number}} */
 export async function check(url, { out, bin = browserPath(), burst = 40 } = {}) {
   if (!isLocal(url)) throw new Error(`${url} is not a local address: this check sends test submissions, so it only runs against a site on this machine`);
   if (!bin) throw new Error("no Edge or Chrome found: install one or set CHROME_PATH");
   mkdirSync(out, { recursive: true });
-  const b = await launch(bin);
+  const b = await launchRetrying(bin);
   const results = [], shots = [];
   let sent = 0;
   try {
@@ -317,6 +325,15 @@ export async function selftest() {
     const t0 = Date.now();
     try { await check(`${base}/good`, { out, bin: process.execPath }); bad.push("a program that is not a browser must fail to start"); }
     catch (e) { if (!/did not start \(exited /.test(e.message) || !/bad option|--headless/.test(e.message) || Date.now() - t0 > 10000) bad.push(`a browser that exits at once should be reported as exited, with its output, quickly: ${e.message.slice(0, 200)}`); }
+    // A cold start that gave no answer gets one more try; one that exited at once does not, and two silences are a failure.
+    let calls = 0;
+    const silentOnce = async () => { if (++calls === 1) throw new Error("the browser did not start (no answer in 30 s): x"); return "up"; };
+    if (await launchRetrying("x", silentOnce).catch(() => null) !== "up" || calls !== 2) bad.push(`a browser that gave no answer once should be started again: ${calls} call(s)`);
+    for (const [why, want] of [["exited 1", 1], ["no answer in 30 s", 2]]) {
+      calls = 0;
+      const fails = async () => { calls++; throw new Error(`the browser did not start (${why}): x`); };
+      if (await launchRetrying("x", fails).then(() => true, () => false) || calls !== want) bad.push(`a browser that ${why === "exited 1" ? "exits at once is not retried" : "never answers is tried twice, then fails"}: ${calls} call(s)`);
+    }
   } finally { server.close(); rmSync(out, { recursive: true, force: true }); }
   for (const m of bad) console.error(`✕ ${m}`);
   return bad.length;
