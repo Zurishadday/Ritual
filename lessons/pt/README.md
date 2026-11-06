@@ -111,6 +111,7 @@ Traduzidas do inglês. As marcadas com `by: ai` foram traduzidas por uma IA e ag
 - **78.** [O que o shell encontra, um programa pode não encontrar](console-and-tools.md#78-o-que-o-shell-encontra-um-programa-pode-não-encontrar)
 - **79.** [Um gerador que não encontra o que já fez refaz tudo](console-and-tools.md#79-um-gerador-que-não-encontra-o-que-já-fez-refaz-tudo)
 - **82.** [Uma ferramenta que esvazia a pasta ao iniciar leva o que outros salvaram ali](console-and-tools.md#82-uma-ferramenta-que-esvazia-a-pasta-ao-iniciar-leva-o-que-outros-salvaram-ali)
+- **83.** [Um programa iniciado pelo código com a entrada aberta pode ficar esperando uma entrada que nunca chega](console-and-tools.md#83-um-programa-iniciado-pelo-código-com-a-entrada-aberta-pode-ficar-esperando-uma-entrada-que-nunca-chega)
 
 ## Git e processo
 

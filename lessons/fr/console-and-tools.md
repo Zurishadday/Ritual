@@ -153,3 +153,17 @@ Ce qui s'applique quand vous lancez des commandes, des serveurs, des tests ou de
 **Signal d'alarme.** « Je le laisse dans le dossier des résultats » · « le fichier n'existe pas » pour quelque chose écrit quelques minutes plus tôt · un seul dossier ignoré qui contient à la fois des artefacts jetables et des livrables.
 
 **Que faire.** Donnez à chaque outil qui vide son dossier son propre sous-dossier (avec Playwright, `outputDir`) et gardez les livrables en dehors, ou dans un endroit versionné. Vérifiez-le : déposez un fichier de test, lancez l'outil, et constatez qu'il est toujours là. La sortie complète d'un test conservée dans ce dossier relève du cas de la leçon 44 ; modifier un fichier qu'un générateur écrit, de la leçon 48.
+
+### 83. Un programme lancé depuis du code avec son entrée restée ouverte peut attendre une entrée qui n'arrive jamais
+
+`from: 5616491e` · `by: ai`
+
+**L'idée.** Quand du code lance un autre programme et laisse son entrée standard ouverte comme un tuyau dans lequel il n'écrit jamais et qu'il ne ferme pas, le programme peut attendre cette entrée avant de faire son travail : quelques secondes, ou indéfiniment. Rien ne plante ; chaque appel est simplement plus lent, et le temps paraît être celui du démarrage du programme lui-même.
+
+**Exemple.** Un assistant en arrière-plan lançait un assistant en ligne de commande pour chaque demande, avec son entrée standard laissée ouverte. Chaque appel prenait de 9 à 22 secondes, et le retard était mis sur le compte du démarrage de l'assistant. Sa sortie d'erreur indiquait qu'il avait attendu 3 s une entrée qui n'est jamais arrivée ; en ignorant l'entrée, la médiane de quatre appels est passée de 22.1 s à 12.3 s, en alternant les deux façons.
+
+**Question détectrice.** Quand mon code lance un programme, que reçoit son entrée standard : un tuyau ouvert dans lequel je n'écris jamais, mon terminal, ou rien ? Ai-je lu ce que le programme affiche sur sa sortie d'erreur au démarrage ?
+
+**Signal d'alarme.** « C'est juste le démarrage » · les mêmes secondes perdues à chaque appel.
+
+**Que faire.** Donnez au processus enfant l'entrée dont il a besoin puis fermez-la, ou ignorez-la (`stdio: ["ignore", "pipe", "pipe"]` en Node, `stdin=subprocess.DEVNULL` en Python, `< /dev/null` dans un shell). Lisez sa sortie d'erreur une fois avant de mesurer sa vitesse. Figez les options de démarrage dans un test, pour qu'un changement ultérieur ne rouvre pas l'entrée. Une commande qui marche dans le shell et échoue depuis le code relève de la leçon 78.

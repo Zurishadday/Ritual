@@ -111,6 +111,7 @@ Traducidas del inglés. Las que dicen `by: ai` las tradujo una IA y esperan la r
 - **78.** [Lo que encuentra el shell, quizá no lo encuentre un programa](console-and-tools.md#78-lo-que-encuentra-el-shell-quizá-no-lo-encuentre-un-programa)
 - **79.** [Un generador que no encuentra lo que ya hizo, lo vuelve a hacer todo](console-and-tools.md#79-un-generador-que-no-encuentra-lo-que-ya-hizo-lo-vuelve-a-hacer-todo)
 - **82.** [Una herramienta que vacía su carpeta al arrancar se lleva lo que otros guardaron ahí](console-and-tools.md#82-una-herramienta-que-vacía-su-carpeta-al-arrancar-se-lleva-lo-que-otros-guardaron-ahí)
+- **83.** [Un programa que arranca desde código con la entrada abierta puede esperar una entrada que nunca llega](console-and-tools.md#83-un-programa-que-arranca-desde-código-con-la-entrada-abierta-puede-esperar-una-entrada-que-nunca-llega)
 
 ## Git y proceso
 

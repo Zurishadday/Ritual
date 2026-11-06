@@ -29,6 +29,9 @@ const CORRECTION = [
   /\bno entiendo\b/i, /\bsigo sin entender\b/i, /\bno (le )?entend[íi](?!\p{L})/iu, /\bexpl[íi]ca(me)? (otra vez|de nuevo|mejor)\b/i,
   /\bi (don't|do not|still don't) (understand|get it)\b/i, /\bexplain (it )?again\b/i,
   /\bme confundiste\b/i, /\bno s[ée] qu[ée] est[áa] pasando\b/i, /\byou (confused|lost) me\b/i, /\bi (don't|do not) know what'?s going on\b/i,
+  // An answer in the wrong language, and a rule already agreed that was not followed.
+  /\b(dijiste|cambiaste|pusiste|escribiste|contestaste|respondiste) (a|al|en) (ingl[ée]s|espa[ñn]ol)\b/iu, /¿\s*no hab[íi]amos (dicho|quedado)/iu,
+  /\bwhy (did you )?(switch|change)(ed)? (it )?(to|into) (english|spanish)\b/i, /\byou (answered|replied|wrote) (it )?in (english|spanish)\b/i, /\bdidn'?t we (agree|say|decide)\b/i,
 ];
 
 // A correction comes first: only the opening of a prompt counts, so a long brief that quotes "doesn't work" inside is not one.
@@ -71,6 +74,11 @@ const CASES = [
   ["you lost me there", true], ["I don't know what's going on with the build", true],
   ["no me confundas con eso", false], ["¿sabes qué está pasando en el servidor?", false],
   ["Ya entendí.", false], ["entiendo, continúa", false], ["¿entiendes lo que quiero?", false],
+  // An answer in the wrong language, and a rule already agreed that was not followed: three went unlogged on 2026-10-25/26.
+  ["que estás preguntando, ¿por qué me lo cambiaste a inglés?", true], ["Ahora dímelo sin llorar. Ah, no es cierto, es broma. Pero cámbiamelo a español, porfa, ¿no? Porque me lo dijiste en inglés.", true],
+  ["Si me estás preguntando y no estás seguro, debería evaluarlo un modelo más inteligente como Fable, ¿no? ¿No habíamos dicho eso?", true],
+  ["why did you switch to English?", true], ["you answered in English again", true], ["didn't we agree on that?", true],
+  ["escríbelo en inglés para el README", false], ["tradúcelo al inglés", false], ["aún no habíamos dicho nada al cliente", false], ["we agreed to ship on Monday", false],
   // A long brief pasted as a prompt is not a correction, even if it quotes one deep inside; a correction comes first.
   [`Necesito una página para el taller.\n\nRequisitos:\n- un formulario de contacto\n- una página de administración\n\nAntecedentes: la versión anterior no funciona en celular y hubo que hacerlo de nuevo varias veces.\n${"Detalle. ".repeat(40)}`, false],
   [`eso está mal: el total no cuadra.\n\n${"Aquí va el detalle de lo que vi. ".repeat(20)}`, true],

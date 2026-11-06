@@ -10,7 +10,7 @@ Saw a lesson's mistake happen with your model? Type `/ritual share <number>` in 
 
 | Model | Born with it | Seen again | Lessons |
 |---|---:|---:|---|
-| `claude-opus-5-5` | 39 | 26 | 1, 2, 2, 6, 9, 11, 12, 13, 13, 27, 27, 29, 30, 32, 36, 38, 41, 47, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, AI-1, AI-2, AI-3, AI-4, EDU-1, EDU-2, EDU-4, EDU-5, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
+| `claude-opus-5-5` | 40 | 26 | 1, 2, 2, 6, 9, 11, 12, 13, 13, 27, 27, 29, 30, 32, 36, 38, 41, 47, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, AI-1, AI-2, AI-3, AI-4, EDU-1, EDU-2, EDU-4, EDU-5, EDU-5, VIDEO-1, VIDEO-2, VIDEO-3 |
 | `~opus` | 46 | 5 | 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 50, 51, EDU-1, EDU-2, EDU-3, EDU-4 |
 | `claude-sonnet-5-5` | 5 | 6 | 19, 29, 41, 45, 46, 49, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5 |
 | `~sonnet` | 9 | 0 | 41, 42, 43, 44, 45, 46, 47, 48, 49 |
@@ -132,6 +132,7 @@ The most general mistakes: different models made them.
 | [80. A character's look does not come from their group's label](en/interface-and-design.md#80-a-characters-look-does-not-come-from-their-groups-label) | `claude-opus-5-5` 2026-11 |
 | [81. Each piece is read alone: review in the unit the user lives in](en/writing-and-docs.md#81-each-piece-is-read-alone-review-in-the-unit-the-user-lives-in) | `claude-opus-5-5` 2026-11 |
 | [82. A tool that empties its folder on start takes what others saved there](en/console-and-tools.md#82-a-tool-that-empties-its-folder-on-start-takes-what-others-saved-there) | `claude-opus-5-5` 2026-11 |
+| [83. A program started from code with its input left open can wait for input that never comes](en/console-and-tools.md#83-a-program-started-from-code-with-its-input-left-open-can-wait-for-input-that-never-comes) | `claude-opus-5-5` 2026-11 |
 | [AI-1. If you restrict where the model may write, it writes wherever you let it](en/writing-and-docs.md#ai-1-if-you-restrict-where-the-model-may-write-it-writes-wherever-you-let-it) | `claude-opus-5-5` 2026-10 |
 | [AI-2. A rule written as a checklist gets executed as a checklist, even after the other person answered](en/writing-and-docs.md#ai-2-a-rule-written-as-a-checklist-gets-executed-as-a-checklist-even-after-the-other-person-answered) | `claude-opus-5-5` 2026-10 |
 | [AI-3. A fine-tuned model also learns the edges and the background of its examples](en/numbers-and-data.md#ai-3-a-fine-tuned-model-also-learns-the-edges-and-the-background-of-its-examples) | `claude-opus-5-5` 2026-10 |

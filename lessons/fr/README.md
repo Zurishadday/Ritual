@@ -111,6 +111,7 @@ Traduites de l'anglais. Celles marquées `by: ai` ont été traduites par une IA
 - **78.** [Ce que le shell trouve, un programme peut ne pas le trouver](console-and-tools.md#78-ce-que-le-shell-trouve-un-programme-peut-ne-pas-le-trouver)
 - **79.** [Un générateur qui ne retrouve pas ce qu'il a déjà fait refait tout](console-and-tools.md#79-un-générateur-qui-ne-retrouve-pas-ce-quil-a-déjà-fait-refait-tout)
 - **82.** [Un outil qui vide son dossier au démarrage emporte ce que d'autres y ont enregistré](console-and-tools.md#82-un-outil-qui-vide-son-dossier-au-démarrage-emporte-ce-que-dautres-y-ont-enregistré)
+- **83.** [Un programme lancé depuis du code avec son entrée restée ouverte peut attendre une entrée qui n'arrive jamais](console-and-tools.md#83-un-programme-lancé-depuis-du-code-avec-son-entrée-restée-ouverte-peut-attendre-une-entrée-qui-narrive-jamais)
 
 ## Git et processus
 

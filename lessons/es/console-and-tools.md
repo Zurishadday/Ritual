@@ -153,3 +153,17 @@ Lo que aplica cuando corres comandos, servidores, pruebas o capturas, y cuando l
 **Señal de alarma.** «Lo dejo en la carpeta de resultados» · «el archivo no existe» de algo escrito hace minutos · una carpeta ignorada que guarda a la vez artefactos desechables y entregables.
 
 **Qué hacer.** Dale a cada herramienta que borra su propia subcarpeta (en Playwright, `outputDir`) y guarda los entregables fuera de ella, o en algo con versiones. Compruébalo: deja un archivo de prueba, ejecuta la herramienta y mira que siga ahí. La salida completa de una prueba que se guarda en esa carpeta es el caso de la lección 44; editar un archivo que escribe un generador, la lección 48.
+
+### 83. Un programa que arranca desde código con la entrada abierta puede esperar una entrada que nunca llega
+
+`from: 5616491e` · `by: ai`
+
+**La idea.** Cuando el código arranca otro programa y deja su entrada estándar como una tubería abierta en la que nunca escribe ni cierra, el programa puede esperar esa entrada antes de hacer su trabajo: unos segundos o para siempre. Nada falla; cada llamada solo tarda más, y el tiempo parece el arranque propio del programa.
+
+**Ejemplo.** Un ayudante en segundo plano arrancaba un asistente de línea de comandos por cada petición, con la entrada estándar dejada abierta. Cada llamada tardaba entre 9 y 22 segundos, y el retraso se atribuía al arranque del asistente. Su salida de error decía que había esperado 3 s una entrada que nunca llegó; con la entrada ignorada, la mediana de cuatro llamadas pasó de 22.1 s a 12.3 s, alternando las dos formas.
+
+**Pregunta detectora.** Cuando mi código arranca un programa, ¿qué recibe su entrada estándar: una tubería abierta en la que nunca escribo, mi terminal o nada? ¿Leí lo que el programa imprime en su salida de error al arrancar?
+
+**Señal de alarma.** «Es solo el arranque» · los mismos segundos perdidos en cada llamada.
+
+**Qué hacer.** Dale al proceso hijo la entrada que necesita y ciérrala, o ignórala (`stdio: ["ignore", "pipe", "pipe"]` en Node, `stdin=subprocess.DEVNULL` en Python, `< /dev/null` en una shell). Lee su salida de error una vez antes de medir su velocidad. Fija las opciones de arranque en una prueba, para que un cambio posterior no vuelva a abrir la entrada. Un comando que funciona en la shell y falla desde el código es la lección 78.

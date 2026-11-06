@@ -153,3 +153,17 @@ What applies when you run commands, servers, tests, or captures, and when the to
 **Warning sign.** "I'll leave it in the results folder" · "the file does not exist" for something written minutes ago · one ignored folder holding both throwaway artifacts and deliverables.
 
 **What to do.** Give each wiping tool its own subfolder (in Playwright, `outputDir`) and keep deliverables outside it, or somewhere versioned. Check it: leave a test file, run the tool, and see it is still there. A test's full output kept in that folder is lesson 44's case; editing a file a generator writes, lesson 48.
+
+### 83. A program started from code with its input left open can wait for input that never comes
+
+`origin: field · claude-opus-5-5 · 2026-11` · `groups: scripts-and-files`
+
+**The idea.** When code starts another program and leaves its standard input as an open pipe it never writes to or closes, the program may wait for that input before doing its work: a few seconds, or forever. Nothing fails; every call is just slower, and the time looks like the program's own startup.
+
+**Example.** A background helper started a command-line assistant for each request, with its standard input left open. Each call took 9 to 22 seconds, and the delay was put down to the assistant's startup. Its error output said it had waited 3 s for input that never came; with the input ignored, the median of four calls went from 22.1 s to 12.3 s, alternating the two ways.
+
+**Detector question.** When my code starts a program, what does its standard input get: an open pipe I never write to, my terminal, or nothing? Did I read what the program prints on its error output when it starts?
+
+**Warning sign.** "It's just the startup" · the same few seconds lost on every call.
+
+**What to do.** Give a child process the input it needs and close it, or ignore it (`stdio: ["ignore", "pipe", "pipe"]` in Node, `stdin=subprocess.DEVNULL` in Python, `< /dev/null` in a shell). Read its error output once before measuring its speed. Pin the start options in a test, so a later change doesn't open the input again. A command that works in the shell and fails from code is lesson 78.

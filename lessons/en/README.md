@@ -109,6 +109,7 @@
 - **78.** [What the shell finds, a program may not](console-and-tools.md#78-what-the-shell-finds-a-program-may-not)
 - **79.** [A generator that cannot find what it already did redoes everything](console-and-tools.md#79-a-generator-that-cannot-find-what-it-already-did-redoes-everything)
 - **82.** [A tool that empties its folder on start takes what others saved there](console-and-tools.md#82-a-tool-that-empties-its-folder-on-start-takes-what-others-saved-there)
+- **83.** [A program started from code with its input left open can wait for input that never comes](console-and-tools.md#83-a-program-started-from-code-with-its-input-left-open-can-wait-for-input-that-never-comes)
 
 ## Git and process
 
